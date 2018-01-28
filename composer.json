@@ -1,0 +1,29 @@
+{
+  "name": "lkdevelopment/hetzner-cloud-php-sdk",
+  "description": "A inofficial PHP SDK for the Hetzner Cloud API.",
+  "type": "library",
+  "require": {
+    "php": ">=7.0.0",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lukas Kämmerling",
+      "email": "kontakt@lukas-kaemmerling.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "LKDev\\HetznerCloud\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  }
+}
