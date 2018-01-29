@@ -66,7 +66,7 @@ class Action extends Model
         int $progress,
         string $started,
         string $finished,
-        array $resources = null,
+        $resources = null,
         $error = null,
         string $root_password = null
     ) {
