@@ -94,7 +94,7 @@ class Servers extends Model
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string) $response->getBody()));
+            return Server::parse(json_decode((string) $response->getBody())->server);
         }
     }
 
