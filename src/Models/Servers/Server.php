@@ -153,7 +153,7 @@ class Server extends Model
      */
     public function softReboot(): Action
     {
-       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
         if (! HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string) $response->getBody()->action));
         }
@@ -250,7 +250,7 @@ class Server extends Model
      */
     public function disableRescue(): Action
     {
-       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
         if (! HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string) $response->getBody()->action));
         }
@@ -263,16 +263,20 @@ class Server extends Model
      * @param string $description
      * @param string $type
      * @return \LKDev\HetznerCloud\Models\Images\Image
+     * @throws \LKDev\HetznerCloud\APIException
      */
     public function createImage(string $description = '', string $type = 'snapshot'): Image
     {
-        // ToDo
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
+
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
             'form_params' => [
                 'description' => $description,
                 'type' => $type,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Image::parse(json_decode((string) $response->getBody()->image));
+        }
     }
 
     /**
@@ -360,9 +364,9 @@ class Server extends Model
      * @return \LKDev\HetznerCloud\Models\Actions\Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function attachISO(ISO $iso):Action
+    public function attachISO(ISO $iso): Action
     {
-       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
             'form_params' => [
                 'iso' => $iso->id,
             ],
@@ -381,7 +385,7 @@ class Server extends Model
      */
     public function detachISO(): Action
     {
-       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
         if (! HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string) $response->getBody()->action));
         }
