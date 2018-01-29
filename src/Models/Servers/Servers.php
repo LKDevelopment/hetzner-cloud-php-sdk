@@ -52,7 +52,7 @@ class Servers extends Model
     {
         $response = $this->httpClient->get('servers/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody())->server);
+            return Server::parse(json_decode((string) $response->getBody())->server);
         }
     }
 

@@ -8,6 +8,66 @@
 
 namespace LKDev\HetznerCloud\Models\Datacenters;
 
-class Datacenters
+use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Model;
+
+class Datacenters extends Model
 {
+    /**
+     * @var array
+     */
+    public $datacenters;
+
+    /**
+     * Returns all datacenter objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-datacenters-get
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function all(): array
+    {
+        $response = $this->httpClient->get('datacenters');
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->datacenters;
+        }
+    }
+
+    /**
+     * Returns a specific datacenter object.
+     *
+     * @see https://docs.hetzner.cloud/#resources-datacenters-get-1
+     * @param int $datacenterId
+     * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function get(int $datacenterId): Datacenter
+    {
+        $response = $this->httpClient->get('datacenters/'.$datacenterId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Datacenter::parse(json_decode((string) $response->getBody())->datacenter);
+        }
+    }
+
+    /**
+     * @param object $input
+     * @return $this
+     */
+    public function setAdditionalData(object $input)
+    {
+        $this->locations = collect($input->datacenters)->map(function ($datacenter, $key) {
+            return Datacenter::parse($datacenter);
+        })->toArray();
+
+        return $this;
+    }
+
+    /**
+     * @param object $input
+     * @return $this|static
+     */
+    public static function parse(object $input)
+    {
+        return (new self())->setAdditionalData($input);
+    }
 }
