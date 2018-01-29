@@ -8,13 +8,65 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
+use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
+use LKDev\HetznerCloud\Models\Images\Image;
+use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 
+/**
+ *
+ */
 class Servers extends Model
 {
-
-    public function all(){
+    /**
+     * @return array
+     */
+    public function all(): array
+    {
         $this->httpClient->get('servers');
+    }
 
+    /**
+     * @param int $serverId
+     * @return \LKDev\HetznerCloud\Models\Servers\Server
+     */
+    public function get(int $serverId): Server
+    {
+        $this->httpClient->get('servers/'.$serverId);
+    }
+    /**
+     * @param string $name
+     * @param \LKDev\HetznerCloud\Models\Servers\Types\ServerType $serverType
+     * @param \LKDev\HetznerCloud\Models\Datacenters\Datacenter $datacenter
+     * @param \LKDev\HetznerCloud\Models\Locations\Location $location
+     * @param \LKDev\HetznerCloud\Models\Images\Image $image
+     * @param bool $startAfterCreate
+     * @param string $user_data
+     * @param array $ssh_keys
+     * @return \LKDev\HetznerCloud\Models\Servers\Server
+     */
+    public function create(
+        string $name,
+        ServerType $serverType,
+        Datacenter $datacenter,
+        Location $location,
+        Image $image,
+        $startAfterCreate = true,
+        $user_data = '',
+        $ssh_keys = []
+    ): Server {
+        $this->httpClient->post('servers', [
+            'json' => [
+                'name' => $name,
+                'server_type' => $serverType->id,
+                'datacenter' => $datacenter->id,
+                'location' => $location->id,
+                'image' => $image->id,
+                'start_after_create' => $startAfterCreate,
+                'user_data' => $user_data,
+                'ssh_keys' => $ssh_keys,
+            ],
+        ]);
     }
 }
