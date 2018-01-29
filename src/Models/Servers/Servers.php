@@ -74,19 +74,19 @@ class Servers extends Model
     public function create(
         string $name,
         ServerType $serverType,
-        Datacenter $datacenter,
-        Location $location,
         Image $image,
+        Location $location = null,
+        Datacenter $datacenter = null,
+        $ssh_keys = [],
         $startAfterCreate = true,
-        $user_data = '',
-        $ssh_keys = []
+        $user_data = ''
     ): Server {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
                 'server_type' => $serverType->id,
-                'datacenter' => $datacenter->id,
-                'location' => $location->id,
+                'datacenter' => $datacenter->id ?: null,
+                'location' => $location->id ?: null,
                 'image' => $image->id,
                 'start_after_create' => $startAfterCreate,
                 'user_data' => $user_data,
