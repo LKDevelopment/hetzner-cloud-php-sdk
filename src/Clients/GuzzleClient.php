@@ -14,7 +14,7 @@ class GuzzleClient extends Client
     {
         parent::__construct([
             'base_uri' => $client->getBaseUrl(),
-            'headers' => ['Authorization' => 'Bearer '.$client->getApiToken()],
+            'headers' => ['Authorization' => 'Bearer '.$client->getApiToken(), 'Content-Type' => 'application/json'],
         ]);
     }
 }
