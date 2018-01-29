@@ -85,8 +85,8 @@ class Servers extends Model
             'json' => [
                 'name' => $name,
                 'server_type' => $serverType->id,
-                'datacenter' => $datacenter ?: $datacenter->id,
-                'location' => $location ?: $location->id,
+                'datacenter' => $datacenter == null ? null : $datacenter->id,
+                'location' => $location == null ? null : $location->id,
                 'image' => $image->id,
                 'start_after_create' => $startAfterCreate,
                 'user_data' => $user_data,
