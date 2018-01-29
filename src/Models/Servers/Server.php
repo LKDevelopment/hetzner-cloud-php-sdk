@@ -7,7 +7,10 @@
  */
 
 namespace LKDev\HetznerCloud\Models\Servers;
+
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;
 use LKDev\HetznerCloud\Models\Model;
@@ -24,99 +27,246 @@ class Server extends Model
     public $id;
 
     /**
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var string
+     */
+    public $status;
+
+    /**
+     * @var string
+     */
+    public $created;
+
+    /**
+     * @var array
+     */
+    public $publicNet;
+
+    /**
+     * @var ServerType
+     */
+    public $serverType;
+
+    /**
+     * @var \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     */
+    public $datacenter;
+
+    /**
+     * @var Image
+     */
+    public $image;
+
+    /**
+     * @var ISO
+     */
+    public $iso;
+
+    /**
+     * @var bool
+     */
+    public $rescueEnabled;
+
+    /**
+     * @var bool
+     */
+    public $locked;
+
+    /**
+     * @var string
+     */
+    public $backupWindow;
+
+    /**
+     * @var int
+     */
+    public $outgoingTraffic;
+
+    /**
+     * @var int
+     */
+    public $ingoingTraffic;
+
+    /**
+     * @var int
+     */
+    public $includedTraffic;
+
+    /**
      *
      *
      * @param int $serverId
-     * @param HetznerAPIClient $hetznerAPIClient
-     * @param \LKDev\HetznerCloud\Clients\GuzzleClient $httpClient
      */
-    public function __construct(
-        int $serverId,
-        HetznerAPIClient $hetznerAPIClient,
-        $httpClient = null
-    ) {
+    public function __construct(int $serverId)
+    {
         $this->id = $serverId;
-        parent::__construct($hetznerAPIClient, $httpClient);
+        parent::__construct();
     }
 
     /**
-     * @return bool
+     * @param $data
+     * @return \LKDev\HetznerCloud\Models\Servers\Server
      */
-    public function powerOn(): bool
+    public function setAdditionalData($data)
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweron'));
+        $this->name = $data->name;
+        $this->status = $data->status;
+        $this->publicNet = $data->public_net;
+        $this->serverType = ServerType::parse($data->server_type);
+        $this->datacenter = Datacenter::parse($data->datacenter);
+        $this->image = Image::parse($data->image);
+        $this->iso = ISO::parse($data->iso);
+        $this->rescueEnabled = $data->rescue_enabled;
+        $this->locked = $data->locked;
+        $this->backupWindow = $data->backup_window;
+        $this->outgoingTraffic = $data->outgoing_traffic;
+        $this->ingoingTraffic = $data->ingoing_traffic;
+        $this->includedTraffic = $data->included_traffic;
+
+        return $this;
     }
 
     /**
-     * @return bool
+     * Starts a server by turning its power on.
+     *
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function softReboot(): bool
+    public function powerOn(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweron'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return bool
+     * Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-1
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function reset(): bool
+    public function softReboot(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset'));
+       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return bool
+     * Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-2
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function shutdown(): bool
+    public function reset(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/shutdown'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return bool
+     * Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-3
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function powerOff(): bool
+    public function shutdown(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/powerOff'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/shutdown'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return string
+     * Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-4
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function resetRootPassword(): string
+    public function powerOff(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset_password'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/powerOff'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Resets the root password. Only works for Linux systems that are running the qemu guest agent. Server must be powered on (state on) in order for this operation to succeed.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-5
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function resetRootPassword(): Action
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset_password'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
+    }
+
+    /**
+     * Enable the Hetzner Rescue System for this server. The next time a Server with enabled rescue mode boots it will start a special minimal Linux distribution designed for repair and reinstall.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-6
      * @param string $type
      * @param array $ssh_keys
-     * @return bool
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableRescue($type = 'linux64', $ssh_keys = []): bool
+    public function enableRescue($type = 'linux64', $ssh_keys = []): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_rescue'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_rescue'), [
             'form_params' => [
                 'type' => $type,
                 'ssh_keys' => $ssh_keys,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return bool
+     * Disables the Hetzner Rescue System for a server. This makes a server start from its disks on next reboot.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-7
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function disableRescue(): bool
+    public function disableRescue(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
+       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Creates an image (snapshot) from a server by copying the contents of its disks. This creates a snapshot of the current state of the disk and copies it into an image. If the server is currently running you must make sure that its disk content is consistent. Otherwise, the created image may not be readable.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-8
      * @param string $description
      * @param string $type
      * @return \LKDev\HetznerCloud\Models\Images\Image
      */
     public function createImage(string $description = '', string $type = 'snapshot'): Image
     {
+        // ToDo
         $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
             'form_params' => [
                 'description' => $description,
@@ -126,112 +276,187 @@ class Server extends Model
     }
 
     /**
+     * Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-9
      * @param \LKDev\HetznerCloud\Models\Images\Image $image
-     * @return bool
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function rebuildFromImage(Image $image): bool
+    public function rebuildFromImage(Image $image): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/rebuild'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/rebuild'), [
             'form_params' => [
                 'image' => $image->id,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Changes the type (Cores, RAM and disk sizes) of a server.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-10
      * @param \LKDev\HetznerCloud\Models\Servers\Types\ServerType $serverType
      * @param bool $upgradeDisk
-     * @return bool
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeType(ServerType $serverType, bool $upgradeDisk = false): bool
+    public function changeType(ServerType $serverType, bool $upgradeDisk = false): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_type'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_type'), [
             'form_params' => [
                 'server_type' => $serverType->id,
                 'upgrade_disk' => $upgradeDisk,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
      * @param string|null $backupWindow
-     * @return bool
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableBackups(string $backupWindow = null): bool
+    public function enableBackups(string $backupWindow = null): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'), [
             'form_params' => [
                 'backup_window' => $backupWindow,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return bool
+     * Disables the automatic backup option and deletes all existing Backups for a Server.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-12
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function disableBackups(): bool
+    public function disableBackups(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_backup'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_backup'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Attaches an ISO to a server. The Server will immediately see it as a new disk. An already attached ISO will automatically be detached before the new ISO is attached.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-13
      * @param \LKDev\HetznerCloud\Models\ISOs\ISO $iso
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function attachISO(ISO $iso)
+    public function attachISO(ISO $iso):Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
+       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
             'form_params' => [
                 'iso' => $iso->id,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
-     * @return bool
+     * Detaches an ISO from a server. In case no ISO image is attached to the server, the status of the returned action is immediately set to success.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-14
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function dettachISO(): bool
+    public function detachISO(): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
+       $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Changes the hostname that will appear when getting the hostname belonging to the primary IPs (ipv4 and ipv6) of this server.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-15
      * @param string $ip
      * @param string $dnsPtr
-     * @return bool
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeReverseDNS(string $ip, string $dnsPtr): bool
+    public function changeReverseDNS(string $ip, string $dnsPtr): Action
     {
-        $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_dns_ptr'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_dns_ptr'), [
             'form_params' => [
                 'ip' => $ip,
                 'dns_ptr' => $dnsPtr,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
+    /**
+     * Get Metrics for specified server.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-get-2
+     * @param string $type
+     * @param string $start
+     * @param string $end
+     * @param int|null $step
+     */
     public function metrics(string $type, string $start, string $end, int $step = null)
     {
+        // ToDo
         $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?').http_build_query(compact('type', 'start', 'end', 'step')));
     }
 
     /**
-     * @return bool
+     * Deletes a server. This immediately removes the server from your account, and it is no longer accessible.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-delete
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete(): bool
+    public function delete(): Action
     {
-        $this->httpClient->delete($this->replaceServerIdInUri('servers/{id}'));
+        $response = $this->httpClient->delete($this->replaceServerIdInUri('servers/{id}'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody()->action));
+        }
     }
 
     /**
+     * Changes the name of a server.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-put
      * @param string $name
+     * @return \LKDev\HetznerCloud\Models\Servers\Server
+     * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeName(string $name)
+    public function changeName(string $name): Server
     {
-        $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
+        $response = $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
             'form_params' => [
                 'name' => $name,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string) $response->getBody()->server));
+        }
     }
 
     /**
@@ -241,5 +466,14 @@ class Server extends Model
     protected function replaceServerIdInUri(string $uri): string
     {
         return str_replace('{id}', $this->id, $uri);
+    }
+
+    /**
+     * @param object $input
+     * @return \LKDev\HetznerCloud\Models\Servers\Server|static
+     */
+    public static function parse(object $input)
+    {
+        return (new self($input->id))->setAdditionalData($input);
     }
 }

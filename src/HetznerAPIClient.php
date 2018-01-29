@@ -2,6 +2,13 @@
 
 namespace LKDev\HetznerCloud;
 
+use GuzzleHttp\Psr7\Response;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
+use Psr\Http\Message\ResponseInterface;
+
+/**
+ *
+ */
 class HetznerAPIClient
 {
     /**
@@ -13,6 +20,17 @@ class HetznerAPIClient
      * @var string
      */
     protected $baseUrl;
+
+    /**
+     * @var \LKDev\HetznerCloud\HetznerAPIClient
+     */
+    public static $hetznerApiClient;
+
+    /**
+     * @var \LKDev\HetznerCloud\Clients\GuzzleClient
+     */
+    public static $httpClient;
+
     /**
      *
      * @param string $apiToken
@@ -21,6 +39,8 @@ class HetznerAPIClient
     public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/')
     {
         $this->apiToken = $apiToken;
+        self::$hetznerApiClient = $this;
+        self::$httpClient = new GuzzleClient($this);
     }
 
     /**
@@ -39,4 +59,27 @@ class HetznerAPIClient
         return $this->baseUrl;
     }
 
+    /**
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public static function throwError(ResponseInterface $response)
+    {
+        throw new APIException($response);
+    }
+
+    /**
+     * @param \Psr\Http\Message\ResponseInterface $response
+     * @return bool
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public static function hasError(ResponseInterface $response)
+    {
+        if (property_exists($response, 'error') || $response->getStatusCode() !== 200) {
+            self::throwError($response);
+            return true;
+        }
+
+        return false;
+    }
 }

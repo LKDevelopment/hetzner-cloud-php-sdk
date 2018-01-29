@@ -8,12 +8,63 @@
 
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 
+/**
+ *
+ */
 class ServerTypes extends Model
 {
+    /**
+     * @var array
+     */
+    public $serverTypes;
+
+    /**
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
     public function all(): array
     {
-        $this->httpClient->get('server_types');
+        $response = $this->httpClient->get('server_types');
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()));
+        }
+    }
+
+    /**
+     * @param int $serverTypeId
+     * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function get(int $serverTypeId): ServerType
+    {
+        $response = $this->httpClient->get('server_types/'.$serverTypeId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return ServerType::parse(json_decode((string) $response->getBody())->server_type);
+        }
+    }
+
+    /**
+     * @param object $input
+     * @return $this
+     */
+    public function setAdditionalData(object $input)
+    {
+        $this->serverTypes = collect($input->server_types)->map(function ($serverType, $key) {
+            return ServerType::parse($serverType);
+        })->toArray();
+
+        return $this;
+    }
+
+    /**
+     * @param object $input
+     * @return $this|static
+     */
+    public static function parse(object $input)
+    {
+        return (new self())->setAdditionalData($input);
     }
 }

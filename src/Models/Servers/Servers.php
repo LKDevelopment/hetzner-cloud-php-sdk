@@ -8,6 +8,7 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\Locations\Location;
@@ -20,22 +21,45 @@ use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 class Servers extends Model
 {
     /**
+     * @var array
+     */
+    public $servers;
+
+    /**
+     * Returns all existing server objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-get
      * @return array
+     * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(): array
     {
-        $this->httpClient->get('servers');
+        $response = $this->httpClient->get('servers');
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->servers;
+        }
     }
 
     /**
+     * Returns a specific server object. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-get-1
      * @param int $serverId
      * @return \LKDev\HetznerCloud\Models\Servers\Server
+     * @throws \LKDev\HetznerCloud\APIException
      */
     public function get(int $serverId): Server
     {
-        $this->httpClient->get('servers/'.$serverId);
+        $response = $this->httpClient->get('servers/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->server);
+        }
     }
+
     /**
+     * Creates a new server. Returns preliminary information about the server as well as an action that covers progress of creation
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-post
      * @param string $name
      * @param \LKDev\HetznerCloud\Models\Servers\Types\ServerType $serverType
      * @param \LKDev\HetznerCloud\Models\Datacenters\Datacenter $datacenter
@@ -45,6 +69,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $ssh_keys
      * @return \LKDev\HetznerCloud\Models\Servers\Server
+     * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(
         string $name,
@@ -56,7 +81,7 @@ class Servers extends Model
         $user_data = '',
         $ssh_keys = []
     ): Server {
-        $this->httpClient->post('servers', [
+        $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
                 'server_type' => $serverType->id,
@@ -68,5 +93,30 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
             ],
         ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string) $response->getBody()));
+        }
+    }
+
+    /**
+     * @param object $input
+     * @return $this
+     */
+    public function setAdditionalData(object $input)
+    {
+        $this->servers = collect($input->servers)->map(function ($server, $key) {
+            return Server::parse($server);
+        })->toArray();
+
+        return $this;
+    }
+
+    /**
+     * @param object $input
+     * @return static
+     */
+    public static function parse(object $input)
+    {
+        return (new self())->setAdditionalData($input);
     }
 }

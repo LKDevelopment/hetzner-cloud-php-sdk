@@ -1,0 +1,92 @@
+<?php
+
+namespace LKDev\HetznerCloud\Models\Actions;
+
+use LKDev\HetznerCloud\Models\Model;
+
+/**
+ *
+ */
+class Action extends Model
+{
+    /**
+     * @var int
+     */
+    public $id;
+
+    /**
+     * @var string
+     */
+    public $command;
+
+    /**
+     * @var int
+     */
+    public $progress;
+
+    /**
+     * @var string
+     */
+    public $started;
+
+    /**
+     * @var string
+     */
+    public $finished;
+
+    /**
+     * @var array
+     */
+    public $resources;
+
+    /**
+     * @var object|null
+     */
+    public $error;
+
+    /**
+     * @var null|string
+     */
+    public $root_password = null;
+
+    /**
+     * Action constructor.
+     *
+     * @param int $id
+     * @param string $command
+     * @param int $progress
+     * @param string $started
+     * @param string $finished
+     * @param array $resources
+     * @param null|object $error
+     */
+    public function __construct(
+        int $id,
+        string $command,
+        int $progress,
+        string $started,
+        string $finished,
+        array $resources,
+        object $error,
+        string $root_password = null
+    ) {
+        $this->id = $id;
+        $this->command = $command;
+        $this->progress = $progress;
+        $this->started = $started;
+        $this->finished = $finished;
+        $this->resources = $resources;
+        $this->error = $error;
+        $this->root_password = $root_password;
+        parent::__construct();
+    }
+
+    /**
+     * @param object $input
+     * @return \LKDev\HetznerCloud\Models\Actions\Action|static
+     */
+    public static function parse(object $input)
+    {
+        return new self($input->id, $input->command, $input->status, $input->started, $input->finished, $input->resources, $input->error, $input->root_password);
+    }
+}

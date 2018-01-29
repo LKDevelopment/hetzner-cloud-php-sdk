@@ -26,9 +26,15 @@ class Model
      * @param \LKDev\HetznerCloud\HetznerAPIClient $hetznerAPIClient
      * @param GuzzleClient
      */
-    public function __construct(HetznerAPIClient $hetznerAPIClient, $httpClient = null)
+    public function __construct()
     {
-        $this->hetznerAPIClient = $hetznerAPIClient;
-        $this->httpClient = ($httpClient) ?: new GuzzleClient();
+        $this->hetznerAPIClient = HetznerAPIClient::$hetznerApiClient;
+        $this->httpClient = HetznerAPIClient::$httpClient;
     }
+
+    /**
+     * @param object $input
+     * @return static
+     */
+    abstract public static function parse(object $input);
 }
