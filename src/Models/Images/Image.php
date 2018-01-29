@@ -101,18 +101,18 @@ class Image extends Model
      */
     public function __construct(
         int $id,
-        string $type,
-        string $status,
-        string $name,
-        string $description,
-        float $imageSize,
-        int $diskSize,
-        string $created,
-        Server $createdFrom,
-        int $boundTo,
-        string $osFlavor,
-        string $osVersion,
-        bool $rapidDeploy
+        string $type = null,
+        string $status = null,
+        string $name = null,
+        string $description = null,
+        float $imageSize = null,
+        int $diskSize = null,
+        string $created = null,
+        Server $createdFrom = null,
+        int $boundTo = null,
+        string $osFlavor = null,
+        string $osVersion = null,
+        bool $rapidDeploy = null
     ) {
         $this->id = $id;
         $this->type = $type;
@@ -168,11 +168,14 @@ class Image extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\Images\Image|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
-        return new self($input->id, $input->type, $input->status, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, Server::parse($input->created_from), $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy);
+        if ($input == null) {
+            return null;
+        }
+        return new self($input->id, $input->type, $input->status, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy);
     }
 }

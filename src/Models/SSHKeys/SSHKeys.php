@@ -50,10 +50,10 @@ class SSHKeys extends Model
         }
     }
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData( $input)
     {
         $this->sshKeys = collect($input->ssh_keys)->map(function ($sshKey, $key) {
             return SSHKey::parse($sshKey);
@@ -62,10 +62,10 @@ class SSHKeys extends Model
         return $this;
     }
     /**
-     * @param object $input
+     * @param  $input
      * @return $this|static
      */
-    public static function parse(object $input)
+    public static function parse( $input)
     {
         return (new self())->setAdditionalData($input);
     }

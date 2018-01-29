@@ -8,7 +8,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 /**
  *
  */
-class Model
+abstract class Model
 {
     /**
      * @var \LKDev\HetznerCloud\HetznerAPIClient
@@ -33,8 +33,8 @@ class Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return static
      */
-    abstract public static function parse(object $input);
+    abstract public static function parse($input);
 }

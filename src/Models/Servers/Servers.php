@@ -99,24 +99,27 @@ class Servers extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData($input)
     {
         $this->servers = collect($input->servers)->map(function ($server, $key) {
-            return Server::parse($server);
+            if ($server != null) {
+                return Server::parse($server);
+            }
         })->toArray();
 
         return $this;
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
+
         return (new self())->setAdditionalData($input);
     }
 }

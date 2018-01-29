@@ -29,7 +29,7 @@ class ServerTypes extends Model
     {
         $response = $this->httpClient->get('server_types');
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()));
+            return self::parse(json_decode((string) $response->getBody()))->serverTypes;
         }
     }
 
@@ -47,10 +47,10 @@ class ServerTypes extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData( $input)
     {
         $this->serverTypes = collect($input->server_types)->map(function ($serverType, $key) {
             return ServerType::parse($serverType);
@@ -60,10 +60,10 @@ class ServerTypes extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this|static
      */
-    public static function parse(object $input)
+    public static function parse( $input)
     {
         return (new self())->setAdditionalData($input);
     }

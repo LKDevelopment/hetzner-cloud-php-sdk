@@ -10,4 +10,5 @@ namespace LKDev\HetznerCloud\Models\FloatingIps;
 
 class FloatingIps
 {
+    // ToDos
 }

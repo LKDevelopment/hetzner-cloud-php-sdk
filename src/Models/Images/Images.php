@@ -49,10 +49,10 @@ class Images extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData( $input)
     {
         $this->images = collect($input->images)->map(function ($image, $key) {
             return Image::parse($image);
@@ -62,10 +62,10 @@ class Images extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return $this|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
     }

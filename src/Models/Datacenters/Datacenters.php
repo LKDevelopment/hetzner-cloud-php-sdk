@@ -50,10 +50,10 @@ class Datacenters extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData( $input)
     {
         $this->locations = collect($input->datacenters)->map(function ($datacenter, $key) {
             return Datacenter::parse($datacenter);
@@ -63,10 +63,10 @@ class Datacenters extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return $this|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
     }

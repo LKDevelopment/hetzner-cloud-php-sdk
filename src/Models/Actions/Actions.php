@@ -58,10 +58,10 @@ class Actions extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData( $input)
     {
         $this->actions = collect($input->actions)->map(function ($action, $key) {
             return Action::parse($action);
@@ -71,10 +71,10 @@ class Actions extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return $this|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
     }

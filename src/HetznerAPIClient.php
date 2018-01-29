@@ -39,6 +39,7 @@ class HetznerAPIClient
     public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/')
     {
         $this->apiToken = $apiToken;
+        $this->baseUrl = $baseUrl;
         self::$hetznerApiClient = $this;
         self::$httpClient = new GuzzleClient($this);
     }
@@ -65,7 +66,9 @@ class HetznerAPIClient
      */
     public static function throwError(ResponseInterface $response)
     {
-        throw new APIException($response);
+        var_dump(json_decode((string) $response->getBody()));
+        die();
+        // throw new APIException($response, ->error->code);
     }
 
     /**
@@ -75,8 +78,9 @@ class HetznerAPIClient
      */
     public static function hasError(ResponseInterface $response)
     {
-        if (property_exists($response, 'error') || $response->getStatusCode() !== 200) {
+        if ((property_exists($response, 'error')) || ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300)) {
             self::throwError($response);
+
             return true;
         }
 

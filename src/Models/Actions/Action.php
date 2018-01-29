@@ -40,7 +40,7 @@ class Action extends Model
     public $resources;
 
     /**
-     * @var object|null
+     * @var |null
      */
     public $error;
 
@@ -58,7 +58,7 @@ class Action extends Model
      * @param string $started
      * @param string $finished
      * @param array $resources
-     * @param null|object $error
+     * @param null| $error
      */
     public function __construct(
         int $id,
@@ -66,8 +66,8 @@ class Action extends Model
         int $progress,
         string $started,
         string $finished,
-        array $resources,
-        object $error,
+        array $resources = null,
+        $error = null,
         string $root_password = null
     ) {
         $this->id = $id;
@@ -82,11 +82,15 @@ class Action extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return \LKDev\HetznerCloud\Models\Actions\Action|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
-        return new self($input->id, $input->command, $input->status, $input->started, $input->finished, $input->resources, $input->error, $input->root_password);
+        if ($input == null) {
+            return null;
+        }
+
+        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error, (property_exists($input, 'root_password') ? $input->root_password : null));
     }
 }

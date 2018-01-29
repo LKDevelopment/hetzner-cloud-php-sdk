@@ -62,13 +62,13 @@ class ServerType extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData($input)
     {
         $this->name = $input->name;
-        $this->description = $input->descripton;
+        $this->description = $input->description;
         $this->cores = $input->cores;
         $this->memory = $input->memory;
         $this->disk = $input->disk;
@@ -79,10 +79,10 @@ class ServerType extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return self
      */
-    public static function parse(object $input)
+    public static function parse( $input)
     {
         return (new self($input->id))->setAdditionalData($input);
     }

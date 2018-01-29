@@ -61,8 +61,8 @@ class Datacenter extends Model
         string $name,
         string $description,
         Location $location,
-        array $server_types,
-        bool $recommendation
+        array $server_types = null,
+        bool $recommendation = null
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -74,11 +74,14 @@ class Datacenter extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
+        if ($input == null) {
+            return null;
+        }
        return new self($input->id,$input->name,$input->description,Location::parse($input->location),$input->server_types,$input->recommendation);
     }
 }
