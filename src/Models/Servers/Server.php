@@ -231,7 +231,7 @@ class Server extends Model
     public function enableRescue($type = 'linux64', $ssh_keys = []): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_rescue'), [
-            'form_params' => [
+            'json' => [
                 'type' => $type,
                 'ssh_keys' => $ssh_keys,
             ],
@@ -269,7 +269,7 @@ class Server extends Model
     {
 
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
-            'form_params' => [
+            'json' => [
                 'description' => $description,
                 'type' => $type,
             ],
@@ -290,7 +290,7 @@ class Server extends Model
     public function rebuildFromImage(Image $image): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/rebuild'), [
-            'form_params' => [
+            'json' => [
                 'image' => $image->id,
             ],
         ]);
@@ -311,7 +311,7 @@ class Server extends Model
     public function changeType(ServerType $serverType, bool $upgradeDisk = false): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_type'), [
-            'form_params' => [
+            'json' => [
                 'server_type' => $serverType->id,
                 'upgrade_disk' => $upgradeDisk,
             ],
@@ -332,7 +332,7 @@ class Server extends Model
     public function enableBackups(string $backupWindow = null): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'), [
-            'form_params' => [
+            'json' => [
                 'backup_window' => $backupWindow,
             ],
         ]);
@@ -367,7 +367,7 @@ class Server extends Model
     public function attachISO(ISO $iso): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
-            'form_params' => [
+            'json' => [
                 'iso' => $iso->id,
             ],
         ]);
@@ -403,7 +403,7 @@ class Server extends Model
     public function changeReverseDNS(string $ip, string $dnsPtr): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_dns_ptr'), [
-            'form_params' => [
+            'json' => [
                 'ip' => $ip,
                 'dns_ptr' => $dnsPtr,
             ],
@@ -454,7 +454,7 @@ class Server extends Model
     public function changeName(string $name): Server
     {
         $response = $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
-            'form_params' => [
+            'json' => [
                 'name' => $name,
             ],
         ]);
