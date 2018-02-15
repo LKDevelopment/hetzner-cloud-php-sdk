@@ -22,6 +22,30 @@ class SSHKeys extends Model
     public $sshKeys;
 
     /**
+     * Creates a new SSH Key with the given name and public_key.
+     *
+     * @see https://docs.hetzner.cloud/#resources-ssh-keys-post
+     * @param string $name
+     * @param string $publicKey
+     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function create(
+    		string $name,
+    		string $publicKey
+    ): SSHKey {
+    	$response = $this->httpClient->post('ssh_keys', [
+    			'json' => [
+    					'name' => $name,
+    					'public_key' => $publicKey,
+    			],
+    	]);
+    	if (! HetznerAPIClient::hasError($response)) {
+    		return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
+    	}
+    }
+
+    /**
      * Returns all ssh key objects.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get
