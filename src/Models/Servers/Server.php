@@ -464,6 +464,21 @@ class Server extends Model
     }
 
     /**
+     * Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function requestConsole(): Action
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
+        }
+    }
+
+    /**
      * @param string $uri
      * @return string
      */
@@ -481,6 +496,7 @@ class Server extends Model
         if ($input == null) {
             return null;
         }
+
         return (new self($input->id))->setAdditionalData($input);
     }
 }
