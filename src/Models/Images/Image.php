@@ -9,7 +9,9 @@
 namespace LKDev\HetznerCloud\Models\Images;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Server;
 
 /**
@@ -83,6 +85,11 @@ class Image extends Model
     public $rapidDeploy;
 
     /**
+     * @var array|\LKDev\HetznerCloud\Models\Protection
+     */
+    public $protection;
+
+    /**
      * Image constructor.
      *
      * @param int $id
@@ -98,6 +105,7 @@ class Image extends Model
      * @param string $osFlavor
      * @param string $osVersion
      * @param bool $rapidDeploy
+     * @param Protection $protection
      */
     public function __construct(
         int $id,
@@ -112,7 +120,8 @@ class Image extends Model
         int $boundTo = null,
         string $osFlavor = null,
         string $osVersion = null,
-        bool $rapidDeploy = null
+        bool $rapidDeploy = null,
+        Protection $protection = null
     ) {
         $this->id = $id;
         $this->type = $type;
@@ -127,6 +136,7 @@ class Image extends Model
         $this->osFlavor = $osFlavor;
         $this->osVersion = $osVersion;
         $this->rapidDeploy = $rapidDeploy;
+        $this->protection = $protection;
         parent::__construct();
     }
 
@@ -149,6 +159,26 @@ class Image extends Model
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string) $response->getBody())->image);
+        }
+    }
+
+    /**
+     * Changes the protection configuration of the image. Can only be used on snapshots.
+     *
+     * @see https://docs.hetzner.cloud/#resources-image-actions-post
+     * @param bool $delete
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeProtection(bool $delete = true): Action
+    {
+        $response = $this->httpClient->post('images/'.$this->id.'/change_protection', [
+            'json' => [
+                'delete' => $delete,
+            ],
+        ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -176,6 +206,7 @@ class Image extends Model
         if ($input == null) {
             return null;
         }
-        return new self($input->id, $input->type, $input->status, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy);
+
+        return new self($input->id, $input->type, $input->status, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection));
     }
 }

@@ -9,8 +9,10 @@
 namespace LKDev\HetznerCloud\Models\FloatingIps;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Protection;
 
 /**
  *
@@ -53,6 +55,11 @@ class FloatingIp extends Model
     public $blocked;
 
     /**
+     * @var array|\LKDev\HetznerCloud\Models\Protection
+     */
+    public $protection;
+
+    /**
      * FloatingIp constructor.
      *
      * @param int $id
@@ -62,6 +69,7 @@ class FloatingIp extends Model
      * @param array $dnsPtr
      * @param \LKDev\HetznerCloud\Models\Locations\Location $homeLocation
      * @param bool $blocked
+     * @param array $protection
      */
     public function __construct(
         int $id,
@@ -70,7 +78,8 @@ class FloatingIp extends Model
         int $server,
         array $dnsPtr,
         Location $homeLocation,
-        bool $blocked
+        bool $blocked,
+        Protection $protection
     ) {
         $this->id = $id;
         $this->description = $description;
@@ -79,6 +88,7 @@ class FloatingIp extends Model
         $this->dnsPtr = $dnsPtr;
         $this->homeLocation = $homeLocation;
         $this->blocked = $blocked;
+        $this->protection = $protection;
         parent::__construct();
     }
 
@@ -115,5 +125,38 @@ class FloatingIp extends Model
         if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
+    }
+
+    /**
+     * Changes the protection configuration of the Floating IP.
+     *
+     * @see https://docs.hetzner.cloud/#resources-floating-ip-actions-post-3
+     * @param bool $delete
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeProtection(bool $delete = true): Action
+    {
+        $response = $this->httpClient->post('floating_ips/'.$this->id.'/change_protection', [
+            'json' => [
+                'delete' => $delete,
+            ],
+        ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
+        }
+    }
+
+    /**
+     * @param  $input
+     * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|static
+     */
+    public static function parse($input)
+    {
+        if ($input == null) {
+            return null;
+        }
+
+        return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, $input->home_location, $input->blocked, Protection::parse($input->protection));
     }
 }

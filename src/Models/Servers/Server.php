@@ -14,6 +14,7 @@ use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 
 /**
@@ -97,6 +98,11 @@ class Server extends Model
     public $includedTraffic;
 
     /**
+     * @var array|\LKDev\HetznerCloud\Models\Protection
+     */
+    public $protection;
+
+    /**
      *
      *
      * @param int $serverId
@@ -126,7 +132,7 @@ class Server extends Model
         $this->outgoingTraffic = $data->outgoing_traffic;
         $this->ingoingTraffic = $data->ingoing_traffic;
         $this->includedTraffic = $data->included_traffic;
-
+        $this->protection = Protection::parse($data->protection);
         return $this;
     }
 
@@ -473,6 +479,28 @@ class Server extends Model
     public function requestConsole(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
+        }
+    }
+
+    /**
+     * Changes the protection configuration of the server.
+     *
+     * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
+     * @param bool $delete
+     * @param bool $rebuild
+     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeProtection(bool $delete = true, bool $rebuild = true): Action
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_protection'), [
+            'json' => [
+                'delete' => $delete,
+                'rebuild' => $rebuild,
+            ],
+        ]);
         if (! HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string) $response->getBody())->action);
         }
