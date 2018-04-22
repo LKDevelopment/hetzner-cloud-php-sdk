@@ -477,7 +477,7 @@ class Server extends Model
      * @return \LKDev\HetznerCloud\Models\Actions\Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function requestConsole(): Action
+    public function requestConsole(): \stdClass
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
         if (! HetznerAPIClient::hasError($response)) {
