@@ -133,6 +133,7 @@ class Server extends Model
         $this->ingoingTraffic = $data->ingoing_traffic;
         $this->includedTraffic = $data->included_traffic;
         $this->protection = Protection::parse($data->protection);
+
         return $this;
     }
 
@@ -480,7 +481,10 @@ class Server extends Model
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
         if (! HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string) $response->getBody())->action);
+            $payload = json_decode((string) $response->getBody());
+            $payload->action = Action::parse($payload->action);
+
+            return $payload;
         }
     }
 
