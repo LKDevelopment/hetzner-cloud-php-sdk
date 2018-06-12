@@ -55,7 +55,7 @@ class ISOs extends Model
      */
     public function setAdditionalData( $input)
     {
-        $this->locations = collect($input->isos)->map(function ($iso, $key) {
+        $this->isos = collect($input->isos)->map(function ($iso, $key) {
             return ISO::parse($iso);
         })->toArray();
 
