@@ -205,7 +205,7 @@ class Server extends Model
      */
     public function powerOff(): Action
     {
-        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/powerOff'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweroff'));
         if (! HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string) $response->getBody())->action);
         }
