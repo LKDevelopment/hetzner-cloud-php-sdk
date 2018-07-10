@@ -51,6 +51,11 @@ class ServerType extends Model
     public $storageType;
 
     /**
+     * @var string
+     */
+    public $cpuType;
+
+    /**
      * ServerType constructor.
      *
      * @param int $serverTypeId
@@ -74,7 +79,7 @@ class ServerType extends Model
         $this->disk = $input->disk;
         $this->prices = $input->prices;
         $this->storageType = $input->storage_type;
-
+        $this->cpuType = $input->cpu_type;
         return $this;
     }
 
@@ -82,7 +87,7 @@ class ServerType extends Model
      * @param  $input
      * @return self
      */
-    public static function parse( $input)
+    public static function parse($input)
     {
         return (new self($input->id))->setAdditionalData($input);
     }

@@ -40,7 +40,7 @@ class Actions extends Model
     {
         $response = $this->httpClient->get('servers/'.$this->server->id.'/actions');
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody())->server);
+            return self::parse(json_decode((string) $response->getBody()))->actions;
         }
     }
 
