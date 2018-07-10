@@ -40,7 +40,9 @@ class Actions extends Model
     {
         $response = $this->httpClient->get('servers/' . $this->server->id . '/actions');
         if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody(), $this->server))->actions;
+            $resp = json_decode((string)$response->getBody());
+            $resp->server = $this->server;
+            return self::parse($resp)->actions;
         }
     }
 
@@ -75,8 +77,8 @@ class Actions extends Model
      * @param Server $server
      * @return $this|static
      */
-    public static function parse($input, Server $server)
+    public static function parse($input)
     {
-        return (new self($server))->setAdditionalData($input);
+        return (new self($input->server))->setAdditionalData($input);
     }
 }
