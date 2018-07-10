@@ -38,9 +38,9 @@ class Actions extends Model
      */
     public function all(): array
     {
-        $response = $this->httpClient->get('servers/'.$this->server->id.'/actions');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->actions;
+        $response = $this->httpClient->get('servers/' . $this->server->id . '/actions');
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody(), $this->server))->actions;
         }
     }
 
@@ -51,9 +51,9 @@ class Actions extends Model
      */
     public function get($actionId): Action
     {
-        $response = $this->httpClient->get('servers/'.$this->server->id.'/actions/'.$actionId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string) $response->getBody()->action));
+        $response = $this->httpClient->get('servers/' . $this->server->id . '/actions/' . $actionId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody()))->action;
         }
     }
 
@@ -61,7 +61,7 @@ class Actions extends Model
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->actions = collect($input->actions)->map(function ($action, $key) {
             return Action::parse($action);
@@ -72,10 +72,11 @@ class Actions extends Model
 
     /**
      * @param $input
+     * @param Server $server
      * @return $this|static
      */
-    public static function parse($input)
+    public static function parse($input, Server $server)
     {
-        return (new self())->setAdditionalData($input);
+        return (new self($server))->setAdditionalData($input);
     }
 }

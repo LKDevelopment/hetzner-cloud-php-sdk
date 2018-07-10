@@ -36,5 +36,7 @@ abstract class Model
      * @param $input
      * @return static
      */
-    abstract public static function parse($input);
+    public static function parse($input)
+    {
+    }
 }
