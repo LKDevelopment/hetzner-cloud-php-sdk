@@ -8,7 +8,7 @@
     "tightenco/collect": "^5.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.5",
+    "phpunit/phpunit": "6.5",
     "phpdocumentor/phpdocumentor": "2.*"
   },
   "license": "MIT",
