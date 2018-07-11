@@ -1,6 +1,7 @@
 [![Latest Stable Version](https://poser.pugx.org/lkdevelopment/hetzner-cloud-php-sdk/version)](https://packagist.org/packages/lkdevelopment/hetzner-cloud-php-sdk)
 [![License](https://poser.pugx.org/lkdevelopment/hetzner-cloud-php-sdk/license)](https://packagist.org/packages/lkdevelopment/hetzner-cloud-php-sdk)
 [![Total Downloads](https://poser.pugx.org/lkdevelopment/hetzner-cloud-php-sdk/downloads)](https://packagist.org/packages/lkdevelopment/hetzner-cloud-php-sdk)
+[![Build Status](https://travis-ci.com/LKDevelopment/hetzner-cloud-php-sdk.svg?branch=master)](https://travis-ci.com/LKDevelopment/hetzner-cloud-php-sdk)
 # Hetzner Cloud PHP SDK
 A PHP SDK for the Hetzner Cloud API: https://docs.hetzner.cloud/
 ## Installation
