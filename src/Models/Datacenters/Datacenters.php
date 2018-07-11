@@ -55,7 +55,7 @@ class Datacenters extends Model
      */
     public function setAdditionalData( $input)
     {
-        $this->locations = collect($input->datacenters)->map(function ($datacenter, $key) {
+        $this->datacenters = collect($input->datacenters)->map(function ($datacenter, $key) {
             return Datacenter::parse($datacenter);
         })->toArray();
 

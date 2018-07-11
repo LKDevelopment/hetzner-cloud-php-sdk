@@ -55,8 +55,7 @@ class Datacenter extends Model
         string $name,
         string $description,
         Location $location,
-        array $server_types = null,
-        bool $recommendation = null
+        $server_types = null
     ) {
         $this->id = $id;
         $this->name = $name;
@@ -75,6 +74,6 @@ class Datacenter extends Model
         if ($input == null) {
             return null;
         }
-       return new self($input->id,$input->name,$input->description,Location::parse($input->location),$input->server_types);
+       return new self($input->id,$input->name,$input->description,Location::parse($input->location), $input->server_types);
     }
 }

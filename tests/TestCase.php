@@ -8,27 +8,24 @@
 
 namespace Tests;
 
-
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\HetznerAPIClient;
 
+/**
+ *
+ */
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
-
+    /**
+     * @var
+     */
     protected $hetznerApi;
 
+    /**
+     *
+     */
     public function setUp()
     {
-        $this->server = new Server(new Client());
-        Server::boot();
-        $this->hetznerApi = new HetznerAPIClient('abcdef', 'http://localhost:8000/v1/');
-    }
-
-    public function getExpectedResponse($response): string
-    {
-        $tmp = json_decode(file_get_contents(__DIR__ . '/server/response/' . $response . '.json'));
-        $mtp = \GuzzleHttp\json_encode($tmp);
-
-        return $mtp;
+        $this->hetznerApi = new HetznerAPIClient('abcdef', 'https://hetzner-cloud-fake-api.lkdev.co/v1/');
     }
 }

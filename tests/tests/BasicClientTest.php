@@ -11,7 +11,7 @@ namespace Tests;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use PHPUnit\Framework\TestCase;
 
-class GuzzleClientClientTest extends TestCase
+class BasicClientTest extends TestCase
 {
     public function testGetApiToken()
     {
