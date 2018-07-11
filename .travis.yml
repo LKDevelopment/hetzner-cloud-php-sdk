@@ -1,5 +1,6 @@
 language: php
 
+before_script: composer install
   # list any PHP version you want to test against
 php:
   # aliased to a recent 7.x version
