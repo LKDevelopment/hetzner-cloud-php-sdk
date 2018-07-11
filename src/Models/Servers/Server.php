@@ -120,19 +120,19 @@ class Server extends Model
     public function setAdditionalData($data)
     {
         $this->name = $data->name;
-        $this->status = $data->status;
-        $this->publicNet = $data->public_net;
+        $this->status = $data->status ?: null;
+        $this->publicNet = $data->public_net ?: null;
         $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
         $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
         $this->image = $data->image ?: Image::parse($data->image);
         $this->iso = $data->iso ?: ISO::parse($data->iso);
-        $this->rescueEnabled = $data->rescue_enabled;
-        $this->locked = $data->locked;
-        $this->backupWindow = $data->backup_window;
-        $this->outgoingTraffic = $data->outgoing_traffic;
-        $this->ingoingTraffic = $data->ingoing_traffic;
-        $this->includedTraffic = $data->included_traffic;
-        $this->protection = Protection::parse($data->protection);
+        $this->rescueEnabled = $data->rescue_enabled ?: null;
+        $this->locked = $data->locked ?: null;
+        $this->backupWindow = $data->backup_window ?: null;
+        $this->outgoingTraffic = $data->outgoing_traffic ?: null;
+        $this->ingoingTraffic = $data->ingoing_traffic ?: null;
+        $this->includedTraffic = $data->included_traffic ?: null;
+        $this->protection = $data->protection ?: nullProtection::parse($data->protection);
 
         return $this;
     }
@@ -146,6 +146,7 @@ class Server extends Model
     public function get()
     {
         $servers = new Servers();
+
         return $servers->get($this->id);
     }
 
@@ -158,8 +159,8 @@ class Server extends Model
     public function powerOn(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweron'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -173,8 +174,8 @@ class Server extends Model
     public function softReboot(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -188,8 +189,8 @@ class Server extends Model
     public function reset(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -203,8 +204,8 @@ class Server extends Model
     public function shutdown(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/shutdown'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -218,8 +219,8 @@ class Server extends Model
     public function powerOff(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweroff'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -230,11 +231,14 @@ class Server extends Model
      * @return \LKDev\HetznerCloud\Models\Actions\Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function resetRootPassword(): Action
+    public function resetRootPassword()
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset_password'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+            $payload->action = Action::parse($payload->action);
+
+            return $payload;
         }
     }
 
@@ -255,8 +259,8 @@ class Server extends Model
                 'ssh_keys' => $ssh_keys,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -270,8 +274,8 @@ class Server extends Model
     public function disableRescue(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -284,7 +288,7 @@ class Server extends Model
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function createImage(string $description = '', string $type = 'snapshot'): Image
+    public function createImage(string $description = '', string $type = 'snapshot')
     {
 
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
@@ -293,8 +297,12 @@ class Server extends Model
                 'type' => $type,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Image::parse(json_decode((string)$response->getBody()->image));
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+            $payload->action = Action::parse($payload->action);
+            $payload->image = Image::parse($payload->image);
+
+            return $payload;
         }
     }
 
@@ -313,8 +321,8 @@ class Server extends Model
                 'image' => $image->id,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -335,8 +343,8 @@ class Server extends Model
                 'upgrade_disk' => $upgradeDisk,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -355,8 +363,8 @@ class Server extends Model
                 'backup_window' => $backupWindow,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -370,8 +378,8 @@ class Server extends Model
     public function disableBackups(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_backup'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -390,8 +398,8 @@ class Server extends Model
                 'iso' => $iso->id,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -405,8 +413,8 @@ class Server extends Model
     public function detachISO(): Action
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -427,8 +435,8 @@ class Server extends Model
                 'dns_ptr' => $dnsPtr,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -444,7 +452,7 @@ class Server extends Model
     public function metrics(string $type, string $start, string $end, int $step = null)
     {
         // ToDo
-        $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?') . http_build_query(compact('type', 'start', 'end', 'step')));
+        $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?').http_build_query(compact('type', 'start', 'end', 'step')));
     }
 
     /**
@@ -457,8 +465,8 @@ class Server extends Model
     public function delete(): Action
     {
         $response = $this->httpClient->delete($this->replaceServerIdInUri('servers/{id}'));
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -477,8 +485,8 @@ class Server extends Model
                 'name' => $name,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string)$response->getBody())->server);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string) $response->getBody())->server);
         }
     }
 
@@ -492,8 +500,8 @@ class Server extends Model
     public function requestConsole(): \stdClass
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
             $payload->action = Action::parse($payload->action);
 
             return $payload;
@@ -517,8 +525,8 @@ class Server extends Model
                 'rebuild' => $rebuild,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
 

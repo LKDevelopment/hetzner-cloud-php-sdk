@@ -6,7 +6,7 @@
  * Time: 18:31
  */
 
-namespace Tests\tests;
+namespace Tests\tests\Servers;
 
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use Tests\TestCase;
