@@ -37,8 +37,8 @@ class ServerTypesTest extends TestCase
      */
     public function testGet()
     {
-        $server_type = $this->server_types->get(12345);
-        $this->assertEquals($server_type->id, 12345);
+        $server_type = $this->server_types->get(1);
+        $this->assertEquals($server_type->id, 1);
         $this->assertEquals($server_type->name, 'cx11');
     }
 
@@ -49,14 +49,9 @@ class ServerTypesTest extends TestCase
     {
         $server_types = $this->server_types->all();
 
-        $this->assertEquals(count($server_types), 10);
+        $this->assertEquals(count($server_types), 1);
         $this->assertEquals($server_types[0]->id, 1);
         $this->assertEquals($server_types[0]->name, 'cx11');
-        $this->assertEquals($server_types[1]->id, 2);
-        $this->assertEquals($server_types[1]->name, 'cx11-ceph');
-        $this->assertEquals($server_types[2]->id, 3);
-        $this->assertEquals($server_types[2]->name, 'cx21');
-        $this->assertEquals($server_types[3]->id, 4);
-        $this->assertEquals($server_types[3]->name, 'cx21-ceph');
+
     }
 }

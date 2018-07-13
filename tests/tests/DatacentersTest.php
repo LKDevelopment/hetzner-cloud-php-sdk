@@ -35,8 +35,8 @@ class DatacentersTest extends TestCase
      */
     public function testGet()
     {
-        $datacenter = $this->datacenters->get(12345);
-        $this->assertEquals($datacenter->id, 12345);
+        $datacenter = $this->datacenters->get(1);
+        $this->assertEquals($datacenter->id, 1);
         $this->assertEquals($datacenter->name, 'fsn1-dc8');
     }
 
@@ -47,12 +47,9 @@ class DatacentersTest extends TestCase
     {
         $datacenters = $this->datacenters->all();
 
-        $this->assertEquals(count($datacenters), 3);
+        $this->assertEquals(count($datacenters), 1);
         $this->assertEquals($datacenters[0]->id, 1);
         $this->assertEquals($datacenters[0]->name, 'fsn1-dc8');
-        $this->assertEquals($datacenters[1]->id, 2);
-        $this->assertEquals($datacenters[1]->name, 'nbg1-dc3');
-        $this->assertEquals($datacenters[2]->id, 3);
-        $this->assertEquals($datacenters[2]->name, 'hel1-dc2');
+
     }
 }

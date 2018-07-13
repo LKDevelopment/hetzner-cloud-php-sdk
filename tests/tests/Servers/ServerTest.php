@@ -30,7 +30,7 @@ class ServerTest extends TestCase
         parent::setUp();
         $tmp = new Servers();
 
-        $this->server = $tmp->get(1234);
+        $this->server = $tmp->get(42);
     }
 
     public function testDisableBackups()
@@ -109,7 +109,7 @@ class ServerTest extends TestCase
 
     public function testChangeType()
     {
-        $action = $this->server->changeType(new ServerType(1337));
+        $action = $this->server->changeType(new ServerType(1, 'cx11'), true);
         $this->assertEquals('change_server_type', $action->command);
         $this->assertEquals($this->server->id, $action->resources[0]->id);
         $this->assertEquals('server', $action->resources[0]->type);
@@ -134,7 +134,7 @@ class ServerTest extends TestCase
 
     public function testRebuildFromImage()
     {
-        $action = $this->server->rebuildFromImage(new Image(123));
+        $action = $this->server->rebuildFromImage(new Image(4711,'ubuntu','','ubuntu-16.04'));
         $this->assertEquals('rebuild_server', $action->command);
         $this->assertEquals($this->server->id, $action->resources[0]->id);
         $this->assertEquals('server', $action->resources[0]->type);
@@ -142,7 +142,7 @@ class ServerTest extends TestCase
 
     public function testAttachISO()
     {
-        $action = $this->server->attachISO(new ISO(123));
+        $action = $this->server->attachISO(new ISO(123, 'FreeBSD-11.0-RELEASE-amd64-dvd1'));
         $this->assertEquals('attach_iso', $action->command);
         $this->assertEquals($this->server->id, $action->resources[0]->id);
         $this->assertEquals('server', $action->resources[0]->type);
@@ -158,7 +158,7 @@ class ServerTest extends TestCase
 
     public function testEnableBackups()
     {
-        $action = $this->server->enableBackups();
+        $action = $this->server->enableBackups('22-02');
         $this->assertEquals('enable_backup', $action->command);
         $this->assertEquals($this->server->id, $action->resources[0]->id);
         $this->assertEquals('server', $action->resources[0]->type);
@@ -191,7 +191,7 @@ class ServerTest extends TestCase
     public function testGet()
     {
         $server = $this->server->get();
-        $this->assertEquals($server->id, 1234);
+        $this->assertEquals($server->id, 42);
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
     }

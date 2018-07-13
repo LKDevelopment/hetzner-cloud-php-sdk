@@ -37,7 +37,7 @@ class ISO extends Model
      * @param string $description
      * @param string $type
      */
-    public function __construct(int $id = null, string $name = null, string $description = null, string $type = null)
+    public function __construct(int $id, string $name, string $description = null, string $type = null)
     {
         $this->id = $id;
         $this->name = $name;

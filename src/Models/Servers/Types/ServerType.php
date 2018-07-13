@@ -60,9 +60,10 @@ class ServerType extends Model
      *
      * @param int $serverTypeId
      */
-    public function __construct(int $serverTypeId)
+    public function __construct(int $serverTypeId, string $name = '')
     {
         $this->id = $serverTypeId;
+        $this->name = $name;
         parent::__construct();
     }
 

@@ -35,8 +35,8 @@ class ServersTest extends TestCase
      */
     public function testGet()
     {
-        $server = $this->servers->get(1235);
-        $this->assertEquals($server->id, 1235);
+        $server = $this->servers->get(42);
+        $this->assertEquals($server->id, 42);
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
     }
@@ -48,10 +48,8 @@ class ServersTest extends TestCase
     {
         $servers = $this->servers->all();
 
-        $this->assertEquals(count($servers), 2);
+        $this->assertEquals(count($servers), 1);
         $this->assertEquals($servers[0]->id, 42);
         $this->assertEquals($servers[0]->name, 'my-server');
-        $this->assertEquals($servers[1]->id, 466);
-        $this->assertEquals($servers[1]->name, 'my-server-2');
     }
 }

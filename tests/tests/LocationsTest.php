@@ -36,8 +36,8 @@ class LocationsTest extends TestCase
      */
     public function testGet()
     {
-        $location = $this->locations->get(12345);
-        $this->assertEquals($location->id, 12345);
+        $location = $this->locations->get(1);
+        $this->assertEquals($location->id, 1);
         $this->assertEquals($location->name, 'fsn1');
     }
 
@@ -48,12 +48,8 @@ class LocationsTest extends TestCase
     {
         $locations = $this->locations->all();
 
-        $this->assertEquals(count($locations), 3);
+        $this->assertEquals(count($locations), 1);
         $this->assertEquals($locations[0]->id, 1);
         $this->assertEquals($locations[0]->name, 'fsn1');
-        $this->assertEquals($locations[1]->id, 2);
-        $this->assertEquals($locations[1]->name, 'nbg1');
-        $this->assertEquals($locations[2]->id, 3);
-        $this->assertEquals($locations[2]->name, 'hel1');
     }
 }
