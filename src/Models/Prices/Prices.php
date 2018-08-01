@@ -18,7 +18,7 @@ use LKDev\HetznerCloud\Models\Model;
 class Prices extends Model
 {
     /**
-     * @var stdClass
+     * @var \stdClass
      */
     public $prices;
 
@@ -26,10 +26,10 @@ class Prices extends Model
      * Returns all pricing information.
      *
      * @see https://docs.hetzner.cloud/#pricing-get-all-prices
-     * @return stdClass
+     * @return \stdClass
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(): \stdClass
     {
         $response = $this->httpClient->get('pricing');
         if (!HetznerAPIClient::hasError($response)) {
