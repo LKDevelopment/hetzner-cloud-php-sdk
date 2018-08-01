@@ -8,6 +8,7 @@
 
 namespace LKDev\HetznerCloud\Models\Prices;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
