@@ -33,7 +33,7 @@ class Prices extends Model
     {
         $response = $this->httpClient->get('pricing');
         if (!HetznerAPIClient::hasError($response)) {
-            $this->prices = json_decode((string)$response->getBody());
+            $this->prices = json_decode((string)$response->getBody())->pricing;
             return $this->prices;
         }
     }
