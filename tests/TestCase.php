@@ -17,7 +17,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var
+     * @var HetznerAPIClient
      */
     protected $hetznerApi;
 

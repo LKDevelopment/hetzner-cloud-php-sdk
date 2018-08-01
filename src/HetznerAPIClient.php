@@ -4,6 +4,13 @@ namespace LKDev\HetznerCloud;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
+use LKDev\HetznerCloud\Models\Actions\Actions;
+use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
+use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
+use LKDev\HetznerCloud\Models\Images\Images;
+use LKDev\HetznerCloud\Models\ISOs\ISOs;
+use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -85,5 +92,61 @@ class HetznerAPIClient
         }
 
         return false;
+    }
+
+    /**
+     * @return Models\Servers\Servers
+     */
+    public function servers(){
+        return new Models\Servers\Servers();
+    }
+
+    /**
+     * @return Datacenters
+     */
+    public function datacenters(){
+        return new Datacenters();
+    }
+
+    /**
+     * @return Models\Locations\Locations
+     */
+    public function locations(){
+        return new Models\Locations\Locations();
+    }
+
+    /**
+     * @return Images
+     */
+    public function images(){
+        return new Images();
+    }
+
+    /**
+     * @return SSHKeys
+     */
+    public function ssh_keys(){
+        return new SSHKeys();
+    }
+
+    /**
+     * @return Prices
+     */
+    public function prices(){
+        return new Prices();
+    }
+
+    /**
+     * @return ISOs
+     */
+    public function isos(){
+        return new ISOs();
+    }
+
+    /**
+     * @return FloatingIps
+     */
+    public function floating_ips(){
+        return new FloatingIps();
     }
 }

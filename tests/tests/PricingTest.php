@@ -36,10 +36,10 @@ class PricingTest extends TestCase
      */
     public function testAll()
     {
-        $this->markTestSkipped(
-            'Currently the prices api is not implemented on this sdk.'
-        );
         $prices = $this->prices->all();
-
+        $this->assertEquals('EUR', $prices->currency);
+        $this->assertEquals('19.000000', $prices->vat_rate);
+        $this->assertEquals('1.0000000000', $prices->image->price_per_gb_month->net);
+        $this->assertInternalType('array', $prices->server_types);
     }
 }
