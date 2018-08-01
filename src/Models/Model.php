@@ -10,10 +10,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
  */
 abstract class Model
 {
-    /**
-     * @var \LKDev\HetznerCloud\HetznerAPIClient
-     */
-    protected $hetznerAPIClient;
 
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
@@ -22,14 +18,11 @@ abstract class Model
 
     /**
      * Model constructor.
-     *
-     * @param \LKDev\HetznerCloud\HetznerAPIClient $hetznerAPIClient
-     * @param GuzzleClient
+     * @param GuzzleClient $httpClient
      */
-    public function __construct()
+    public function __construct(GuzzleClient $httpClient = null)
     {
-        $this->hetznerAPIClient = HetznerAPIClient::$hetznerApiClient;
-        $this->httpClient = HetznerAPIClient::$httpClient;
+        $this->httpClient = $httpClient == null ? HetznerAPIClient::$instance->getHttpClient() : $httpClient;
     }
 
     /**

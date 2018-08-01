@@ -28,7 +28,7 @@ class ServerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $tmp = new Servers();
+        $tmp = new Servers($this->hetznerApi->getHttpClient());
 
         $this->server = $tmp->get(42);
     }

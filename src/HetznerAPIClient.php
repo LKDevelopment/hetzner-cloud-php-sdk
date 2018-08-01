@@ -27,16 +27,15 @@ class HetznerAPIClient
      * @var string
      */
     protected $baseUrl;
-
     /**
-     * @var \LKDev\HetznerCloud\HetznerAPIClient
+     * @var HetznerAPIClient
      */
-    public static $hetznerApiClient;
-
+    public static $instance;
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
-    public static $httpClient;
+    protected $httpClient;
+
 
     /**
      *
@@ -47,8 +46,8 @@ class HetznerAPIClient
     {
         $this->apiToken = $apiToken;
         $this->baseUrl = $baseUrl;
-        self::$hetznerApiClient = $this;
-        self::$httpClient = new GuzzleClient($this);
+        $this->httpClient = new GuzzleClient($this);
+        self::$instance = $this;
     }
 
     /**
@@ -68,12 +67,20 @@ class HetznerAPIClient
     }
 
     /**
+     * @return GuzzleClient
+     */
+    public function getHttpClient(): GuzzleClient
+    {
+        return $this->httpClient;
+    }
+
+    /**
      * @param \Psr\Http\Message\ResponseInterface $response
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function throwError(ResponseInterface $response)
     {
-        var_dump(json_decode((string) $response->getBody()));
+        var_dump(json_decode((string)$response->getBody()));
         die();
         // throw new APIException($response, ->error->code);
     }
@@ -97,56 +104,64 @@ class HetznerAPIClient
     /**
      * @return Models\Servers\Servers
      */
-    public function servers(){
-        return new Models\Servers\Servers();
+    public function servers()
+    {
+        return new Models\Servers\Servers($this->httpClient);
     }
 
     /**
      * @return Datacenters
      */
-    public function datacenters(){
-        return new Datacenters();
+    public function datacenters()
+    {
+        return new Datacenters($this->httpClient);
     }
 
     /**
      * @return Models\Locations\Locations
      */
-    public function locations(){
-        return new Models\Locations\Locations();
+    public function locations()
+    {
+        return new Models\Locations\Locations($this->httpClient);
     }
 
     /**
      * @return Images
      */
-    public function images(){
-        return new Images();
+    public function images()
+    {
+        return new Images($this->httpClient);
     }
 
     /**
      * @return SSHKeys
      */
-    public function ssh_keys(){
-        return new SSHKeys();
+    public function ssh_keys()
+    {
+        return new SSHKeys($this->httpClient);
     }
 
     /**
      * @return Prices
      */
-    public function prices(){
-        return new Prices();
+    public function prices()
+    {
+        return new Prices($this->httpClient);
     }
 
     /**
      * @return ISOs
      */
-    public function isos(){
-        return new ISOs();
+    public function isos()
+    {
+        return new ISOs($this->httpClient);
     }
 
     /**
      * @return FloatingIps
      */
-    public function floating_ips(){
-        return new FloatingIps();
+    public function floating_ips()
+    {
+        return new FloatingIps($this->httpClient);
     }
 }

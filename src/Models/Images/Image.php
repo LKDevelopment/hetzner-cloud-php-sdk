@@ -122,7 +122,8 @@ class Image extends Model
         string $osVersion = null,
         bool $rapidDeploy = null,
         Protection $protection = null
-    ) {
+    )
+    {
         $this->id = $id;
         $this->type = $type;
         $this->status = $status;
@@ -149,16 +150,16 @@ class Image extends Model
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(string $description, string $type): Image
+    public function update(string $description = null, string $type = null): Image
     {
-        $response = $this->httpClient->put('images/'.$this->id, [
+        $response = $this->httpClient->put('images/' . $this->id, [
             'json' => [
-                'description' => $description,
-                'type' => $type,
+                'description' => $description == null ? $this->description : $type,
+                'type' => $type == null ? $this->type : $type,
             ],
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody())->image);
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody())->image);
         }
     }
 
@@ -172,13 +173,13 @@ class Image extends Model
      */
     public function changeProtection(bool $delete = true): Action
     {
-        $response = $this->httpClient->post('images/'.$this->id.'/change_protection', [
+        $response = $this->httpClient->post('images/' . $this->id . '/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string) $response->getBody())->action);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
         }
     }
 
@@ -191,8 +192,8 @@ class Image extends Model
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('images/'.$this->id);
-        if (! HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('images/' . $this->id);
+        if (!HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
