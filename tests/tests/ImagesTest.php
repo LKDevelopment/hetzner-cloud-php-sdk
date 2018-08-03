@@ -56,9 +56,8 @@ class ImagesTest extends TestCase
 
     public function testUpdate()
     {
-        $this->markTestSkipped('Test could fail because of an error in the api mock server');
         $image = $this->images->get(4711);
-        $updated_image = $image->update('My new Image description');
+        $updated_image = $image->update('My new Image description', 'snapshot');
         $this->assertEquals($image->id, $updated_image->id);
         $this->assertEquals('My new Image description', $updated_image->description);
     }
@@ -69,12 +68,12 @@ class ImagesTest extends TestCase
         $this->assertTrue($image->delete());
     }
 
-    public function testChangeProtection(){
-        $this->markTestSkipped('Test could fail because the documentation that is used as base for the mock server has a lack here.');
+    public function testChangeProtection()
+    {
         $image = $this->images->get(4711);
         $action = $image->changeProtection();
         $this->assertEquals('change_protection', $action->command);
-        $this->assertEquals($this->server->id, $action->resources[0]->id);
-        $this->assertEquals('server', $action->resources[0]->type);
+        $this->assertEquals($image->id, $action->resources[0]->id);
+        $this->assertEquals('image', $action->resources[0]->type);
     }
 }

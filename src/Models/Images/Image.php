@@ -173,7 +173,7 @@ class Image extends Model
      */
     public function changeProtection(bool $delete = true): Action
     {
-        $response = $this->httpClient->post('images/' . $this->id . '/change_protection', [
+        $response = $this->httpClient->post('images/' . $this->id . '/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
