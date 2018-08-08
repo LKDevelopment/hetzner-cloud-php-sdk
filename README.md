@@ -16,25 +16,23 @@ composer require lkdevelopment/hetzner-cloud-php-sdk
 
 ``` php
 $hetznerClient = new \LKDev\HetznerCloud\HetznerAPIClient($apiKey);
-$servers = new \LKDev\HetznerCloud\Models\Servers\Servers();
-foreach ($servers->all() as $server) {
+foreach ($hetznerClient->servers()->all() as $server) {
     echo 'ID: '.$server->id.' Name:'.$server->name.' Status: '.$server->status.PHP_EOL;
 }
 ```
 
 ### Testing
 
-``` bash
+We use the [Hetzner Cloud API Mock Server](https://github.com/LKDevelopment/hetzner-cloud-api-mock) for testing against the API. For testing run the commands:
+```bash
+docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
 phpunit
 ```
 
 ### Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+Please see [CHANGELOG](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/releases) for more information what has changed recently.
 
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 ### Security
 
@@ -47,4 +45,4 @@ If you discover any security related issues, please email kontakt@lukas-kaemmerl
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License File](LICENSE) for more information.

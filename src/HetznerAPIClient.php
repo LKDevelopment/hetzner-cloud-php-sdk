@@ -10,6 +10,7 @@ use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use Psr\Http\Message\ResponseInterface;
 
@@ -128,6 +129,12 @@ class HetznerAPIClient
     }
 
     /**
+     * @return ServerTypes
+     */
+    public function serverTypes(){
+        return new ServerTypes($this->httpClient);
+    }
+    /**
      * @return Datacenters
      */
     public function datacenters()
@@ -154,7 +161,7 @@ class HetznerAPIClient
     /**
      * @return SSHKeys
      */
-    public function ssh_keys()
+    public function sshKeys()
     {
         return new SSHKeys($this->httpClient);
     }
@@ -178,7 +185,7 @@ class HetznerAPIClient
     /**
      * @return FloatingIps
      */
-    public function floating_ips()
+    public function floatingIps()
     {
         return new FloatingIps($this->httpClient);
     }
