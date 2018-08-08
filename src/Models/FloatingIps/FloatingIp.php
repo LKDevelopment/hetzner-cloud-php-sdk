@@ -34,7 +34,10 @@ class FloatingIp extends Model
      * @var string
      */
     public $ip;
-
+    /**
+     * @var string
+     */
+    public $type;
     /**
      * @var int
      */
@@ -66,16 +69,18 @@ class FloatingIp extends Model
      * @param int $id
      * @param string $description
      * @param string $ip
+     * @param string $type
      * @param int $server
      * @param array $dnsPtr
      * @param \LKDev\HetznerCloud\Models\Locations\Location $homeLocation
      * @param bool $blocked
-     * @param array $protection
+     * @param Protection $protection
      */
     public function __construct(
         int $id,
         string $description,
         string $ip,
+        string $type,
         int $server,
         array $dnsPtr,
         Location $homeLocation,
@@ -86,6 +91,7 @@ class FloatingIp extends Model
         $this->id = $id;
         $this->description = $description;
         $this->ip = $ip;
+        $this->type = $type;
         $this->server = $server;
         $this->dnsPtr = $dnsPtr;
         $this->homeLocation = $homeLocation;
