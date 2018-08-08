@@ -31,7 +31,7 @@ class FloatingIps extends Model
     {
         $response = $this->httpClient->get('floating_ips');
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->floating_ips;
+            return self::parse(json_decode((string) $response->getBody()))->floatingIps;
         }
     }
 
@@ -72,7 +72,7 @@ class FloatingIps extends Model
             'type' => $type,
             'description' => $description,
             'server' => $server ?: $server->id,
-            'location' => $location ?: $location->id,
+            'home_location' => $location ?: $location->name,
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);

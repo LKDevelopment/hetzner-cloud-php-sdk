@@ -132,7 +132,7 @@ class Server extends Model
         $this->outgoingTraffic = $data->outgoing_traffic ?: null;
         $this->ingoingTraffic = $data->ingoing_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
-        $this->protection = $data->protection ?: nullProtection::parse($data->protection);
+        $this->protection = $data->protection ?: Protection::parse($data->protection);
 
         return $this;
     }

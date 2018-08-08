@@ -99,6 +99,6 @@ class FloatingIpTest extends TestCase
         $action = $this->floatingIp->changeReverseDNS('1.2.3.4', 'server02.example.com');
         $this->assertEquals('change_dns_ptr', $action->command);
         $this->assertEquals($this->floatingIp->id, $action->resources[0]->id);
-        $this->assertEquals('server', $action->resources[0]->type);
+        $this->assertEquals('floating_ip', $action->resources[0]->type);
     }
 }
