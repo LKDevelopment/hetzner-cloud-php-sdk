@@ -15,6 +15,7 @@ use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\Locations\Locations;
 use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Servers\Servers;
+use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use PHPUnit\Framework\TestCase;
 
@@ -40,12 +41,13 @@ class BasicClientTest extends \Tests\TestCase
     public function testMethodsReturnCorrectInstance()
     {
         $this->assertInstanceOf(Servers::class, $this->hetznerApi->servers());
+        $this->assertInstanceOf(ServerTypes::class, $this->hetznerApi->serverTypes());
         $this->assertInstanceOf(Images::class, $this->hetznerApi->images());
         $this->assertInstanceOf(Prices::class, $this->hetznerApi->prices());
         $this->assertInstanceOf(Locations::class, $this->hetznerApi->locations());
         $this->assertInstanceOf(Datacenters::class, $this->hetznerApi->datacenters());
-        $this->assertInstanceOf(FloatingIps::class, $this->hetznerApi->floating_ips());
-        $this->assertInstanceOf(SSHKeys::class, $this->hetznerApi->ssh_keys());
+        $this->assertInstanceOf(FloatingIps::class, $this->hetznerApi->floatingIps());
+        $this->assertInstanceOf(SSHKeys::class, $this->hetznerApi->sshKeys());
     }
 
 }
