@@ -87,10 +87,10 @@ class SSHKey extends Model
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey|static
      */
-    public static function parse(object $input)
+    public static function parse( $input)
     {
         return new self($input->id, $input->name, $input->fingerprint, $input->public_key);
     }

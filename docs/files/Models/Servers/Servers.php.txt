@@ -74,19 +74,19 @@ class Servers extends Model
     public function create(
         string $name,
         ServerType $serverType,
-        Datacenter $datacenter,
-        Location $location,
         Image $image,
+        Location $location = null,
+        Datacenter $datacenter = null,
+        $ssh_keys = [],
         $startAfterCreate = true,
-        $user_data = '',
-        $ssh_keys = []
+        $user_data = ''
     ): Server {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
                 'server_type' => $serverType->id,
-                'datacenter' => $datacenter->id,
-                'location' => $location->id,
+                // 'datacenter' => $datacenter == null ? null : $datacenter->id,
+                'location' => $location == null ? null : $location->id,
                 'image' => $image->id,
                 'start_after_create' => $startAfterCreate,
                 'user_data' => $user_data,
@@ -94,29 +94,32 @@ class Servers extends Model
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string) $response->getBody()));
+            return Server::parse(json_decode((string) $response->getBody())->server);
         }
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return $this
      */
-    public function setAdditionalData(object $input)
+    public function setAdditionalData($input)
     {
         $this->servers = collect($input->servers)->map(function ($server, $key) {
-            return Server::parse($server);
+            if ($server != null) {
+                return Server::parse($server);
+            }
         })->toArray();
 
         return $this;
     }
 
     /**
-     * @param object $input
+     * @param  $input
      * @return static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
+
         return (new self())->setAdditionalData($input);
     }
 }

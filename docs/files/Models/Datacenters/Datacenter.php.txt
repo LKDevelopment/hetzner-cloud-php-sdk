@@ -42,11 +42,6 @@ class Datacenter extends Model
     public $serverTypes;
 
     /**
-     * @var bool
-     */
-    public $recommendation;
-
-    /**
      * Datacenter constructor.
      *
      * @param int $id
@@ -54,31 +49,31 @@ class Datacenter extends Model
      * @param string $description
      * @param \LKDev\HetznerCloud\Models\Locations\Location $location
      * @param array $server_types
-     * @param bool $recommendation
      */
     public function __construct(
         int $id,
         string $name,
         string $description,
         Location $location,
-        array $server_types,
-        bool $recommendation
+        $server_types = null
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->location = $location;
         $this->serverTypes = $server_types;
-        $this->recommendation = $recommendation;
         parent::__construct();
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
-       return new self($input->id,$input->name,$input->description,Location::parse($input->location),$input->server_types,$input->recommendation);
+        if ($input == null) {
+            return null;
+        }
+       return new self($input->id,$input->name,$input->description,Location::parse($input->location), $input->server_types);
     }
 }

@@ -4,6 +4,14 @@ namespace LKDev\HetznerCloud;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
+use LKDev\HetznerCloud\Models\Actions\Actions;
+use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
+use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
+use LKDev\HetznerCloud\Models\Images\Images;
+use LKDev\HetznerCloud\Models\ISOs\ISOs;
+use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
+use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -11,6 +19,10 @@ use Psr\Http\Message\ResponseInterface;
  */
 class HetznerAPIClient
 {
+    /**
+     *
+     */
+    const VERSION = "1.0.0";
     /**
      * @var string
      */
@@ -20,27 +32,41 @@ class HetznerAPIClient
      * @var string
      */
     protected $baseUrl;
-
     /**
-     * @var \LKDev\HetznerCloud\HetznerAPIClient
+     * @var string
      */
-    public static $hetznerApiClient;
-
+    protected $userAgent;
+    /**
+     * @var HetznerAPIClient
+     */
+    public static $instance;
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
-    public static $httpClient;
+    protected $httpClient;
+
 
     /**
      *
      * @param string $apiToken
      * @param string $baseUrl
+     * @param string $userAgent
      */
-    public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/')
+    public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/', $userAgent = '')
     {
         $this->apiToken = $apiToken;
-        self::$hetznerApiClient = $this;
-        self::$httpClient = new GuzzleClient($this);
+        $this->baseUrl = $baseUrl;
+        $this->userAgent = $userAgent;
+        $this->httpClient = new GuzzleClient($this);
+        self::$instance = $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserAgent(): string
+    {
+        return $this->userAgent;
     }
 
     /**
@@ -60,12 +86,22 @@ class HetznerAPIClient
     }
 
     /**
+     * @return GuzzleClient
+     */
+    public function getHttpClient(): GuzzleClient
+    {
+        return $this->httpClient;
+    }
+
+    /**
      * @param \Psr\Http\Message\ResponseInterface $response
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function throwError(ResponseInterface $response)
     {
-        throw new APIException($response);
+        var_dump(json_decode((string)$response->getBody()));
+        die();
+        // throw new APIException($response, ->error->code);
     }
 
     /**
@@ -75,11 +111,82 @@ class HetznerAPIClient
      */
     public static function hasError(ResponseInterface $response)
     {
-        if (property_exists($response, 'error') || $response->getStatusCode() !== 200) {
+        if ((property_exists($response, 'error')) || ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300)) {
             self::throwError($response);
+
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @return Models\Servers\Servers
+     */
+    public function servers()
+    {
+        return new Models\Servers\Servers($this->httpClient);
+    }
+
+    /**
+     * @return ServerTypes
+     */
+    public function serverTypes(){
+        return new ServerTypes($this->httpClient);
+    }
+    /**
+     * @return Datacenters
+     */
+    public function datacenters()
+    {
+        return new Datacenters($this->httpClient);
+    }
+
+    /**
+     * @return Models\Locations\Locations
+     */
+    public function locations()
+    {
+        return new Models\Locations\Locations($this->httpClient);
+    }
+
+    /**
+     * @return Images
+     */
+    public function images()
+    {
+        return new Images($this->httpClient);
+    }
+
+    /**
+     * @return SSHKeys
+     */
+    public function sshKeys()
+    {
+        return new SSHKeys($this->httpClient);
+    }
+
+    /**
+     * @return Prices
+     */
+    public function prices()
+    {
+        return new Prices($this->httpClient);
+    }
+
+    /**
+     * @return ISOs
+     */
+    public function isos()
+    {
+        return new ISOs($this->httpClient);
+    }
+
+    /**
+     * @return FloatingIps
+     */
+    public function floatingIps()
+    {
+        return new FloatingIps($this->httpClient);
     }
 }

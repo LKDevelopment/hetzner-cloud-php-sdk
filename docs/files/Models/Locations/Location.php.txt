@@ -81,11 +81,14 @@ class Location extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return \LKDev\HetznerCloud\Models\Locations\Location|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
-        return new self($input->id, $input->name, $input->description, $input->city, $input->latitude, $input->longitude);
+        if ($input == null) {
+            return null;
+        }
+        return new self($input->id, $input->name, $input->description, $input->country, $input->city, $input->latitude, $input->longitude);
     }
 }

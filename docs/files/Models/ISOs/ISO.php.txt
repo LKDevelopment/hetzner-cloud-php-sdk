@@ -37,7 +37,7 @@ class ISO extends Model
      * @param string $description
      * @param string $type
      */
-    public function __construct(int $id, string $name, string $description, string $type)
+    public function __construct(int $id, string $name, string $description = null, string $type = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -47,11 +47,15 @@ class ISO extends Model
     }
 
     /**
-     * @param object $input
+     * @param $input
      * @return \LKDev\HetznerCloud\Models\ISOs\ISO|static
      */
-    public static function parse(object $input)
+    public static function parse($input)
     {
-       return new self($input->id,$input->name,$input->description,$input->type);
+        if ($input == null) {
+            return null;
+        }
+
+        return new self($input->id, $input->name, $input->description, $input->type);
     }
 }
