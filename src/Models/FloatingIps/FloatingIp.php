@@ -13,6 +13,7 @@ use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
+use LKDev\HetznerCloud\Models\Servers\Server;
 
 /**
  *
@@ -80,7 +81,8 @@ class FloatingIp extends Model
         Location $homeLocation,
         bool $blocked,
         Protection $protection
-    ) {
+    )
+    {
         $this->id = $id;
         $this->description = $description;
         $this->ip = $ip;
@@ -100,15 +102,16 @@ class FloatingIp extends Model
      * @return static
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeDescription(string $description)
+    public function changeDescription(string $description): FloatingIp
     {
-        $response = $this->httpClient->put('floating_ips/'.$this->id, [
+        $response = $this->httpClient->put('floating_ips/' . $this->id, [
             'json' => [
                 'description' => $description,
             ],
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody())->floating_ip);
+        if (!HetznerAPIClient::hasError($response)) {
+            $this->description = $description;
+            return self::parse(json_decode((string)$response->getBody())->floating_ip);
         }
     }
 
@@ -119,10 +122,10 @@ class FloatingIp extends Model
      * @return bool
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete()
+    public function delete(): bool
     {
-        $response = $this->httpClient->delete('floating_ips/'.$this->id);
-        if (! HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('floating_ips/' . $this->id);
+        if (!HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
@@ -137,13 +140,70 @@ class FloatingIp extends Model
      */
     public function changeProtection(bool $delete = true): Action
     {
-        $response = $this->httpClient->post('floating_ips/'.$this->id.'/change_protection', [
+        $response = $this->httpClient->post('floating_ips/' . $this->id . '/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string) $response->getBody())->action);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
+        }
+    }
+
+    /**
+     * Assigns a Floating IP to a server
+     *
+     * @see https://docs.hetzner.cloud/#floating-ip-actions-assign-a-floating-ip-to-a-server
+     * @param Server $server
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function assignTo(Server $server): Action
+    {
+        $response = $this->httpClient->post('floating_ips/' . $this->id . '/actions/assign', [
+            'json' => [
+                'server' => $server->id,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
+        }
+    }
+
+    /**
+     * Unassigns a Floating IP, resulting in it being unreachable. You may assign it to a server again at a later time.
+     *
+     * @see https://docs.hetzner.cloud/#floating-ip-actions-unassign-a-floating-ip
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function unassign(): Action
+    {
+        $response = $this->httpClient->post('floating_ips/' . $this->id . '/actions/unassign');
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
+        }
+    }
+
+    /**
+     * Changes the hostname that will appear when getting the hostname belonging to this Floating IP.
+     *
+     * @see https://docs.hetzner.cloud/#floating-ip-actions-change-reverse-dns-entry-for-a-floating-ip
+     * @param string $ip
+     * @param string $dnsPtr
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeReverseDNS(string $ip, string $dnsPtr): Action
+    {
+        $response = $this->httpClient->post('floating_ips/' . $this->id . '/actions/change_dns_ptr', [
+            'json' => [
+                'ip' => $ip,
+                'dns_ptr' => $dnsPtr,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
         }
     }
 
@@ -151,7 +211,7 @@ class FloatingIp extends Model
      * @param  $input
      * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|static
      */
-    public static function parse($input)
+    public static function parse($input): FloatingIp
     {
         if ($input == null) {
             return null;

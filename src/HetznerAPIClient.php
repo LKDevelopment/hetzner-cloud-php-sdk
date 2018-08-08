@@ -19,6 +19,10 @@ use Psr\Http\Message\ResponseInterface;
 class HetznerAPIClient
 {
     /**
+     *
+     */
+    const VERSION = "1.0.0";
+    /**
      * @var string
      */
     protected $apiToken;
@@ -27,6 +31,10 @@ class HetznerAPIClient
      * @var string
      */
     protected $baseUrl;
+    /**
+     * @var string
+     */
+    protected $userAgent;
     /**
      * @var HetznerAPIClient
      */
@@ -41,13 +49,23 @@ class HetznerAPIClient
      *
      * @param string $apiToken
      * @param string $baseUrl
+     * @param string $userAgent
      */
-    public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/')
+    public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/', $userAgent = '')
     {
         $this->apiToken = $apiToken;
         $this->baseUrl = $baseUrl;
+        $this->userAgent = $userAgent;
         $this->httpClient = new GuzzleClient($this);
         self::$instance = $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserAgent(): string
+    {
+        return $this->userAgent;
     }
 
     /**

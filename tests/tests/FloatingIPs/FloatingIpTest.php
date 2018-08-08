@@ -1,0 +1,104 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: lkaemmerling
+ * Date: 08.08.18
+ * Time: 07:58
+ */
+
+namespace Tests\tests\FloatingIPs;
+
+use LKDev\HetznerCloud\Models\FloatingIps\FloatingIp;
+use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
+use LKDev\HetznerCloud\Models\Servers\Server;
+use Tests\TestCase;
+
+/**
+ * Class FloatingIpTest
+ * @package Tests\tests\FloatingIPs
+ */
+class FloatingIpTest extends TestCase
+{
+    /**
+     * @var FloatingIp
+     */
+    protected $floatingIp;
+
+    /**
+     *
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $tmp = new FloatingIps($this->hetznerApi->getHttpClient());
+
+        $this->floatingIp = $tmp->get(1337);
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testChangeProtection()
+    {
+        $action = $this->floatingIp->changeProtection();
+        $this->assertEquals('change_protection', $action->command);
+        $this->assertEquals($this->floatingIp->id, $action->resources[0]->id);
+        $this->assertEquals('floating_ip', $action->resources[0]->type);
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testDelete()
+    {
+        $this->assertTrue($this->floatingIp->delete());
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testChangeDescription()
+    {
+        $this->assertEquals($this->floatingIp->id, 4711);
+        $this->assertEquals($this->floatingIp->description, 'Web Frontend');
+        $this->floatingIp->changeDescription('New description');
+        $this->assertEquals($this->floatingIp->description, 'New description');
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testAssign()
+    {
+        $action = $this->floatingIp->assignTo(new Server(42));
+        $this->assertEquals('assign_floating_ip', $action->command);
+        $this->assertEquals(42, $action->resources[0]->id);
+        $this->assertEquals('server', $action->resources[0]->type);
+        $this->assertEquals($this->floatingIp->id, $action->resources[1]->id);
+        $this->assertEquals('floating_ip', $action->resources[1]->type);
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testUnassign()
+    {
+        $action = $this->floatingIp->unassign();
+        $this->assertEquals('unassign_floating_ip', $action->command);
+        $this->assertEquals(42, $action->resources[0]->id);
+        $this->assertEquals('server', $action->resources[0]->type);
+        $this->assertEquals($this->floatingIp->id, $action->resources[1]->id);
+        $this->assertEquals('floating_ip', $action->resources[1]->type);
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testChangeReverseDNS()
+    {
+        $action = $this->floatingIp->changeReverseDNS('1.2.3.4', 'server02.example.com');
+        $this->assertEquals('change_dns_ptr', $action->command);
+        $this->assertEquals($this->floatingIp->id, $action->resources[0]->id);
+        $this->assertEquals('server', $action->resources[0]->type);
+    }
+}
