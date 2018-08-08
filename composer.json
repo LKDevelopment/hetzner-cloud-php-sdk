@@ -4,6 +4,7 @@
   "type": "library",
   "require": {
     "php": ">=7.0.0",
+    "ext-json": "*",
     "guzzlehttp/guzzle": "^6.3",
     "tightenco/collect": "^5.5"
   },

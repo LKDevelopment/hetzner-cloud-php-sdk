@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud\Models\Actions;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
@@ -83,7 +84,8 @@ class Action extends Model
         $error = null,
         string $root_password = null,
         string $wss_url = null
-    ) {
+    )
+    {
         $this->id = $id;
         $this->command = $command;
         $this->progress = $progress;
@@ -92,9 +94,29 @@ class Action extends Model
         $this->finished = $finished;
         $this->resources = $resources;
         $this->error = $error;
-        $this->root_password = $root_password;
-        $this->wss_url = $wss_url;
         parent::__construct();
+    }
+
+    /**
+     * @param $actionId
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getById($actionId): Action
+    {
+        $response = $this->httpClient->get( 'actions/' . $actionId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
+        }
+    }
+
+    /**
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function refresh(): Action
+    {
+        return $this->getById($this->id);
     }
 
     /**

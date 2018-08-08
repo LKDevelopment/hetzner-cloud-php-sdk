@@ -40,10 +40,10 @@ class FloatingIpTest extends TestCase
      */
     public function testChangeProtection()
     {
-        $action = $this->floatingIp->changeProtection();
-        $this->assertEquals('change_protection', $action->command);
-        $this->assertEquals($this->floatingIp->id, $action->resources[0]->id);
-        $this->assertEquals('floating_ip', $action->resources[0]->type);
+        $apiResponse = $this->floatingIp->changeProtection();
+        $this->assertEquals('change_protection', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals($this->floatingIp->id, $apiResponse->getResponsePart('action')->resources[0]->id);
+        $this->assertEquals('floating_ip', $apiResponse->getResponsePart('action')->resources[0]->type);
     }
 
     /**
@@ -70,12 +70,12 @@ class FloatingIpTest extends TestCase
      */
     public function testAssign()
     {
-        $action = $this->floatingIp->assignTo(new Server(42));
-        $this->assertEquals('assign_floating_ip', $action->command);
-        $this->assertEquals(42, $action->resources[0]->id);
-        $this->assertEquals('server', $action->resources[0]->type);
-        $this->assertEquals($this->floatingIp->id, $action->resources[1]->id);
-        $this->assertEquals('floating_ip', $action->resources[1]->type);
+        $apiResponse = $this->floatingIp->assignTo(new Server(42));
+        $this->assertEquals('assign_floating_ip', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals(42, $apiResponse->getResponsePart('action')->resources[0]->id);
+        $this->assertEquals('server', $apiResponse->getResponsePart('action')->resources[0]->type);
+        $this->assertEquals($this->floatingIp->id, $apiResponse->getResponsePart('action')->resources[1]->id);
+        $this->assertEquals('floating_ip', $apiResponse->getResponsePart('action')->resources[1]->type);
     }
 
     /**
@@ -83,12 +83,12 @@ class FloatingIpTest extends TestCase
      */
     public function testUnassign()
     {
-        $action = $this->floatingIp->unassign();
-        $this->assertEquals('unassign_floating_ip', $action->command);
-        $this->assertEquals(42, $action->resources[0]->id);
-        $this->assertEquals('server', $action->resources[0]->type);
-        $this->assertEquals($this->floatingIp->id, $action->resources[1]->id);
-        $this->assertEquals('floating_ip', $action->resources[1]->type);
+        $apiResponse = $this->floatingIp->unassign();
+        $this->assertEquals('unassign_floating_ip', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals(42, $apiResponse->getResponsePart('action')->resources[0]->id);
+        $this->assertEquals('server', $apiResponse->getResponsePart('action')->resources[0]->type);
+        $this->assertEquals($this->floatingIp->id, $apiResponse->getResponsePart('action')->resources[1]->id);
+        $this->assertEquals('floating_ip', $apiResponse->getResponsePart('action')->resources[1]->type);
     }
 
     /**
@@ -96,9 +96,9 @@ class FloatingIpTest extends TestCase
      */
     public function testChangeReverseDNS()
     {
-        $action = $this->floatingIp->changeReverseDNS('1.2.3.4', 'server02.example.com');
-        $this->assertEquals('change_dns_ptr', $action->command);
-        $this->assertEquals($this->floatingIp->id, $action->resources[0]->id);
-        $this->assertEquals('floating_ip', $action->resources[0]->type);
+        $apiResponse = $this->floatingIp->changeReverseDNS('1.2.3.4', 'server02.example.com');
+        $this->assertEquals('change_dns_ptr', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals($this->floatingIp->id, $apiResponse->getResponsePart('action')->resources[0]->id);
+        $this->assertEquals('floating_ip', $apiResponse->getResponsePart('action')->resources[0]->type);
     }
 }

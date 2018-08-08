@@ -52,4 +52,5 @@ class ServersTest extends TestCase
         $this->assertEquals($servers[0]->id, 42);
         $this->assertEquals($servers[0]->name, 'my-server');
     }
+
 }

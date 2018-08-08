@@ -71,9 +71,9 @@ class ImagesTest extends TestCase
     public function testChangeProtection()
     {
         $image = $this->images->get(4711);
-        $action = $image->changeProtection();
-        $this->assertEquals('change_protection', $action->command);
-        $this->assertEquals($image->id, $action->resources[0]->id);
-        $this->assertEquals('image', $action->resources[0]->type);
+        $apiResponse = $image->changeProtection();
+        $this->assertEquals('change_protection', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals($image->id, $apiResponse->getResponsePart('action')->resources[0]->id);
+        $this->assertEquals('image', $apiResponse->getResponsePart('action')->resources[0]->type);
     }
 }

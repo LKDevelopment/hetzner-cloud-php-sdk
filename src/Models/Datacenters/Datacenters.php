@@ -22,14 +22,15 @@ class Datacenters extends Model
      * Returns all datacenter objects.
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get
+     * @param string $name
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(string $name = null): array
     {
-        $response = $this->httpClient->get('datacenters');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->datacenters;
+        $response = $this->httpClient->get('datacenters' . (($name != null) ? '?name=' . $name : ''));
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->datacenters;
         }
     }
 
@@ -43,9 +44,9 @@ class Datacenters extends Model
      */
     public function get(int $datacenterId): Datacenter
     {
-        $response = $this->httpClient->get('datacenters/'.$datacenterId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Datacenter::parse(json_decode((string) $response->getBody())->datacenter);
+        $response = $this->httpClient->get('datacenters/' . $datacenterId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Datacenter::parse(json_decode((string)$response->getBody())->datacenter);
         }
     }
 
@@ -53,7 +54,7 @@ class Datacenters extends Model
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->datacenters = collect($input->datacenters)->map(function ($datacenter, $key) {
             return Datacenter::parse($datacenter);

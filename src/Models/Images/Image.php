@@ -8,6 +8,7 @@
 
 namespace LKDev\HetznerCloud\Models\Images;
 
+use LKDev\HetznerCloud\ApiResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
@@ -168,10 +169,10 @@ class Image extends Model
      *
      * @see https://docs.hetzner.cloud/#resources-image-actions-post
      * @param bool $delete
-     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @return ApiResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeProtection(bool $delete = true): Action
+    public function changeProtection(bool $delete = true): ApiResponse
     {
         $response = $this->httpClient->post('images/' . $this->id . '/actions/change_protection', [
             'json' => [
@@ -179,7 +180,9 @@ class Image extends Model
             ],
         ]);
         if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+            return ApiResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+            ]);
         }
     }
 

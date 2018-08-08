@@ -9,7 +9,7 @@ echo "Perform Shutdown now:" . PHP_EOL;
 /**
  * @var \LKDev\HetznerCloud\Models\Servers\Server $server
  */
-$action = $server->shutdown();
+$action = $server->shutdown()->getResponsePart('action');
 
 echo "Reply from API: Action ID: " . $action->id . ' ' . $action->command . ' ' . $action->started . PHP_EOL;
 

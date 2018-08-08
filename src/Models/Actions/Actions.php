@@ -38,7 +38,7 @@ class Actions extends Model
      */
     public function all(): array
     {
-        $response = $this->httpClient->get('servers/' . $this->server->id . '/actions');
+        $response = $this->httpClient->get('actions');
         if (!HetznerAPIClient::hasError($response)) {
             $resp = json_decode((string)$response->getBody(), false);
             $resp->server = $this->server;
@@ -53,10 +53,7 @@ class Actions extends Model
      */
     public function get($actionId): Action
     {
-        $response = $this->httpClient->get('servers/' . $this->server->id . '/actions/' . $actionId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
-        }
+        return (new Action($this->httpClient))->getById($actionId);
     }
 
     /**
@@ -80,5 +77,22 @@ class Actions extends Model
     public static function parse($input)
     {
         return (new self($input->server))->setAdditionalData($input);
+    }
+
+    /**
+     * Wait for an action to complete.
+     *
+     * @param Action $action
+     * @param float $pollingInterval in seconds
+     * @return bool
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public static function waitActionCompleted(Action $action, $pollingInterval = 0.5)
+    {
+        while ($action->status == 'running') {
+            usleep($pollingInterval * 1000000);
+            $action = $action->refresh();
+        }
+        return $action->status == 'success';
     }
 }
