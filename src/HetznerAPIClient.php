@@ -10,6 +10,7 @@ use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use Psr\Http\Message\ResponseInterface;
@@ -119,13 +120,19 @@ class HetznerAPIClient
 
         return false;
     }
-
     /**
-     * @return Models\Servers\Servers
+     * @return Actions
+     */
+    public function actions()
+    {
+        return new Actions($this->httpClient);
+    }
+    /**
+     * @return Servers
      */
     public function servers()
     {
-        return new Models\Servers\Servers($this->httpClient);
+        return new Servers($this->httpClient);
     }
 
     /**

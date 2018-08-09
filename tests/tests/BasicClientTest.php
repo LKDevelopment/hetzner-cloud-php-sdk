@@ -9,6 +9,7 @@
 namespace Tests;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
@@ -17,8 +18,6 @@ use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
-use PHPUnit\Framework\TestCase;
-
 /**
  * Class BasicClientTest
  * @package Tests
@@ -40,6 +39,7 @@ class BasicClientTest extends \Tests\TestCase
      */
     public function testMethodsReturnCorrectInstance()
     {
+        $this->assertInstanceOf(Actions::class, $this->hetznerApi->actions());
         $this->assertInstanceOf(Servers::class, $this->hetznerApi->servers());
         $this->assertInstanceOf(ServerTypes::class, $this->hetznerApi->serverTypes());
         $this->assertInstanceOf(Images::class, $this->hetznerApi->images());

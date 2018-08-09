@@ -50,16 +50,6 @@ class Action extends Model
     public $error;
 
     /**
-     * @var null|string
-     */
-    public $root_password = null;
-
-    /**
-     * @var null|string
-     */
-    public $wss_url = null;
-
-    /**
      * Action constructor.
      *
      * @param int $id
@@ -81,9 +71,7 @@ class Action extends Model
         string $started,
         string $finished = null,
         $resources = null,
-        $error = null,
-        string $root_password = null,
-        string $wss_url = null
+        $error = null
     )
     {
         $this->id = $id;
@@ -129,6 +117,6 @@ class Action extends Model
             return null;
         }
 
-        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error, (property_exists($input, 'root_password') ? $input->root_password : null), (property_exists($input, 'wss_url') ? $input->wss_url : null));
+        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error);
     }
 }

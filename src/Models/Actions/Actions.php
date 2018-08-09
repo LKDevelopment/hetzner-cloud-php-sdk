@@ -16,21 +16,6 @@ class Actions extends Model
      */
     public $actions;
 
-    /**
-     * @var \LKDev\HetznerCloud\Models\Servers\Server
-     */
-    public $server;
-
-    /**
-     * Actions constructor.
-     *
-     * @param \LKDev\HetznerCloud\Models\Servers\Server $server
-     */
-    public function __construct(Server $server)
-    {
-        $this->server = $server;
-        parent::__construct();
-    }
 
     /**
      * @return \LKDev\HetznerCloud\Models\Actions\Actions
@@ -41,7 +26,6 @@ class Actions extends Model
         $response = $this->httpClient->get('actions');
         if (!HetznerAPIClient::hasError($response)) {
             $resp = json_decode((string)$response->getBody(), false);
-            $resp->server = $this->server;
             return self::parse($resp)->actions;
         }
     }
