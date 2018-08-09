@@ -12,7 +12,7 @@ use Throwable;
 class APIException extends \Exception
 {
     /**
-     * @var \Psr\Http\Message\ResponseInterface
+     * @var ApiResponse
      */
     public $response;
 
@@ -24,7 +24,7 @@ class APIException extends \Exception
      * @param int $code
      * @param \Throwable|null $previous
      */
-    public function __construct(ResponseInterface $response, string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(ApiResponse $response, string $message = "", int $code = 0, \Throwable $previous = null)
     {
         $this->response = $response;
         parent::__construct($message, $code, $previous);

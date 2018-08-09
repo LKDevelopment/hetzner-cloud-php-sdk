@@ -100,9 +100,16 @@ class HetznerAPIClient
      */
     public static function throwError(ResponseInterface $response)
     {
-        var_dump(json_decode((string)$response->getBody()));
-        die();
-        // throw new APIException($response, ->error->code);
+        $body = (string)$response->getBody();
+        if (strlen($body) > 0) {
+            $error = \GuzzleHttp\json_decode($body);
+            throw new APIException(ApiResponse::create([
+                'error' => $error->error
+            ]), $error->error->message);
+        }
+        throw new APIException(ApiResponse::create([
+            'response' => $response
+        ]), 'The response is not parseable');
     }
 
     /**
@@ -120,6 +127,7 @@ class HetznerAPIClient
 
         return false;
     }
+
     /**
      * @return Actions
      */
@@ -127,6 +135,7 @@ class HetznerAPIClient
     {
         return new Actions($this->httpClient);
     }
+
     /**
      * @return Servers
      */
@@ -138,9 +147,11 @@ class HetznerAPIClient
     /**
      * @return ServerTypes
      */
-    public function serverTypes(){
+    public function serverTypes()
+    {
         return new ServerTypes($this->httpClient);
     }
+
     /**
      * @return Datacenters
      */
