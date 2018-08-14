@@ -6,7 +6,7 @@
  * Time: 19:51
  */
 
-namespace Tests\tests\Servers;
+namespace Tests\Unit\Servers;
 
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;

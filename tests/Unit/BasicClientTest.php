@@ -22,7 +22,7 @@ use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
  * Class BasicClientTest
  * @package Tests
  */
-class BasicClientTest extends \Tests\TestCase
+class BasicClientTest extends TestCase
 {
     /**
      *

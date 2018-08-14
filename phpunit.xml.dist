@@ -12,7 +12,6 @@
     <testsuites>
         <testsuite name="LKDevelopment Test Suite">
             <directory>tests</directory>
-            <exclude>./tests/server</exclude>
         </testsuite>
     </testsuites>
     <filter>
@@ -20,9 +19,6 @@
             <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
-    <php>
-        <env name="TEST_SERVER_PORT" value="8000"/>
-    </php>
     <logging>
         <log type="tap" target="build/report.tap"/>
         <log type="junit" target="build/report.junit.xml"/>

@@ -6,7 +6,7 @@
  * Time: 18:31
  */
 
-namespace Tests\tests;
+namespace Tests\Unit;
 
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\Images\Images;

@@ -6,7 +6,7 @@
  * Time: 07:58
  */
 
-namespace Tests\tests\FloatingIPs;
+namespace Tests\Unit\FloatingIPs;
 
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIp;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
