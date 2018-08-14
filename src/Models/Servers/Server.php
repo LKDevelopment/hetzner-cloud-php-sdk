@@ -505,6 +505,28 @@ class Server extends Model
     }
 
     /**
+     * Update a server with new meta data.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-put
+     * @param array $data
+     * @return ApiResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function update(array $data)
+    {
+        $response = $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
+            'json' => [
+                $data
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return ApiResponse::create([
+                'server' => Server::parse(json_decode((string)$response->getBody())->server)
+            ]);
+        }
+    }
+
+    /**
      * Changes the name of a server.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-put
@@ -514,16 +536,7 @@ class Server extends Model
      */
     public function changeName(string $name): ApiResponse
     {
-        $response = $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
-            'json' => [
-                'name' => $name,
-            ],
-        ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return ApiResponse::create([
-                'server' => Server::parse(json_decode((string)$response->getBody())->server)
-            ]);
-        }
+        return $this->update(['name' => $name]);
     }
 
     /**
