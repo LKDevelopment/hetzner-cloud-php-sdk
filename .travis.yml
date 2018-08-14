@@ -1,6 +1,7 @@
 language: php
 
 before_script:
+  - composer global require hirak/prestissimo
   - composer install
   - docker pull lkdevelopment/hetzner-cloud-api-mock
   - docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
