@@ -533,6 +533,7 @@ class Server extends Model
      * @param string $name
      * @return ApiResponse
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated 1.1.0
      */
     public function changeName(string $name): ApiResponse
     {

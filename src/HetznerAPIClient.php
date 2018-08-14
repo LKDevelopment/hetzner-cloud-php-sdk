@@ -2,7 +2,6 @@
 
 namespace LKDev\HetznerCloud;
 
-use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
@@ -21,9 +20,10 @@ use Psr\Http\Message\ResponseInterface;
 class HetznerAPIClient
 {
     /**
-     *
+     * Version of the API Client
      */
-    const VERSION = "1.0.0";
+    const VERSION = "1.1.0";
+
     /**
      * @var string
      */
@@ -33,19 +33,22 @@ class HetznerAPIClient
      * @var string
      */
     protected $baseUrl;
+
     /**
      * @var string
      */
     protected $userAgent;
+
     /**
+     * The default instance of the HTTP client, for easily getting it in the child models.
      * @var HetznerAPIClient
      */
     public static $instance;
+
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
     protected $httpClient;
-
 
     /**
      *
