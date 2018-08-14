@@ -8,7 +8,7 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
-use LKDev\HetznerCloud\ApiResponse;
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
@@ -70,7 +70,7 @@ class Servers extends Model
      * @param array $ssh_keys
      * @param bool $startAfterCreate
      * @param string $user_data
-     * @return ApiResponse
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createInDatacenter(
@@ -81,7 +81,7 @@ class Servers extends Model
         $ssh_keys = [],
         $startAfterCreate = true,
         $user_data = ''
-    ): ApiResponse
+    ): APIResponse
     {
         $response = $this->httpClient->post('servers', [
             'json' => [
@@ -96,7 +96,7 @@ class Servers extends Model
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             $payload = json_decode((string)$response->getBody());
-            return ApiResponse::create(array_merge([
+            return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
@@ -116,7 +116,7 @@ class Servers extends Model
      * @param array $ssh_keys
      * @param bool $startAfterCreate
      * @param string $user_data
-     * @return ApiResponse
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createInLocation(string $name,
@@ -125,7 +125,7 @@ class Servers extends Model
                                      Location $location = null,
                                      $ssh_keys = [],
                                      $startAfterCreate = true,
-                                     $user_data = ''): ApiResponse
+                                     $user_data = ''): APIResponse
     {
         $response = $this->httpClient->post('servers', [
             'json' => [
@@ -140,7 +140,7 @@ class Servers extends Model
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             $payload = json_decode((string)$response->getBody());
-            return ApiResponse::create(array_merge([
+            return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []

@@ -15,7 +15,7 @@ use LKDev\HetznerCloud\Models\Model;
  * Class ApiResponse
  * @package LKDev\HetznerCloud
  */
-class ApiResponse
+class APIResponse
 {
     /**
      * @var array
@@ -49,11 +49,11 @@ class ApiResponse
 
     /**
      * @param array $response
-     * @return ApiResponse
+     * @return APIResponse
      */
     public static function create(array $response)
     {
-        $apiResponse = new ApiResponse();
+        $apiResponse = new APIResponse();
         $apiResponse->setResponse($response);
         return $apiResponse;
     }

@@ -1,12 +1,13 @@
 # Changelog
 
 
-## unreleased
+## 1.1.0 (14.08.2018)
  + Add `update`-Method to `\LKDev\HetznerCloud\Models\Servers\Server`-Model for easily updateing the server meta data
    ```php
    $server->update(['name' => 'my-updated-server-name']);
    ````
  + Soft Deprecating the `changeName`-Method on `\LKDev\HetznerCloud\Models\Servers\Server`-Model, please use the `update`-Method now. As of Version 1.5.0 this method will trigger a `Deprecated`
+ + Rename `ApiResponse` to `APIResponse 
 ---
 ## 1.0.0 (09.08.2018)
 ##### Breaking Changes

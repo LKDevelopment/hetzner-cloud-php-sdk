@@ -106,11 +106,11 @@ class HetznerAPIClient
         $body = (string)$response->getBody();
         if (strlen($body) > 0) {
             $error = \GuzzleHttp\json_decode($body);
-            throw new APIException(ApiResponse::create([
+            throw new APIException(APIResponse::create([
                 'error' => $error->error
             ]), $error->error->message);
         }
-        throw new APIException(ApiResponse::create([
+        throw new APIException(APIResponse::create([
             'response' => $response
         ]), 'The response is not parseable');
     }
