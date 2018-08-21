@@ -1,5 +1,6 @@
 # Changelog
-
+## master
+ + Add `httpClient`-Method to `LKDev\HetznerCloud\HetznerAPIClient`
 
 ## 1.1.0 (14.08.2018)
  + Add `update`-Method to `\LKDev\HetznerCloud\Models\Servers\Server`-Model for easily updateing the server meta data

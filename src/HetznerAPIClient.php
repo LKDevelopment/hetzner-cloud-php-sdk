@@ -210,4 +210,12 @@ class HetznerAPIClient
     {
         return new FloatingIps($this->httpClient);
     }
+
+    /**
+     * @return GuzzleClient
+     */
+    public function httpClient()
+    {
+        return $this->httpClient;
+    }
 }
