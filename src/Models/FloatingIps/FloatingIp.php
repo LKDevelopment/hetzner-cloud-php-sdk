@@ -82,7 +82,7 @@ class FloatingIp extends Model
         string $description,
         string $ip,
         string $type,
-        int $server,
+        $server,
         array $dnsPtr,
         Location $homeLocation,
         bool $blocked,
