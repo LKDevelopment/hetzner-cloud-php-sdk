@@ -158,7 +158,7 @@ class ServerTest extends TestCase
 
     public function testEnableBackups()
     {
-        $apiResponse = $this->server->enableBackups('22-02');
+        $apiResponse = $this->server->enableBackups();
         $this->assertEquals('enable_backup', $apiResponse->getResponsePart('action')->command);
         $this->assertEquals($this->server->id, $apiResponse->getResponsePart('action')->resources[0]->id);
         $this->assertEquals('server', $apiResponse->getResponsePart('action')->resources[0]->type);
