@@ -15,7 +15,9 @@
    $floatingIP->update(['name' => 'my-updated-sshkey-name','labels' => ['Key' => 'value]);
    ```   
  + You can now use the `labels`-Key on every `update`-Method, for easily updating the Labels
-
+ + Add `LKDev\HetznerCloud\RequestOpts` - Class for easily customize the request opts. Could be used for filtering with the label selector.
+ + Add the parameter `$requestOpts` to all `all`-Methods
+ 
 ## 1.1.0 (14.08.2018)
  + Add `update`-Method to `\LKDev\HetznerCloud\Models\Servers\Server`-Model for easily updateing the server meta data
    ```php

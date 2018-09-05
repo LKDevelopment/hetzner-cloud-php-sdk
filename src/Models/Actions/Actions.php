@@ -5,6 +5,7 @@ namespace LKDev\HetznerCloud\Models\Actions;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
+use LKDev\HetznerCloud\RequestOpts;
 
 /**
  *
@@ -18,12 +19,16 @@ class Actions extends Model
 
 
     /**
-     * @return \LKDev\HetznerCloud\Models\Actions\Actions
+     * @param RequestOpts $requestOpts
+     * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(RequestOpts $requestOpts): array
     {
-        $response = $this->httpClient->get('actions');
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('actions' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
             $resp = json_decode((string)$response->getBody(), false);
             return self::parse($resp)->actions;

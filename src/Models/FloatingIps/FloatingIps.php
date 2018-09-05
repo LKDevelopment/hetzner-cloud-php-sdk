@@ -12,6 +12,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
+use LKDev\HetznerCloud\RequestOpts;
 
 class FloatingIps extends Model
 {
@@ -24,17 +25,21 @@ class FloatingIps extends Model
      * Returns all floating ip objects.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-get
+     * @param RequestOpts|null $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('floating_ips');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->floatingIps;
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('floating_ips' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->floatingIps;
         }
     }
-    
+
     /**
      * Returns a specific floating ip object.
      *
@@ -45,9 +50,9 @@ class FloatingIps extends Model
      */
     public function get(int $floatingIpId): FloatingIp
     {
-        $response = $this->httpClient->get('floating_ips/'.$floatingIpId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
+        $response = $this->httpClient->get('floating_ips/' . $floatingIpId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return FloatingIp::parse(json_decode((string)$response->getBody())->floating_ip);
         }
     }
 
@@ -67,15 +72,16 @@ class FloatingIps extends Model
         string $description = null,
         Location $location = null,
         Server $server = null
-    ): FloatingIp {
+    ): FloatingIp
+    {
         $response = $this->httpClient->post('floating_ips', [
             'type' => $type,
             'description' => $description,
             'server' => $server ?: $server->id,
             'home_location' => $location ?: $location->name,
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
+        if (!HetznerAPIClient::hasError($response)) {
+            return FloatingIp::parse(json_decode((string)$response->getBody())->floating_ip);
         }
     }
 

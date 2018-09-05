@@ -10,6 +10,7 @@ namespace LKDev\HetznerCloud\Models\ISOs;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
 
 class ISOs extends Model
 {
@@ -22,14 +23,18 @@ class ISOs extends Model
      * Returns all iso objects.
      *
      * @see https://docs.hetzner.cloud/#resources-isos-get
+     * @param RequestOpts $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(RequestOpts $requestOpts): array
     {
-        $response = $this->httpClient->get('isos');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->isos;
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('isos' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->isos;
         }
     }
 
@@ -43,9 +48,9 @@ class ISOs extends Model
      */
     public function get(int $isoId): ISO
     {
-        $response = $this->httpClient->get('isos/'.$isoId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return ISO::parse(json_decode((string) $response->getBody())->iso);
+        $response = $this->httpClient->get('isos/' . $isoId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return ISO::parse(json_decode((string)$response->getBody())->iso);
         }
     }
 
@@ -53,7 +58,7 @@ class ISOs extends Model
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->isos = collect($input->isos)->map(function ($iso, $key) {
             return ISO::parse($iso);

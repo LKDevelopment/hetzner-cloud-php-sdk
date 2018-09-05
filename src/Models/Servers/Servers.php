@@ -16,6 +16,7 @@ use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
+use LKDev\HetznerCloud\RequestOpts;
 
 /**
  *
@@ -31,12 +32,16 @@ class Servers extends Model
      * Returns all existing server objects.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
+     * @param RequestOpts|null $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('servers');
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody()))->servers;
         }
