@@ -37,6 +37,11 @@ class SSHKey extends Model
     public $publicKey;
 
     /**
+     * @var array
+     */
+    public $labels;
+
+    /**
      * SSHKey constructor.
      *
      * @param int $id
@@ -44,13 +49,34 @@ class SSHKey extends Model
      * @param string $fingerprint
      * @param string $publicKey
      */
-    public function __construct(int $id, string $name, string $fingerprint, string $publicKey)
+    public function __construct(int $id, string $name, string $fingerprint, string $publicKey, array $labels = [])
     {
         $this->id = $id;
         $this->name = $name;
         $this->fingerprint = $fingerprint;
         $this->publicKey = $publicKey;
+        $this->labels = $labels;
         parent::__construct();
+    }
+
+    /**
+     * Update a ssh key.
+     *
+     * @see https://docs.hetzner.cloud/#resources-ssh-keys-put
+     * @param array $data
+     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function update(array $data): SSHKey
+    {
+        $response = $this->httpClient->put('ssh_keys/' . $this->id, [
+            'json' => [
+                $data
+            ]
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody())->ssh_key);
+        }
     }
 
     /**
@@ -60,17 +86,13 @@ class SSHKey extends Model
      * @param string $newName
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated 1.2.0
      */
-    public function changeName(string $newName): SSHKey{
-        $response = $this->httpClient->put('ssh_keys/'.$this->id,[
-            'json' => [
-                'name' => $newName
-            ]
-        ]);
-        if(!HetznerAPIClient::hasError($response)){
-            return self::parse(json_decode((string) $response->getBody())->ssh_key);
-        }
+    public function changeName(string $newName): SSHKey
+    {
+        return $this->update(['name' => $newName]);
     }
+
     /**
      * Deletes a SSH key. It cannot be used anymore.
      *
@@ -78,10 +100,10 @@ class SSHKey extends Model
      * @return bool
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete():bool
+    public function delete(): bool
     {
-        $response = $this->httpClient->delete('ssh_keys/'.$this->id);
-        if(!HetznerAPIClient::hasError($response)){
+        $response = $this->httpClient->delete('ssh_keys/' . $this->id);
+        if (!HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
@@ -90,7 +112,7 @@ class SSHKey extends Model
      * @param  $input
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey|static
      */
-    public static function parse( $input)
+    public static function parse($input)
     {
         return new self($input->id, $input->name, $input->fingerprint, $input->public_key);
     }

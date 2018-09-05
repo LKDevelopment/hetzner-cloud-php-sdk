@@ -2,6 +2,19 @@
 ## master
  + Add `httpClient`-Method to `LKDev\HetznerCloud\HetznerAPIClient`
  + Remove the `backup_window`-Property from the  `enableBackups`-Method in the Class `LKDev\HetznerCloud\Models\Servers`
+ + Add `labels`-Property to `LKDev\HetznerCloud\Models\FloatingIp\FloatingIP`
+ + Add `labels`-Property to `LKDev\HetznerCloud\Models\Server\Server`
+ + Add `labels`-Property to `LKDev\HetznerCloud\Models\Image\Image`
+ + Add `labels`-Property to `LKDev\HetznerCloud\Models\SSHKey\SSHKey`
+ + Add `update`-Method to `\LKDev\HetznerCloud\Models\FloatingIp\FloatingIp`-Model for easily updateing the server meta data
+   ```php
+   $floatingIP->update(['description' => 'my-updated-floating-description','labels' => ['Key' => 'value]);
+   ```
+ + Add `update`-Method to `\LKDev\HetznerCloud\Models\SSHKey\SSHKey`-Model for easily updateing the server meta data
+   ```php
+   $floatingIP->update(['name' => 'my-updated-sshkey-name','labels' => ['Key' => 'value]);
+   ```   
+ + You can now use the `labels`-Key on every `update`-Method, for easily updating the Labels
 
 ## 1.1.0 (14.08.2018)
  + Add `update`-Method to `\LKDev\HetznerCloud\Models\Servers\Server`-Model for easily updateing the server meta data

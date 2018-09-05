@@ -34,7 +34,7 @@ class FloatingIps extends Model
             return self::parse(json_decode((string) $response->getBody()))->floatingIps;
         }
     }
-
+    
     /**
      * Returns a specific floating ip object.
      *

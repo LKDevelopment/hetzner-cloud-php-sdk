@@ -13,7 +13,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
-use LKDev\HetznerCloud\Models\Servers\Server;
 
 /**
  *
@@ -91,6 +90,11 @@ class Image extends Model
     public $protection;
 
     /**
+     * @var array
+     */
+    public $labels;
+
+    /**
      * Image constructor.
      *
      * @param int $id
@@ -107,6 +111,7 @@ class Image extends Model
      * @param string $osVersion
      * @param bool $rapidDeploy
      * @param Protection $protection
+     * @param array $labels
      */
     public function __construct(
         int $id,
@@ -122,7 +127,8 @@ class Image extends Model
         string $osFlavor = null,
         string $osVersion = null,
         bool $rapidDeploy = null,
-        Protection $protection = null
+        Protection $protection = null,
+        array $labels = []
     )
     {
         $this->id = $id;
@@ -139,6 +145,7 @@ class Image extends Model
         $this->osVersion = $osVersion;
         $this->rapidDeploy = $rapidDeploy;
         $this->protection = $protection;
+        $this->labels = $labels;
         parent::__construct();
     }
 
@@ -148,15 +155,17 @@ class Image extends Model
      * @see https://docs.hetzner.cloud/#resources-images-put
      * @param string $description
      * @param string $type
+     * @param array|null $labels
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(string $description = null, string $type = null): Image
+    public function update(string $description = null, string $type = null, array $labels = null): Image
     {
         $response = $this->httpClient->put('images/' . $this->id, [
             'json' => [
                 'description' => $description == null ? $this->description : $type,
                 'type' => $type == null ? $this->type : $type,
+                'labels' => $labels == null ? $this->labels : $labels,
             ],
         ]);
         if (!HetznerAPIClient::hasError($response)) {

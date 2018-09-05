@@ -104,6 +104,11 @@ class Server extends Model
     public $protection;
 
     /**
+     * @var array
+     */
+    public $labels;
+
+    /**
      *
      *
      * @param int $serverId
@@ -134,7 +139,7 @@ class Server extends Model
         $this->ingoingTraffic = $data->ingoing_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
         $this->protection = $data->protection ?: Protection::parse($data->protection);
-
+        $this->labels = $data->labels;
         return $this;
     }
 

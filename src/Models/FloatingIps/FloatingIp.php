@@ -64,6 +64,12 @@ class FloatingIp extends Model
      */
     public $protection;
 
+
+    /**
+     * @var array
+     */
+    public $labels;
+
     /**
      * FloatingIp constructor.
      *
@@ -76,6 +82,7 @@ class FloatingIp extends Model
      * @param \LKDev\HetznerCloud\Models\Locations\Location $homeLocation
      * @param bool $blocked
      * @param Protection $protection
+     * @param array $labels
      */
     public function __construct(
         int $id,
@@ -86,7 +93,8 @@ class FloatingIp extends Model
         array $dnsPtr,
         Location $homeLocation,
         bool $blocked,
-        Protection $protection
+        Protection $protection,
+        array $labels = []
     )
     {
         $this->id = $id;
@@ -98,7 +106,28 @@ class FloatingIp extends Model
         $this->homeLocation = $homeLocation;
         $this->blocked = $blocked;
         $this->protection = $protection;
+        $this->labels = $labels;
         parent::__construct();
+    }
+
+    /**
+     * Update a Floating IP.
+     *
+     * @see https://docs.hetzner.cloud/#resources-floating-ips-put
+     * @param string $description
+     * @return static
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function update(array $data): FloatingIp
+    {
+        $response = $this->httpClient->put('floating_ips/' . $this->id, [
+            'json' => [
+                $data
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody())->floating_ip);
+        }
     }
 
     /**
@@ -108,18 +137,11 @@ class FloatingIp extends Model
      * @param string $description
      * @return static
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated 1.2.0
      */
     public function changeDescription(string $description): FloatingIp
     {
-        $response = $this->httpClient->put('floating_ips/' . $this->id, [
-            'json' => [
-                'description' => $description,
-            ],
-        ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $this->description = $description;
-            return self::parse(json_decode((string)$response->getBody())->floating_ip);
-        }
+        return $this->update(['description' => $description]);
     }
 
     /**
