@@ -31,7 +31,7 @@ class Prices extends Model
      * @return \stdClass
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts): \stdClass
+    public function all(RequestOpts $requestOpts = null): \stdClass
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();

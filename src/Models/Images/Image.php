@@ -161,12 +161,20 @@ class Image extends Model
      */
     public function update(string $description = null, string $type = null, array $labels = null): Image
     {
+        $params = [];
+        if ($description != null) {
+            $params['description'] = $description;
+        }
+
+        if ($type != null) {
+            $params['type'] = $type;
+        }
+
+        if ($labels != null) {
+            $params['labels'] = $labels;
+        }
         $response = $this->httpClient->put('images/' . $this->id, [
-            'json' => [
-                'description' => $description == null ? $this->description : $type,
-                'type' => $type == null ? $this->type : $type,
-                'labels' => $labels == null ? $this->labels : $labels,
-            ],
+            'json' => $params,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody())->image);

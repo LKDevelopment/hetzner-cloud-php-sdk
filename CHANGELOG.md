@@ -1,7 +1,6 @@
 # Changelog
 ## master
  + Add `httpClient`-Method to `LKDev\HetznerCloud\HetznerAPIClient`
- + Remove the `backup_window`-Property from the  `enableBackups`-Method in the Class `LKDev\HetznerCloud\Models\Servers`
  + Add `labels`-Property to `LKDev\HetznerCloud\Models\FloatingIp\FloatingIP`
  + Add `labels`-Property to `LKDev\HetznerCloud\Models\Server\Server`
  + Add `labels`-Property to `LKDev\HetznerCloud\Models\Image\Image`

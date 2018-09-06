@@ -27,7 +27,7 @@ class ISOs extends Model
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts): array
+    public function all(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();

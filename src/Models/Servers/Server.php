@@ -379,12 +379,17 @@ class Server extends Model
      * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
+     * @param string|null $backupWindow
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableBackups(): APIResponse
+    public function enableBackups(string $backupWindow = null): APIResponse
     {
-        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'));
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'), [
+            'json' => [
+                'backup_window' => $backupWindow,
+            ],
+        ]);
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
