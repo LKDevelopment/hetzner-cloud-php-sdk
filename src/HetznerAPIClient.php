@@ -12,6 +12,7 @@ use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
+use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -145,6 +146,14 @@ class HetznerAPIClient
     public function servers()
     {
         return new Servers($this->httpClient);
+    }
+
+    /**
+     * @return Volumes
+     */
+    public function volumes()
+    {
+        return new Volumes($this->httpClient);
     }
 
     /**
