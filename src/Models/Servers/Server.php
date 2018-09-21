@@ -143,7 +143,7 @@ class Server extends Model
         $this->outgoingTraffic = $data->outgoing_traffic ?: null;
         $this->ingoingTraffic = $data->ingoing_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
-        $this->volumes = $data->volumes;
+        $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
         return $this;
