@@ -21,10 +21,18 @@ class ApiResponseTest extends TestCase
         $this->assertCount(3, $apiResponse->getResponse());
     }
 
+    public function testSetHeader()
+    {
+        $apiResponse = new APIResponse();
+        $apiResponse->setHeader(['header-1' => '12345', 'header-2' => 1234]);
+        $this->assertCount(2, $apiResponse->getHeader());
+    }
+
     public function testCreate()
     {
-        $apiResponse = APIResponse::create(['response1' => '12345', 'response2' => 1234, 'response3' => ['abc', 123, [456, 'efg']]]);
+        $apiResponse = APIResponse::create(['response1' => '12345', 'response2' => 1234, 'response3' => ['abc', 123, [456, 'efg']]], ['header-1' => 123, 'header-2' => 123]);
         $this->assertCount(3, $apiResponse->getResponse());
+        $this->assertCount(2, $apiResponse->getHeader());
     }
 
     public function testGetResponsePart()

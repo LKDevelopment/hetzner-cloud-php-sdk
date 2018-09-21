@@ -105,7 +105,7 @@ class Servers extends Model
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
-            ));
+            ), $response->getHeaders());
 
         }
     }
@@ -149,7 +149,7 @@ class Servers extends Model
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
-            ));
+            ), $response->getHeaders());
 
         }
     }

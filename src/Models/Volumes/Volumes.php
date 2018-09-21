@@ -86,7 +86,7 @@ class Volumes extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'volume' => Volume::parse($payload->volume),
-            ]);
+            ], $response->getHeaders());
         }
     }
 }
