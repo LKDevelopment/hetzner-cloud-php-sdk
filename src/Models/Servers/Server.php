@@ -174,7 +174,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -191,7 +191,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -208,7 +208,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -225,7 +225,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -242,7 +242,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -261,7 +261,7 @@ class Server extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'root_password' => $payload->root_password
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -287,7 +287,7 @@ class Server extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'root_password' => $payload->root_password
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -304,7 +304,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -331,7 +331,7 @@ class Server extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'image' => Image::parse($payload->image)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -353,7 +353,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -377,7 +377,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -399,7 +399,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -416,7 +416,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -438,7 +438,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -455,7 +455,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -479,7 +479,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -511,7 +511,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -533,7 +533,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'server' => Server::parse(json_decode((string)$response->getBody())->server)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -567,7 +567,7 @@ class Server extends Model
                 'action' => Action::parse($payload->action),
                 'wss_url' => $payload->wss_url,
                 'password' => $payload->password
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -591,7 +591,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
