@@ -63,6 +63,7 @@ class Volume extends Model
      */
     public function setAdditionalData($data)
     {
+        $this->id = $data->id;
         $this->name = $data->name;
         $this->size = $data->size;
         $this->server = $data->server ?: HetznerAPIClient::$instance->servers()->get($data->server);
@@ -195,7 +196,7 @@ class Volume extends Model
             return null;
         }
 
-        return (new self($input->id))->setAdditionalData($input);
+        return (new self())->setAdditionalData($input);
     }
 
 }
