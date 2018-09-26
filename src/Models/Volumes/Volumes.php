@@ -73,13 +73,19 @@ class Volumes extends Model
      */
     public function create(string $name, int $size, Server $server = null, Location $location = null): APIResponse
     {
+        $payload = [
+            'name' => $name,
+            'size' => $size,
+        ];
+        if ($location == null && $server != null) {
+            $payload['server'] = $server->id;
+        } else if ($location != null && $server == null) {
+            $payload['location'] = $location->id;
+        } else {
+            throw new \InvalidArgumentException("Please specify only a server or a location");
+        }
         $response = $this->httpClient->post('volumes', [
-            'json' => [
-                'name' => $name,
-                'size' => $size,
-                'server' => $server == null ? null : $server->id,
-                'location' => $location == null ? null : $location->id,
-            ],
+            'json' => $payload,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             $payload = json_decode((string)$response->getBody());
