@@ -79,9 +79,7 @@ class Volumes extends Model
         ];
         if ($location == null && $server != null) {
             $payload['server'] = $server->id;
-            $payload['location'] = null;
         } else if ($location != null && $server == null) {
-            $payload['server'] = null;
             $payload['location'] = $location->id;
         } else {
             throw new \InvalidArgumentException("Please specify only a server or a location");
