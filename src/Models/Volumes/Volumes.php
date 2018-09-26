@@ -26,7 +26,7 @@ class Volumes extends Model
     /**
      * @var array
      */
-    public $servers;
+    public $volumes;
 
     /**
      * Returns all existing volume objects.
@@ -51,13 +51,13 @@ class Volumes extends Model
      * Returns a specific volume object. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-volume-get-1
-     * @param int $serverId
+     * @param int $volumeId
      * @return Volume
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverId): Volume
+    public function get(int $volumeId): Volume
     {
-        $response = $this->httpClient->get('volumes/' . $serverId);
+        $response = $this->httpClient->get('volumes/' . $volumeId);
         if (!HetznerAPIClient::hasError($response)) {
             return Volume::parse(json_decode((string)$response->getBody())->volume);
         }
@@ -94,5 +94,30 @@ class Volumes extends Model
                 'volume' => Volume::parse($payload->volume),
             ], $response->getHeaders());
         }
+    }
+
+    /**
+     * @param  $input
+     * @return $this
+     */
+    public function setAdditionalData($input)
+    {
+        $this->volumes = collect($input->volumes)->map(function ($volume, $key) {
+            if ($volume != null) {
+                return Volume::parse($volume);
+            }
+        })->toArray();
+
+        return $this;
+    }
+
+    /**
+     * @param  $input
+     * @return static
+     */
+    public static function parse($input)
+    {
+
+        return (new self())->setAdditionalData($input);
     }
 }
