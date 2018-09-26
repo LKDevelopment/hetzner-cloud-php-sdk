@@ -66,7 +66,7 @@ class Volume extends Model
         $this->id = $data->id;
         $this->name = $data->name;
         $this->size = $data->size;
-        $this->server = $data->server ?: HetznerAPIClient::$instance->servers()->get($data->server);
+        $this->server = $data->server != null ? HetznerAPIClient::$instance->servers()->get($data->server) : null;
         $this->location = Location::parse($data->location);
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
