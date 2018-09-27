@@ -84,7 +84,7 @@ class Volume extends Model
     {
         $response = $this->httpClient->delete('volumes/' . $this->id);
         if (!HetznerAPIClient::hasError($response)) {
-            return true;
+            return APIResponse::create([], $response->getHeaders());
         }
     }
 
