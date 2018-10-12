@@ -58,6 +58,11 @@ class Volume extends Model
     public $labels;
 
     /**
+     * @var string
+     */
+    public $linux_device;
+
+    /**
      * @param $data
      * @return Volume
      */
@@ -65,11 +70,13 @@ class Volume extends Model
     {
         $this->id = $data->id;
         $this->name = $data->name;
+        $this->linux_device = $data->linux_device;
         $this->size = $data->size;
         $this->server = $data->server != null ? HetznerAPIClient::$instance->servers()->get($data->server) : null;
         $this->location = Location::parse($data->location);
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
+
         return $this;
     }
 
