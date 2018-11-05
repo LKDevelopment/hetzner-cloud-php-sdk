@@ -17,6 +17,11 @@ use LKDev\HetznerCloud\Models\Model;
  */
 class APIResponse
 {
+
+    /**
+     * @var array
+     */
+    protected $header = [];
     /**
      * @var array
      */
@@ -48,13 +53,31 @@ class APIResponse
     }
 
     /**
+     * @param array $header
+     */
+    public function setHeader(array $header)
+    {
+        $this->header = $header;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeader(): array
+    {
+        return $this->header;
+    }
+
+    /**
      * @param array $response
+     * @param array $header
      * @return APIResponse
      */
-    public static function create(array $response)
+    public static function create(array $response, array $header = [])
     {
         $apiResponse = new APIResponse();
         $apiResponse->setResponse($response);
+        $apiResponse->setHeader($header);
         return $apiResponse;
     }
 }

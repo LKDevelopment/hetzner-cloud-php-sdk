@@ -109,6 +109,11 @@ class Server extends Model
     public $labels;
 
     /**
+     * @var array
+     */
+    public $volumes;
+
+    /**
      *
      *
      * @param int $serverId
@@ -138,6 +143,7 @@ class Server extends Model
         $this->outgoingTraffic = $data->outgoing_traffic ?: null;
         $this->ingoingTraffic = $data->ingoing_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
+        $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
         return $this;
@@ -168,7 +174,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -185,7 +191,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -202,7 +208,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -219,7 +225,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -236,7 +242,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -255,7 +261,7 @@ class Server extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'root_password' => $payload->root_password
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -281,7 +287,7 @@ class Server extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'root_password' => $payload->root_password
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -298,7 +304,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -325,7 +331,7 @@ class Server extends Model
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'image' => Image::parse($payload->image)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -347,7 +353,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -371,7 +377,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -379,21 +385,16 @@ class Server extends Model
      * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
-     * @param string|null $backupWindow
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function enableBackups(string $backupWindow = null): APIResponse
     {
-        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'), [
-            'json' => [
-                'backup_window' => $backupWindow,
-            ],
-        ]);
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'));
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -410,7 +411,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -432,7 +433,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -449,7 +450,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -473,7 +474,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -505,7 +506,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -527,7 +528,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'server' => Server::parse(json_decode((string)$response->getBody())->server)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -561,7 +562,7 @@ class Server extends Model
                 'action' => Action::parse($payload->action),
                 'wss_url' => $payload->wss_url,
                 'password' => $payload->password
-            ]);
+            ], $response->getHeaders());
         }
     }
 
@@ -585,7 +586,7 @@ class Server extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 

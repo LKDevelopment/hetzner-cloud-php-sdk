@@ -1,4 +1,11 @@
 # Changelog
+
+## 1.3.0 (unreleased)
+ + Add Volumes support (`LKDev\HetznerCloud\Models\Volumes\Volumes` & `LKDev\HetznerCloud\Models\Volumes\Volume`)
+ 
+##### Deprecation
+ + Deprecate and ignore the `$backup_window` parameter on `LKDev\HetznerCloud\Models\Server\Server::enableBackups`
+ 
 ## 1.2.0 (06.09.2018)
  + Add `httpClient`-Method to `LKDev\HetznerCloud\HetznerAPIClient`
  + Add `labels`-Property to `LKDev\HetznerCloud\Models\FloatingIp\FloatingIP`

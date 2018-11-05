@@ -199,7 +199,7 @@ class Image extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ]);
+            ], $response->getHeaders());
         }
     }
 
