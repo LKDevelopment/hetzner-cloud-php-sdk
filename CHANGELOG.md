@@ -1,7 +1,8 @@
 # Changelog
 
-## 1.3.0 (unreleased)
+## 1.3.0 (05.11.2018)
  + Add Volumes support (`LKDev\HetznerCloud\Models\Volumes\Volumes` & `LKDev\HetznerCloud\Models\Volumes\Volume`)
+ + Add all API Response headers to every `LKDev\HetznerCloud\APIResponse`
  
 ##### Deprecation
  + Deprecate and ignore the `$backup_window` parameter on `LKDev\HetznerCloud\Models\Server\Server::enableBackups`
@@ -37,7 +38,7 @@
 * _Servers Class_
   The `create` method was split into two different methods `createInLocation` for creating a server in a location and `createInDatacenter`for creating a server in a datacenter
 
-* _All "action" like `Server::powerOn()` methods_ now return an instance of `LKDev\HetznerCloud\ApiResponse` instead an instance of `LKDev\HetznerCloud\Models\Actions\Action`. If you want to the the underlying action object just use the value _action_ as parameter of the `getResponsePart` on the `LKDev\HetznerCloud\ApiResponse`object. Of course you could use _server_ or _wss_url_ as parameter like in the official Hetzner Cloud documentation
+* _All "action" like `Server::powerOn()` methods_ now return an instance of `LKDev\HetznerCloud\ApiResponse` instead an instance of `LKDev\HetznerCloud\Models\Actions\Action`. If you want to the the underlying action object just use the value _action_ as parameter of the `getResponsePart` on the `LKDev\HetznerCloud\ApiResponse` object. Of course you could use _server_ or _wss_url_ as parameter like in the official Hetzner Cloud documentation
 
 * _All resource object constructors_ now require an instance of the internal GuzzleHttpClient `LKDev\HetznerCloud\Clients\GuzzleClient` if you use the shortcut methods this is done for you. 
 
