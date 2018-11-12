@@ -9,6 +9,7 @@
 namespace LKDev\HetznerCloud\Models\Volumes;
 
 
+use GuzzleHttp\Exception\ClientException;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
@@ -72,7 +73,12 @@ class Volume extends Model
         $this->name = $data->name;
         $this->linux_device = $data->linux_device;
         $this->size = $data->size;
-        $this->server = $data->server != null ? HetznerAPIClient::$instance->servers()->get($data->server) : null;
+        try {
+            $this->server = $data->server != null ? HetznerAPIClient::$instance->servers()->get($data->server) : null;
+        } catch (ClientException $e) {
+            $this->server = null;
+            unset($e);
+        }
         $this->location = Location::parse($data->location);
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
