@@ -72,11 +72,8 @@ class Volume extends Model
         $this->name = $data->name;
         $this->linux_device = $data->linux_device;
         $this->size = $data->size;
-        try {
-            $this->server = $data->server != null ? HetznerAPIClient::$instance->servers()->get($data->server) : null;
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            $this->server = null;
-        }
+      
+        $this->server = $data->server;
         $this->location = Location::parse($data->location);
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
