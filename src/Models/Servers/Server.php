@@ -521,9 +521,7 @@ class Server extends Model
     public function update(array $data)
     {
         $response = $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
-            'json' => [
-                $data
-            ],
+            'json' => $data,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([

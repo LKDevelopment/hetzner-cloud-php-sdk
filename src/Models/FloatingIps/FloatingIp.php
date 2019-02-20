@@ -121,9 +121,7 @@ class FloatingIp extends Model
     public function update(array $data): FloatingIp
     {
         $response = $this->httpClient->put('floating_ips/' . $this->id, [
-            'json' => [
-                $data
-            ],
+            'json' => $data,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody())->floating_ip);

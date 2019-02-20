@@ -72,7 +72,7 @@ class Volume extends Model
         $this->name = $data->name;
         $this->linux_device = $data->linux_device;
         $this->size = $data->size;
-      
+
         $this->server = $data->server;
         $this->location = Location::parse($data->location);
         $this->protection = $data->protection ?: Protection::parse($data->protection);
@@ -159,9 +159,7 @@ class Volume extends Model
     public function update(array $data)
     {
         $response = $this->httpClient->put('volumes/' . $this->id, [
-            'json' => [
-                $data
-            ],
+            'json' => $data
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([

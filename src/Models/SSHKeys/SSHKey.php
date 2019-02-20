@@ -70,9 +70,8 @@ class SSHKey extends Model
     public function update(array $data): SSHKey
     {
         $response = $this->httpClient->put('ssh_keys/' . $this->id, [
-            'json' => [
-                $data
-            ]
+            'json' => $data
+
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody())->ssh_key);
