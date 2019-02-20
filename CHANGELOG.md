@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1 (20.02.2019)
++ Fix a error on the update methods.
+
 ## 1.3.0 (05.11.2018)
  + Add Volumes support (`LKDev\HetznerCloud\Models\Volumes\Volumes` & `LKDev\HetznerCloud\Models\Volumes\Volume`)
  + Add all API Response headers to every `LKDev\HetznerCloud\APIResponse`
