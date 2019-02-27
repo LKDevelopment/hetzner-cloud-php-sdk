@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.0 (27.02.2019)
++ Implement `metrics` method on `LKDev\HetznerCloud\Models\Server\Server` (@paulus7, https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/10)
+
 ## 1.3.1 (20.02.2019)
 + Fix a error on the update methods.
 
