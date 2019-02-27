@@ -195,4 +195,11 @@ class ServerTest extends TestCase
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
     }
+
+    public function testMetrics()
+    {
+        $apiResponse = $this->server->metrics('cpu,disk,network', date("c"), date("c"), 60);
+        $metrics = $apiResponse->getResponsePart('metrics');
+        $this->assertEquals([["1435781470.622", "42"]], $metrics->time_series->name_of_timeseries->values ?? null);
+    }
 }

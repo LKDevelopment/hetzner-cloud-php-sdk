@@ -481,16 +481,22 @@ class Server extends Model
     /**
      * Get Metrics for specified server.
      *
-     * @see https://docs.hetzner.cloud/#resources-servers-get-2
+     * @see https://docs.hetzner.cloud/#servers-get-metrics-for-a-server
      * @param string $type
      * @param string $start
      * @param string $end
      * @param int|null $step
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
      */
     public function metrics(string $type, string $start, string $end, int $step = null)
     {
-        // ToDo
-        $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?') . http_build_query(compact('type', 'start', 'end', 'step')));
+        $response = $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?') . http_build_query(compact('type', 'start', 'end', 'step')));
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'metrics' => json_decode((string)$response->getBody())->metrics
+            ], $response->getHeaders());
+        }
     }
 
     /**
