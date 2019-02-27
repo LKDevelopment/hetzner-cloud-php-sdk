@@ -200,6 +200,6 @@ class ServerTest extends TestCase
     {
         $apiResponse = $this->server->metrics('cpu,disk,network', date("c"), date("c"), 60);
         $metrics = $apiResponse->getResponsePart('metrics');
-        $this->assertEquals(true, is_object($metrics->time_series ?? null));
+        $this->assertEquals([["1435781470.622", "42"]], $metrics->time_series->name_of_timeseries->values ?? null);
     }
 }
