@@ -48,6 +48,22 @@ class Volumes extends Model
     }
 
     /**
+     * Returns a specific server object by its name. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#resources-volumes-get
+     * @param string $volumeName
+     * @return \LKDev\HetznerCloud\Models\Volumes\Volume|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getByName(string $volumeName): Server
+    {
+        $volumes = $this->all(new VolumeRequestOpts($volumeName));
+
+        return (count($volumes) > 0) ? $volumes[0] : null;
+
+    }
+
+    /**
      * Returns a specific volume object. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-volume-get-1

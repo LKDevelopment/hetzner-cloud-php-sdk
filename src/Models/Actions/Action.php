@@ -92,7 +92,7 @@ class Action extends Model
      */
     public function getById($actionId): Action
     {
-        $response = $this->httpClient->get( 'actions/' . $actionId);
+        $response = $this->httpClient->get('actions/' . $actionId);
         if (!HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string)$response->getBody())->action);
         }
@@ -105,6 +105,17 @@ class Action extends Model
     public function refresh(): Action
     {
         return $this->getById($this->id);
+    }
+
+    /**
+     * Wait for an action to complete.
+     * @param float $pollingInterval seconds
+     * @return bool
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function waitUntilCompleted($pollingInterval = 0.5)
+    {
+        return Actions::waitActionCompleted($this, $pollingInterval);
     }
 
     /**

@@ -1,7 +1,13 @@
 # Changelog
 
+## 1.5.0 (28.03.2019)
++ Implement `getByName` method on `LKDev\HetznerCloud\Models\Servers\Servers` and `LKDev\HetznerCloud\Models\Volumes\Volumes`.
++ Implement `waitUntilCompleted`  method on `LKDev\HetznerCloud\Models\Actions\Action`
++ Add `LKDev\HetznerCloud\Models\Servers\ServerRequestOpts` for better control over the `all`-Method on `LKDev\HetznerCloud\Models\Servers\Servers`
++ Add `LKDev\HetznerCloud\Models\Volumes\VolumeRequestOpts` for better control over the `all`-Method on `LKDev\HetznerCloud\Models\Volumes\Volumes`
+
 ## 1.4.0 (27.02.2019)
-+ Implement `metrics` method on `LKDev\HetznerCloud\Models\Server\Server` (@paulus7, https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/10)
++ Implement `metrics` method on `LKDev\HetznerCloud\Models\Servers\Server` (@paulus7, https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/10)
 
 ## 1.3.1 (20.02.2019)
 + Fix a error on the update methods.

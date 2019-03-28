@@ -39,7 +39,7 @@ class Servers extends Model
     public function all(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
-            $requestOpts = new RequestOpts();
+            $requestOpts = new ServerRequestOpts();
         }
         $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
@@ -61,6 +61,22 @@ class Servers extends Model
         if (!HetznerAPIClient::hasError($response)) {
             return Server::parse(json_decode((string)$response->getBody())->server);
         }
+    }
+
+    /**
+     * Returns a specific server object by its name. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-get
+     * @param string $serverName
+     * @return \LKDev\HetznerCloud\Models\Servers\Server|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getByName(string $serverName): Server
+    {
+        $servers = $this->all(new ServerRequestOpts($serverName));
+
+        return (count($servers) > 0) ? $servers[0] : null;
+
     }
 
     /**

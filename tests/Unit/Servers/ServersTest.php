@@ -40,7 +40,16 @@ class ServersTest extends TestCase
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
     }
-
+    /**
+     *
+     */
+    public function testGetByName()
+    {
+        $server = $this->servers->getByName('my-server');
+        $this->assertEquals($server->id, 42);
+        $this->assertEquals($server->name, 'my-server');
+        $this->assertEquals($server->status, 'running');
+    }
     /**
      *
      */
