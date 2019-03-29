@@ -23,7 +23,7 @@ class HetznerAPIClient
     /**
      * Version of the API Client
      */
-    const VERSION = "1.4.0";
+    const VERSION = "1.5.1";
 
     /**
      * @var string
