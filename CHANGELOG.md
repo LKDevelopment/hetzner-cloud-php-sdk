@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5.1 (29.03.2019)
++ Fix a bug on the `LKDev\HetznerCloud\RequestOpts` - `buildQuery()` method
+
 ## 1.5.0 (28.03.2019)
 + Implement `getByName` method on `LKDev\HetznerCloud\Models\Servers\Servers` and `LKDev\HetznerCloud\Models\Volumes\Volumes`.
 + Implement `waitUntilCompleted`  method on `LKDev\HetznerCloud\Models\Actions\Action`

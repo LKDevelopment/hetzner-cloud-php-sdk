@@ -8,6 +8,7 @@
 
 namespace Tests\Unit\Servers;
 
+use LKDev\HetznerCloud\Models\Servers\ServerRequestOpts;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use Tests\TestCase;
 
@@ -40,6 +41,7 @@ class ServersTest extends TestCase
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
     }
+
     /**
      *
      */
@@ -50,6 +52,7 @@ class ServersTest extends TestCase
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
     }
+
     /**
      *
      */
@@ -62,4 +65,10 @@ class ServersTest extends TestCase
         $this->assertEquals($servers[0]->name, 'my-server');
     }
 
+    public function testRequestsObject()
+    {
+        $c = new ServerRequestOpts("test", "online");
+
+        $this->assertEquals("?name=test&status=online", $c->buildQuery());
+    }
 }
