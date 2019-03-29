@@ -55,7 +55,7 @@ class Volumes extends Model
      * @return \LKDev\HetznerCloud\Models\Volumes\Volume|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $volumeName): Server
+    public function getByName(string $volumeName)
     {
         $volumes = $this->all(new VolumeRequestOpts($volumeName));
 
