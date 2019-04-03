@@ -18,7 +18,7 @@ class GuzzleClient extends Client
             'headers' => [
                 'Authorization' => 'Bearer ' . $client->getApiToken(),
                 'Content-Type' => 'application/json',
-                'User-Agent' => (strlen($client->getUserAgent() > 0) ? ' ' . $client->getUserAgent() : '') . 'hcloud-php/' . HetznerAPIClient::VERSION
+                'User-Agent' => (strlen($client->getUserAgent() > 0) ? $client->getUserAgent() . ' ' : '') . 'hcloud-php/' . HetznerAPIClient::VERSION
             ],
         ]);
     }
