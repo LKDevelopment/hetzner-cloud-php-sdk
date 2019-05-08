@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0 (08.05.2019)
++ Setting the UserAgent is now possible with `LKDev\HetznerCloud\HetznerAPIClient` - `setUserAgent()`
++ Setting the Base URL is now possible with `LKDev\HetznerCloud\HetznerAPIClient` - `setBaseUrl()`
+
 ## 1.5.1 (29.03.2019)
 + Fix a bug on the `LKDev\HetznerCloud\RequestOpts` - `buildQuery()` method
 

@@ -18,6 +18,7 @@ use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
+
 /**
  * Class BasicClientTest
  * @package Tests
@@ -32,6 +33,30 @@ class BasicClientTest extends TestCase
         $token = 'IAmTheTestToken';
         $client = new HetznerAPIClient($token);
         $this->assertEquals($token, $client->getApiToken());
+    }
+
+    /**
+     *
+     */
+    public function testSetBaseUrl()
+    {
+        $baseUrl = 'https://api.hetzner.cloud/v1/';
+        $client = new HetznerAPIClient('IAmTheTestToken', $baseUrl);
+        $this->assertEquals($baseUrl, $client->getBaseUrl());
+        $client->setBaseUrl("changed");
+        $this->assertEquals("changed", $client->getBaseUrl());
+    }
+
+    /**
+     *
+     */
+    public function testSetUserAgent()
+    {
+        $userAgent = 'UserAgent';
+        $client = new HetznerAPIClient('IAmTheTestToken', '', $userAgent);
+        $this->assertEquals($userAgent, $client->getUserAgent());
+        $client->setUserAgent("changed");
+        $this->assertEquals("changed", $client->getUserAgent());
     }
 
     /**
