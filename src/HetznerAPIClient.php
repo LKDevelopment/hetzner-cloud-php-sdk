@@ -91,6 +91,25 @@ class HetznerAPIClient
     }
 
     /**
+     * @param string $userAgent
+     * @return HetznerAPIClient
+     */
+    public function setUserAgent(string $userAgent): self
+    {
+        $this->userAgent = $userAgent;
+        return $this;
+    }
+
+    /**
+     * @param string $baseUrl
+     * @return HetznerAPIClient
+     */
+    public function setBaseUrl(string $baseUrl): self
+    {
+        $this->baseUrl = $baseUrl;
+        return $this;
+    }
+    /**
      * @return GuzzleClient
      */
     public function getHttpClient(): GuzzleClient
