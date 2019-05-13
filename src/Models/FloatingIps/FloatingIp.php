@@ -34,6 +34,11 @@ class FloatingIp extends Model
     /**
      * @var string
      */
+    public $created;
+
+    /**
+     * @var string
+     */
     public $ip;
     /**
      * @var string
@@ -83,6 +88,7 @@ class FloatingIp extends Model
      * @param bool $blocked
      * @param Protection $protection
      * @param array $labels
+     * @package string $created
      */
     public function __construct(
         int $id,
@@ -94,7 +100,8 @@ class FloatingIp extends Model
         Location $homeLocation,
         bool $blocked,
         Protection $protection,
-        array $labels = []
+        array $labels = [],
+        string $created = ''
     )
     {
         $this->id = $id;
@@ -107,6 +114,7 @@ class FloatingIp extends Model
         $this->blocked = $blocked;
         $this->protection = $protection;
         $this->labels = $labels;
+        $this->created = $created;
         parent::__construct();
     }
 

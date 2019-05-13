@@ -87,11 +87,12 @@ class Volumes extends Model
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function create(string $name, int $size, Server $server = null, Location $location = null): APIResponse
+    public function create(string $name, int $size, Server $server = null, Location $location = null, bool $automount = false, string $format = null): APIResponse
     {
         $payload = [
             'name' => $name,
             'size' => $size,
+            'automount' => $automount,
         ];
         if ($location == null && $server != null) {
             $payload['server'] = $server->id;
@@ -99,6 +100,9 @@ class Volumes extends Model
             $payload['location'] = $location->id;
         } else {
             throw new \InvalidArgumentException("Please specify only a server or a location");
+        }
+        if ($format != null) {
+            $payload['format'] = $format;
         }
         $response = $this->httpClient->post('volumes', [
             'json' => $payload,
