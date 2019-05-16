@@ -88,7 +88,7 @@ class FloatingIp extends Model
      * @param bool $blocked
      * @param Protection $protection
      * @param array $labels
-     * @package string $created
+     * @param string $created
      */
     public function __construct(
         int $id,
