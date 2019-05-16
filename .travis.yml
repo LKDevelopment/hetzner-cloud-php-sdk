@@ -6,6 +6,7 @@ before_script:
   - docker pull lkdevelopment/hetzner-cloud-api-mock
   - docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
   - docker ps -a
+  - sleep 2
   # list any PHP version you want to test against
 php:
   # aliased to a recent 7.x version
@@ -17,3 +18,6 @@ services:
   - docker
 
 script: vendor/bin/paratest -p8 tests
+
+
+
