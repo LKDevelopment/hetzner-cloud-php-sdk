@@ -6,7 +6,7 @@
  * Time: 18:31
  */
 
-namespace Tests\Unit\Servers;
+namespace Tests\Integration\Servers;
 
 use LKDev\HetznerCloud\Models\Servers\ServerRequestOpts;
 use LKDev\HetznerCloud\Models\Servers\Servers;

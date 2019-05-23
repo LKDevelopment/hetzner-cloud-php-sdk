@@ -64,11 +64,11 @@ class Location extends Model
     public function __construct(
         int $id,
         string $name,
-        string $description,
-        string $country,
-        string $city,
-        float $latitude,
-        float $longitude
+        string $description=null,
+        string $country=null,
+        string $city=null,
+        float $latitude=null,
+        float $longitude=null
     ) {
         $this->id = $id;
         $this->name = $name;

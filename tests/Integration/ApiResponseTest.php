@@ -6,7 +6,7 @@
  * Time: 14:35
  */
 
-namespace Tests\Unit;
+namespace Tests\Integration;
 
 use LKDev\HetznerCloud\APIResponse;
 use PHPUnit\Framework\TestCase;
