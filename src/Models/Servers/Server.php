@@ -351,9 +351,10 @@ class Server extends Model
             ],
         ]);
         if (!HetznerAPIClient::hasError($response)) {
-            return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
-            ], $response->getHeaders());
+            $payload = json_decode((string)$response->getBody());
+            return APIResponse::create(array_merge([
+                'action' => Action::parse($payload->action),
+            ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []), $response->getHeaders());
         }
     }
 
