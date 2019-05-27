@@ -135,6 +135,7 @@ class Server extends Model
         $this->publicNet = $data->public_net ?: null;
         $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
         $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
+        $this->created = $data->created;
         $this->image = $data->image ?: Image::parse($data->image);
         $this->iso = $data->iso ?: ISO::parse($data->iso);
         $this->rescueEnabled = $data->rescue_enabled ?: null;
