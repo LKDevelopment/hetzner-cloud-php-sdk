@@ -1,9 +1,10 @@
 # Changelog
 
-## master (XX.XX.XXXX)
+## 1.6.1 (27.05.2019)
  + Add `automount` and `format` Parameters to `LKDev\HetznerCloud\Models\Volumes\Volumes` - `create`
  + Add `created` property to `LKDev\HetznerCloud\Models\FloatingIps\FloatingIp`
  + Improve test coverage
+ + Add `root_passwort` to response of `LKDev\HetznerCloud\Models\Servers\Server` - `rebuildFromImage` (https://github.com/LKDevelopment/hetzner-cloud-php-sdk/issues/17)
 
 ## 1.6.0 (08.05.2019)
 + Setting the UserAgent is now possible with `LKDev\HetznerCloud\HetznerAPIClient` - `setUserAgent()`
