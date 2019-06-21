@@ -12,23 +12,25 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 
 class Images extends Model
-{  /**
- * @var array
- */
+{
+    /**
+     * @var array
+     */
     public $images;
 
     /**
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
+     * @param string|null $name
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(string $name = null): array
     {
-        $response = $this->httpClient->get('images');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->images;
+        $response = $this->httpClient->get('images' . (($name != null) ? '?name=' . $name : ''));
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->images;
         }
     }
 
@@ -42,9 +44,9 @@ class Images extends Model
      */
     public function get(int $imageId): Image
     {
-        $response = $this->httpClient->get('images/'.$imageId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Image::parse(json_decode((string) $response->getBody())->image);
+        $response = $this->httpClient->get('images/' . $imageId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Image::parse(json_decode((string)$response->getBody())->image);
         }
     }
 
@@ -52,7 +54,7 @@ class Images extends Model
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->images = collect($input->images)->map(function ($image, $key) {
             return Image::parse($image);

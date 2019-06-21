@@ -10,7 +10,6 @@
   },
   "require-dev": {
     "phpunit/phpunit": "6.5",
-    "phpdocumentor/phpdocumentor": "2.*",
     "brianium/paratest": "1.*"
   },
   "license": "MIT",
@@ -29,5 +28,8 @@
     "psr-4": {
       "Tests\\": "tests/"
     }
+  },
+  "scripts": {
+    "docs": "php phpDocumentor.phar -d ./src -t ./docs"
   }
 }

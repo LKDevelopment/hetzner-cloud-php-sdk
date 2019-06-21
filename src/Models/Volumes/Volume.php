@@ -10,6 +10,7 @@ namespace LKDev\HetznerCloud\Models\Volumes;
 
 
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Locations\Location;
@@ -62,6 +63,17 @@ class Volume extends Model
      */
     public $linux_device;
 
+    /**
+     *
+     *
+     * @param int $volumeId
+     * @param GuzzleClient|null $httpClient
+     */
+    public function __construct(int $volumeId = null, GuzzleClient $httpClient = null)
+    {
+        $this->id = $volumeId;
+        parent::__construct($httpClient);
+    }
     /**
      * @param $data
      * @return Volume
@@ -200,7 +212,7 @@ class Volume extends Model
             return null;
         }
 
-        return (new self())->setAdditionalData($input);
+        return (new self($input->id))->setAdditionalData($input);
     }
 
 }

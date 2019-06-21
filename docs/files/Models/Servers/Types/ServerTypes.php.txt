@@ -10,6 +10,7 @@ namespace LKDev\HetznerCloud\Models\Servers\Types;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
 
 /**
  *
@@ -22,14 +23,18 @@ class ServerTypes extends Model
     public $serverTypes;
 
     /**
+     * @param RequestOpts $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('server_types');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->serverTypes;
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('server_types' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->serverTypes;
         }
     }
 
@@ -40,9 +45,9 @@ class ServerTypes extends Model
      */
     public function get(int $serverTypeId): ServerType
     {
-        $response = $this->httpClient->get('server_types/'.$serverTypeId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return ServerType::parse(json_decode((string) $response->getBody())->server_type);
+        $response = $this->httpClient->get('server_types/' . $serverTypeId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return ServerType::parse(json_decode((string)$response->getBody())->server_type);
         }
     }
 
@@ -50,7 +55,7 @@ class ServerTypes extends Model
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->serverTypes = collect($input->server_types)->map(function ($serverType, $key) {
             return ServerType::parse($serverType);
@@ -63,7 +68,7 @@ class ServerTypes extends Model
      * @param  $input
      * @return $this|static
      */
-    public static function parse( $input)
+    public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
     }
