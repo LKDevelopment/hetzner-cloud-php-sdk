@@ -84,6 +84,8 @@ class Volumes extends Model
      * @param int $size
      * @param Server|null $server
      * @param Location|null $location
+     * @param bool $automount
+     * @param string|null $format
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */

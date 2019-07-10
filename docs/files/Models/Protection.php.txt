@@ -7,7 +7,7 @@
  */
 
 namespace LKDev\HetznerCloud\Models;
-
+// This is a read only model, that does not have any logic. Just a stupid dataholder.
 class Protection extends Model
 {
     /**
@@ -30,6 +30,8 @@ class Protection extends Model
     {
         $this->delete = $delete;
         $this->rebuild = $rebuild;
+        // Force getting the default http client
+        parent::__construct(null);
     }
 
     /**
@@ -43,6 +45,7 @@ class Protection extends Model
             return null;
         }
 
-        return new self($input->delete, (property_exists($input, 'rebuild') ? $input->rebuild : null));
+        return (new self($input->delete, (property_exists($input, 'rebuild') ? $input->rebuild : null)));
     }
 }
+

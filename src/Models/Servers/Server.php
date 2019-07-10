@@ -9,12 +9,14 @@
 namespace LKDev\HetznerCloud\Models\Servers;
 
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Networks\Network;
 use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 
@@ -48,6 +50,10 @@ class Server extends Model
      */
     public $publicNet;
 
+    /**
+     * @var array
+     */
+    public $privateNet;
     /**
      * @var ServerType
      */
@@ -117,11 +123,12 @@ class Server extends Model
      *
      *
      * @param int $serverId
+     * @param GuzzleClient|null $httpClient
      */
-    public function __construct(int $serverId)
+    public function __construct(int $serverId, GuzzleClient $httpClient = null)
     {
         $this->id = $serverId;
-        parent::__construct();
+        parent::__construct($httpClient);
     }
 
     /**
@@ -133,6 +140,7 @@ class Server extends Model
         $this->name = $data->name;
         $this->status = $data->status ?: null;
         $this->publicNet = $data->public_net ?: null;
+        $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
         $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
         $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
         $this->created = $data->created;
@@ -588,6 +596,79 @@ class Server extends Model
                 'delete' => $delete,
                 'rebuild' => $rebuild,
             ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+            ], $response->getHeaders());
+        }
+    }
+
+
+    /**
+     * @param Network $network
+     * @param string|null $ip
+     * @param array $aliasIps
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function attachToNetwork(Network $network, string $ip = null, array $aliasIps = [])
+    {
+        $payload = [
+            'network' => $network->id,
+        ];
+        if ($ip != null) {
+            $payload['ip'] = $ip;
+        }
+        if ($ip != null) {
+            $payload['alias_ips'] = $aliasIps;
+        }
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_to_network'), [
+            'json' => $payload,
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+            ], $response->getHeaders());
+        }
+    }
+
+
+    /**
+     * @param Network $network
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function detachFromNetwork(Network $network)
+    {
+        $payload = [
+            'network' => $network->id,
+        ];
+
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_from_network'), [
+            'json' => $payload,
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+            ], $response->getHeaders());
+        }
+    }
+
+    /**
+     * @param Network $network
+     * @param array $aliasIps
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeAliasIPs(Network $network, array $aliasIps)
+    {
+        $payload = [
+            'network' => $network->id,
+            'alias_ips' => $aliasIps
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_alias_ips'), [
+            'json' => $payload,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return APIResponse::create([

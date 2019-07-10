@@ -25,14 +25,15 @@ class Locations extends Model
      * Returns all location objects.
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get
+     * @param string|null $name
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(): array
+    public function all(string $name = null): array
     {
-        $response = $this->httpClient->get('locations');
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->locations;
+        $response = $this->httpClient->get('locations'. (($name != null) ? '?name=' . $name : ''));
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->locations;
         }
     }
 
@@ -46,9 +47,9 @@ class Locations extends Model
      */
     public function get(int $locationId): Location
     {
-        $response = $this->httpClient->get('locations/'.$locationId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Location::parse(json_decode((string) $response->getBody())->location);
+        $response = $this->httpClient->get('locations/' . $locationId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Location::parse(json_decode((string)$response->getBody())->location);
         }
     }
 
@@ -56,7 +57,7 @@ class Locations extends Model
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->locations = collect($input->locations)->map(function ($location, $key) {
             return Location::parse($location);
@@ -71,6 +72,7 @@ class Locations extends Model
      */
     public static function parse($input)
     {
-       return (new self())->setAdditionalData($input);
+        return (new self())->setAdditionalData($input);
     }
 }
+

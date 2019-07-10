@@ -2,7 +2,6 @@
 
 namespace LKDev\HetznerCloud;
 
-use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
@@ -10,8 +9,10 @@ use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
+use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -20,9 +21,10 @@ use Psr\Http\Message\ResponseInterface;
 class HetznerAPIClient
 {
     /**
-     *
+     * Version of the API Client
      */
-    const VERSION = "1.0.0";
+    const VERSION = "1.6.2";
+
     /**
      * @var string
      */
@@ -32,19 +34,22 @@ class HetznerAPIClient
      * @var string
      */
     protected $baseUrl;
+
     /**
      * @var string
      */
     protected $userAgent;
+
     /**
+     * The default instance of the HTTP client, for easily getting it in the child models.
      * @var HetznerAPIClient
      */
     public static $instance;
+
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
     protected $httpClient;
-
 
     /**
      *
@@ -86,6 +91,25 @@ class HetznerAPIClient
     }
 
     /**
+     * @param string $userAgent
+     * @return HetznerAPIClient
+     */
+    public function setUserAgent(string $userAgent): self
+    {
+        $this->userAgent = $userAgent;
+        return $this;
+    }
+
+    /**
+     * @param string $baseUrl
+     * @return HetznerAPIClient
+     */
+    public function setBaseUrl(string $baseUrl): self
+    {
+        $this->baseUrl = $baseUrl;
+        return $this;
+    }
+    /**
      * @return GuzzleClient
      */
     public function getHttpClient(): GuzzleClient
@@ -99,9 +123,16 @@ class HetznerAPIClient
      */
     public static function throwError(ResponseInterface $response)
     {
-        var_dump(json_decode((string)$response->getBody()));
-        die();
-        // throw new APIException($response, ->error->code);
+        $body = (string)$response->getBody();
+        if (strlen($body) > 0) {
+            $error = \GuzzleHttp\json_decode($body);
+            throw new APIException(APIResponse::create([
+                'error' => $error->error
+            ]), $error->error->message);
+        }
+        throw new APIException(APIResponse::create([
+            'response' => $response
+        ]), 'The response is not parseable');
     }
 
     /**
@@ -121,19 +152,37 @@ class HetznerAPIClient
     }
 
     /**
-     * @return Models\Servers\Servers
+     * @return Actions
+     */
+    public function actions()
+    {
+        return new Actions($this->httpClient);
+    }
+
+    /**
+     * @return Servers
      */
     public function servers()
     {
-        return new Models\Servers\Servers($this->httpClient);
+        return new Servers($this->httpClient);
+    }
+
+    /**
+     * @return Volumes
+     */
+    public function volumes()
+    {
+        return new Volumes($this->httpClient);
     }
 
     /**
      * @return ServerTypes
      */
-    public function serverTypes(){
+    public function serverTypes()
+    {
         return new ServerTypes($this->httpClient);
     }
+
     /**
      * @return Datacenters
      */
@@ -189,4 +238,13 @@ class HetznerAPIClient
     {
         return new FloatingIps($this->httpClient);
     }
+
+    /**
+     * @return GuzzleClient
+     */
+    public function httpClient()
+    {
+        return $this->httpClient;
+    }
 }
+

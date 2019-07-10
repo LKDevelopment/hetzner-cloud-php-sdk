@@ -8,11 +8,11 @@
 
 namespace LKDev\HetznerCloud\Models\Images;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
-use LKDev\HetznerCloud\Models\Servers\Server;
 
 /**
  *
@@ -90,6 +90,11 @@ class Image extends Model
     public $protection;
 
     /**
+     * @var array
+     */
+    public $labels;
+
+    /**
      * Image constructor.
      *
      * @param int $id
@@ -106,6 +111,7 @@ class Image extends Model
      * @param string $osVersion
      * @param bool $rapidDeploy
      * @param Protection $protection
+     * @param array $labels
      */
     public function __construct(
         int $id,
@@ -121,7 +127,8 @@ class Image extends Model
         string $osFlavor = null,
         string $osVersion = null,
         bool $rapidDeploy = null,
-        Protection $protection = null
+        Protection $protection = null,
+        array $labels = []
     )
     {
         $this->id = $id;
@@ -138,6 +145,7 @@ class Image extends Model
         $this->osVersion = $osVersion;
         $this->rapidDeploy = $rapidDeploy;
         $this->protection = $protection;
+        $this->labels = $labels;
         parent::__construct();
     }
 
@@ -147,16 +155,26 @@ class Image extends Model
      * @see https://docs.hetzner.cloud/#resources-images-put
      * @param string $description
      * @param string $type
+     * @param array|null $labels
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(string $description = null, string $type = null): Image
+    public function update(string $description = null, string $type = null, array $labels = null): Image
     {
+        $params = [];
+        if ($description != null) {
+            $params['description'] = $description;
+        }
+
+        if ($type != null) {
+            $params['type'] = $type;
+        }
+
+        if ($labels != null) {
+            $params['labels'] = $labels;
+        }
         $response = $this->httpClient->put('images/' . $this->id, [
-            'json' => [
-                'description' => $description == null ? $this->description : $type,
-                'type' => $type == null ? $this->type : $type,
-            ],
+            'json' => $params,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody())->image);
@@ -168,10 +186,10 @@ class Image extends Model
      *
      * @see https://docs.hetzner.cloud/#resources-image-actions-post
      * @param bool $delete
-     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeProtection(bool $delete = true): Action
+    public function changeProtection(bool $delete = true): APIResponse
     {
         $response = $this->httpClient->post('images/' . $this->id . '/actions/change_protection', [
             'json' => [
@@ -179,7 +197,9 @@ class Image extends Model
             ],
         ]);
         if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+            ], $response->getHeaders());
         }
     }
 
@@ -211,3 +231,4 @@ class Image extends Model
         return new self($input->id, $input->type, (property_exists($input, 'status') ? $input->status : null), $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection));
     }
 }
+

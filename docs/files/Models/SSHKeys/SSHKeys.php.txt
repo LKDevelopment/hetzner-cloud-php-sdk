@@ -10,6 +10,7 @@ namespace LKDev\HetznerCloud\Models\SSHKeys;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
 
 /**
  *
@@ -31,31 +32,37 @@ class SSHKeys extends Model
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(
-    		string $name,
-    		string $publicKey
-    ): SSHKey {
-    	$response = $this->httpClient->post('ssh_keys', [
-    			'json' => [
-    					'name' => $name,
-    					'public_key' => $publicKey,
-    			],
-    	]);
-    	if (! HetznerAPIClient::hasError($response)) {
-    		return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
-    	}
+        string $name,
+        string $publicKey
+    ): SSHKey
+    {
+        $response = $this->httpClient->post('ssh_keys', [
+            'json' => [
+                'name' => $name,
+                'public_key' => $publicKey,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        }
     }
 
     /**
      * Returns all ssh key objects.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get
+     * @param RequestOpts $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all():array{
-        $response = $this->httpClient->get('ssh_keys');
-        if(!HetznerAPIClient::hasError($response)){
-            return self::parse(json_decode((string) $response->getBody()))->sshKeys;
+    public function all(RequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('ssh_keys' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->sshKeys;
         }
     }
 
@@ -67,17 +74,19 @@ class SSHKeys extends Model
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $sshKeyId): SSHKey{
-        $response = $this->httpClient->get('ssh_keys/'.$sshKeyId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
+    public function get(int $sshKeyId): SSHKey
+    {
+        $response = $this->httpClient->get('ssh_keys/' . $sshKeyId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
         }
     }
+
     /**
      * @param  $input
      * @return $this
      */
-    public function setAdditionalData( $input)
+    public function setAdditionalData($input)
     {
         $this->sshKeys = collect($input->ssh_keys)->map(function ($sshKey, $key) {
             return SSHKey::parse($sshKey);
@@ -85,11 +94,12 @@ class SSHKeys extends Model
 
         return $this;
     }
+
     /**
      * @param  $input
      * @return $this|static
      */
-    public static function parse( $input)
+    public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
     }

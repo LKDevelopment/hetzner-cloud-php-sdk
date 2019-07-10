@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud\Models\Actions;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
@@ -49,16 +50,6 @@ class Action extends Model
     public $error;
 
     /**
-     * @var null|string
-     */
-    public $root_password = null;
-
-    /**
-     * @var null|string
-     */
-    public $wss_url = null;
-
-    /**
      * Action constructor.
      *
      * @param int $id
@@ -80,10 +71,9 @@ class Action extends Model
         string $started,
         string $finished = null,
         $resources = null,
-        $error = null,
-        string $root_password = null,
-        string $wss_url = null
-    ) {
+        $error = null
+    )
+    {
         $this->id = $id;
         $this->command = $command;
         $this->progress = $progress;
@@ -92,9 +82,40 @@ class Action extends Model
         $this->finished = $finished;
         $this->resources = $resources;
         $this->error = $error;
-        $this->root_password = $root_password;
-        $this->wss_url = $wss_url;
         parent::__construct();
+    }
+
+    /**
+     * @param $actionId
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getById($actionId): Action
+    {
+        $response = $this->httpClient->get('actions/' . $actionId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
+        }
+    }
+
+    /**
+     * @return Action
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function refresh(): Action
+    {
+        return $this->getById($this->id);
+    }
+
+    /**
+     * Wait for an action to complete.
+     * @param float $pollingInterval seconds
+     * @return bool
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function waitUntilCompleted($pollingInterval = 0.5)
+    {
+        return Actions::waitActionCompleted($this, $pollingInterval);
     }
 
     /**
@@ -107,6 +128,7 @@ class Action extends Model
             return null;
         }
 
-        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error, (property_exists($input, 'root_password') ? $input->root_password : null), (property_exists($input, 'wss_url') ? $input->wss_url : null));
+        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error);
     }
 }
+

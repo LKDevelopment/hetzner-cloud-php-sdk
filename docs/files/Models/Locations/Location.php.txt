@@ -51,6 +51,11 @@ class Location extends Model
     public $longitude;
 
     /**
+     * @var string
+     */
+    public $networkZone;
+
+    /**
      * Location constructor.
      *
      * @param int $id
@@ -60,16 +65,19 @@ class Location extends Model
      * @param string $city
      * @param float $latitude
      * @param float $longitude
+     * @param string $networkZone
      */
     public function __construct(
         int $id,
         string $name,
-        string $description,
-        string $country,
-        string $city,
-        float $latitude,
-        float $longitude
-    ) {
+        string $description = null,
+        string $country = null,
+        string $city = null,
+        float $latitude = null,
+        float $longitude = null,
+        string $networkZone = null
+    )
+    {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
@@ -77,6 +85,7 @@ class Location extends Model
         $this->city = $city;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->networkZone = $networkZone;
         parent::__construct();
     }
 
@@ -89,6 +98,8 @@ class Location extends Model
         if ($input == null) {
             return null;
         }
-        return new self($input->id, $input->name, $input->description, $input->country, $input->city, $input->latitude, $input->longitude);
+        $networkZone = property_exists($input, 'network_zone') ? $input->network_zone : null;
+        return new self($input->id, $input->name, $input->description, $input->country, $input->city, $input->latitude, $input->longitude, $networkZone);
     }
 }
+
