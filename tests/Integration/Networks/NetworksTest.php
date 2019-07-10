@@ -50,7 +50,7 @@ class NetworksTest extends TestCase
         $this->assertEquals("mynet", $network->name);
         $this->assertEquals("10.0.0.0/16", $network->ipRange);
 
-        $this->assertCount(2, $network->subnets); //ToDo This should be 1, when the backend MR is done
+        $this->assertCount(1, $network->subnets);
         $this->assertInstanceOf(Subnet::class, $network->subnets[0]);
         $this->assertCount(1, $network->routes);
         $this->assertInstanceOf(Route::class, $network->routes[0]);
@@ -61,8 +61,6 @@ class NetworksTest extends TestCase
         $this->assertInstanceOf(Protection::class, $network->protection);
 
         $this->assertEmpty(get_object_vars($network->labels));
-
-        // $this->assertEquals("2016-01-30T23:50:00+00:00", $network->created); //ToDo This should be uncomment, when the backend MR is done
 
     }
 
@@ -76,7 +74,7 @@ class NetworksTest extends TestCase
         $this->assertEquals("mynet", $network->name);
         $this->assertEquals("10.0.0.0/16", $network->ipRange);
 
-        $this->assertCount(2, $network->subnets);  //ToDo This should be 1, when the backend MR is done
+        $this->assertCount(1, $network->subnets);
         $this->assertInstanceOf(Subnet::class, $network->subnets[0]);
         $this->assertCount(1, $network->routes);
         $this->assertInstanceOf(Route::class, $network->routes[0]);
@@ -87,7 +85,6 @@ class NetworksTest extends TestCase
         $this->assertInstanceOf(Protection::class, $network->protection);
 
         $this->assertEmpty(get_object_vars($network->labels));
-        // $this->assertEquals("2016-01-30T23:50:00+00:00", $network->created); //ToDo This should be uncomment, when the backend MR is done
     }
 
     /**
