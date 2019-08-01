@@ -8,6 +8,7 @@ use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
+use LKDev\HetznerCloud\Models\Networks\Networks;
 use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
@@ -23,7 +24,7 @@ class HetznerAPIClient
     /**
      * Version of the API Client
      */
-    const VERSION = "1.7.0";
+    const VERSION = "1.7.1";
 
     /**
      * @var string
@@ -237,6 +238,14 @@ class HetznerAPIClient
     public function floatingIps()
     {
         return new FloatingIps($this->httpClient);
+    }
+
+    /**
+     * @return Networks
+     */
+    public function networks()
+    {
+        return new Networks($this->httpClient);
     }
 
     /**

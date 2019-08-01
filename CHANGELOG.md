@@ -1,6 +1,9 @@
 # Changelog
 
-## 1.7.0 (10.07.2019)
+## 1.7.1  (01.08.2019) 
+ + Add missing `networks()` - method on `HetznerAPIClient`
+
+## 1.7.0 (10.07.2019) 
  + Add `Networks` support ( `LKDev\HetznerCloud\Models\Networks\Networks` & `LKDev\HetznerCloud\Models\Networks\Network`)
  + Add `networkZone` property to `LKDev\HetznerCloud\Models\Locations\Location`
 
