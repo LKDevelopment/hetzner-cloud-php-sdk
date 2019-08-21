@@ -14,7 +14,5 @@ jobs:
          docker pull lkdevelopment/hetzner-cloud-api-mock
          docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
          docker ps -a
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    - name: phpunit
+      run: phpunit
