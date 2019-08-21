@@ -1,0 +1,20 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Start Container
+      run: |
+         docker pull lkdevelopment/hetzner-cloud-api-mock
+         docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
+         docker ps -a
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
