@@ -18,8 +18,6 @@ jobs:
       run: |
          composer global require hirak/prestissimo
          composer install
-    - name: PHP 7.0
-      run: php7.0 vendor/bin/phpunit
     - name: PHP 7.1
       run: php7.1 vendor/bin/phpunit
     - name: PHP 7.2
