@@ -41,6 +41,15 @@ class ServerTypesTest extends TestCase
         $this->assertEquals($server_type->id, 1);
         $this->assertEquals($server_type->name, 'cx11');
     }
+    /**
+     *
+     */
+    public function testGetByName()
+    {
+        $server_type = $this->server_types->getByName("cx11");
+        $this->assertEquals($server_type->id, 1);
+        $this->assertEquals($server_type->name, 'cx11');
+    }
 
     /**
      *

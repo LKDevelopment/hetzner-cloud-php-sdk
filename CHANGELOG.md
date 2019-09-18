@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0 (18.09.2019)
+ + Add ability to get `Datacenters`,`FloatingIPs`,`Images`,`Locations` and `ServerTypes` per name (`getByName`)
+ + Add `name` support to Floating IPs
+
 ## 1.7.1  (01.08.2019) 
  + Add missing `networks()` - method on `HetznerAPIClient`
 

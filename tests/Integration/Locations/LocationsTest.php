@@ -40,6 +40,15 @@ class LocationsTest extends TestCase
         $this->assertEquals($location->id, 1);
         $this->assertEquals($location->name, 'fsn1');
     }
+    /**
+     *
+     */
+    public function testGetByName()
+    {
+        $location = $this->locations->getByName('fsn1');
+        $this->assertEquals($location->id, 1);
+        $this->assertEquals($location->name, 'fsn1');
+    }
 
     /**
      *

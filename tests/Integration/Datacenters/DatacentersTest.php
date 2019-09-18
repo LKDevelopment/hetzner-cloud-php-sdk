@@ -39,7 +39,15 @@ class DatacentersTest extends TestCase
         $this->assertEquals($datacenter->id, 1);
         $this->assertEquals($datacenter->name, 'fsn1-dc8');
     }
-
+    /**
+     *
+     */
+    public function testGetByName()
+    {
+        $datacenter = $this->datacenters->getByName("fsn1-dc8");
+        $this->assertEquals($datacenter->id, 1);
+        $this->assertEquals($datacenter->name, 'fsn1-dc8');
+    }
     /**
      *
      */

@@ -76,7 +76,6 @@ class Servers extends Model
         $servers = $this->all(new ServerRequestOpts($serverName));
 
         return (count($servers) > 0) ? $servers[0] : null;
-
     }
 
     /**

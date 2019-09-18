@@ -40,6 +40,15 @@ class ImagesTest extends TestCase
         $this->assertEquals($image->id, 4711);
         $this->assertEquals($image->name, 'ubuntu-16.04');
     }
+    /**
+     *
+     */
+    public function testGetByName()
+    {
+        $image = $this->images->getByName('ubuntu-16.04');
+        $this->assertEquals($image->id, 4711);
+        $this->assertEquals($image->name, 'ubuntu-16.04');
+    }
 
     /**
      *
