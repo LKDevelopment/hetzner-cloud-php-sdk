@@ -52,6 +52,20 @@ class ServerTypes extends Model
     }
 
     /**
+     * Returns a specific server type object by its name.
+     *
+     * @param int $serverTypeId
+     * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getByName(string $name)
+    {
+        $serverTypes = $this->all(new ServerTypesRequestOpts($name));
+
+        return (count($serverTypes) > 0) ? $serverTypes[0] : null;
+    }
+
+    /**
      * @param  $input
      * @return $this
      */

@@ -42,7 +42,15 @@ class FloatingIPsTest extends TestCase
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->description, 'Web Frontend');
     }
-
+    /**
+     *
+     */
+    public function testGetByName()
+    {
+        $floatingIp = $this->floatingIps->getByName('Web Frontend');
+        $this->assertEquals($floatingIp->id, 4711);
+        $this->assertEquals($floatingIp->name, 'Web Frontend');
+    }
     /**
      *
      */
@@ -67,6 +75,16 @@ class FloatingIPsTest extends TestCase
         $this->assertEquals($floatingIp->description, 'Web Frontend');
     }
 
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testCreateWithName()
+    {
+        $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1', 'Falkenstein DC Park 1', 'DE', 'Falkenstein', 50.47612, 12.370071), new Server(42), "WebServer");
+
+        $this->assertEquals($floatingIp->id, 4711);
+        $this->assertEquals($floatingIp->description, 'Web Frontend');
+    }
 
     /**
      * @throws \LKDev\HetznerCloud\APIException

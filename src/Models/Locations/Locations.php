@@ -54,6 +54,21 @@ class Locations extends Model
     }
 
     /**
+     * Returns a specific location object by its name.
+     *
+     * @see https://docs.hetzner.cloud/#resources-locations-get-1
+     * @param int $locationId
+     * @return \LKDev\HetznerCloud\Models\Locations\Location
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getByName(string $name): Location
+    {
+        $locations = $this->all($name);
+
+        return (count($locations) > 0) ? $locations[0] : null;
+    }
+
+    /**
      * @param  $input
      * @return $this
      */

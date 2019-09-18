@@ -51,6 +51,21 @@ class Datacenters extends Model
     }
 
     /**
+     * Returns a specific datacenter object by its name.
+     *
+     * @see https://docs.hetzner.cloud/#resources-datacenters-get-1
+     * @param int $datacenterId
+     * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getByName(string $name): Datacenter
+    {
+        $datacenters = $this->all($name);
+
+        return (count($datacenters) > 0) ? $datacenters[0] : null;
+    }
+
+    /**
      * @param  $input
      * @return $this
      */

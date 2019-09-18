@@ -29,6 +29,11 @@ class FloatingIp extends Model
     /**
      * @var string
      */
+    public $name;
+
+    /**
+     * @var string
+     */
     public $description;
 
     /**
@@ -69,7 +74,6 @@ class FloatingIp extends Model
      */
     public $protection;
 
-
     /**
      * @var array
      */
@@ -89,6 +93,7 @@ class FloatingIp extends Model
      * @param Protection $protection
      * @param array $labels
      * @param string $created
+     * @param string $name
      */
     public function __construct(
         int $id,
@@ -101,7 +106,8 @@ class FloatingIp extends Model
         bool $blocked,
         Protection $protection,
         array $labels = [],
-        string $created = ''
+        string $created = '',
+        string $name = ''
     )
     {
         $this->id = $id;
@@ -115,6 +121,7 @@ class FloatingIp extends Model
         $this->protection = $protection;
         $this->labels = $labels;
         $this->created = $created;
+        $this->name = $name;
         parent::__construct();
     }
 
@@ -259,7 +266,6 @@ class FloatingIp extends Model
         if ($input == null) {
             return null;
         }
-
-        return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, Location::parse($input->home_location), $input->blocked, Protection::parse($input->protection));
+        return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, Location::parse($input->home_location), $input->blocked, Protection::parse($input->protection), get_object_vars($input->labels), $input->created, $input->name);
     }
 }
