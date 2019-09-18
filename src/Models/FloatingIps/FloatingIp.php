@@ -266,8 +266,6 @@ class FloatingIp extends Model
         if ($input == null) {
             return null;
         }
-        var_dump($input);
-        die();
-        return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, Location::parse($input->home_location), $input->blocked, Protection::parse($input->protection), $input->labels, $input->created, $input->name);
+        return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, Location::parse($input->home_location), $input->blocked, Protection::parse($input->protection), get_object_vars($input->labels), $input->created, $input->name);
     }
 }
