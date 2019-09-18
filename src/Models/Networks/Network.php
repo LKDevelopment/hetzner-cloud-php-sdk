@@ -188,7 +188,7 @@ class Network extends Model
 
 
         $this->labels = $data->labels;
-        //$this->created = $data->created;  //ToDo This should be uncomment, when the backend MR is done
+        $this->created = $data->created;
         return $this;
     }
 
