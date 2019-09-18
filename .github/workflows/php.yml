@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Start Container
+      run: |
+         docker pull lkdevelopment/hetzner-cloud-api-mock
+         docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
+         docker ps -a
+    - name: Install depdendencies
+      run: |
+         composer global require hirak/prestissimo
+         composer install
+    - name: PHP 7.1
+      run: php7.1 vendor/bin/phpunit
+    - name: PHP 7.2
+      run: php7.2 vendor/bin/phpunit
+    - name: PHP 7.3
+      run: php7.3 vendor/bin/phpunit
