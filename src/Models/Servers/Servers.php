@@ -125,6 +125,9 @@ class Servers extends Model
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
+                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                    return Action::parse($action);
+                })->toArray(),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
 
@@ -176,6 +179,9 @@ class Servers extends Model
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
+                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                    return Action::parse($action);
+                })->toArray(),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
 
