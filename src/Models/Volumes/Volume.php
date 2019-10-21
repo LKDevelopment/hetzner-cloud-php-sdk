@@ -88,7 +88,7 @@ class Volume extends Model
         $this->server = $data->server;
         $this->location = Location::parse($data->location);
         $this->protection = $data->protection ?: Protection::parse($data->protection);
-        $this->labels = $data->labels;
+        $this->labels = get_object_vars($data->labels);
 
         return $this;
     }
