@@ -6,9 +6,7 @@ namespace LKDev\HetznerCloud\Models\Networks;
 
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
-use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\Volumes\Volume;
 use LKDev\HetznerCloud\RequestOpts;
 
 /**

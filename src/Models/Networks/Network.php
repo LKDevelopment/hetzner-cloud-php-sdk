@@ -186,7 +186,6 @@ class Network extends Model
             })->toArray();
         $this->protection = Protection::parse($data->protection);
 
-
         $this->labels = get_object_vars($data->labels);
         $this->created = $data->created;
         return $this;

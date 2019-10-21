@@ -39,6 +39,8 @@ class ImagesTest extends TestCase
         $image = $this->images->get(4711);
         $this->assertEquals($image->id, 4711);
         $this->assertEquals($image->name, 'ubuntu-16.04');
+
+        $this->assertEmpty($image->labels);
     }
     /**
      *
@@ -48,6 +50,8 @@ class ImagesTest extends TestCase
         $image = $this->images->getByName('ubuntu-16.04');
         $this->assertEquals($image->id, 4711);
         $this->assertEquals($image->name, 'ubuntu-16.04');
+
+        $this->assertEmpty($image->labels);
     }
 
     /**
