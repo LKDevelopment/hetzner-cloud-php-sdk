@@ -48,6 +48,7 @@ class SSHKey extends Model
      * @param string $name
      * @param string $fingerprint
      * @param string $publicKey
+     * @param array $labels
      */
     public function __construct(int $id, string $name, string $fingerprint, string $publicKey, array $labels = [])
     {
@@ -113,6 +114,6 @@ class SSHKey extends Model
      */
     public static function parse($input)
     {
-        return new self($input->id, $input->name, $input->fingerprint, $input->public_key);
+        return new self($input->id, $input->name, $input->fingerprint, $input->public_key, get_object_vars($input->labels));
     }
 }

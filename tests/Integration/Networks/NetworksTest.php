@@ -60,7 +60,7 @@ class NetworksTest extends TestCase
 
         $this->assertInstanceOf(Protection::class, $network->protection);
 
-        $this->assertEmpty(get_object_vars($network->labels));
+        $this->assertEmpty($network->labels);
 
     }
 
@@ -84,7 +84,7 @@ class NetworksTest extends TestCase
 
         $this->assertInstanceOf(Protection::class, $network->protection);
 
-        $this->assertEmpty(get_object_vars($network->labels));
+        $this->assertEmpty($network->labels);
     }
 
     /**
