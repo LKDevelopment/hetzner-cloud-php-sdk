@@ -9,7 +9,7 @@
     "tightenco/collect": "^5.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "6.5",
+    "phpunit/phpunit": "6.5.14",
     "brianium/paratest": "1.*"
   },
   "license": "MIT",
