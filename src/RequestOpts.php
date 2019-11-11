@@ -19,7 +19,7 @@ class RequestOpts
     /**
      * @var int
      */
-    public $perPage;
+    public $per_page;
 
 
     /**
@@ -41,7 +41,7 @@ class RequestOpts
      */
     public function __construct(int $perPage = null, int $page = null, string $labelSelector = null)
     {
-        $this->perPage = $perPage;
+        $this->per_page = $perPage;
         $this->page = $page;
         $this->labelSelector = $labelSelector;
     }
