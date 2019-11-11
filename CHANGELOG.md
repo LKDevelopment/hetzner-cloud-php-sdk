@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.2 (11.11.2019)
+ + Fix wrong pagination Parameter (#29)
+
 ## 1.8.1 (21.10.2019)
  + Fix labels translation from json to array in `Image`, `Network`, `SSHKey` and `Volume`
 
