@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud;
 
+use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
@@ -110,12 +111,22 @@ class HetznerAPIClient
         $this->baseUrl = $baseUrl;
         return $this;
     }
+
     /**
      * @return GuzzleClient
      */
     public function getHttpClient(): GuzzleClient
     {
         return $this->httpClient;
+    }
+
+    /**
+     * @return GuzzleClient
+     */
+    public function setHttpClient(GuzzleClient $client): self
+    {
+        $this->httpClient = $client;
+        return $this;
     }
 
     /**

@@ -8,6 +8,7 @@
 
 namespace Tests;
 
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
@@ -59,6 +60,17 @@ class BasicClientTest extends TestCase
         $this->assertEquals($userAgent, $client->getUserAgent());
         $client->setUserAgent("changed");
         $this->assertEquals("changed", $client->getUserAgent());
+    }
+
+    /**
+     *
+     */
+    public function testSetHttpClient()
+    {
+        $client = new HetznerAPIClient('IAmTheTestToken', '');
+        $httpClient = new GuzzleClient($client);
+        $client->setHttpClient($httpClient);
+        $this->assertEquals($httpClient, $client->getHttpClient());
     }
 
     /**
