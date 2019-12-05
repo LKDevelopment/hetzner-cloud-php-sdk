@@ -4,9 +4,11 @@ on: [push, pull_request]
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-    
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.1', '7.2', '7.3']
     steps:
     - uses: actions/checkout@v1
     - name: Start Container
@@ -14,13 +16,13 @@ jobs:
          docker pull lkdevelopment/hetzner-cloud-api-mock
          docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
          docker ps -a
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v1
+      with:
+        php-version: ${{ matrix.php-versions }}
     - name: Install depdendencies
       run: |
          composer global require hirak/prestissimo
          composer install
-    - name: PHP 7.1
-      run: php7.1 vendor/bin/phpunit
-    - name: PHP 7.2
-      run: php7.2 vendor/bin/phpunit
-    - name: PHP 7.3
-      run: php7.3 vendor/bin/phpunit
+    - name: Run phpunit
+      run: php vendor/bin/phpunit
