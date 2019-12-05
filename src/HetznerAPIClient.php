@@ -113,17 +113,17 @@ class HetznerAPIClient
     }
 
     /**
-     * @return GuzzleClient
+     * @return Client
      */
-    public function getHttpClient(): GuzzleClient
+    public function getHttpClient(): Client
     {
         return $this->httpClient;
     }
 
     /**
-     * @return GuzzleClient
+     * @return Client
      */
-    public function setHttpClient(GuzzleClient $client): self
+    public function setHttpClient(Client $client): self
     {
         $this->httpClient = $client;
         return $this;
