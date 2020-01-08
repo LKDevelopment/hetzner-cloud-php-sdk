@@ -13,14 +13,15 @@ use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 class FloatingIps extends Model
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
     public $floatingIps;
-
     /**
      * Returns all floating ip objects.
      *
@@ -30,6 +31,30 @@ class FloatingIps extends Model
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(FloatingIPRequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new FloatingIPRequestOpts();
+        }
+        $floating_ips = [];
+        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
+        for ($i = 1; $i < PHP_INT_MAX; $i++) {
+            $_f = $this->list($requestOpts);
+            $floating_ips = array_merge($floating_ips, $_f);
+            if (empty($_f)) {
+                break;
+            }
+        }
+        return $floating_ips;
+    }
+    /**
+     * Returns all floating ip objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-floating-ips-get
+     * @param FloatingIPRequestOpts|RequestOpts|null $requestOpts
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(FloatingIPRequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
@@ -48,7 +73,7 @@ class FloatingIps extends Model
      * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $floatingIpId): FloatingIp
+    public function getById(int $floatingIpId): FloatingIp
     {
         $response = $this->httpClient->get('floating_ips/' . $floatingIpId);
         if (!HetznerAPIClient::hasError($response)) {

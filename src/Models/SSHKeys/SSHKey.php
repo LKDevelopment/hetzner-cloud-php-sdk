@@ -9,12 +9,13 @@
 namespace LKDev\HetznerCloud\Models\SSHKeys;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
  *
  */
-class SSHKey extends Model
+class SSHKey extends Model implements Resource
 {
     /**
      * @var int
@@ -115,5 +116,16 @@ class SSHKey extends Model
     public static function parse($input)
     {
         return new self($input->id, $input->name, $input->fingerprint, $input->public_key, get_object_vars($input->labels));
+    }
+
+    /**
+     * Reload the data of the SSH Key
+     *
+     * @return SSHKey
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->sshKeys()->get($this->id);
     }
 }

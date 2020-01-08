@@ -80,4 +80,9 @@ class APIResponse
         $apiResponse->setHeader($header);
         return $apiResponse;
     }
+
+    public function __get($name)
+    {
+        return $this->getResponsePart($name);
+    }
 }

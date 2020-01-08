@@ -8,13 +8,15 @@
 
 namespace LKDev\HetznerCloud\Models\Datacenters;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
  *
  */
-class Datacenter extends Model
+class Datacenter extends Model implements Resource
 {
     /**
      * @var int
@@ -75,5 +77,20 @@ class Datacenter extends Model
             return null;
         }
        return new self($input->id,$input->name,$input->description,Location::parse($input->location), $input->server_types);
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->datacenters()->get($this->id);
+    }
+
+    public function delete()
+    {
+        throw new \BadMethodCallException("delete on datacenter is not possible");
+    }
+
+    public function update(array $data)
+    {
+        throw new \BadMethodCallException("update on datacenter is not possible");
     }
 }

@@ -12,17 +12,20 @@ namespace LKDev\HetznerCloud\Models\Volumes;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
  * Class Volumes
  * @package LKDev\HetznerCloud\Models\Volumes
  */
-class Volumes extends Model
+class Volumes extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -37,6 +40,31 @@ class Volumes extends Model
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $volumes = [];
+        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
+        for ($i = 1; $i < PHP_INT_MAX; $i++) {
+            $_v = $this->list($requestOpts);
+            $volumes = array_merge($volumes, $_v);
+            if (empty($_v)) {
+                break;
+            }
+        }
+        return $volumes;
+    }
+
+    /**
+     * Returns all existing volume objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-volumes-get
+     * @param RequestOpts|null $requestOpts
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
@@ -67,13 +95,13 @@ class Volumes extends Model
      * Returns a specific volume object. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-volume-get-1
-     * @param int $volumeId
+     * @param int $id
      * @return Volume
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $volumeId): Volume
+    public function getById(int $id): Volume
     {
-        $response = $this->httpClient->get('volumes/' . $volumeId);
+        $response = $this->httpClient->get('volumes/' . $id);
         if (!HetznerAPIClient::hasError($response)) {
             return Volume::parse(json_decode((string)$response->getBody())->volume);
         }
@@ -139,7 +167,6 @@ class Volumes extends Model
      */
     public static function parse($input)
     {
-
         return (new self())->setAdditionalData($input);
     }
 }

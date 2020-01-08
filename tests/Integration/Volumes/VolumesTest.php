@@ -61,4 +61,15 @@ class VolumesTest extends TestCase
         $this->assertEquals($volume->server, 12);
         $this->assertEquals($volume->location->id, 1);
     }
+
+    public function testList()
+    {
+        $volumes = $this->volumes->list();
+        $this->assertCount(1, $volumes);
+        $volume = $volumes[0];
+        $this->assertEquals($volume->id, 4711);
+        $this->assertEquals($volume->name, "database-storage");
+        $this->assertEquals($volume->server, 12);
+        $this->assertEquals($volume->location->id, 1);
+    }
 }

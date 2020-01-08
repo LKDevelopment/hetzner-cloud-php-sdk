@@ -6,12 +6,12 @@
  * Time: 13:51
  */
 
-namespace LKDev\HetznerCloud\Models\Volumes;
+namespace LKDev\HetznerCloud\Models\Images;
 
 
 use LKDev\HetznerCloud\RequestOpts;
 
-class VolumeRequestOpts extends RequestOpts
+class ImageRequestOpts extends RequestOpts
 {
     /**
      * @var string
@@ -19,23 +19,16 @@ class VolumeRequestOpts extends RequestOpts
     public $name;
 
     /**
-     * @var string
-     */
-    public $status;
-
-    /**
      * RequestOpts constructor.
      *
      * @param $name
-     * @param $status
      * @param $perPage
      * @param $page
      * @param $labelSelector
      */
-    public function __construct(string $name = null, string $status = null, int $perPage = null, int $page = null, string $labelSelector = null)
+    public function __construct(string $name = null, int $perPage = null, int $page = null, string $labelSelector = null)
     {
         parent::__construct($perPage, $page, $labelSelector);
         $this->name = $name;
-        $this->status = $status;
     }
 }

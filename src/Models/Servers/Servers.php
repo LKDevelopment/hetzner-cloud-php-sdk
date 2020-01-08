@@ -17,12 +17,14 @@ use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
  *
  */
 class Servers extends Model
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -41,25 +43,34 @@ class Servers extends Model
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
-        $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->servers;
+        $servers = [];
+        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
+        for ($i = 1; $i < PHP_INT_MAX; $i++) {
+            $_s = $this->list($requestOpts);
+            $servers = array_merge($servers, $_s);
+            if (empty($_s)) {
+                break;
+            }
         }
+        return $servers;
     }
 
     /**
-     * Returns a specific server object. The server must exist inside the project.
+     * List server objects.
      *
-     * @see https://docs.hetzner.cloud/#resources-servers-get-1
-     * @param int $serverId
-     * @return \LKDev\HetznerCloud\Models\Servers\Server
+     * @see https://docs.hetzner.cloud/#resources-servers-get
+     * @param RequestOpts|null $requestOpts
+     * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverId): Server
+    public function list(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('servers/' . $serverId);
+        if ($requestOpts == null) {
+            $requestOpts = new ServerRequestOpts();
+        }
+        $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string)$response->getBody())->server);
+            return self::parse(json_decode((string)$response->getBody()))->servers;
         }
     }
 
@@ -73,7 +84,7 @@ class Servers extends Model
      */
     public function getByName(string $serverName)
     {
-        $servers = $this->all(new ServerRequestOpts($serverName));
+        $servers = $this->list(new ServerRequestOpts($serverName));
 
         return (count($servers) > 0) ? $servers[0] : null;
     }

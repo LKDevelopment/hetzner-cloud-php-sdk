@@ -8,16 +8,16 @@ use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Server;
-use LKDev\HetznerCloud\Models\Servers\Servers;
 
 /**
  * Class Network
  * @package LKDev\HetznerCloud\Models\Networks
  */
-class Network extends Model
+class Network extends Model implements Resource
 {
     /**
      * @var int
@@ -197,7 +197,6 @@ class Network extends Model
      */
     public static function parse($input)
     {
-
         return (new self($input->id))->setAdditionalData($input);
     }
 }

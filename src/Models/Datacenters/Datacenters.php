@@ -9,10 +9,14 @@
 namespace LKDev\HetznerCloud\Models\Datacenters;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-class Datacenters extends Model
+class Datacenters extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -26,14 +30,30 @@ class Datacenters extends Model
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(string $name = null): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('datacenters' . (($name != null) ? '?name=' . $name : ''));
+        $locations = [];
+        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
+        for ($i = 1; $i < PHP_INT_MAX; $i++) {
+            $_s = $this->list($requestOpts);
+            $locations = array_merge($locations, $_s);
+            if (empty($_s)) {
+                break;
+            }
+        }
+        return $locations;
+    }
+
+    public function list(RequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new DatacenterRequestOpts();
+        }
+        $response = $this->httpClient->get('locations'. $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody()))->datacenters;
         }
     }
-
     /**
      * Returns a specific datacenter object.
      *
@@ -42,7 +62,7 @@ class Datacenters extends Model
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $datacenterId): Datacenter
+    public function getById(int $datacenterId): Datacenter
     {
         $response = $this->httpClient->get('datacenters/' . $datacenterId);
         if (!HetznerAPIClient::hasError($response)) {
@@ -60,7 +80,7 @@ class Datacenters extends Model
      */
     public function getByName(string $name): Datacenter
     {
-        $datacenters = $this->all($name);
+        $datacenters = $this->all(new DatacenterRequestOpts($name));
 
         return (count($datacenters) > 0) ? $datacenters[0] : null;
     }

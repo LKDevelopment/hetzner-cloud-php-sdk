@@ -2,12 +2,14 @@
 
 namespace LKDev\HetznerCloud\Models\ISOs;
 
+use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
  *
  */
-class ISO extends Model
+class ISO extends Model implements Resource
 {
     /**
      * @var int
@@ -57,5 +59,20 @@ class ISO extends Model
         }
 
         return new self($input->id, $input->name, $input->description, $input->type);
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->isos()->get($this->id);
+    }
+
+    public function delete()
+    {
+        throw new \BadMethodCallException("delete on ISOs is not possible");
+    }
+
+    public function update(array $data)
+    {
+        throw new \BadMethodCallException("update on ISOs is not possible");
     }
 }

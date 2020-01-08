@@ -9,14 +9,19 @@
 namespace LKDev\HetznerCloud\Models\Images;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-class Images extends Model
+class Images extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
     public $images;
+
 
     /**
      * Returns all image objects.
@@ -26,9 +31,24 @@ class Images extends Model
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(string $name = null): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('images' . (($name != null) ? '?name=' . $name : ''));
+        $response = $this->httpClient->get('images' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string)$response->getBody()))->images;
+        }
+    }
+    /**
+     * Returns all image objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-images-get
+     * @param string|null $name
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): array
+    {
+        $response = $this->httpClient->get('images' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody()))->images;
         }
@@ -42,7 +62,7 @@ class Images extends Model
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $imageId): Image
+    public function getById(int $imageId): Image
     {
         $response = $this->httpClient->get('images/' . $imageId);
         if (!HetznerAPIClient::hasError($response)) {
@@ -60,7 +80,7 @@ class Images extends Model
      */
     public function getByName(string $name): Image
     {
-        $images = $this->all($name);
+        $images = $this->all(new ImageRequestOpts($name));
 
         return (count($images) > 0) ? $images[0] : null;
     }

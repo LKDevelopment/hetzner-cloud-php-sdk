@@ -12,6 +12,7 @@ use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;
@@ -23,7 +24,7 @@ use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 /**
  *
  */
-class Server extends Model
+class Server extends Model implements Resource
 {
     /**
      * @var int
@@ -163,12 +164,22 @@ class Server extends Model
      *
      * @return Server
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated 2.0.0-alpha1 use reload() instead
      */
     public function get()
     {
-        $servers = new Servers();
+        return $this->reload();
+    }
 
-        return $servers->get($this->id);
+    /**
+     * Reload the data of the server
+     *
+     * @return Server
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->servers()->get($this->id);
     }
 
     /**
@@ -544,20 +555,6 @@ class Server extends Model
                 'server' => Server::parse(json_decode((string)$response->getBody())->server)
             ], $response->getHeaders());
         }
-    }
-
-    /**
-     * Changes the name of a server.
-     *
-     * @see https://docs.hetzner.cloud/#resources-servers-put
-     * @param string $name
-     * @return APIResponse
-     * @throws \LKDev\HetznerCloud\APIException
-     * @deprecated 1.1.0
-     */
-    public function changeName(string $name): APIResponse
-    {
-        return $this->update(['name' => $name]);
     }
 
     /**

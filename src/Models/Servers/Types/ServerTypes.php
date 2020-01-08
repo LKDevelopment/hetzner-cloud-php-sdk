@@ -9,14 +9,17 @@
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
  *
  */
-class ServerTypes extends Model
+class ServerTypes extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -32,6 +35,28 @@ class ServerTypes extends Model
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
+        $server_types = [];
+        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
+        for ($i = 1; $i < PHP_INT_MAX; $i++) {
+            $_s = $this->list($requestOpts);
+            $ssh_keys = array_merge($server_types, $_s);
+            if (empty($_s)) {
+                break;
+            }
+        }
+        return $server_types;
+    }
+
+    /**
+     * @param RequestOpts $requestOpts
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
         $response = $this->httpClient->get('server_types' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody()))->serverTypes;
@@ -43,7 +68,7 @@ class ServerTypes extends Model
      * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverTypeId): ServerType
+    public function getById(int $serverTypeId)
     {
         $response = $this->httpClient->get('server_types/' . $serverTypeId);
         if (!HetznerAPIClient::hasError($response)) {

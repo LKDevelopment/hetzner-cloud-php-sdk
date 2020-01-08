@@ -31,7 +31,7 @@ class RequestOpts
     /**
      * @var string
      */
-    public $labelSelector;
+    public $label_selector;
 
     /**
      * RequestOpts constructor.
@@ -41,9 +41,12 @@ class RequestOpts
      */
     public function __construct(int $perPage = null, int $page = null, string $labelSelector = null)
     {
+        if ($perPage > HetznerAPIClient::MAX_ENTITIES_PER_PAGE) {
+            throw new \InvalidArgumentException("perPage can not be larger than " . HetznerAPIClient::MAX_ENTITIES_PER_PAGE);
+        }
         $this->per_page = $perPage;
         $this->page = $page;
-        $this->labelSelector = $labelSelector;
+        $this->label_selector = $labelSelector;
     }
 
     /**

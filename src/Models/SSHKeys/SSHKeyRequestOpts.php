@@ -11,7 +11,7 @@ namespace LKDev\HetznerCloud\Models\Volumes;
 
 use LKDev\HetznerCloud\RequestOpts;
 
-class VolumeRequestOpts extends RequestOpts
+class SSHKeyRequestOpts extends RequestOpts
 {
     /**
      * @var string
@@ -21,21 +21,21 @@ class VolumeRequestOpts extends RequestOpts
     /**
      * @var string
      */
-    public $status;
+    public $fingerprint;
 
     /**
      * RequestOpts constructor.
      *
      * @param $name
-     * @param $status
+     * @param $fingerprint
      * @param $perPage
      * @param $page
      * @param $labelSelector
      */
-    public function __construct(string $name = null, string $status = null, int $perPage = null, int $page = null, string $labelSelector = null)
+    public function __construct(string $name = null, string $fingerprint = null, int $perPage = null, int $page = null, string $labelSelector = null)
     {
         parent::__construct($perPage, $page, $labelSelector);
         $this->name = $name;
-        $this->status = $status;
+        $this->fingerprint = $status;
     }
 }

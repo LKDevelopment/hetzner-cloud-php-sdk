@@ -11,6 +11,7 @@ namespace LKDev\HetznerCloud\Models\FloatingIps;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
@@ -19,7 +20,7 @@ use LKDev\HetznerCloud\Models\Servers\Server;
 /**
  *
  */
-class FloatingIp extends Model
+class FloatingIp extends Model implements Resource
 {
     /**
      * @var int
@@ -267,5 +268,13 @@ class FloatingIp extends Model
             return null;
         }
         return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, Location::parse($input->home_location), $input->blocked, Protection::parse($input->protection), get_object_vars($input->labels), $input->created, $input->name);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->floatingIps()->get($this->id);
     }
 }

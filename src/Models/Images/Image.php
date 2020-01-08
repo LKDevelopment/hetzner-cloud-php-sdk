@@ -11,13 +11,14 @@ namespace LKDev\HetznerCloud\Models\Images;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
 
 /**
  *
  */
-class Image extends Model
+class Image extends Model implements Resource
 {
     /**
      * @var int
@@ -229,5 +230,10 @@ class Image extends Model
         }
 
         return new self($input->id, $input->type, (property_exists($input, 'status') ? $input->status : null), $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), get_object_vars($input->labels));
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->images()->get($this->id);
     }
 }

@@ -6,15 +6,18 @@ namespace LKDev\HetznerCloud\Models\Networks;
 
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
  * Class Networks
  * @package LKDev\HetznerCloud\Models\Networks
  */
-class Networks extends Model
+class Networks extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -33,11 +36,37 @@ class Networks extends Model
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
         }
+        $networks = [];
+        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
+        for ($i = 1; $i < PHP_INT_MAX; $i++) {
+            $_s = $this->list($requestOpts);
+            $networks = array_merge($networks, $_s);
+            if (empty($_s)) {
+                break;
+            }
+        }
+        return $networks;
+    }
+
+    /**
+     * Returns all existing server objects.
+     *
+     * @see https://docs.hetzner.cloud/#networks-get-all-networks
+     * @param RequestOpts|null $requestOpts
+     * @return array
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new NetworkRequestOpts();
+        }
         $response = $this->httpClient->get('networks' . $requestOpts->buildQuery());
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody()))->networks;
         }
     }
+
 
     /**
      * Returns a specific server object. The server must exist inside the project.
@@ -47,7 +76,7 @@ class Networks extends Model
      * @return  Network
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverId): Network
+    public function getById(int $serverId): Network
     {
         $response = $this->httpClient->get('networks/' . $serverId);
         if (!HetznerAPIClient::hasError($response)) {

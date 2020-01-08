@@ -65,10 +65,15 @@ class ServersTest extends TestCase
         $this->assertEquals($servers[0]->name, 'my-server');
     }
 
-    public function testRequestsObject()
+    /**
+     *
+     */
+    public function testList()
     {
-        $c = new ServerRequestOpts("test", "online");
+        $servers = $this->servers->list();
 
-        $this->assertEquals("?name=test&status=online", $c->buildQuery());
+        $this->assertEquals(count($servers), 1);
+        $this->assertEquals($servers[0]->id, 42);
+        $this->assertEquals($servers[0]->name, 'my-server');
     }
 }

@@ -13,6 +13,7 @@ use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
@@ -22,7 +23,7 @@ use LKDev\HetznerCloud\Models\Servers\Server;
  * Class Volume
  * @package LKDev\HetznerCloud\Models\Volumes
  */
-class Volume extends Model
+class Volume extends Model implements Resource
 {
     /**
      * @var integer
@@ -74,6 +75,7 @@ class Volume extends Model
         $this->id = $volumeId;
         parent::__construct($httpClient);
     }
+
     /**
      * @param $data
      * @return Volume
@@ -215,4 +217,14 @@ class Volume extends Model
         return (new self($input->id))->setAdditionalData($input);
     }
 
+    /**
+     * Reload the data of the volume
+     *
+     * @return Volume
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->volumes()->get($this->id);
+    }
 }

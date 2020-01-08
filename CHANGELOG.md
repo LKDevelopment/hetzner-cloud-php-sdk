@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 (XX.XX.XXXX)
+ + Breaking Change: Every `all`-Method was renamed to `list`. The `all` Methods now return every entity of the given resource.
+ + Added Request Opts for `SSHKey`
+ + Added `Resources` Interface to all Root Resource Clients like `Networks` and implemented all methods
+ + Added `Resource` Interface to all specific resource clients like `Server` and implemented all methods
+ 
+ + Removed deprecated functions: `Server->changeName()`
 ## 1.8.2 (11.11.2019)
  + Fix wrong pagination Parameter (#29)
 

@@ -6,7 +6,7 @@
  * Time: 14:35
  */
 
-namespace Tests\Integration;
+namespace Tests\Unit;
 
 use LKDev\HetznerCloud\APIResponse;
 use PHPUnit\Framework\TestCase;
@@ -42,5 +42,14 @@ class ApiResponseTest extends TestCase
         $this->assertEquals('12345', $apiResponse->getResponsePart('response1'));
         $this->assertEquals(1234, $apiResponse->getResponsePart('response2'));
         $this->assertFalse($apiResponse->getResponsePart('not_there'));
+    }
+
+    public function testGetMagic()
+    {
+        $apiResponse = new APIResponse();
+        $apiResponse->setResponse(['response1' => '12345', 'response2' => 1234, 'response3' => ['abc', 123, [456, 'efg']]]);
+        $this->assertEquals('12345', $apiResponse->response1);
+        $this->assertEquals(1234, $apiResponse->response2);
+        $this->assertFalse($apiResponse->not_there);
     }
 }
