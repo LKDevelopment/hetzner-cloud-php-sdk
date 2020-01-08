@@ -154,28 +154,14 @@ class Image extends Model implements Resource
      * Updates the Image. You may change the description or convert a Backup image to a Snapshot Image. Only images of type snapshot and backup can be updated.
      *
      * @see https://docs.hetzner.cloud/#resources-images-put
-     * @param string $description
-     * @param string $type
-     * @param array|null $labels
+     * @param array $data
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(string $description = null, string $type = null, array $labels = null): Image
+    public function update(array $data): Image
     {
-        $params = [];
-        if ($description != null) {
-            $params['description'] = $description;
-        }
-
-        if ($type != null) {
-            $params['type'] = $type;
-        }
-
-        if ($labels != null) {
-            $params['labels'] = $labels;
-        }
         $response = $this->httpClient->put('images/' . $this->id, [
-            'json' => $params,
+            'json' => $data,
         ]);
         if (!HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string)$response->getBody())->image);
