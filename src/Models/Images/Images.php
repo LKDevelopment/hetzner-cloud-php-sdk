@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:01
+ * Time: 21:01.
  */
 
 namespace LKDev\HetznerCloud\Models\Images;
@@ -22,7 +22,6 @@ class Images extends Model implements Resources
      */
     public $images;
 
-
     /**
      * Returns all image objects.
      *
@@ -36,8 +35,10 @@ class Images extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new ImageRequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
+
     /**
      * Returns all image objects.
      *
@@ -48,9 +49,9 @@ class Images extends Model implements Resources
      */
     public function list(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('images' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->images;
+        $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->images;
         }
     }
 
@@ -64,9 +65,9 @@ class Images extends Model implements Resources
      */
     public function getById(int $imageId): Image
     {
-        $response = $this->httpClient->get('images/' . $imageId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Image::parse(json_decode((string)$response->getBody())->image);
+        $response = $this->httpClient->get('images/'.$imageId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Image::parse(json_decode((string) $response->getBody())->image);
         }
     }
 

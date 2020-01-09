@@ -1,8 +1,6 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Traits;
-
 
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\RequestOpts;
@@ -12,9 +10,10 @@ trait GetFunctionTrait
     public function get($nameOrId)
     {
         try {
-            return $this->getById((int)$nameOrId);
+            return $this->getById((int) $nameOrId);
         } catch (\Exception $e) {
             unset($e);
+
             return $this->getByName($nameOrId);
         }
     }
@@ -32,6 +31,7 @@ trait GetFunctionTrait
                 $max_pages = 0;
             }
         }
+
         return $entities;
     }
 }

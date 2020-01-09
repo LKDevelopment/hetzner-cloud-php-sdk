@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 20:52
+ * Time: 20:52.
  */
 
 namespace LKDev\HetznerCloud\Models\Servers;
@@ -19,9 +19,6 @@ use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
 class Servers extends Model
 {
     use GetFunctionTrait;
@@ -43,6 +40,7 @@ class Servers extends Model
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
 
@@ -59,9 +57,9 @@ class Servers extends Model
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
-        $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->servers;
+        $response = $this->httpClient->get('servers'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->servers;
         }
     }
 
@@ -81,7 +79,7 @@ class Servers extends Model
     }
 
     /**
-     * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation
+     * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-post
      * @param string $name
@@ -107,8 +105,7 @@ class Servers extends Model
         $user_data = '',
         $volumes = [],
         $automount = false
-    ): APIResponse
-    {
+    ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -119,11 +116,12 @@ class Servers extends Model
                 'user_data' => $user_data,
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
-                'automount' => $automount
+                'automount' => $automount,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
@@ -132,12 +130,11 @@ class Servers extends Model
                 })->toArray(),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
-
         }
     }
 
     /**
-     * Creates a new server in a location instead of in a datacenter. Returns preliminary information about the server as well as an action that covers progress of creation
+     * Creates a new server in a location instead of in a datacenter. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-post
      * @param string $name
@@ -161,8 +158,7 @@ class Servers extends Model
                                      $user_data = '',
                                      $volumes = [],
                                      $automount = false
-    ): APIResponse
-    {
+    ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -173,11 +169,12 @@ class Servers extends Model
                 'user_data' => $user_data,
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
-                'automount' => $automount
+                'automount' => $automount,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
@@ -186,7 +183,6 @@ class Servers extends Model
                 })->toArray(),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
-
         }
     }
 
@@ -213,7 +209,6 @@ class Servers extends Model
      */
     public static function parse($input)
     {
-
         return (new self())->setAdditionalData($input);
     }
 }

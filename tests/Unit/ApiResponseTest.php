@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lkaemmerling
  * Date: 08.08.18
- * Time: 14:35
+ * Time: 14:35.
  */
 
 namespace Tests\Unit;
@@ -13,7 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class ApiResponseTest extends TestCase
 {
-
     public function testSetResponse()
     {
         $apiResponse = new APIResponse();

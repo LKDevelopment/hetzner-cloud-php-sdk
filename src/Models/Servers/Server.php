@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 20:58
+ * Time: 20:58.
  */
 
 namespace LKDev\HetznerCloud\Models\Servers;
@@ -21,9 +21,6 @@ use LKDev\HetznerCloud\Models\Networks\Network;
 use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 
-/**
- *
- */
 class Server extends Model implements Resource
 {
     /**
@@ -121,8 +118,6 @@ class Server extends Model implements Resource
     public $volumes;
 
     /**
-     *
-     *
      * @param int $serverId
      * @param GuzzleClient|null $httpClient
      */
@@ -156,11 +151,12 @@ class Server extends Model implements Resource
         $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
+
         return $this;
     }
 
     /**
-     * Reload the data of the server
+     * Reload the data of the server.
      *
      * @return Server
      * @throws \LKDev\HetznerCloud\APIException
@@ -172,7 +168,7 @@ class Server extends Model implements Resource
     }
 
     /**
-     * Reload the data of the server
+     * Reload the data of the server.
      *
      * @return Server
      * @throws \LKDev\HetznerCloud\APIException
@@ -191,9 +187,9 @@ class Server extends Model implements Resource
     public function powerOn(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweron'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -208,9 +204,9 @@ class Server extends Model implements Resource
     public function softReboot(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -225,9 +221,9 @@ class Server extends Model implements Resource
     public function reset(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -242,9 +238,9 @@ class Server extends Model implements Resource
     public function shutdown(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/shutdown'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -259,9 +255,9 @@ class Server extends Model implements Resource
     public function powerOff(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweroff'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -276,11 +272,12 @@ class Server extends Model implements Resource
     public function resetRootPassword(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset_password'));
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
-                'root_password' => $payload->root_password
+                'root_password' => $payload->root_password,
             ], $response->getHeaders());
         }
     }
@@ -302,11 +299,12 @@ class Server extends Model implements Resource
                 'ssh_keys' => $ssh_keys,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
-                'root_password' => $payload->root_password
+                'root_password' => $payload->root_password,
             ], $response->getHeaders());
         }
     }
@@ -321,9 +319,9 @@ class Server extends Model implements Resource
     public function disableRescue(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -339,24 +337,24 @@ class Server extends Model implements Resource
      */
     public function createImage(string $description = '', string $type = 'snapshot'): APIResponse
     {
-
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
             'json' => [
                 'description' => $description,
                 'type' => $type,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
-                'image' => Image::parse($payload->image)
+                'image' => Image::parse($payload->image),
             ], $response->getHeaders());
         }
     }
 
     /**
-     * Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server
+     * Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-9
      * @param \LKDev\HetznerCloud\Models\Images\Image $image
@@ -370,8 +368,9 @@ class Server extends Model implements Resource
                 'image' => $image->name,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []), $response->getHeaders());
@@ -395,15 +394,15 @@ class Server extends Model implements Resource
                 'upgrade_disk' => $upgradeDisk,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
 
     /**
-     * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%
+     * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
      * @return APIResponse
@@ -412,9 +411,9 @@ class Server extends Model implements Resource
     public function enableBackups(string $backupWindow = null): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -429,9 +428,9 @@ class Server extends Model implements Resource
     public function disableBackups(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_backup'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -451,9 +450,9 @@ class Server extends Model implements Resource
                 'iso' => $iso->name,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -468,9 +467,9 @@ class Server extends Model implements Resource
     public function detachISO(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -492,9 +491,9 @@ class Server extends Model implements Resource
                 'dns_ptr' => $dnsPtr,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -512,10 +511,10 @@ class Server extends Model implements Resource
      */
     public function metrics(string $type, string $start, string $end, int $step = null)
     {
-        $response = $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?') . http_build_query(compact('type', 'start', 'end', 'step')));
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?').http_build_query(compact('type', 'start', 'end', 'step')));
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'metrics' => json_decode((string)$response->getBody())->metrics
+                'metrics' => json_decode((string) $response->getBody())->metrics,
             ], $response->getHeaders());
         }
     }
@@ -530,9 +529,9 @@ class Server extends Model implements Resource
     public function delete(): APIResponse
     {
         $response = $this->httpClient->delete($this->replaceServerIdInUri('servers/{id}'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -550,15 +549,15 @@ class Server extends Model implements Resource
         $response = $this->httpClient->put($this->replaceServerIdInUri('servers/{id}'), [
             'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'server' => Server::parse(json_decode((string)$response->getBody())->server)
+                'server' => self::parse(json_decode((string) $response->getBody())->server),
             ], $response->getHeaders());
         }
     }
 
     /**
-     * Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server
+     * Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
      * @return APIResponse
@@ -567,12 +566,13 @@ class Server extends Model implements Resource
     public function requestConsole(): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'wss_url' => $payload->wss_url,
-                'password' => $payload->password
+                'password' => $payload->password,
             ], $response->getHeaders());
         }
     }
@@ -594,13 +594,12 @@ class Server extends Model implements Resource
                 'rebuild' => $rebuild,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
-
 
     /**
      * @param Network $network
@@ -623,13 +622,12 @@ class Server extends Model implements Resource
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_to_network'), [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
-
 
     /**
      * @param Network $network
@@ -645,9 +643,9 @@ class Server extends Model implements Resource
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_from_network'), [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -662,14 +660,14 @@ class Server extends Model implements Resource
     {
         $payload = [
             'network' => $network->id,
-            'alias_ips' => $aliasIps
+            'alias_ips' => $aliasIps,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_alias_ips'), [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -690,7 +688,7 @@ class Server extends Model implements Resource
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return (new self($input->id))->setAdditionalData($input);

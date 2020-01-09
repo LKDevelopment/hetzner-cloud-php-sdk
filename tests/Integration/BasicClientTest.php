@@ -3,13 +3,12 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 20:40
+ * Time: 20:40.
  */
 
 namespace Tests;
 
 use GuzzleHttp\Client;
-use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
@@ -24,14 +23,10 @@ use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
 
 /**
- * Class BasicClientTest
- * @package Tests
+ * Class BasicClientTest.
  */
 class BasicClientTest extends TestCase
 {
-    /**
-     *
-     */
     public function testGetApiToken()
     {
         $token = 'IAmTheTestToken';
@@ -39,33 +34,24 @@ class BasicClientTest extends TestCase
         $this->assertEquals($token, $client->getApiToken());
     }
 
-    /**
-     *
-     */
     public function testSetBaseUrl()
     {
         $baseUrl = 'https://api.hetzner.cloud/v1/';
         $client = new HetznerAPIClient('IAmTheTestToken', $baseUrl);
         $this->assertEquals($baseUrl, $client->getBaseUrl());
-        $client->setBaseUrl("changed");
-        $this->assertEquals("changed", $client->getBaseUrl());
+        $client->setBaseUrl('changed');
+        $this->assertEquals('changed', $client->getBaseUrl());
     }
 
-    /**
-     *
-     */
     public function testSetUserAgent()
     {
         $userAgent = 'UserAgent';
         $client = new HetznerAPIClient('IAmTheTestToken', '', $userAgent);
         $this->assertEquals($userAgent, $client->getUserAgent());
-        $client->setUserAgent("changed");
-        $this->assertEquals("changed", $client->getUserAgent());
+        $client->setUserAgent('changed');
+        $this->assertEquals('changed', $client->getUserAgent());
     }
 
-    /**
-     *
-     */
     public function testSetHttpClient()
     {
         $client = new HetznerAPIClient('IAmTheTestToken', '');
@@ -74,9 +60,6 @@ class BasicClientTest extends TestCase
         $this->assertEquals($httpClient, $client->getHttpClient());
     }
 
-    /**
-     *
-     */
     public function testMethodsReturnCorrectInstance()
     {
         $this->assertInstanceOf(Actions::class, $this->hetznerApi->actions());
@@ -91,5 +74,4 @@ class BasicClientTest extends TestCase
         $this->assertInstanceOf(Volumes::class, $this->hetznerApi->volumes());
         $this->assertInstanceOf(Networks::class, $this->hetznerApi->networks());
     }
-
 }

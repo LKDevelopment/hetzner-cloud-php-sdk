@@ -1,8 +1,6 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Networks;
-
 
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
@@ -12,8 +10,7 @@ use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
- * Class Networks
- * @package LKDev\HetznerCloud\Models\Networks
+ * Class Networks.
  */
 class Networks extends Model implements Resources
 {
@@ -36,6 +33,7 @@ class Networks extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
 
@@ -52,12 +50,11 @@ class Networks extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
         }
-        $response = $this->httpClient->get('networks' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->networks;
+        $response = $this->httpClient->get('networks'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->networks;
         }
     }
-
 
     /**
      * Returns a specific server object. The server must exist inside the project.
@@ -69,9 +66,9 @@ class Networks extends Model implements Resources
      */
     public function getById(int $serverId): Network
     {
-        $response = $this->httpClient->get('networks/' . $serverId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Network::parse(json_decode((string)$response->getBody())->network);
+        $response = $this->httpClient->get('networks/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Network::parse(json_decode((string) $response->getBody())->network);
         }
     }
 
@@ -86,9 +83,9 @@ class Networks extends Model implements Resources
     public function getByName(string $name)
     {
         $networks = $this->list(new NetworkRequestOpts($name));
+
         return (count($networks) > 0) ? $networks[0] : null;
     }
-
 
     /**
      * @param  $input
@@ -103,6 +100,7 @@ class Networks extends Model implements Resources
                 }
             })
             ->toArray();
+
         return $this;
     }
 
@@ -116,28 +114,29 @@ class Networks extends Model implements Resources
     public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [])
     {
         $payload = [
-            "name" => $name,
-            "ip_range" => $ipRange
+            'name' => $name,
+            'ip_range' => $ipRange,
         ];
-        if (!empty($subnets)) {
+        if (! empty($subnets)) {
             $payload['subnets'] = collect($subnets)->map(function (Subnet $s) {
-return $s->__toRequestPayload();
+                return $s->__toRequestPayload();
             })->toArray();
         }
-        if (!empty($routes)) {
+        if (! empty($routes)) {
             $payload['routes'] = collect($routes)->map(function (Route $r) {
-               return $r->__toRequestPayload();
+                return $r->__toRequestPayload();
             })->toArray();
         }
-        if(!empty($labels)){
+        if (! empty($labels)) {
             $payload['labels'] = $labels;
         }
 
         $response = $this->httpClient->post('networks', [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'network' => Network::parse($payload->network),
             ], $response->getHeaders());
@@ -150,7 +149,6 @@ return $s->__toRequestPayload();
      */
     public static function parse($input)
     {
-
         return (new self())->setAdditionalData($input);
     }
 }

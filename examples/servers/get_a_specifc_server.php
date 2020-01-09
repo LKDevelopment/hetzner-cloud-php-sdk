@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__.'/../bootstrap.php';
 
+require_once __DIR__.'/../bootstrap.php';
 
 $serverId = 494200;
 $server = $hetznerClient->servers()->get($serverId);

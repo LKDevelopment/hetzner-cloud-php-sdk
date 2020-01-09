@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 20:59
+ * Time: 20:59.
  */
 
 namespace LKDev\HetznerCloud\Models\FloatingIps;
@@ -22,6 +22,7 @@ class FloatingIps extends Model
      * @var array
      */
     public $floatingIps;
+
     /**
      * Returns all floating ip objects.
      *
@@ -35,8 +36,10 @@ class FloatingIps extends Model
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
+
     /**
      * Returns all floating ip objects.
      *
@@ -50,9 +53,9 @@ class FloatingIps extends Model
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
         }
-        $response = $this->httpClient->get('floating_ips' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->floatingIps;
+        $response = $this->httpClient->get('floating_ips'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->floatingIps;
         }
     }
 
@@ -66,9 +69,9 @@ class FloatingIps extends Model
      */
     public function getById(int $floatingIpId): FloatingIp
     {
-        $response = $this->httpClient->get('floating_ips/' . $floatingIpId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string)$response->getBody())->floating_ip);
+        $response = $this->httpClient->get('floating_ips/'.$floatingIpId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
         }
     }
 
@@ -86,7 +89,6 @@ class FloatingIps extends Model
 
         return (count($floatingIPs) > 0) ? $floatingIPs[0] : null;
     }
-
 
     /**
      * Creates a new Floating IP assigned to a server.
@@ -106,8 +108,7 @@ class FloatingIps extends Model
         Location $location = null,
         Server $server = null,
         string $name = null
-    ): FloatingIp
-    {
+    ): FloatingIp {
         $response = $this->httpClient->post('floating_ips', [
             'type' => $type,
             'description' => $description,
@@ -115,8 +116,8 @@ class FloatingIps extends Model
             'home_location' => $location ?: $location->name,
             'name' => $name ?: $name,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string)$response->getBody())->floating_ip);
+        if (! HetznerAPIClient::hasError($response)) {
+            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
         }
     }
 

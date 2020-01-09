@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:02
+ * Time: 21:02.
  */
 
 namespace LKDev\HetznerCloud\Models\ISOs;
@@ -35,8 +35,10 @@ class ISOs extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new ISORequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
+
     /**
      * Returns all iso objects.
      *
@@ -50,11 +52,12 @@ class ISOs extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('isos' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->isos;
+        $response = $this->httpClient->get('isos'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->isos;
         }
     }
+
     /**
      * Returns a specific iso object.
      *
@@ -65,13 +68,14 @@ class ISOs extends Model implements Resources
      */
     public function getById(int $isoId): ISO
     {
-        $response = $this->httpClient->get('isos/' . $isoId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return ISO::parse(json_decode((string)$response->getBody())->iso);
+        $response = $this->httpClient->get('isos/'.$isoId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return ISO::parse(json_decode((string) $response->getBody())->iso);
         }
     }
+
     /**
-     * Returns a specific iso object by its name
+     * Returns a specific iso object by its name.
      *
      * @see https://docs.hetzner.cloud/#resources-iso-get-1
      * @param int $isoId
@@ -84,6 +88,7 @@ class ISOs extends Model implements Resources
 
         return (count($isos) > 0) ? $isos[0] : null;
     }
+
     /**
      * @param  $input
      * @return $this

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:01
+ * Time: 21:01.
  */
 
 namespace LKDev\HetznerCloud\Models\Images;
@@ -15,9 +15,6 @@ use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
 
-/**
- *
- */
 class Image extends Model implements Resource
 {
     /**
@@ -51,7 +48,7 @@ class Image extends Model implements Resource
     public $imageSize;
 
     /**
-     * @var integer
+     * @var int
      */
     public $diskSize;
 
@@ -130,8 +127,7 @@ class Image extends Model implements Resource
         bool $rapidDeploy = null,
         Protection $protection = null,
         array $labels = []
-    )
-    {
+    ) {
         $this->id = $id;
         $this->type = $type;
         $this->status = $status;
@@ -158,13 +154,13 @@ class Image extends Model implements Resource
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data): Image
+    public function update(array $data): self
     {
-        $response = $this->httpClient->put('images/' . $this->id, [
+        $response = $this->httpClient->put('images/'.$this->id, [
             'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->image);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->image);
         }
     }
 
@@ -178,14 +174,14 @@ class Image extends Model implements Resource
      */
     public function changeProtection(bool $delete = true): APIResponse
     {
-        $response = $this->httpClient->post('images/' . $this->id . '/actions/change_protection', [
+        $response = $this->httpClient->post('images/'.$this->id.'/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -199,8 +195,8 @@ class Image extends Model implements Resource
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('images/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('images/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
@@ -212,7 +208,7 @@ class Image extends Model implements Resource
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return new self($input->id, $input->type, (property_exists($input, 'status') ? $input->status : null), $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), get_object_vars($input->labels));

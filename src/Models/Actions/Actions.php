@@ -9,9 +9,6 @@ use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
 class Actions extends Model implements Resources
 {
     use GetFunctionTrait;
@@ -26,6 +23,7 @@ class Actions extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
 
@@ -39,9 +37,10 @@ class Actions extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('actions' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody(), false);
+        $response = $this->httpClient->get('actions'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody(), false);
+
             return self::parse($resp)->actions;
         }
     }
@@ -53,15 +52,17 @@ class Actions extends Model implements Resources
      */
     public function getById(int $actionId): Action
     {
-        $response = $this->httpClient->get('actions/' . $actionId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        $response = $this->httpClient->get('actions/'.$actionId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
     }
+
     public function getByName(string $name)
     {
-        throw new \BadMethodCallException("getByName is not possible on Actions");
+        throw new \BadMethodCallException('getByName is not possible on Actions');
     }
+
     /**
      * @param  $input
      * @return $this
@@ -99,6 +100,7 @@ class Actions extends Model implements Resources
             usleep($pollingInterval * 1000000);
             $action = $action->refresh();
         }
+
         return $action->status == 'success';
     }
 }

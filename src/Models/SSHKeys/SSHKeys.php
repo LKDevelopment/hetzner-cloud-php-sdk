@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:00
+ * Time: 21:00.
  */
 
 namespace LKDev\HetznerCloud\Models\SSHKeys;
@@ -15,9 +15,6 @@ use LKDev\HetznerCloud\Models\Volumes\SSHKeyRequestOpts;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
 class SSHKeys extends Model implements Resources
 {
     use GetFunctionTrait;
@@ -38,19 +35,17 @@ class SSHKeys extends Model implements Resources
     public function create(
         string $name,
         string $publicKey
-    ): SSHKey
-    {
+    ): SSHKey {
         $response = $this->httpClient->post('ssh_keys', [
             'json' => [
                 'name' => $name,
                 'public_key' => $publicKey,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        if (! HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
     }
-
 
     /**
      * Returns all ssh key objects.
@@ -65,6 +60,7 @@ class SSHKeys extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
 
@@ -81,9 +77,9 @@ class SSHKeys extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('ssh_keys' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->sshKeys;
+        $response = $this->httpClient->get('ssh_keys'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->sshKeys;
         }
     }
 
@@ -108,6 +104,7 @@ class SSHKeys extends Model implements Resources
     {
         return (new self())->setAdditionalData($input);
     }
+
     /**
      * Returns a specific ssh key object.
      *
@@ -118,11 +115,12 @@ class SSHKeys extends Model implements Resources
      */
     public function getById(int $id)
     {
-        $response = $this->httpClient->get('ssh_keys/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        $response = $this->httpClient->get('ssh_keys/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
     }
+
     /**
      * Returns a specific ssh key object.
      *

@@ -3,18 +3,14 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 11.07.18
- * Time: 18:31
+ * Time: 18:31.
  */
 
 namespace Tests\Integration;
 
-use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\Prices\Prices;
 use Tests\TestCase;
 
-/**
- *
- */
 class PricingTest extends TestCase
 {
     /**
@@ -22,15 +18,11 @@ class PricingTest extends TestCase
      */
     protected $prices;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
         $this->prices = new Prices($this->hetznerApi->getHttpClient());
     }
-
 
     public function testAll()
     {

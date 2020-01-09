@@ -2,12 +2,10 @@
 
 namespace LKDev\HetznerCloud\Models\FloatingIps;
 
-
 use LKDev\HetznerCloud\RequestOpts;
 
 /**
- * Class FloatingIPRequestOpts
- * @package LKDev\HetznerCloud\Models\FloatingIps
+ * Class FloatingIPRequestOpts.
  */
 class FloatingIPRequestOpts extends RequestOpts
 {

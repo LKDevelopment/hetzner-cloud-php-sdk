@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:00
+ * Time: 21:00.
  */
 
 namespace LKDev\HetznerCloud\Models\Locations;
@@ -14,9 +14,6 @@ use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
 class Locations extends Model implements Resources
 {
     use GetFunctionTrait;
@@ -38,8 +35,10 @@ class Locations extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
+
     /**
      * Returns all location objects.
      *
@@ -53,11 +52,12 @@ class Locations extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();
         }
-        $response = $this->httpClient->get('locations'. $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->locations;
+        $response = $this->httpClient->get('locations'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->locations;
         }
     }
+
     /**
      * Returns a specific location object.
      *
@@ -68,9 +68,9 @@ class Locations extends Model implements Resources
      */
     public function getById(int $locationId): Location
     {
-        $response = $this->httpClient->get('locations/' . $locationId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Location::parse(json_decode((string)$response->getBody())->location);
+        $response = $this->httpClient->get('locations/'.$locationId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Location::parse(json_decode((string) $response->getBody())->location);
         }
     }
 
