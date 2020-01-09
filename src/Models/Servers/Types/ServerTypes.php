@@ -35,16 +35,7 @@ class ServerTypes extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $server_types = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $ssh_keys = array_merge($server_types, $_s);
-            if (empty($_s)) {
-                break;
-            }
-        }
-        return $server_types;
+        return $this->_all($requestOpts);
     }
 
     /**
@@ -85,7 +76,7 @@ class ServerTypes extends Model implements Resources
      */
     public function getByName(string $name)
     {
-        $serverTypes = $this->all(new ServerTypesRequestOpts($name));
+        $serverTypes = $this->list(new ServerTypesRequestOpts($name));
 
         return (count($serverTypes) > 0) ? $serverTypes[0] : null;
     }

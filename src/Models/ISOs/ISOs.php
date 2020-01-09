@@ -33,18 +33,9 @@ class ISOs extends Model implements Resources
     public function all(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
-            $requestOpts = new RequestOpts();
+            $requestOpts = new ISORequestOpts();
         }
-        $isos = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $isos = array_merge($isos, $_s);
-            if (empty($_s)) {
-                break;
-            }
-        }
-        return $isos;
+        return $this->_all($requestOpts);
     }
     /**
      * Returns all iso objects.
@@ -89,7 +80,7 @@ class ISOs extends Model implements Resources
      */
     public function getByName(string $name): ISO
     {
-        $isos = $this->all(new ISORequestOpts($name));
+        $isos = $this->list(new ISORequestOpts($name));
 
         return (count($isos) > 0) ? $isos[0] : null;
     }

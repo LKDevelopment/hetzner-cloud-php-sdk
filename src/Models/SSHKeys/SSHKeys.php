@@ -65,16 +65,7 @@ class SSHKeys extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $ssh_keys = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $ssh_keys = array_merge($ssh_keys, $_s);
-            if (empty($_s)) {
-                break;
-            }
-        }
-        return $ssh_keys;
+        return $this->_all($requestOpts);
     }
 
     /**

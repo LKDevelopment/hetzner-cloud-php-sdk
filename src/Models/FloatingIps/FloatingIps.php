@@ -35,16 +35,7 @@ class FloatingIps extends Model
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
         }
-        $floating_ips = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_f = $this->list($requestOpts);
-            $floating_ips = array_merge($floating_ips, $_f);
-            if (empty($_f)) {
-                break;
-            }
-        }
-        return $floating_ips;
+        return $this->_all($requestOpts);
     }
     /**
      * Returns all floating ip objects.
@@ -91,7 +82,7 @@ class FloatingIps extends Model
      */
     public function getByName(string $name)
     {
-        $floatingIPs = $this->all(new FloatingIPRequestOpts($name));
+        $floatingIPs = $this->list(new FloatingIPRequestOpts($name));
 
         return (count($floatingIPs) > 0) ? $floatingIPs[0] : null;
     }

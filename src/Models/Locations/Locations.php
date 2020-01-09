@@ -38,16 +38,7 @@ class Locations extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();
         }
-        $locations = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $locations = array_merge($locations, $_s);
-            if (empty($_s)) {
-                break;
-            }
-        }
-        return $locations;
+        return $this->_all($requestOpts);
     }
     /**
      * Returns all location objects.
@@ -93,7 +84,7 @@ class Locations extends Model implements Resources
      */
     public function getByName(string $name): Location
     {
-        $locations = $this->all(new LocationRequestOpts($name));
+        $locations = $this->list(new LocationRequestOpts($name));
 
         return (count($locations) > 0) ? $locations[0] : null;
     }

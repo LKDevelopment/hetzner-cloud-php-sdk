@@ -43,16 +43,7 @@ class Servers extends Model
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
-        $servers = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $servers = array_merge($servers, $_s);
-            if (empty($_s)) {
-                break;
-            }
-        }
-        return $servers;
+        return $this->_all($requestOpts);
     }
 
     /**

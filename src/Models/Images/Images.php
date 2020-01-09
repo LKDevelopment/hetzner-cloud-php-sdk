@@ -33,10 +33,10 @@ class Images extends Model implements Resources
      */
     public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('images' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->images;
+        if ($requestOpts == null) {
+            $requestOpts = new ImageRequestOpts();
         }
+        return $this->_all($requestOpts);
     }
     /**
      * Returns all image objects.
@@ -80,7 +80,7 @@ class Images extends Model implements Resources
      */
     public function getByName(string $name): Image
     {
-        $images = $this->all(new ImageRequestOpts($name));
+        $images = $this->list(new ImageRequestOpts($name));
 
         return (count($images) > 0) ? $images[0] : null;
     }

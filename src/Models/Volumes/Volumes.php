@@ -44,16 +44,7 @@ class Volumes extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $volumes = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_v = $this->list($requestOpts);
-            $volumes = array_merge($volumes, $_v);
-            if (empty($_v)) {
-                break;
-            }
-        }
-        return $volumes;
+        return $this->_all($requestOpts);
     }
 
     /**
@@ -85,7 +76,7 @@ class Volumes extends Model implements Resources
      */
     public function getByName(string $volumeName)
     {
-        $volumes = $this->all(new VolumeRequestOpts($volumeName));
+        $volumes = $this->list(new VolumeRequestOpts($volumeName));
 
         return (count($volumes) > 0) ? $volumes[0] : null;
 

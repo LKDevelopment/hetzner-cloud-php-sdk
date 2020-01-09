@@ -138,7 +138,8 @@ class Network extends Model implements Resource
     }
 
 
-    public function changeIPRange(string $ipRange){
+    public function changeIPRange(string $ipRange)
+    {
         $response = $this->httpClient->post('networks/' . $this->id . '/actions/change_ip_range', [
             "json" => ["ip_range" => $ipRange],
         ]);
@@ -170,6 +171,7 @@ class Network extends Model implements Resource
             ], $response->getHeaders());
         }
     }
+
     /**
      * @param $data
      * @return $this
@@ -198,5 +200,32 @@ class Network extends Model implements Resource
     public static function parse($input)
     {
         return (new self($input->id))->setAdditionalData($input);
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->networks()->get($this->id);
+    }
+
+    public function delete()
+    {
+        $response = $this->httpClient->delete('networks/' . $this->id);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+            ], $response->getHeaders());
+        }
+    }
+
+    public function update(array $data)
+    {
+        $response = $this->httpClient->put('networks/' . $this->id, [
+            'json' => $data,
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'network' => Server::parse(json_decode((string)$response->getBody())->network)
+            ], $response->getHeaders());
+        }
     }
 }

@@ -36,16 +36,7 @@ class Networks extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
         }
-        $networks = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $networks = array_merge($networks, $_s);
-            if (empty($_s)) {
-                break;
-            }
-        }
-        return $networks;
+        return $this->_all($requestOpts);
     }
 
     /**
@@ -94,7 +85,7 @@ class Networks extends Model implements Resources
      */
     public function getByName(string $name)
     {
-        $networks = $this->all(new NetworkRequestOpts($name));
+        $networks = $this->list(new NetworkRequestOpts($name));
         return (count($networks) > 0) ? $networks[0] : null;
     }
 

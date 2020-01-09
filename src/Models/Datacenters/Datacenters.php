@@ -32,16 +32,10 @@ class Datacenters extends Model implements Resources
      */
     public function all(RequestOpts $requestOpts = null): array
     {
-        $locations = [];
-        $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        for ($i = 1; $i < PHP_INT_MAX; $i++) {
-            $_s = $this->list($requestOpts);
-            $locations = array_merge($locations, $_s);
-            if (empty($_s)) {
-                break;
-            }
+        if ($requestOpts == null) {
+            $requestOpts = new DatacenterRequestOpts();
         }
-        return $locations;
+        return $this->_all($requestOpts);
     }
 
     public function list(RequestOpts $requestOpts = null): array
@@ -80,7 +74,7 @@ class Datacenters extends Model implements Resources
      */
     public function getByName(string $name): Datacenter
     {
-        $datacenters = $this->all(new DatacenterRequestOpts($name));
+        $datacenters = $this->list(new DatacenterRequestOpts($name));
 
         return (count($datacenters) > 0) ? $datacenters[0] : null;
     }
