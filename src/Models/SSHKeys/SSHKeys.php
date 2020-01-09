@@ -13,12 +13,14 @@ use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Volumes\SSHKeyRequestOpts;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
  *
  */
 class SSHKeys extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -95,22 +97,6 @@ class SSHKeys extends Model implements Resources
     }
 
     /**
-     * Returns a specific ssh key object.
-     *
-     * @see https://docs.hetzner.cloud/#resources-ssh-keys-get-1
-     * @param int $sshKeyId
-     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
-     * @throws \LKDev\HetznerCloud\APIException
-     */
-    public function get(int $sshKeyId): SSHKey
-    {
-        $response = $this->httpClient->get('ssh_keys/' . $sshKeyId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
-        }
-    }
-
-    /**
      * @param  $input
      * @return $this
      */
@@ -131,7 +117,14 @@ class SSHKeys extends Model implements Resources
     {
         return (new self())->setAdditionalData($input);
     }
-
+    /**
+     * Returns a specific ssh key object.
+     *
+     * @see https://docs.hetzner.cloud/#resources-ssh-keys-get-1
+     * @param int $sshKeyId
+     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     * @throws \LKDev\HetznerCloud\APIException
+     */
     public function getById(int $id)
     {
         $response = $this->httpClient->get('ssh_keys/' . $id);
@@ -139,7 +132,14 @@ class SSHKeys extends Model implements Resources
             return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
         }
     }
-
+    /**
+     * Returns a specific ssh key object.
+     *
+     * @see https://docs.hetzner.cloud/#resources-ssh-keys-get-1
+     * @param int $sshKeyId
+     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     * @throws \LKDev\HetznerCloud\APIException
+     */
     public function getByName(string $name)
     {
         $sshKeys = $this->list(new SSHKeyRequestOpts($name));

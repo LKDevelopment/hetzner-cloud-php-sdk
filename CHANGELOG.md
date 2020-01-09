@@ -7,6 +7,7 @@
  + Added `Resource` Interface to all specific resource clients like `Server` and implemented all methods
  
  + Removed deprecated functions: `Server->changeName()`
+ 
 ## 1.8.2 (11.11.2019)
  + Fix wrong pagination Parameter (#29)
 
