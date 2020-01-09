@@ -159,7 +159,8 @@ class HetznerAPIClient
      */
     public static function hasError(ResponseInterface $response)
     {
-        if ((property_exists($response, 'error')) || ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300)) {
+        $responseDecoded = json_decode((string)$response->getBody());
+        if ((property_exists($responseDecoded, 'error')) || ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300)) {
             self::throwError($response);
 
             return true;
