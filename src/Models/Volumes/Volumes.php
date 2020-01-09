@@ -60,12 +60,13 @@ class Volumes extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new VolumeRequestOpts();
         }
-        $response = $this->httpClient->get('volumes' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('volumes'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -95,9 +96,9 @@ class Volumes extends Model implements Resources
      */
     public function getById(int $id): Volume
     {
-        $response = $this->httpClient->get('volumes/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Volume::parse(json_decode((string)$response->getBody())->volume);
+        $response = $this->httpClient->get('volumes/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Volume::parse(json_decode((string) $response->getBody())->volume);
         }
     }
 
@@ -131,8 +132,8 @@ class Volumes extends Model implements Resources
         $response = $this->httpClient->post('volumes', [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
@@ -164,11 +165,12 @@ class Volumes extends Model implements Resources
     {
         return (new self())->setAdditionalData($input);
     }
+
     /**
      * @return array
      */
     public function _getKeys(): array
     {
-        return ["one" => "volume", "many" => "volumes"];
+        return ['one' => 'volume', 'many' => 'volumes'];
     }
 }

@@ -35,6 +35,7 @@ class NetworksTest extends TestCase
         $networks = $this->networks->all();
         $this->assertCount(1, $networks);
     }
+
     /**
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -43,6 +44,7 @@ class NetworksTest extends TestCase
         $networks = $this->networks->list()->networks;
         $this->assertCount(1, $networks);
     }
+
     /**
      * @throws \LKDev\HetznerCloud\APIException
      */

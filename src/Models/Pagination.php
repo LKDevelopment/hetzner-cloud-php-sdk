@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models;
 
 // This is a read only model, that does not have any logic. Just a stupid dataholder.
@@ -53,7 +52,6 @@ class Pagination extends Model
         // Force getting the default http client
         parent::__construct(null);
     }
-
 
     /**
      * @param $input

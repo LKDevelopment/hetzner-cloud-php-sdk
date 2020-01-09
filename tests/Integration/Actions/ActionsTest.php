@@ -34,7 +34,7 @@ class ActionsTest extends TestCase
     public function testGetByName()
     {
         $this->expectException(\BadMethodCallException::class);
-        $this->actions->getByName("start_server");
+        $this->actions->getByName('start_server');
     }
 
     public function testAll()

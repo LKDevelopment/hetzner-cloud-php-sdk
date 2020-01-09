@@ -56,10 +56,11 @@ class ISOs extends Model implements Resources
         }
         $response = $this->httpClient->get('isos'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -122,6 +123,6 @@ class ISOs extends Model implements Resources
      */
     public function _getKeys(): array
     {
-        return ["one" => "iso", "many" => "isos"];
+        return ['one' => 'iso', 'many' => 'isos'];
     }
 }

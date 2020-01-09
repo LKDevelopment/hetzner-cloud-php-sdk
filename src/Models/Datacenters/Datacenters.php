@@ -17,8 +17,7 @@ use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
- * Class Datacenters
- * @package LKDev\HetznerCloud\Models\Datacenters
+ * Class Datacenters.
  */
 class Datacenters extends Model implements Resources
 {
@@ -58,13 +57,14 @@ class Datacenters extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new DatacenterRequestOpts();
         }
-        $response = $this->httpClient->get('datacenters' . $requestOpts->buildQuery());
+        $response = $this->httpClient->get('datacenters'.$requestOpts->buildQuery());
 
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -79,9 +79,9 @@ class Datacenters extends Model implements Resources
      */
     public function getById(int $datacenterId): Datacenter
     {
-        $response = $this->httpClient->get('datacenters/' . $datacenterId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Datacenter::parse(json_decode((string)$response->getBody())->{$this->_getKeys()["one"]});
+        $response = $this->httpClient->get('datacenters/'.$datacenterId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Datacenter::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
     }
 
@@ -96,6 +96,7 @@ class Datacenters extends Model implements Resources
     public function getByName(string $name): Datacenter
     {
         $resp = $this->list(new DatacenterRequestOpts($name));
+
         return (count($resp->datacenters) > 0) ? $resp->datacenters[0] : null;
     }
 
@@ -126,6 +127,6 @@ class Datacenters extends Model implements Resources
      */
     public function _getKeys(): array
     {
-        return ["one" => "datacenter", "many" => "datacenters"];
+        return ['one' => 'datacenter', 'many' => 'datacenters'];
     }
 }

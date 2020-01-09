@@ -17,7 +17,6 @@ use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
-use Tests\Unit\ApiResponseTest;
 
 class FloatingIps extends Model implements Resources
 {
@@ -59,10 +58,11 @@ class FloatingIps extends Model implements Resources
         }
         $response = $this->httpClient->get('floating_ips'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -156,6 +156,6 @@ class FloatingIps extends Model implements Resources
      */
     public function _getKeys(): array
     {
-        return ["one" => "floating_ip", "many" => "floating_ips"];
+        return ['one' => 'floating_ip', 'many' => 'floating_ips'];
     }
 }

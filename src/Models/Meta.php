@@ -1,13 +1,11 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models;
 
 // This is a read only model, that does not have any logic. Just a stupid dataholder.
 
 /**
- * Class Meta
- * @package LKDev\HetznerCloud\Models
+ * Class Meta.
  */
 class Meta extends Model
 {

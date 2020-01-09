@@ -41,10 +41,11 @@ class Actions extends Model implements Resources
         }
         $response = $this->httpClient->get('actions'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                "actions" => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                'actions' => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -113,6 +114,6 @@ class Actions extends Model implements Resources
      */
     public function _getKeys(): array
     {
-        return ["one" => "action", "many" => "actions"];
+        return ['one' => 'action', 'many' => 'actions'];
     }
 }
