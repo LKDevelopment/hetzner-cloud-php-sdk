@@ -8,20 +8,24 @@
 
 namespace LKDev\HetznerCloud\Models\FloatingIps;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Locations\Location;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
+use Tests\Unit\ApiResponseTest;
 
-class FloatingIps extends Model
+class FloatingIps extends Model implements Resources
 {
     use GetFunctionTrait;
     /**
      * @var array
      */
-    public $floatingIps;
+    protected $floating_ips;
 
     /**
      * Returns all floating ip objects.
@@ -31,7 +35,7 @@ class FloatingIps extends Model
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(FloatingIPRequestOpts $requestOpts = null): array
+    public function all(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
@@ -45,17 +49,21 @@ class FloatingIps extends Model
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-get
      * @param FloatingIPRequestOpts|RequestOpts|null $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(FloatingIPRequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
         }
         $response = $this->httpClient->get('floating_ips'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->floatingIps;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -85,9 +93,9 @@ class FloatingIps extends Model
      */
     public function getByName(string $name)
     {
-        $floatingIPs = $this->list(new FloatingIPRequestOpts($name));
+        $resp = $this->list(new FloatingIPRequestOpts($name));
 
-        return (count($floatingIPs) > 0) ? $floatingIPs[0] : null;
+        return (count($resp->floating_ips) > 0) ? $resp->floating_ips[0] : null;
     }
 
     /**
@@ -127,7 +135,7 @@ class FloatingIps extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->floatingIps = collect($input->floating_ips)->map(function ($floatingIp, $key) {
+        $this->floating_ips = collect($input)->map(function ($floatingIp, $key) {
             return FloatingIp::parse($floatingIp);
         })->toArray();
 
@@ -141,5 +149,13 @@ class FloatingIps extends Model
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "floating_ip", "many" => "floating_ips"];
     }
 }

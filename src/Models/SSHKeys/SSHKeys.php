@@ -8,10 +8,12 @@
 
 namespace LKDev\HetznerCloud\Models\SSHKeys;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\Volumes\SSHKeyRequestOpts;
+use LKDev\HetznerCloud\Models\SSHKeys\SSHKeyRequestOpts;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
@@ -21,7 +23,7 @@ class SSHKeys extends Model implements Resources
     /**
      * @var array
      */
-    public $sshKeys;
+    protected $ssh_keys;
 
     /**
      * Creates a new SSH Key with the given name and public_key.
@@ -69,17 +71,21 @@ class SSHKeys extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get
      * @param RequestOpts $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
         $response = $this->httpClient->get('ssh_keys'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->sshKeys;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -89,7 +95,7 @@ class SSHKeys extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->sshKeys = collect($input->ssh_keys)->map(function ($sshKey, $key) {
+        $this->ssh_keys = collect($input)->map(function ($sshKey, $key) {
             return SSHKey::parse($sshKey);
         })->toArray();
 
@@ -133,6 +139,13 @@ class SSHKeys extends Model implements Resources
     {
         $sshKeys = $this->list(new SSHKeyRequestOpts($name));
 
-        return (count($sshKeys) > 0) ? $sshKeys[0] : null;
+        return (count($sshKeys->ssh_keys) > 0) ? $sshKeys->ssh_keys[0] : null;
+    }
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "ssh_key", "many" => "ssh_keys"];
     }
 }

@@ -1,7 +1,8 @@
 # Changelog
 
 ## 2.0.0 (XX.XX.XXXX)
- + Every `all`-Method was renamed to `list`. The `all` Methods now return every entity of the given resource.
+ + The `all`-Method on the Models return now every entity of the requested resource. For the old behavior see `list`-Method
+ + Added `list`-Method which allows a better control over getting many entities 
  + Added Request Opts for `SSHKey`, `Location`, `Datacenter`, `Image` and `Action`
  + Added `Resources` Interface to all Root Resource Clients like `Networks` and implemented all methods
  + Added `Resource` Interface to all specific resource clients like `Server` and implemented all methods

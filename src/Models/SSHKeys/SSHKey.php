@@ -32,7 +32,7 @@ class SSHKey extends Model implements Resource
     /**
      * @var string
      */
-    public $publicKey;
+    public $public_key;
 
     /**
      * @var array
@@ -53,7 +53,7 @@ class SSHKey extends Model implements Resource
         $this->id = $id;
         $this->name = $name;
         $this->fingerprint = $fingerprint;
-        $this->publicKey = $publicKey;
+        $this->public_key = $publicKey;
         $this->labels = $labels;
         parent::__construct();
     }

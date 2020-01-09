@@ -25,7 +25,7 @@ class VolumeTest extends TestCase
     public function testAttach()
     {
         $resp = $this->volume->attach(new Server(43), false);
-        $this->assertEquals('attach_volume', $resp->getResponsePart('action')->command);
+        $this->assertEquals('attach_volume', $resp->action->command);
     }
 
     public function testDelete()
@@ -43,18 +43,18 @@ class VolumeTest extends TestCase
     public function testChangeProtection()
     {
         $apiResponse = $this->volume->changeProtection();
-        $this->assertEquals('change_protection', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals('change_protection', $apiResponse->action->command);
     }
 
     public function testResize()
     {
         $resp = $this->volume->resize(50);
-        $this->assertEquals('resize_volume', $resp->getResponsePart('action')->command);
+        $this->assertEquals('resize_volume', $resp->action->command);
     }
 
     public function testDetach()
     {
         $resp = $this->volume->detach();
-        $this->assertEquals('detach_volume', $resp->getResponsePart('action')->command);
+        $this->assertEquals('detach_volume', $resp->action->command);
     }
 }

@@ -39,4 +39,13 @@ class ISOsTest extends TestCase
         $this->assertEquals($isos[0]->id, 4711);
         $this->assertEquals($isos[0]->name, 'FreeBSD-11.0-RELEASE-amd64-dvd1');
     }
+
+    public function testList()
+    {
+        $isos = $this->isos->list()->isos;
+
+        $this->assertEquals(count($isos), 1);
+        $this->assertEquals($isos[0]->id, 4711);
+        $this->assertEquals($isos[0]->name, 'FreeBSD-11.0-RELEASE-amd64-dvd1');
+    }
 }

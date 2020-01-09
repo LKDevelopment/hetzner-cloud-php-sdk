@@ -13,6 +13,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Locations\Location;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
@@ -51,17 +52,21 @@ class Volumes extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-volumes-get
      * @param RequestOpts|null $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
-            $requestOpts = new RequestOpts();
+            $requestOpts = new VolumeRequestOpts();
         }
-        $response = $this->httpClient->get('volumes'.$requestOpts->buildQuery());
-        if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->volumes;
+        $response = $this->httpClient->get('volumes' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -77,7 +82,7 @@ class Volumes extends Model implements Resources
     {
         $volumes = $this->list(new VolumeRequestOpts($volumeName));
 
-        return (count($volumes) > 0) ? $volumes[0] : null;
+        return (count($volumes->volumes) > 0) ? $volumes->volumes[0] : null;
     }
 
     /**
@@ -90,9 +95,9 @@ class Volumes extends Model implements Resources
      */
     public function getById(int $id): Volume
     {
-        $response = $this->httpClient->get('volumes/'.$id);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Volume::parse(json_decode((string) $response->getBody())->volume);
+        $response = $this->httpClient->get('volumes/' . $id);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Volume::parse(json_decode((string)$response->getBody())->volume);
         }
     }
 
@@ -126,8 +131,8 @@ class Volumes extends Model implements Resources
         $response = $this->httpClient->post('volumes', [
             'json' => $payload,
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string) $response->getBody());
+        if (!HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string)$response->getBody());
 
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
@@ -142,7 +147,7 @@ class Volumes extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->volumes = collect($input->volumes)->map(function ($volume, $key) {
+        $this->volumes = collect($input)->map(function ($volume, $key) {
             if ($volume != null) {
                 return Volume::parse($volume);
             }
@@ -158,5 +163,12 @@ class Volumes extends Model implements Resources
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "volume", "many" => "volumes"];
     }
 }

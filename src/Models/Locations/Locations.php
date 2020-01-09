@@ -8,8 +8,10 @@
 
 namespace LKDev\HetznerCloud\Models\Locations;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
@@ -20,7 +22,7 @@ class Locations extends Model implements Resources
     /**
      * @var array
      */
-    public $locations;
+    protected $locations;
 
     /**
      * Returns all location objects.
@@ -44,17 +46,21 @@ class Locations extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get
      * @param RequestOpts $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();
         }
         $response = $this->httpClient->get('locations'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->locations;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -86,7 +92,7 @@ class Locations extends Model implements Resources
     {
         $locations = $this->list(new LocationRequestOpts($name));
 
-        return (count($locations) > 0) ? $locations[0] : null;
+        return (count($locations->locations) > 0) ? $locations->locations[0] : null;
     }
 
     /**
@@ -95,7 +101,7 @@ class Locations extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->locations = collect($input->locations)->map(function ($location, $key) {
+        $this->locations = collect($input)->map(function ($location, $key) {
             return Location::parse($location);
         })->toArray();
 
@@ -109,5 +115,13 @@ class Locations extends Model implements Resources
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "location", "many" => "locations"];
     }
 }

@@ -46,4 +46,13 @@ class DatacentersTest extends TestCase
         $this->assertEquals($datacenters[0]->id, 1);
         $this->assertEquals($datacenters[0]->name, 'fsn1-dc8');
     }
+
+    public function testList()
+    {
+        $datacenters = $this->datacenters->list()->datacenters;
+
+        $this->assertEquals(count($datacenters), 1);
+        $this->assertEquals($datacenters[0]->id, 1);
+        $this->assertEquals($datacenters[0]->name, 'fsn1-dc8');
+    }
 }

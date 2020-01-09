@@ -51,7 +51,7 @@ class ServersTest extends TestCase
 
     public function testList()
     {
-        $servers = $this->servers->list();
+        $servers = $this->servers->list()->servers;
 
         $this->assertEquals(count($servers), 1);
         $this->assertEquals($servers[0]->id, 42);

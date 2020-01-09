@@ -8,8 +8,10 @@
 
 namespace LKDev\HetznerCloud\Models\ISOs;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
@@ -44,17 +46,21 @@ class ISOs extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-isos-get
      * @param RequestOpts $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
         $response = $this->httpClient->get('isos'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->isos;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -95,7 +101,7 @@ class ISOs extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->isos = collect($input->isos)->map(function ($iso, $key) {
+        $this->isos = collect($input)->map(function ($iso, $key) {
             return ISO::parse($iso);
         })->toArray();
 
@@ -109,5 +115,13 @@ class ISOs extends Model implements Resources
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "iso", "many" => "isos"];
     }
 }

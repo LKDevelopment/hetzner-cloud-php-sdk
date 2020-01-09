@@ -15,7 +15,7 @@ class ISORequestOpts extends RequestOpts
     /**
      * @var string
      */
-    public $name;
+    protected $name;
 
     /**
      * RequestOpts constructor.

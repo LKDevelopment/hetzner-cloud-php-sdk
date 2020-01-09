@@ -49,7 +49,7 @@ class ServerTypesTest extends TestCase
 
     public function testList()
     {
-        $server_types = $this->server_types->list();
+        $server_types = $this->server_types->list()->server_types;
 
         $this->assertEquals(count($server_types), 1);
         $this->assertEquals($server_types[0]->id, 1);

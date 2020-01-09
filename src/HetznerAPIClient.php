@@ -136,7 +136,7 @@ class HetznerAPIClient
      */
     public static function throwError(ResponseInterface $response)
     {
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
         if (strlen($body) > 0) {
             $error = \GuzzleHttp\json_decode($body);
             throw new APIException(APIResponse::create([
@@ -155,8 +155,14 @@ class HetznerAPIClient
      */
     public static function hasError(ResponseInterface $response)
     {
-        $responseDecoded = json_decode((string) $response->getBody());
-        if ((property_exists($responseDecoded, 'error')) || ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300)) {
+        $responseDecoded = json_decode((string)$response->getBody());
+        if (strlen((string)$response->getBody()) > 0) {
+            if (property_exists($responseDecoded, 'error')) {
+                self::throwError($response);
+
+                return true;
+            }
+        } elseif ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300) {
             self::throwError($response);
 
             return true;

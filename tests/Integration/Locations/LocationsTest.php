@@ -46,4 +46,13 @@ class LocationsTest extends TestCase
         $this->assertEquals($locations[0]->id, 1);
         $this->assertEquals($locations[0]->name, 'fsn1');
     }
+
+    public function testList()
+    {
+        $locations = $this->locations->list()->locations;
+
+        $this->assertEquals(count($locations), 1);
+        $this->assertEquals($locations[0]->id, 1);
+        $this->assertEquals($locations[0]->name, 'fsn1');
+    }
 }

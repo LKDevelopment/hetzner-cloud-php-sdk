@@ -61,7 +61,7 @@ class VolumesTest extends TestCase
 
     public function testList()
     {
-        $volumes = $this->volumes->list();
+        $volumes = $this->volumes->list()->volumes;
         $this->assertCount(1, $volumes);
         $volume = $volumes[0];
         $this->assertEquals($volume->id, 4711);

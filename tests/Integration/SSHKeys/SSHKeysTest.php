@@ -26,16 +26,18 @@ class SSHKeysTest extends TestCase
 
     public function testGet()
     {
-        $server_type = $this->ssh_keys->get(1);
-        $this->assertEquals($server_type->id, 1);
-        $this->assertEquals($server_type->name, 'cx11');
+        $ssh_key = $this->ssh_keys->get(2323);
+        $this->assertEquals($ssh_key->id, 2323);
+        $this->assertEquals($ssh_key->name, 'My ssh key');
+        $this->assertEquals($ssh_key->public_key, 'ssh-rsa AAAjjk76kgf...Xt');
     }
 
     public function testGetByName()
     {
-        $server_type = $this->ssh_keys->getByName('cx11');
-        $this->assertEquals($server_type->id, 1);
-        $this->assertEquals($server_type->name, 'cx11');
+        $ssh_key = $this->ssh_keys->getByName('My ssh key');
+        $this->assertEquals($ssh_key->id, 2323);
+        $this->assertEquals($ssh_key->name, 'My ssh key');
+        $this->assertEquals($ssh_key->public_key, 'ssh-rsa AAAjjk76kgf...Xt');
     }
 
     public function testAll()
@@ -43,16 +45,18 @@ class SSHKeysTest extends TestCase
         $ssh_keys = $this->ssh_keys->all();
 
         $this->assertEquals(count($ssh_keys), 1);
-        $this->assertEquals($ssh_keys[0]->id, 1);
-        $this->assertEquals($ssh_keys[0]->name, 'cx11');
+        $this->assertEquals($ssh_keys[0]->id, 2323);
+        $this->assertEquals($ssh_keys[0]->name, 'My ssh key');
+        $this->assertEquals($ssh_keys[0]->public_key, 'ssh-rsa AAAjjk76kgf...Xt');
     }
 
     public function testList()
     {
-        $ssh_keys = $this->ssh_keys->list();
+        $ssh_keys = $this->ssh_keys->list()->ssh_keys;
 
         $this->assertEquals(count($ssh_keys), 1);
-        $this->assertEquals($ssh_keys[0]->id, 1);
-        $this->assertEquals($ssh_keys[0]->name, 'cx11');
+        $this->assertEquals($ssh_keys[0]->id, 2323);
+        $this->assertEquals($ssh_keys[0]->name, 'My ssh key');
+        $this->assertEquals($ssh_keys[0]->public_key, 'ssh-rsa AAAjjk76kgf...Xt');
     }
 }

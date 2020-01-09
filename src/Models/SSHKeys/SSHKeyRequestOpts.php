@@ -6,7 +6,7 @@
  * Time: 13:51.
  */
 
-namespace LKDev\HetznerCloud\Models\Volumes;
+namespace LKDev\HetznerCloud\Models\SSHKeys;
 
 use LKDev\HetznerCloud\RequestOpts;
 
@@ -35,6 +35,6 @@ class SSHKeyRequestOpts extends RequestOpts
     {
         parent::__construct($perPage, $page, $labelSelector);
         $this->name = $name;
-        $this->fingerprint = $status;
+        $this->fingerprint = $fingerprint;
     }
 }

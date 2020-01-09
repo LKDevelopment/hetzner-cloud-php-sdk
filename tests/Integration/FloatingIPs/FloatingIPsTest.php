@@ -48,7 +48,14 @@ class FloatingIPsTest extends TestCase
         $this->assertEquals($floatingIps[0]->id, 4711);
         $this->assertEquals($floatingIps[0]->description, 'Web Frontend');
     }
+    public function testList()
+    {
+        $floatingIps = $this->floatingIps->list()->floating_ips;
 
+        $this->assertEquals(count($floatingIps), 1);
+        $this->assertEquals($floatingIps[0]->id, 4711);
+        $this->assertEquals($floatingIps[0]->description, 'Web Frontend');
+    }
     /**
      * @throws \LKDev\HetznerCloud\APIException
      */

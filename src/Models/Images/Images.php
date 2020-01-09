@@ -8,8 +8,10 @@
 
 namespace LKDev\HetznerCloud\Models\Images;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
@@ -20,7 +22,7 @@ class Images extends Model implements Resources
     /**
      * @var array
      */
-    public $images;
+    protected $images;
 
     /**
      * Returns all image objects.
@@ -44,14 +46,18 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
      * @param string|null $name
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->images;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -83,7 +89,7 @@ class Images extends Model implements Resources
     {
         $images = $this->list(new ImageRequestOpts($name));
 
-        return (count($images) > 0) ? $images[0] : null;
+        return (count($images->images) > 0) ? $images->images[0] : null;
     }
 
     /**
@@ -92,7 +98,7 @@ class Images extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->images = collect($input->images)->map(function ($image, $key) {
+        $this->images = collect($input)->map(function ($image, $key) {
             return Image::parse($image);
         })->toArray();
 
@@ -106,5 +112,13 @@ class Images extends Model implements Resources
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "image", "many" => "images"];
     }
 }

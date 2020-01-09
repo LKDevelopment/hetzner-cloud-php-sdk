@@ -14,6 +14,7 @@ use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\Locations\Location;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 use LKDev\HetznerCloud\RequestOpts;
@@ -25,7 +26,7 @@ class Servers extends Model
     /**
      * @var array
      */
-    public $servers;
+    protected $servers;
 
     /**
      * Returns all existing server objects.
@@ -49,17 +50,21 @@ class Servers extends Model
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
      * @param RequestOpts|null $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
         $response = $this->httpClient->get('servers'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody()))->servers;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -75,9 +80,23 @@ class Servers extends Model
     {
         $servers = $this->list(new ServerRequestOpts($serverName));
 
-        return (count($servers) > 0) ? $servers[0] : null;
+        return (count($servers->servers) > 0) ? $servers->servers[0] : null;
     }
-
+    /**
+     * Returns a specific server object by its name. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-get
+     * @param string $serverId
+     * @return \LKDev\HetznerCloud\Models\Servers\Server|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getById(int $serverId): Server
+    {
+        $response = $this->httpClient->get('servers/' . $serverId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string)$response->getBody())->{$this->_getKeys()["one"]});
+        }
+    }
     /**
      * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
@@ -192,7 +211,7 @@ class Servers extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->servers = collect($input->servers)
+        $this->servers = collect($input)
             ->map(function ($server) {
                 if ($server != null) {
                     return Server::parse($server);
@@ -210,5 +229,13 @@ class Servers extends Model
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "server", "many" => "servers"];
     }
 }

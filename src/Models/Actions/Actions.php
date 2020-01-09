@@ -2,8 +2,10 @@
 
 namespace LKDev\HetznerCloud\Models\Actions;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
@@ -16,7 +18,7 @@ class Actions extends Model implements Resources
     /**
      * @var
      */
-    public $actions;
+    protected $actions;
 
     public function all(RequestOpts $requestOpts = null): array
     {
@@ -29,19 +31,21 @@ class Actions extends Model implements Resources
 
     /**
      * @param RequestOpts $requestOpts
-     * @return array
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): array
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
         $response = $this->httpClient->get('actions'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string) $response->getBody(), false);
-
-            return self::parse($resp)->actions;
+            $resp = json_decode((string)$response->getBody());
+            return APIResponse::create([
+                "meta" => Meta::parse($resp->meta),
+                "actions" => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+            ], $response->getHeaders());
         }
     }
 
@@ -69,7 +73,7 @@ class Actions extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->actions = collect($input->actions)->map(function ($action, $key) {
+        $this->actions = collect($input)->map(function ($action, $key) {
             return Action::parse($action);
         })->toArray();
 
@@ -83,7 +87,7 @@ class Actions extends Model implements Resources
      */
     public static function parse($input)
     {
-        return (new self($input->server))->setAdditionalData($input);
+        return (new self())->setAdditionalData($input);
     }
 
     /**
@@ -102,5 +106,13 @@ class Actions extends Model implements Resources
         }
 
         return $action->status == 'success';
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ["one" => "action", "many" => "actions"];
     }
 }

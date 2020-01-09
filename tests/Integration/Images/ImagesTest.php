@@ -54,7 +54,7 @@ class ImagesTest extends TestCase
     public function testUpdate()
     {
         $image = $this->images->get(4711);
-        $updated_image = $image->update('My new Image description', 'snapshot');
+        $updated_image = $image->update(["name" => 'My new Image description', "type" => 'snapshot']);
         $this->assertEquals($image->id, $updated_image->id);
         $this->assertEquals('My new Image description', $updated_image->description);
     }
@@ -69,8 +69,8 @@ class ImagesTest extends TestCase
     {
         $image = $this->images->get(4711);
         $apiResponse = $image->changeProtection();
-        $this->assertEquals('change_protection', $apiResponse->getResponsePart('action')->command);
-        $this->assertEquals($image->id, $apiResponse->getResponsePart('action')->resources[0]->id);
-        $this->assertEquals('image', $apiResponse->getResponsePart('action')->resources[0]->type);
+        $this->assertEquals('change_protection', $apiResponse->action->command);
+        $this->assertEquals($image->id, $apiResponse->action->resources[0]->id);
+        $this->assertEquals('image', $apiResponse->action->resources[0]->type);
     }
 }

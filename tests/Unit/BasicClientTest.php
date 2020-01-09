@@ -6,7 +6,7 @@
  * Time: 20:40.
  */
 
-namespace Tests;
+namespace Tests\Unit;
 
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\HetznerAPIClient;
@@ -21,6 +21,7 @@ use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
+use Tests\TestCase;
 
 /**
  * Class BasicClientTest.
