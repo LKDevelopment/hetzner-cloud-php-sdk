@@ -13,7 +13,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\SSHKeys\SSHKeyRequestOpts;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
@@ -81,10 +80,11 @@ class SSHKeys extends Model implements Resources
         }
         $response = $this->httpClient->get('ssh_keys'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -141,11 +141,12 @@ class SSHKeys extends Model implements Resources
 
         return (count($sshKeys->ssh_keys) > 0) ? $sshKeys->ssh_keys[0] : null;
     }
+
     /**
      * @return array
      */
     public function _getKeys(): array
     {
-        return ["one" => "ssh_key", "many" => "ssh_keys"];
+        return ['one' => 'ssh_key', 'many' => 'ssh_keys'];
     }
 }

@@ -60,10 +60,11 @@ class Servers extends Model
         }
         $response = $this->httpClient->get('servers'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+            $resp = json_decode((string) $response->getBody());
+
             return APIResponse::create([
-                "meta" => Meta::parse($resp->meta),
-                $this->_getKeys()["many"] => self::parse($resp->{$this->_getKeys()["many"]})->{$this->_getKeys()["many"]}
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
     }
@@ -82,6 +83,7 @@ class Servers extends Model
 
         return (count($servers->servers) > 0) ? $servers->servers[0] : null;
     }
+
     /**
      * Returns a specific server object by its name. The server must exist inside the project.
      *
@@ -92,11 +94,12 @@ class Servers extends Model
      */
     public function getById(int $serverId): Server
     {
-        $response = $this->httpClient->get('servers/' . $serverId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string)$response->getBody())->{$this->_getKeys()["one"]});
+        $response = $this->httpClient->get('servers/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
     }
+
     /**
      * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
@@ -236,6 +239,6 @@ class Servers extends Model
      */
     public function _getKeys(): array
     {
-        return ["one" => "server", "many" => "servers"];
+        return ['one' => 'server', 'many' => 'servers'];
     }
 }
