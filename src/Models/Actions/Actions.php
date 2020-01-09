@@ -3,27 +3,38 @@
 namespace LKDev\HetznerCloud\Models\Actions;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
  *
  */
-class Actions extends Model
+class Actions extends Model implements Resources
 {
+    use GetFunctionTrait;
+
     /**
      * @var
      */
     public $actions;
 
+    public function all(RequestOpts $requestOpts = null): array
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        return $this->_all($requestOpts);
+    }
 
     /**
      * @param RequestOpts $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts): array
+    public function list(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
@@ -40,11 +51,17 @@ class Actions extends Model
      * @return \LKDev\HetznerCloud\Models\Actions\Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get($actionId): Action
+    public function getById(int $actionId): Action
     {
-        return (new Action($this->httpClient))->getById($actionId);
+        $response = $this->httpClient->get('actions/' . $actionId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string)$response->getBody())->action);
+        }
     }
-
+    public function getByName(string $name)
+    {
+        throw new \BadMethodCallException("getByName is not possible on Actions");
+    }
     /**
      * @param  $input
      * @return $this

@@ -3,12 +3,13 @@
 namespace LKDev\HetznerCloud\Models\Actions;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
  *
  */
-class Action extends Model
+class Action extends Model implements Resource
 {
     /**
      * @var int
@@ -89,6 +90,7 @@ class Action extends Model
      * @param $actionId
      * @return Action
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated use Actions::getById instead
      */
     public function getById($actionId): Action
     {
@@ -104,7 +106,7 @@ class Action extends Model
      */
     public function refresh(): Action
     {
-        return $this->getById($this->id);
+        return $this->reload();
     }
 
     /**
@@ -116,6 +118,21 @@ class Action extends Model
     public function waitUntilCompleted($pollingInterval = 0.5)
     {
         return Actions::waitActionCompleted($this, $pollingInterval);
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->actions()->getById($this->id);
+    }
+
+    public function delete()
+    {
+        throw new \BadMethodCallException("delete on action is not possible");
+    }
+
+    public function update(array $data)
+    {
+        throw new \BadMethodCallException("update on action is not possible");
     }
 
     /**
