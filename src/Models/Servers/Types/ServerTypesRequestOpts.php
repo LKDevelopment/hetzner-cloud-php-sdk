@@ -2,12 +2,10 @@
 
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
-
 use LKDev\HetznerCloud\RequestOpts;
 
 /**
- * Class ServerRequestOpts
- * @package LKDev\HetznerCloud\Models\Servers
+ * Class ServerRequestOpts.
  */
 class ServerTypesRequestOpts extends RequestOpts
 {
@@ -15,7 +13,6 @@ class ServerTypesRequestOpts extends RequestOpts
      * @var string
      */
     public $name;
-
 
     /**
      * RequestOpts constructor.

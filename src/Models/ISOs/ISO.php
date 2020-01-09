@@ -6,9 +6,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
-/**
- *
- */
 class ISO extends Model implements Resource
 {
     /**
@@ -55,7 +52,7 @@ class ISO extends Model implements Resource
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return new self($input->id, $input->name, $input->description, $input->type);
@@ -68,11 +65,11 @@ class ISO extends Model implements Resource
 
     public function delete()
     {
-        throw new \BadMethodCallException("delete on ISOs is not possible");
+        throw new \BadMethodCallException('delete on ISOs is not possible');
     }
 
     public function update(array $data)
     {
-        throw new \BadMethodCallException("update on ISOs is not possible");
+        throw new \BadMethodCallException('update on ISOs is not possible');
     }
 }

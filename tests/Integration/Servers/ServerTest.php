@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 11.07.18
- * Time: 19:51
+ * Time: 19:51.
  */
 
 namespace Tests\Integration\Servers;
@@ -23,9 +23,6 @@ class ServerTest extends TestCase
      */
     protected $server;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
@@ -199,12 +196,13 @@ class ServerTest extends TestCase
 
     public function testMetrics()
     {
-        $apiResponse = $this->server->metrics('cpu,disk,network', date("c"), date("c"), 60);
+        $apiResponse = $this->server->metrics('cpu,disk,network', date('c'), date('c'), 60);
         $metrics = $apiResponse->getResponsePart('metrics');
-        $this->assertEquals([["1435781470.622", "42"]], $metrics->time_series->name_of_timeseries->values ?? null);
+        $this->assertEquals([['1435781470.622', '42']], $metrics->time_series->name_of_timeseries->values ?? null);
     }
 
-    public function testAttachToNetworkBasic(){
+    public function testAttachToNetworkBasic()
+    {
         $apiResponse = $this->server->attachToNetwork(new Network(4711));
         $this->assertEquals('attach_to_network', $apiResponse->getResponsePart('action')->command);
         $this->assertEquals($this->server->id, $apiResponse->getResponsePart('action')->resources[0]->id);
@@ -214,8 +212,9 @@ class ServerTest extends TestCase
         $this->assertEquals('network', $apiResponse->getResponsePart('action')->resources[1]->type);
     }
 
-    public function testAttachToNetworkAdvanced(){
-        $apiResponse = $this->server->attachToNetwork(new Network(4711), "10.0.1.1", ["10.0.1.2"]);
+    public function testAttachToNetworkAdvanced()
+    {
+        $apiResponse = $this->server->attachToNetwork(new Network(4711), '10.0.1.1', ['10.0.1.2']);
         $this->assertEquals('attach_to_network', $apiResponse->getResponsePart('action')->command);
         $this->assertEquals($this->server->id, $apiResponse->getResponsePart('action')->resources[0]->id);
         $this->assertEquals('server', $apiResponse->getResponsePart('action')->resources[0]->type);
@@ -224,7 +223,8 @@ class ServerTest extends TestCase
         $this->assertEquals('network', $apiResponse->getResponsePart('action')->resources[1]->type);
     }
 
-    public function testDetachFromNetwork(){
+    public function testDetachFromNetwork()
+    {
         $apiResponse = $this->server->detachFromNetwork(new Network(4711));
         $this->assertEquals('detach_from_network', $apiResponse->getResponsePart('action')->command);
         $this->assertEquals($this->server->id, $apiResponse->getResponsePart('action')->resources[0]->id);
@@ -234,8 +234,9 @@ class ServerTest extends TestCase
         $this->assertEquals('network', $apiResponse->getResponsePart('action')->resources[1]->type);
     }
 
-    public function testChangeAliasIPs(){
-        $apiResponse = $this->server->changeAliasIPs(new Network(4711),  ["10.0.1.2"]);
+    public function testChangeAliasIPs()
+    {
+        $apiResponse = $this->server->changeAliasIPs(new Network(4711), ['10.0.1.2']);
         $this->assertEquals('change_alias_ips', $apiResponse->getResponsePart('action')->command);
         $this->assertEquals($this->server->id, $apiResponse->getResponsePart('action')->resources[0]->id);
         $this->assertEquals('server', $apiResponse->getResponsePart('action')->resources[0]->type);

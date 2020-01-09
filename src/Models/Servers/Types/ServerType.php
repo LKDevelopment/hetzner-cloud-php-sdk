@@ -2,12 +2,8 @@
 
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
-use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
 
-/**
- *
- */
 class ServerType extends Model
 {
     /**
@@ -81,6 +77,7 @@ class ServerType extends Model
         $this->prices = $input->prices;
         $this->storageType = $input->storage_type;
         $this->cpuType = $input->cpu_type;
+
         return $this;
     }
 

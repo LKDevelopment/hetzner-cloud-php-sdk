@@ -1,15 +1,12 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Networks;
-
 
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
- * Class Route
- * @package LKDev\HetznerCloud\Models\Networks
+ * Class Route.
  */
 class Route extends Model
 {
@@ -21,7 +18,6 @@ class Route extends Model
      * @var string
      */
     public $gateway;
-
 
     /**
      * Subnet constructor.
@@ -44,18 +40,18 @@ class Route extends Model
     public static function parse($input, GuzzleClient $client = null)
     {
         return collect($input)->map(function ($route) use ($client) {
-            return new Route($route->destination, $route->gateway, $client);
+            return new self($route->destination, $route->gateway, $client);
         })->toArray();
     }
 
     /**
      * @return array
      */
-    public function __toRequestPayload(){
+    public function __toRequestPayload()
+    {
         return [
-            "destination" => $this->destination,
-            "gateway" => $this->gateway,
+            'destination' => $this->destination,
+            'gateway' => $this->gateway,
         ];
     }
-
 }

@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:00
+ * Time: 21:00.
  */
 
 namespace LKDev\HetznerCloud\Models\SSHKeys;
@@ -12,9 +12,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
-/**
- *
- */
 class SSHKey extends Model implements Resource
 {
     /**
@@ -69,14 +66,14 @@ class SSHKey extends Model implements Resource
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data): SSHKey
+    public function update(array $data): self
     {
-        $response = $this->httpClient->put('ssh_keys/' . $this->id, [
-            'json' => $data
+        $response = $this->httpClient->put('ssh_keys/'.$this->id, [
+            'json' => $data,
 
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->ssh_key);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->ssh_key);
         }
     }
 
@@ -89,7 +86,7 @@ class SSHKey extends Model implements Resource
      * @throws \LKDev\HetznerCloud\APIException
      * @deprecated 1.2.0
      */
-    public function changeName(string $newName): SSHKey
+    public function changeName(string $newName): self
     {
         return $this->update(['name' => $newName]);
     }
@@ -103,8 +100,8 @@ class SSHKey extends Model implements Resource
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('ssh_keys/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('ssh_keys/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
@@ -119,7 +116,7 @@ class SSHKey extends Model implements Resource
     }
 
     /**
-     * Reload the data of the SSH Key
+     * Reload the data of the SSH Key.
      *
      * @return SSHKey
      * @throws \LKDev\HetznerCloud\APIException

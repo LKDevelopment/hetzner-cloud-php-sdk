@@ -3,20 +3,21 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 01.04.18
- * Time: 19:02
+ * Time: 19:02.
  */
 
 namespace LKDev\HetznerCloud\Models;
+
 // This is a read only model, that does not have any logic. Just a stupid dataholder.
 class Protection extends Model
 {
     /**
-     * @var boolean
+     * @var bool
      */
     public $delete;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $rebuild;
 
@@ -40,11 +41,10 @@ class Protection extends Model
      */
     public static function parse($input)
     {
-
         if ($input == null) {
-            return null;
+            return;
         }
 
-        return (new self($input->delete, (property_exists($input, 'rebuild') ? $input->rebuild : null)));
+        return new self($input->delete, (property_exists($input, 'rebuild') ? $input->rebuild : null));
     }
 }

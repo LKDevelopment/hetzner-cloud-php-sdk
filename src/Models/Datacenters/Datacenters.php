@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:01
+ * Time: 21:01.
  */
 
 namespace LKDev\HetznerCloud\Models\Datacenters;
@@ -35,6 +35,7 @@ class Datacenters extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new DatacenterRequestOpts();
         }
+
         return $this->_all($requestOpts);
     }
 
@@ -43,11 +44,12 @@ class Datacenters extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new DatacenterRequestOpts();
         }
-        $response = $this->httpClient->get('locations'. $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->datacenters;
+        $response = $this->httpClient->get('locations'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody()))->datacenters;
         }
     }
+
     /**
      * Returns a specific datacenter object.
      *
@@ -58,9 +60,9 @@ class Datacenters extends Model implements Resources
      */
     public function getById(int $datacenterId): Datacenter
     {
-        $response = $this->httpClient->get('datacenters/' . $datacenterId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Datacenter::parse(json_decode((string)$response->getBody())->datacenter);
+        $response = $this->httpClient->get('datacenters/'.$datacenterId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Datacenter::parse(json_decode((string) $response->getBody())->datacenter);
         }
     }
 

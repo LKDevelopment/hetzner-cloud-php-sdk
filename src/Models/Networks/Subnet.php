@@ -1,25 +1,16 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Networks;
 
-
-use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
-use LKDev\HetznerCloud\HetznerAPIClient;
-use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
- * Class Subnet
- * @package LKDev\HetznerCloud\Models\Networks
+ * Class Subnet.
  */
 class Subnet extends Model
 {
-    /**
-     *
-     */
-    const TYPE_SERVER = "server";
+    const TYPE_SERVER = 'server';
     /**
      * @var string
      */
@@ -62,19 +53,19 @@ class Subnet extends Model
     public static function parse($input, GuzzleClient $client = null)
     {
         return collect($input)->map(function ($subnet) use ($client) {
-            return new Subnet($subnet->type, $subnet->ip_range, $subnet->network_zone, $subnet->gateway, $client);
+            return new self($subnet->type, $subnet->ip_range, $subnet->network_zone, $subnet->gateway, $client);
         })->toArray();
     }
 
     /**
      * @return array
      */
-    public function __toRequestPayload(){
+    public function __toRequestPayload()
+    {
         return [
-            "type" => $this->type,
-            "ip_range" => $this->ipRange,
-            "network_zone" => $this->networkZone,
+            'type' => $this->type,
+            'ip_range' => $this->ipRange,
+            'network_zone' => $this->networkZone,
         ];
     }
-
 }

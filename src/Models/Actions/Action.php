@@ -6,9 +6,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
-/**
- *
- */
 class Action extends Model implements Resource
 {
     /**
@@ -73,8 +70,7 @@ class Action extends Model implements Resource
         string $finished = null,
         $resources = null,
         $error = null
-    )
-    {
+    ) {
         $this->id = $id;
         $this->command = $command;
         $this->progress = $progress;
@@ -92,11 +88,11 @@ class Action extends Model implements Resource
      * @throws \LKDev\HetznerCloud\APIException
      * @deprecated use Actions::getById instead
      */
-    public function getById($actionId): Action
+    public function getById($actionId): self
     {
-        $response = $this->httpClient->get('actions/' . $actionId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        $response = $this->httpClient->get('actions/'.$actionId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -104,7 +100,7 @@ class Action extends Model implements Resource
      * @return Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function refresh(): Action
+    public function refresh(): self
     {
         return $this->reload();
     }
@@ -127,12 +123,12 @@ class Action extends Model implements Resource
 
     public function delete()
     {
-        throw new \BadMethodCallException("delete on action is not possible");
+        throw new \BadMethodCallException('delete on action is not possible');
     }
 
     public function update(array $data)
     {
-        throw new \BadMethodCallException("update on action is not possible");
+        throw new \BadMethodCallException('update on action is not possible');
     }
 
     /**
@@ -142,7 +138,7 @@ class Action extends Model implements Resource
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error);

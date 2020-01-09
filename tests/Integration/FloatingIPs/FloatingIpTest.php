@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lkaemmerling
  * Date: 08.08.18
- * Time: 07:58
+ * Time: 07:58.
  */
 
 namespace Tests\Integration\FloatingIPs;
@@ -14,8 +14,7 @@ use LKDev\HetznerCloud\Models\Servers\Server;
 use Tests\TestCase;
 
 /**
- * Class FloatingIpTest
- * @package Tests\tests\FloatingIPs
+ * Class FloatingIpTest.
  */
 class FloatingIpTest extends TestCase
 {
@@ -24,9 +23,6 @@ class FloatingIpTest extends TestCase
      */
     protected $floatingIp;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();

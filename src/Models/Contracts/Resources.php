@@ -1,8 +1,6 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Contracts;
-
 
 use LKDev\HetznerCloud\RequestOpts;
 

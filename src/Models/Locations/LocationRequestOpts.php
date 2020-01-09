@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 2019-03-28
- * Time: 13:51
+ * Time: 13:51.
  */
 
 namespace LKDev\HetznerCloud\Models\Locations;
-
 
 use LKDev\HetznerCloud\RequestOpts;
 

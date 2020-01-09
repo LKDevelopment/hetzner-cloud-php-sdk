@@ -2,25 +2,18 @@
 
 namespace Tests\Integration\Volumes;
 
-use LKDev\HetznerCloud\Models\FloatingIps\FloatingIp;
-use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\Models\Volumes\Volume;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Tests\TestCase;
 
-
 class VolumeTest extends TestCase
 {
-
     /**
      * @var Volume
      */
     protected $volume;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
@@ -43,8 +36,8 @@ class VolumeTest extends TestCase
 
     public function testUpdate()
     {
-        $resp = $this->volume->update(["name" => "new-name"]);
-        $this->assertEquals("new-name", $resp->getResponsePart("volume")->name);
+        $resp = $this->volume->update(['name' => 'new-name']);
+        $this->assertEquals('new-name', $resp->getResponsePart('volume')->name);
     }
 
     public function testChangeProtection()
