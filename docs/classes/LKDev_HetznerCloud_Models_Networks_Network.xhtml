@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - LKDev\HetznerCloud\Models\Networks\Network</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#LKDev_HetznerCloud_Models_Networks">LKDev\HetznerCloud\Models\Networks</a>
+          </li>
+          <li class="separator">Network</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Models/Networks/Network.php.xhtml#line17">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>LKDev\HetznerCloud\Models\Networks\</small>Network</h1>
+        <h4>Class Network.</h4>
+        <p/>
+        <ul/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class Network
+                extends <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model.xhtml">Model</a>
+                implements
+                <a title="LKDev\HetznerCloud\Models\Contracts\Resource" href="../interfaces/LKDev_HetznerCloud_Models_Contracts_Resource.xhtml">Resource</a>
+            {<br/><ul class="none"><li>// members</li><li>public  <a href="#members">$id</a>;
+                    </li><li>public  <a href="#members">$name</a>;
+                    </li><li>public  <a href="#members">$ipRange</a>;
+                    </li><li>public  <a href="#members">$subnets</a>;
+                    </li><li>public  <a href="#members">$routes</a>;
+                    </li><li>public  <a href="#members">$servers</a>;
+                    </li><li>public <span title="LKDev\HetznerCloud\Models\Protection">Protection</span> <a href="#members">$protection</a>;
+                    </li><li>public  <a href="#members">$labels</a>;
+                    </li><li>public  <a href="#members">$created</a>;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="LKDev\HetznerCloud\Models\Model">Model</span></li><li>protected <span title="\LKDev\HetznerCloud\Clients\GuzzleClient">GuzzleClient</span> <a href="#members">$httpClient</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/__construct.xhtml">__construct</a>()
+                    </li><li>public APIResponse <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/addSubnet.xhtml">addSubnet</a>()
+                    </li><li>public APIResponse <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/deleteSubnet.xhtml">deleteSubnet</a>()
+                    </li><li>public APIResponse <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/addRoute.xhtml">addRoute</a>()
+                    </li><li>public APIResponse <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/deleteRoute.xhtml">deleteRoute</a>()
+                    </li><li>public void <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/changeIPRange.xhtml">changeIPRange</a>()
+                    </li><li>public <span title="APIResponse">APIResponse</span> <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/changeProtection.xhtml">changeProtection</a>()
+                    </li><li>private $this <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/setAdditionalData.xhtml">setAdditionalData</a>()
+                    </li><li>public static Network <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/parse.xhtml">parse</a>()
+                    </li><li>public void <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/reload.xhtml">reload</a>()
+                    </li><li>public void <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/delete.xhtml">delete</a>()
+                    </li><li>public void <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/update.xhtml">update</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="LKDev\HetznerCloud\Models\Model">Model</span></li><li>public void <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model/__construct.xhtml">__construct</a>()
+                        </li><li>public static Network <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model/parse.xhtml">parse</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model.xhtml">LKDev\HetznerCloud\Models\Model</a>
+            </li>
+          </ul>
+          <h4>Implements</h4>
+          <ul>
+            <li>
+              <a title="LKDev\HetznerCloud\Models\Contracts\Resource" href="../interfaces/LKDev_HetznerCloud_Models_Contracts_Resource.xhtml">LKDev\HetznerCloud\Models\Contracts\Resource</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="httpClient"><strong>$httpClient</strong>
+                —
+                <a title="\LKDev\HetznerCloud\Clients\GuzzleClient" href="../classes/_LKDev_HetznerCloud_Clients_GuzzleClient.xhtml">\LKDev\HetznerCloud\Clients\GuzzleClient</a></li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="created"><strong>$created</strong>
+                —
+                string</li>
+            <li id="id"><strong>$id</strong>
+                —
+                int</li>
+            <li id="ipRange"><strong>$ipRange</strong>
+                —
+                string</li>
+            <li id="labels"><strong>$labels</strong>
+                —
+                array</li>
+            <li id="name"><strong>$name</strong>
+                —
+                string</li>
+            <li id="protection"><strong>$protection</strong>
+                —
+                <a title="LKDev\HetznerCloud\Models\Protection" href="../classes/LKDev_HetznerCloud_Models_Protection.xhtml">LKDev\HetznerCloud\Models\Protection</a></li>
+            <li id="routes"><strong>$routes</strong>
+                —
+                array</li>
+            <li id="servers"><strong>$servers</strong>
+                —
+                array</li>
+            <li id="subnets"><strong>$subnets</strong>
+                —
+                array</li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>private</h4>
+          <ul>
+            <li id="setAdditionalData">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/setAdditionalData.xhtml">setAdditionalData()</a>
+            </li>
+          </ul>
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/__construct.xhtml">__construct()</a>
+                — Network constructor.</li>
+            <li id="addRoute">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/addRoute.xhtml">addRoute()</a>
+            </li>
+            <li id="addSubnet">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/addSubnet.xhtml">addSubnet()</a>
+            </li>
+            <li id="changeIPRange">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/changeIPRange.xhtml">changeIPRange()</a>
+            </li>
+            <li id="changeProtection"><a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/changeProtection.xhtml">changeProtection()</a>
+                — Changes the protection configuration of the network.</li>
+            <li id="delete">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/delete.xhtml">delete()</a>
+            </li>
+            <li id="deleteRoute">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/deleteRoute.xhtml">deleteRoute()</a>
+            </li>
+            <li id="deleteSubnet">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/deleteSubnet.xhtml">deleteSubnet()</a>
+            </li>
+            <li id="parse">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/parse.xhtml">parse()</a>
+            </li>
+            <li id="reload">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/reload.xhtml">reload()</a>
+            </li>
+            <li id="update">
+              <a title="LKDev\HetznerCloud\Models\Networks\Network" href="../classes/LKDev_HetznerCloud_Models_Networks_Network/update.xhtml">update()</a>
+            </li>
+          </ul>
+          <h3>Inherited from <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model.xhtml">LKDev\HetznerCloud\Models\Model</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="parse">
+              <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model/parse.xhtml">parse()</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>

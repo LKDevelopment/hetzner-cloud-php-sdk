@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>phpDox - LKDev\HetznerCloud\Models\FloatingIps\FloatingIp</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" media="screen"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  </head>
+  <body>
+    <nav class="topnav">
+      <ul>
+        <li>
+          <div class="logo"><span>/**</span>phpDox</div>
+        </li>
+        <li class="separator">
+          <a href="../index.xhtml">Overview</a>
+        </li>
+        <li class="separator">
+          <a href="../namespaces.xhtml">Namespaces</a>
+        </li>
+        <li>
+          <a href="../interfaces.xhtml">Interfaces</a>
+        </li>
+        <li>
+          <a href="../classes.xhtml">Classes</a>
+        </li>
+        <li>
+          <a href="../traits.xhtml">Traits</a>
+        </li>
+        <li class="separator">
+          <a href="../source/index.xhtml">Source</a>
+        </li>
+      </ul>
+    </nav>
+    <div id="mainstage">
+      <div class="box">
+        <ul class="breadcrumb">
+          <li>
+            <a href="../index.xhtml">Overview</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml">Classes</a>
+          </li>
+          <li class="separator">
+            <a href="../classes.xhtml#LKDev_HetznerCloud_Models_FloatingIps">LKDev\HetznerCloud\Models\FloatingIps</a>
+          </li>
+          <li class="separator">FloatingIp</li>
+        </ul>
+      </div>
+      <nav class="box">
+        <ul>
+          <li>
+            <a href="#introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#synopsis">Synopsis</a>
+          </li>
+          <li>
+            <a href="#hierarchy">Hierarchy</a>
+          </li>
+          <li>
+            <a href="#members">Members</a>
+          </li>
+          <li>
+            <a href="#methods">Methods</a>
+          </li>
+          <li>
+            <a href="../source/Models/FloatingIps/FloatingIp.php.xhtml#line20">Source</a>
+          </li>
+        </ul>
+      </nav>
+      <section>
+        <h1 id="introduction"><small>LKDev\HetznerCloud\Models\FloatingIps\</small>FloatingIp</h1>
+        <h4/>
+        <p/>
+        <h2 id="synopsis">Synopsis</h2>
+        <div class="synopsis">class FloatingIp
+                extends <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model.xhtml">Model</a>
+                implements
+                <a title="LKDev\HetznerCloud\Models\Contracts\Resource" href="../interfaces/LKDev_HetznerCloud_Models_Contracts_Resource.xhtml">Resource</a>
+            {<br/><ul class="none"><li>// members</li><li>public  <a href="#members">$id</a>;
+                    </li><li>public  <a href="#members">$name</a>;
+                    </li><li>public  <a href="#members">$description</a>;
+                    </li><li>public  <a href="#members">$created</a>;
+                    </li><li>public  <a href="#members">$ip</a>;
+                    </li><li>public  <a href="#members">$type</a>;
+                    </li><li>public  <a href="#members">$server</a>;
+                    </li><li>public  <a href="#members">$dnsPtr</a>;
+                    </li><li>public <span title="\LKDev\HetznerCloud\Models\Locations\Location">Location</span> <a href="#members">$homeLocation</a>;
+                    </li><li>public <span title="LKDev\HetznerCloud\Models\FloatingIps\bool">bool</span> <a href="#members">$blocked</a>;
+                    </li><li>public <span title="LKDev\HetznerCloud\Models\FloatingIps\array|\LKDev\HetznerCloud\Models\Protection">Protection</span> <a href="#members">$protection</a>;
+                    </li><li>public  <a href="#members">$labels</a>;
+                    </li></ul><ul class="none"><li>// Inherited members from <span title="LKDev\HetznerCloud\Models\Model">Model</span></li><li>protected <span title="\LKDev\HetznerCloud\Clients\GuzzleClient">GuzzleClient</span> <a href="#members">$httpClient</a>;
+                        </li></ul><ul class="none"><li>// methods</li><li>public void <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/__construct.xhtml">__construct</a>()
+                    </li><li>public <span title="FloatingIp">FloatingIp</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/update.xhtml">update</a>()
+                    </li><li>public <span title="FloatingIp">FloatingIp</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/changeDescription.xhtml">changeDescription</a>()
+                    </li><li>public bool <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/delete.xhtml">delete</a>()
+                    </li><li>public <span title="APIResponse">APIResponse</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/changeProtection.xhtml">changeProtection</a>()
+                    </li><li>public <span title="APIResponse">APIResponse</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/assignTo.xhtml">assignTo</a>()
+                    </li><li>public <span title="APIResponse">APIResponse</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/unassign.xhtml">unassign</a>()
+                    </li><li>public <span title="APIResponse">APIResponse</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/changeReverseDNS.xhtml">changeReverseDNS</a>()
+                    </li><li>public static <span title="FloatingIp">FloatingIp</span> <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/parse.xhtml">parse</a>()
+                    </li><li>public mixed <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/reload.xhtml">reload</a>()
+                    </li></ul><ul class="none"><li>// Inherited methods from <span title="LKDev\HetznerCloud\Models\Model">Model</span></li><li>public void <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model/__construct.xhtml">__construct</a>()
+                        </li><li>public static FloatingIp <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model/parse.xhtml">parse</a>()
+                        </li></ul>
+
+            }<br/></div>
+        <h2 id="hierarchy">Hierarchy</h2>
+        <div class="styled">
+          <h4>Extends</h4>
+          <ul>
+            <li>
+              <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model.xhtml">LKDev\HetznerCloud\Models\Model</a>
+            </li>
+          </ul>
+          <h4>Implements</h4>
+          <ul>
+            <li>
+              <a title="LKDev\HetznerCloud\Models\Contracts\Resource" href="../interfaces/LKDev_HetznerCloud_Models_Contracts_Resource.xhtml">LKDev\HetznerCloud\Models\Contracts\Resource</a>
+            </li>
+          </ul>
+        </div>
+        <h2 id="members">Members</h2>
+        <div class="styled members">
+          <h4>protected</h4>
+          <ul class="members">
+            <li id="httpClient"><strong>$httpClient</strong>
+                —
+                <a title="\LKDev\HetznerCloud\Clients\GuzzleClient" href="../classes/_LKDev_HetznerCloud_Clients_GuzzleClient.xhtml">\LKDev\HetznerCloud\Clients\GuzzleClient</a></li>
+          </ul>
+          <h4>public</h4>
+          <ul class="members">
+            <li id="blocked"><strong>$blocked</strong>
+                —
+                <a title="LKDev\HetznerCloud\Models\FloatingIps\bool" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_bool.xhtml">LKDev\HetznerCloud\Models\FloatingIps\bool</a></li>
+            <li id="created"><strong>$created</strong>
+                —
+                string</li>
+            <li id="description"><strong>$description</strong>
+                —
+                string</li>
+            <li id="dnsPtr"><strong>$dnsPtr</strong>
+                —
+                array</li>
+            <li id="homeLocation"><strong>$homeLocation</strong>
+                —
+                <a title="\LKDev\HetznerCloud\Models\Locations\Location" href="../classes/_LKDev_HetznerCloud_Models_Locations_Location.xhtml">\LKDev\HetznerCloud\Models\Locations\Location</a></li>
+            <li id="id"><strong>$id</strong>
+                —
+                int</li>
+            <li id="ip"><strong>$ip</strong>
+                —
+                string</li>
+            <li id="labels"><strong>$labels</strong>
+                —
+                array</li>
+            <li id="name"><strong>$name</strong>
+                —
+                string</li>
+            <li id="protection"><strong>$protection</strong>
+                —
+                <a title="LKDev\HetznerCloud\Models\FloatingIps\array|\LKDev\HetznerCloud\Models\Protection" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_array|_LKDev_HetznerCloud_Models_Protection.xhtml">LKDev\HetznerCloud\Models\FloatingIps\array|\LKDev\HetznerCloud\Models\Protection</a></li>
+            <li id="server"><strong>$server</strong>
+                —
+                int</li>
+            <li id="type"><strong>$type</strong>
+                —
+                string</li>
+          </ul>
+        </div>
+        <h2 id="methods">Methods</h2>
+        <div class="styled">
+          <h4>public</h4>
+          <ul>
+            <li id="__construct"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/__construct.xhtml">__construct()</a>
+                — FloatingIp constructor.</li>
+            <li id="assignTo"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/assignTo.xhtml">assignTo()</a>
+                — Assigns a Floating IP to a server.</li>
+            <li id="changeDescription"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/changeDescription.xhtml">changeDescription()</a>
+                — Changes the description of a Floating IP.</li>
+            <li id="changeProtection"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/changeProtection.xhtml">changeProtection()</a>
+                — Changes the protection configuration of the Floating IP.</li>
+            <li id="changeReverseDNS"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/changeReverseDNS.xhtml">changeReverseDNS()</a>
+                — Changes the hostname that will appear when getting the hostname belonging to this Floating IP.</li>
+            <li id="delete"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/delete.xhtml">delete()</a>
+                — Deletes a Floating IP. If it is currently assigned to a server it will automatically get unassigned.</li>
+            <li id="parse">
+              <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/parse.xhtml">parse()</a>
+            </li>
+            <li id="reload">
+              <a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/reload.xhtml">reload()</a>
+            </li>
+            <li id="unassign"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/unassign.xhtml">unassign()</a>
+                — Unassigns a Floating IP, resulting in it being unreachable. You may assign it to a server again at a later time.</li>
+            <li id="update"><a title="LKDev\HetznerCloud\Models\FloatingIps\FloatingIp" href="../classes/LKDev_HetznerCloud_Models_FloatingIps_FloatingIp/update.xhtml">update()</a>
+                — Update a Floating IP.</li>
+          </ul>
+          <h3>Inherited from <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model.xhtml">LKDev\HetznerCloud\Models\Model</a></h3>
+          <h4>public</h4>
+          <ul>
+            <li id="parse">
+              <a title="LKDev\HetznerCloud\Models\Model" href="../classes/LKDev_HetznerCloud_Models_Model/parse.xhtml">parse()</a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <footer>
+      <span>Generated using phpDox 0.12.0 - Copyright (C) 2010 - 2020 by Arne Blankerts and Contributors</span>
+    </footer>
+  </body>
+</html>
