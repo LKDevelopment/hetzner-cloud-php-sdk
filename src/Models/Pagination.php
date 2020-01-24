@@ -41,7 +41,7 @@ class Pagination extends Model
      * @param int $last_page
      * @param int $total_entries
      */
-    public function __construct(int $page, int $per_page, $previous_page, $next_page, int $last_page, int $total_entries)
+    public function __construct($page, $per_page, $previous_page, $next_page, $last_page, $total_entries)
     {
         $this->page = $page;
         $this->per_page = $per_page;
