@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.0.0 (XX.XX.XXXX)
+## 2.0.0 (24.01.2020)
  + The `all`-Method on the Models return now every entity of the requested resource. For the old behavior see `list`-Method
  + Added `list`-Method which allows a better control over getting many entities 
  + Added Request Opts for `SSHKey`, `Location`, `Datacenter`, `Image` and `Action`
