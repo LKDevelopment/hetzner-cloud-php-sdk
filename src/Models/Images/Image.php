@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:01
+ * Time: 21:01.
  */
 
 namespace LKDev\HetznerCloud\Models\Images;
@@ -11,13 +11,11 @@ namespace LKDev\HetznerCloud\Models\Images;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
 
-/**
- *
- */
-class Image extends Model
+class Image extends Model implements Resource
 {
     /**
      * @var int
@@ -50,7 +48,7 @@ class Image extends Model
     public $imageSize;
 
     /**
-     * @var integer
+     * @var int
      */
     public $diskSize;
 
@@ -129,8 +127,7 @@ class Image extends Model
         bool $rapidDeploy = null,
         Protection $protection = null,
         array $labels = []
-    )
-    {
+    ) {
         $this->id = $id;
         $this->type = $type;
         $this->status = $status;
@@ -153,31 +150,17 @@ class Image extends Model
      * Updates the Image. You may change the description or convert a Backup image to a Snapshot Image. Only images of type snapshot and backup can be updated.
      *
      * @see https://docs.hetzner.cloud/#resources-images-put
-     * @param string $description
-     * @param string $type
-     * @param array|null $labels
+     * @param array $data
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(string $description = null, string $type = null, array $labels = null): Image
+    public function update(array $data): self
     {
-        $params = [];
-        if ($description != null) {
-            $params['description'] = $description;
-        }
-
-        if ($type != null) {
-            $params['type'] = $type;
-        }
-
-        if ($labels != null) {
-            $params['labels'] = $labels;
-        }
-        $response = $this->httpClient->put('images/' . $this->id, [
-            'json' => $params,
+        $response = $this->httpClient->put('images/'.$this->id, [
+            'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->image);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->image);
         }
     }
 
@@ -191,14 +174,14 @@ class Image extends Model
      */
     public function changeProtection(bool $delete = true): APIResponse
     {
-        $response = $this->httpClient->post('images/' . $this->id . '/actions/change_protection', [
+        $response = $this->httpClient->post('images/'.$this->id.'/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -212,8 +195,8 @@ class Image extends Model
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('images/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('images/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
@@ -225,9 +208,14 @@ class Image extends Model
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return new self($input->id, $input->type, (property_exists($input, 'status') ? $input->status : null), $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), get_object_vars($input->labels));
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->images()->get($this->id);
     }
 }

@@ -2,6 +2,12 @@
   "name": "lkdevelopment/hetzner-cloud-php-sdk",
   "description": "A inofficial PHP SDK for the Hetzner Cloud API.",
   "type": "library",
+  "keywords": [
+    "hetzner",
+    "hcloud",
+    "hetzner cloud",
+    "cloud php library"
+  ],
   "require": {
     "php": ">=7.0.0",
     "ext-json": "*",

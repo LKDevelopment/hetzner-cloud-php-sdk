@@ -17,15 +17,14 @@ use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- *
- */
 class HetznerAPIClient
 {
     /**
-     * Version of the API Client
+     * Version of the API Client.
      */
-    const VERSION = "1.8.2";
+    const VERSION = '2.0.0';
+
+    const MAX_ENTITIES_PER_PAGE = 50;
 
     /**
      * @var string
@@ -54,7 +53,6 @@ class HetznerAPIClient
     protected $httpClient;
 
     /**
-     *
      * @param string $apiToken
      * @param string $baseUrl
      * @param string $userAgent
@@ -99,6 +97,7 @@ class HetznerAPIClient
     public function setUserAgent(string $userAgent): self
     {
         $this->userAgent = $userAgent;
+
         return $this;
     }
 
@@ -109,6 +108,7 @@ class HetznerAPIClient
     public function setBaseUrl(string $baseUrl): self
     {
         $this->baseUrl = $baseUrl;
+
         return $this;
     }
 
@@ -126,6 +126,7 @@ class HetznerAPIClient
     public function setHttpClient(Client $client): self
     {
         $this->httpClient = $client;
+
         return $this;
     }
 
@@ -135,15 +136,15 @@ class HetznerAPIClient
      */
     public static function throwError(ResponseInterface $response)
     {
-        $body = (string)$response->getBody();
+        $body = (string) $response->getBody();
         if (strlen($body) > 0) {
             $error = \GuzzleHttp\json_decode($body);
             throw new APIException(APIResponse::create([
-                'error' => $error->error
+                'error' => $error->error,
             ]), $error->error->message);
         }
         throw new APIException(APIResponse::create([
-            'response' => $response
+            'response' => $response,
         ]), 'The response is not parseable');
     }
 
@@ -154,7 +155,14 @@ class HetznerAPIClient
      */
     public static function hasError(ResponseInterface $response)
     {
-        if ((property_exists($response, 'error')) || ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300)) {
+        $responseDecoded = json_decode((string) $response->getBody());
+        if (strlen((string) $response->getBody()) > 0) {
+            if (property_exists($responseDecoded, 'error')) {
+                self::throwError($response);
+
+                return true;
+            }
+        } elseif ($response->getStatusCode() <= 200 && $response->getStatusCode() >= 300) {
             self::throwError($response);
 
             return true;

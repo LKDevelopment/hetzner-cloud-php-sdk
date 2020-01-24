@@ -3,12 +3,7 @@
 namespace LKDev\HetznerCloud;
 
 use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\ResponseInterface;
-use Throwable;
 
-/**
- *
- */
 class APIException extends \Exception
 {
     /**
@@ -24,7 +19,7 @@ class APIException extends \Exception
      * @param int $code
      * @param \Throwable|null $previous
      */
-    public function __construct(APIResponse $response, string $message = "", int $code = 0, \Throwable $previous = null)
+    public function __construct(APIResponse $response, string $message = '', int $code = 0, \Throwable $previous = null)
     {
         $this->response = $response;
         parent::__construct($message, $code, $previous);
@@ -33,7 +28,8 @@ class APIException extends \Exception
     /**
      * @return APIResponse
      */
-    public function getApiResponse(){
+    public function getApiResponse()
+    {
         return $this->response;
     }
 }

@@ -3,24 +3,26 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 20:58
+ * Time: 20:58.
  */
 
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
-class ServerTypes extends Model
+class ServerTypes extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
-    public $serverTypes;
+    protected $server_types;
 
     /**
      * @param RequestOpts $requestOpts
@@ -32,9 +34,28 @@ class ServerTypes extends Model
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('server_types' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->serverTypes;
+
+        return $this->_all($requestOpts);
+    }
+
+    /**
+     * @param RequestOpts $requestOpts
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): APIResponse
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('server_types'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -43,11 +64,11 @@ class ServerTypes extends Model
      * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverTypeId): ServerType
+    public function getById(int $serverTypeId)
     {
-        $response = $this->httpClient->get('server_types/' . $serverTypeId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return ServerType::parse(json_decode((string)$response->getBody())->server_type);
+        $response = $this->httpClient->get('server_types/'.$serverTypeId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return ServerType::parse(json_decode((string) $response->getBody())->server_type);
         }
     }
 
@@ -60,9 +81,9 @@ class ServerTypes extends Model
      */
     public function getByName(string $name)
     {
-        $serverTypes = $this->all(new ServerTypesRequestOpts($name));
+        $serverTypes = $this->list(new ServerTypesRequestOpts($name));
 
-        return (count($serverTypes) > 0) ? $serverTypes[0] : null;
+        return (count($serverTypes->server_types) > 0) ? $serverTypes->server_types[0] : null;
     }
 
     /**
@@ -71,7 +92,7 @@ class ServerTypes extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->serverTypes = collect($input->server_types)->map(function ($serverType, $key) {
+        $this->server_types = collect($input)->map(function ($serverType, $key) {
             return ServerType::parse($serverType);
         })->toArray();
 
@@ -85,5 +106,13 @@ class ServerTypes extends Model
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'server_type', 'many' => 'server_types'];
     }
 }

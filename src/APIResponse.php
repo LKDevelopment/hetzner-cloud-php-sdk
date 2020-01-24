@@ -3,21 +3,18 @@
  * Created by PhpStorm.
  * User: lkaemmerling
  * Date: 08.08.18
- * Time: 14:06
+ * Time: 14:06.
  */
 
 namespace LKDev\HetznerCloud;
 
-
 use LKDev\HetznerCloud\Models\Model;
 
 /**
- * Class ApiResponse
- * @package LKDev\HetznerCloud
+ * Class ApiResponse.
  */
 class APIResponse
 {
-
     /**
      * @var array
      */
@@ -37,7 +34,7 @@ class APIResponse
 
     /**
      * @param string|null $resource
-     * @return Model|string|boolean
+     * @return Model|string|bool
      */
     public function getResponsePart(string $resource = null)
     {
@@ -75,9 +72,15 @@ class APIResponse
      */
     public static function create(array $response, array $header = [])
     {
-        $apiResponse = new APIResponse();
+        $apiResponse = new self();
         $apiResponse->setResponse($response);
         $apiResponse->setHeader($header);
+
         return $apiResponse;
+    }
+
+    public function __get($name)
+    {
+        return $this->getResponsePart($name);
     }
 }

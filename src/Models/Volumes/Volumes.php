@@ -3,26 +3,28 @@
  * Created by PhpStorm.
  * User: lkaemmerling
  * Date: 2018-09-20
- * Time: 15:58
+ * Time: 15:58.
  */
 
 namespace LKDev\HetznerCloud\Models\Volumes;
 
-
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Locations\Location;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
- * Class Volumes
- * @package LKDev\HetznerCloud\Models\Volumes
+ * Class Volumes.
  */
-class Volumes extends Model
+class Volumes extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
@@ -41,9 +43,31 @@ class Volumes extends Model
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('volumes' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->volumes;
+
+        return $this->_all($requestOpts);
+    }
+
+    /**
+     * Returns all existing volume objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-volumes-get
+     * @param RequestOpts|null $requestOpts
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): APIResponse
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new VolumeRequestOpts();
+        }
+        $response = $this->httpClient->get('volumes'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -57,25 +81,24 @@ class Volumes extends Model
      */
     public function getByName(string $volumeName)
     {
-        $volumes = $this->all(new VolumeRequestOpts($volumeName));
+        $volumes = $this->list(new VolumeRequestOpts($volumeName));
 
-        return (count($volumes) > 0) ? $volumes[0] : null;
-
+        return (count($volumes->volumes) > 0) ? $volumes->volumes[0] : null;
     }
 
     /**
      * Returns a specific volume object. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-volume-get-1
-     * @param int $volumeId
+     * @param int $id
      * @return Volume
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $volumeId): Volume
+    public function getById(int $id): Volume
     {
-        $response = $this->httpClient->get('volumes/' . $volumeId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Volume::parse(json_decode((string)$response->getBody())->volume);
+        $response = $this->httpClient->get('volumes/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Volume::parse(json_decode((string) $response->getBody())->volume);
         }
     }
 
@@ -98,10 +121,10 @@ class Volumes extends Model
         ];
         if ($location == null && $server != null) {
             $payload['server'] = $server->id;
-        } else if ($location != null && $server == null) {
+        } elseif ($location != null && $server == null) {
             $payload['location'] = $location->id;
         } else {
-            throw new \InvalidArgumentException("Please specify only a server or a location");
+            throw new \InvalidArgumentException('Please specify only a server or a location');
         }
         if ($format != null) {
             $payload['format'] = $format;
@@ -109,8 +132,9 @@ class Volumes extends Model
         $response = $this->httpClient->post('volumes', [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'volume' => Volume::parse($payload->volume),
@@ -124,7 +148,7 @@ class Volumes extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->volumes = collect($input->volumes)->map(function ($volume, $key) {
+        $this->volumes = collect($input)->map(function ($volume, $key) {
             if ($volume != null) {
                 return Volume::parse($volume);
             }
@@ -139,7 +163,14 @@ class Volumes extends Model
      */
     public static function parse($input)
     {
-
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'volume', 'many' => 'volumes'];
     }
 }

@@ -3,35 +3,30 @@
  * Created by PhpStorm.
  * User: lkaemmerling
  * Date: 05.09.18
- * Time: 10:55
+ * Time: 10:55.
  */
 
 namespace LKDev\HetznerCloud;
 
-
 /**
- * Class RequestOpts
- * @package LKDev\HetznerCloud
+ * Class RequestOpts.
  */
 class RequestOpts
 {
-
     /**
      * @var int
      */
     public $per_page;
-
 
     /**
      * @var int
      */
     public $page;
 
-
     /**
      * @var string
      */
-    public $labelSelector;
+    public $label_selector;
 
     /**
      * RequestOpts constructor.
@@ -41,9 +36,12 @@ class RequestOpts
      */
     public function __construct(int $perPage = null, int $page = null, string $labelSelector = null)
     {
+        if ($perPage > HetznerAPIClient::MAX_ENTITIES_PER_PAGE) {
+            throw new \InvalidArgumentException('perPage can not be larger than '.HetznerAPIClient::MAX_ENTITIES_PER_PAGE);
+        }
         $this->per_page = $perPage;
         $this->page = $page;
-        $this->labelSelector = $labelSelector;
+        $this->label_selector = $labelSelector;
     }
 
     /**
@@ -55,6 +53,7 @@ class RequestOpts
             ->filter(function ($var) {
                 return $var != null;
             })->toArray();
-        return count($values) == 0 ? '' : ('?' . http_build_query($values));
+
+        return count($values) == 0 ? '' : ('?'.http_build_query($values));
     }
 }

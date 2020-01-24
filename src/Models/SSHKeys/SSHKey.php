@@ -3,18 +3,16 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:00
+ * Time: 21:00.
  */
 
 namespace LKDev\HetznerCloud\Models\SSHKeys;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
-/**
- *
- */
-class SSHKey extends Model
+class SSHKey extends Model implements Resource
 {
     /**
      * @var int
@@ -34,7 +32,7 @@ class SSHKey extends Model
     /**
      * @var string
      */
-    public $publicKey;
+    public $public_key;
 
     /**
      * @var array
@@ -55,7 +53,7 @@ class SSHKey extends Model
         $this->id = $id;
         $this->name = $name;
         $this->fingerprint = $fingerprint;
-        $this->publicKey = $publicKey;
+        $this->public_key = $publicKey;
         $this->labels = $labels;
         parent::__construct();
     }
@@ -68,14 +66,14 @@ class SSHKey extends Model
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data): SSHKey
+    public function update(array $data): self
     {
-        $response = $this->httpClient->put('ssh_keys/' . $this->id, [
-            'json' => $data
+        $response = $this->httpClient->put('ssh_keys/'.$this->id, [
+            'json' => $data,
 
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->ssh_key);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->ssh_key);
         }
     }
 
@@ -88,7 +86,7 @@ class SSHKey extends Model
      * @throws \LKDev\HetznerCloud\APIException
      * @deprecated 1.2.0
      */
-    public function changeName(string $newName): SSHKey
+    public function changeName(string $newName): self
     {
         return $this->update(['name' => $newName]);
     }
@@ -102,8 +100,8 @@ class SSHKey extends Model
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('ssh_keys/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('ssh_keys/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
     }
@@ -115,5 +113,16 @@ class SSHKey extends Model
     public static function parse($input)
     {
         return new self($input->id, $input->name, $input->fingerprint, $input->public_key, get_object_vars($input->labels));
+    }
+
+    /**
+     * Reload the data of the SSH Key.
+     *
+     * @return SSHKey
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->sshKeys()->get($this->id);
     }
 }

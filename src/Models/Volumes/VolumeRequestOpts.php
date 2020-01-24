@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 2019-03-28
- * Time: 13:51
+ * Time: 13:51.
  */
 
 namespace LKDev\HetznerCloud\Models\Volumes;
-
 
 use LKDev\HetznerCloud\RequestOpts;
 
@@ -27,6 +26,7 @@ class VolumeRequestOpts extends RequestOpts
      * RequestOpts constructor.
      *
      * @param $name
+     * @param $status
      * @param $perPage
      * @param $page
      * @param $labelSelector

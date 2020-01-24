@@ -3,20 +3,29 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:01
+ * Time: 21:01.
  */
 
 namespace LKDev\HetznerCloud\Models\Datacenters;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-class Datacenters extends Model
+/**
+ * Class Datacenters.
+ */
+class Datacenters extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
-    public $datacenters;
+    protected $datacenters;
 
     /**
      * Returns all datacenter objects.
@@ -26,11 +35,37 @@ class Datacenters extends Model
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(string $name = null): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('datacenters' . (($name != null) ? '?name=' . $name : ''));
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->datacenters;
+        if ($requestOpts == null) {
+            $requestOpts = new DatacenterRequestOpts();
+        }
+
+        return $this->_all($requestOpts);
+    }
+
+    /**
+     * List datacenter objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-datacenters-get
+     * @param RequestOpts|null $requestOpts
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): APIResponse
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new DatacenterRequestOpts();
+        }
+        $response = $this->httpClient->get('datacenters'.$requestOpts->buildQuery());
+
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -42,11 +77,11 @@ class Datacenters extends Model
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $datacenterId): Datacenter
+    public function getById(int $datacenterId): Datacenter
     {
-        $response = $this->httpClient->get('datacenters/' . $datacenterId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Datacenter::parse(json_decode((string)$response->getBody())->datacenter);
+        $response = $this->httpClient->get('datacenters/'.$datacenterId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Datacenter::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
     }
 
@@ -60,9 +95,9 @@ class Datacenters extends Model
      */
     public function getByName(string $name): Datacenter
     {
-        $datacenters = $this->all($name);
+        $resp = $this->list(new DatacenterRequestOpts($name));
 
-        return (count($datacenters) > 0) ? $datacenters[0] : null;
+        return (count($resp->datacenters) > 0) ? $resp->datacenters[0] : null;
     }
 
     /**
@@ -71,7 +106,7 @@ class Datacenters extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->datacenters = collect($input->datacenters)->map(function ($datacenter, $key) {
+        $this->datacenters = collect($input)->map(function ($datacenter, $key) {
             return Datacenter::parse($datacenter);
         })->toArray();
 
@@ -85,5 +120,13 @@ class Datacenters extends Model
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'datacenter', 'many' => 'datacenters'];
     }
 }

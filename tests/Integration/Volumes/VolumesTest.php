@@ -13,9 +13,6 @@ class VolumesTest extends TestCase
      */
     protected $volumes;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
@@ -24,20 +21,20 @@ class VolumesTest extends TestCase
 
     public function testCreate()
     {
-        $resp = $this->volumes->create("database-storage", 42, null, new Location(1, "nbg1"));
+        $resp = $this->volumes->create('database-storage', 42, null, new Location(1, 'nbg1'));
 
-        $volume = $resp->getResponsePart("volume");
+        $volume = $resp->getResponsePart('volume');
         $this->assertEquals($volume->id, 4711);
-        $this->assertEquals($volume->name, "database-storage");
+        $this->assertEquals($volume->name, 'database-storage');
         $this->assertEquals($volume->server, 12);
         $this->assertEquals($volume->location->id, 1);
     }
 
     public function testGetByName()
     {
-        $volume = $this->volumes->getByName("database-storage");
+        $volume = $this->volumes->getByName('database-storage');
         $this->assertEquals($volume->id, 4711);
-        $this->assertEquals($volume->name, "database-storage");
+        $this->assertEquals($volume->name, 'database-storage');
         $this->assertEquals($volume->server, 12);
         $this->assertEquals($volume->location->id, 1);
     }
@@ -46,7 +43,7 @@ class VolumesTest extends TestCase
     {
         $volume = $this->volumes->get(4711);
         $this->assertEquals($volume->id, 4711);
-        $this->assertEquals($volume->name, "database-storage");
+        $this->assertEquals($volume->name, 'database-storage');
         $this->assertEquals($volume->server, 12);
         $this->assertEquals($volume->location->id, 1);
     }
@@ -57,7 +54,18 @@ class VolumesTest extends TestCase
         $this->assertCount(1, $volumes);
         $volume = $volumes[0];
         $this->assertEquals($volume->id, 4711);
-        $this->assertEquals($volume->name, "database-storage");
+        $this->assertEquals($volume->name, 'database-storage');
+        $this->assertEquals($volume->server, 12);
+        $this->assertEquals($volume->location->id, 1);
+    }
+
+    public function testList()
+    {
+        $volumes = $this->volumes->list()->volumes;
+        $this->assertCount(1, $volumes);
+        $volume = $volumes[0];
+        $this->assertEquals($volume->id, 4711);
+        $this->assertEquals($volume->name, 'database-storage');
         $this->assertEquals($volume->server, 12);
         $this->assertEquals($volume->location->id, 1);
     }

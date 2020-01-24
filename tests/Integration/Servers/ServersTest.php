@@ -3,18 +3,14 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 11.07.18
- * Time: 18:31
+ * Time: 18:31.
  */
 
 namespace Tests\Integration\Servers;
 
-use LKDev\HetznerCloud\Models\Servers\ServerRequestOpts;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use Tests\TestCase;
 
-/**
- *
- */
 class ServersTest extends TestCase
 {
     /**
@@ -22,18 +18,12 @@ class ServersTest extends TestCase
      */
     protected $servers;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
         $this->servers = new Servers($this->hetznerApi->getHttpClient());
     }
 
-    /**
-     *
-     */
     public function testGet()
     {
         $server = $this->servers->get(42);
@@ -42,9 +32,6 @@ class ServersTest extends TestCase
         $this->assertEquals($server->status, 'running');
     }
 
-    /**
-     *
-     */
     public function testGetByName()
     {
         $server = $this->servers->getByName('my-server');
@@ -53,9 +40,6 @@ class ServersTest extends TestCase
         $this->assertEquals($server->status, 'running');
     }
 
-    /**
-     *
-     */
     public function testAll()
     {
         $servers = $this->servers->all();
@@ -65,10 +49,12 @@ class ServersTest extends TestCase
         $this->assertEquals($servers[0]->name, 'my-server');
     }
 
-    public function testRequestsObject()
+    public function testList()
     {
-        $c = new ServerRequestOpts("test", "online");
+        $servers = $this->servers->list()->servers;
 
-        $this->assertEquals("?name=test&status=online", $c->buildQuery());
+        $this->assertEquals(count($servers), 1);
+        $this->assertEquals($servers[0]->id, 42);
+        $this->assertEquals($servers[0]->name, 'my-server');
     }
 }

@@ -2,12 +2,10 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
-
 use LKDev\HetznerCloud\RequestOpts;
 
 /**
- * Class ServerRequestOpts
- * @package LKDev\HetznerCloud\Models\Servers
+ * Class ServerRequestOpts.
  */
 class ServerRequestOpts extends RequestOpts
 {

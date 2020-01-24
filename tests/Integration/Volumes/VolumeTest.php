@@ -2,25 +2,18 @@
 
 namespace Tests\Integration\Volumes;
 
-use LKDev\HetznerCloud\Models\FloatingIps\FloatingIp;
-use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\Models\Volumes\Volume;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Tests\TestCase;
 
-
 class VolumeTest extends TestCase
 {
-
     /**
      * @var Volume
      */
     protected $volume;
 
-    /**
-     *
-     */
     public function setUp()
     {
         parent::setUp();
@@ -32,7 +25,7 @@ class VolumeTest extends TestCase
     public function testAttach()
     {
         $resp = $this->volume->attach(new Server(43), false);
-        $this->assertEquals('attach_volume', $resp->getResponsePart('action')->command);
+        $this->assertEquals('attach_volume', $resp->action->command);
     }
 
     public function testDelete()
@@ -43,25 +36,25 @@ class VolumeTest extends TestCase
 
     public function testUpdate()
     {
-        $resp = $this->volume->update(["name" => "new-name"]);
-        $this->assertEquals("new-name", $resp->getResponsePart("volume")->name);
+        $resp = $this->volume->update(['name' => 'new-name']);
+        $this->assertEquals('new-name', $resp->getResponsePart('volume')->name);
     }
 
     public function testChangeProtection()
     {
         $apiResponse = $this->volume->changeProtection();
-        $this->assertEquals('change_protection', $apiResponse->getResponsePart('action')->command);
+        $this->assertEquals('change_protection', $apiResponse->action->command);
     }
 
     public function testResize()
     {
         $resp = $this->volume->resize(50);
-        $this->assertEquals('resize_volume', $resp->getResponsePart('action')->command);
+        $this->assertEquals('resize_volume', $resp->action->command);
     }
 
     public function testDetach()
     {
         $resp = $this->volume->detach();
-        $this->assertEquals('detach_volume', $resp->getResponsePart('action')->command);
+        $this->assertEquals('detach_volume', $resp->action->command);
     }
 }

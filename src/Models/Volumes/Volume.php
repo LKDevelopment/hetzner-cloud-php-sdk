@@ -3,29 +3,28 @@
  * Created by PhpStorm.
  * User: lkaemmerling
  * Date: 2018-09-20
- * Time: 15:58
+ * Time: 15:58.
  */
 
 namespace LKDev\HetznerCloud\Models\Volumes;
-
 
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Server;
 
 /**
- * Class Volume
- * @package LKDev\HetznerCloud\Models\Volumes
+ * Class Volume.
  */
-class Volume extends Model
+class Volume extends Model implements Resource
 {
     /**
-     * @var integer
+     * @var int
      */
     public $id;
 
@@ -35,7 +34,7 @@ class Volume extends Model
     public $name;
 
     /**
-     * @var integer
+     * @var int
      */
     public $size;
 
@@ -64,8 +63,6 @@ class Volume extends Model
     public $linux_device;
 
     /**
-     *
-     *
      * @param int $volumeId
      * @param GuzzleClient|null $httpClient
      */
@@ -74,6 +71,7 @@ class Volume extends Model
         $this->id = $volumeId;
         parent::__construct($httpClient);
     }
+
     /**
      * @param $data
      * @return Volume
@@ -102,8 +100,8 @@ class Volume extends Model
      */
     public function delete(): APIResponse
     {
-        $response = $this->httpClient->delete('volumes/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('volumes/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([], $response->getHeaders());
         }
     }
@@ -115,14 +113,14 @@ class Volume extends Model
      */
     public function attach(Server $server)
     {
-        $response = $this->httpClient->post('volumes/' . $this->id . '/actions/attach', [
+        $response = $this->httpClient->post('volumes/'.$this->id.'/actions/attach', [
             'json' => [
                 'server' => $server->id,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -133,10 +131,10 @@ class Volume extends Model
      */
     public function detach()
     {
-        $response = $this->httpClient->post('volumes/' . $this->id . '/actions/detach');
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->post('volumes/'.$this->id.'/actions/detach');
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -148,14 +146,14 @@ class Volume extends Model
      */
     public function resize(int $size)
     {
-        $response = $this->httpClient->post('volumes/' . $this->id . '/actions/resize', [
+        $response = $this->httpClient->post('volumes/'.$this->id.'/actions/resize', [
             'json' => [
                 'size' => $size,
-            ]
+            ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -170,12 +168,12 @@ class Volume extends Model
      */
     public function update(array $data)
     {
-        $response = $this->httpClient->put('volumes/' . $this->id, [
-            'json' => $data
+        $response = $this->httpClient->put('volumes/'.$this->id, [
+            'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'volume' => Volume::parse(json_decode((string)$response->getBody())->volume)
+                'volume' => self::parse(json_decode((string) $response->getBody())->volume),
             ], $response->getHeaders());
         }
     }
@@ -190,14 +188,14 @@ class Volume extends Model
      */
     public function changeProtection(bool $delete = true): APIResponse
     {
-        $response = $this->httpClient->post('volumes/' . $this->id . '/actions/change_protection', [
+        $response = $this->httpClient->post('volumes/'.$this->id.'/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action)
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
     }
@@ -209,10 +207,20 @@ class Volume extends Model
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return (new self($input->id))->setAdditionalData($input);
     }
 
+    /**
+     * Reload the data of the volume.
+     *
+     * @return Volume
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->volumes()->get($this->id);
+    }
 }

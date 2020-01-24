@@ -3,12 +3,10 @@
 namespace LKDev\HetznerCloud\Models\Actions;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
-/**
- *
- */
-class Action extends Model
+class Action extends Model implements Resource
 {
     /**
      * @var int
@@ -72,8 +70,7 @@ class Action extends Model
         string $finished = null,
         $resources = null,
         $error = null
-    )
-    {
+    ) {
         $this->id = $id;
         $this->command = $command;
         $this->progress = $progress;
@@ -89,12 +86,13 @@ class Action extends Model
      * @param $actionId
      * @return Action
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated use Actions::getById instead
      */
-    public function getById($actionId): Action
+    public function getById($actionId): self
     {
-        $response = $this->httpClient->get('actions/' . $actionId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Action::parse(json_decode((string)$response->getBody())->action);
+        $response = $this->httpClient->get('actions/'.$actionId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->action);
         }
     }
 
@@ -102,9 +100,9 @@ class Action extends Model
      * @return Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function refresh(): Action
+    public function refresh(): self
     {
-        return $this->getById($this->id);
+        return $this->reload();
     }
 
     /**
@@ -118,6 +116,21 @@ class Action extends Model
         return Actions::waitActionCompleted($this, $pollingInterval);
     }
 
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->actions()->getById($this->id);
+    }
+
+    public function delete()
+    {
+        throw new \BadMethodCallException('delete on action is not possible');
+    }
+
+    public function update(array $data)
+    {
+        throw new \BadMethodCallException('update on action is not possible');
+    }
+
     /**
      * @param $input
      * @return \LKDev\HetznerCloud\Models\Actions\Action|static
@@ -125,7 +138,7 @@ class Action extends Model
     public static function parse($input)
     {
         if ($input == null) {
-            return null;
+            return;
         }
 
         return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error);

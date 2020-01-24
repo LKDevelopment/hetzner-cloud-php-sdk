@@ -3,37 +3,65 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:00
+ * Time: 21:00.
  */
 
 namespace LKDev\HetznerCloud\Models\Locations;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
-class Locations extends Model
+class Locations extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
-    public $locations;
+    protected $locations;
 
     /**
      * Returns all location objects.
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get
-     * @param string|null $name
+     * @param RequestOpts $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(string $name = null): array
+    public function all(RequestOpts $requestOpts = null): array
     {
-        $response = $this->httpClient->get('locations'. (($name != null) ? '?name=' . $name : ''));
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->locations;
+        if ($requestOpts == null) {
+            $requestOpts = new LocationRequestOpts();
+        }
+
+        return $this->_all($requestOpts);
+    }
+
+    /**
+     * Returns all location objects.
+     *
+     * @see https://docs.hetzner.cloud/#resources-locations-get
+     * @param RequestOpts $requestOpts
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): APIResponse
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new LocationRequestOpts();
+        }
+        $response = $this->httpClient->get('locations'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -45,11 +73,11 @@ class Locations extends Model
      * @return \LKDev\HetznerCloud\Models\Locations\Location
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $locationId): Location
+    public function getById(int $locationId): Location
     {
-        $response = $this->httpClient->get('locations/' . $locationId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Location::parse(json_decode((string)$response->getBody())->location);
+        $response = $this->httpClient->get('locations/'.$locationId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Location::parse(json_decode((string) $response->getBody())->location);
         }
     }
 
@@ -63,9 +91,9 @@ class Locations extends Model
      */
     public function getByName(string $name): Location
     {
-        $locations = $this->all($name);
+        $locations = $this->list(new LocationRequestOpts($name));
 
-        return (count($locations) > 0) ? $locations[0] : null;
+        return (count($locations->locations) > 0) ? $locations->locations[0] : null;
     }
 
     /**
@@ -74,7 +102,7 @@ class Locations extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->locations = collect($input->locations)->map(function ($location, $key) {
+        $this->locations = collect($input)->map(function ($location, $key) {
             return Location::parse($location);
         })->toArray();
 
@@ -88,5 +116,13 @@ class Locations extends Model
     public static function parse($input)
     {
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'location', 'many' => 'locations'];
     }
 }

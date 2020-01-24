@@ -2,36 +2,51 @@
 
 namespace LKDev\HetznerCloud\Models\Actions;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
-class Actions extends Model
+class Actions extends Model implements Resources
 {
+    use GetFunctionTrait;
+
     /**
      * @var
      */
-    public $actions;
+    protected $actions;
 
-
-    /**
-     * @param RequestOpts $requestOpts
-     * @return array
-     * @throws \LKDev\HetznerCloud\APIException
-     */
-    public function all(RequestOpts $requestOpts): array
+    public function all(RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('actions' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody(), false);
-            return self::parse($resp)->actions;
+
+        return $this->_all($requestOpts);
+    }
+
+    /**
+     * @param RequestOpts $requestOpts
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): APIResponse
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new RequestOpts();
+        }
+        $response = $this->httpClient->get('actions'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                'actions' => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -40,9 +55,17 @@ class Actions extends Model
      * @return \LKDev\HetznerCloud\Models\Actions\Action
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get($actionId): Action
+    public function getById(int $actionId): Action
     {
-        return (new Action($this->httpClient))->getById($actionId);
+        $response = $this->httpClient->get('actions/'.$actionId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Action::parse(json_decode((string) $response->getBody())->action);
+        }
+    }
+
+    public function getByName(string $name)
+    {
+        throw new \BadMethodCallException('getByName is not possible on Actions');
     }
 
     /**
@@ -51,7 +74,7 @@ class Actions extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->actions = collect($input->actions)->map(function ($action, $key) {
+        $this->actions = collect($input)->map(function ($action, $key) {
             return Action::parse($action);
         })->toArray();
 
@@ -65,7 +88,7 @@ class Actions extends Model
      */
     public static function parse($input)
     {
-        return (new self($input->server))->setAdditionalData($input);
+        return (new self())->setAdditionalData($input);
     }
 
     /**
@@ -82,6 +105,15 @@ class Actions extends Model
             usleep($pollingInterval * 1000000);
             $action = $action->refresh();
         }
+
         return $action->status == 'success';
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'action', 'many' => 'actions'];
     }
 }

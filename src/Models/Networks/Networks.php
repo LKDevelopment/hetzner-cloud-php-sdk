@@ -1,24 +1,25 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Networks;
-
 
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resources;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 /**
- * Class Networks
- * @package LKDev\HetznerCloud\Models\Networks
+ * Class Networks.
  */
-class Networks extends Model
+class Networks extends Model implements Resources
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
-    public $networks;
+    protected $networks;
 
     /**
      * Returns all existing server objects.
@@ -33,9 +34,31 @@ class Networks extends Model
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
         }
-        $response = $this->httpClient->get('networks' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->networks;
+
+        return $this->_all($requestOpts);
+    }
+
+    /**
+     * Returns all existing server objects.
+     *
+     * @see https://docs.hetzner.cloud/#networks-get-all-networks
+     * @param RequestOpts|null $requestOpts
+     * @return APIResponse
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function list(RequestOpts $requestOpts = null): APIResponse
+    {
+        if ($requestOpts == null) {
+            $requestOpts = new NetworkRequestOpts();
+        }
+        $response = $this->httpClient->get('networks'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -47,11 +70,11 @@ class Networks extends Model
      * @return  Network
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverId): Network
+    public function getById(int $serverId): Network
     {
-        $response = $this->httpClient->get('networks/' . $serverId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Network::parse(json_decode((string)$response->getBody())->network);
+        $response = $this->httpClient->get('networks/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Network::parse(json_decode((string) $response->getBody())->network);
         }
     }
 
@@ -65,10 +88,10 @@ class Networks extends Model
      */
     public function getByName(string $name)
     {
-        $networks = $this->all(new NetworkRequestOpts($name));
-        return (count($networks) > 0) ? $networks[0] : null;
-    }
+        $networks = $this->list(new NetworkRequestOpts($name));
 
+        return (count($networks->networks) > 0) ? $networks->networks[0] : null;
+    }
 
     /**
      * @param  $input
@@ -76,13 +99,14 @@ class Networks extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->networks = collect($input->networks)
+        $this->networks = collect($input)
             ->map(function ($network) {
                 if ($network != null) {
                     return Network::parse($network);
                 }
             })
             ->toArray();
+
         return $this;
     }
 
@@ -96,28 +120,29 @@ class Networks extends Model
     public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [])
     {
         $payload = [
-            "name" => $name,
-            "ip_range" => $ipRange
+            'name' => $name,
+            'ip_range' => $ipRange,
         ];
-        if (!empty($subnets)) {
+        if (! empty($subnets)) {
             $payload['subnets'] = collect($subnets)->map(function (Subnet $s) {
-return $s->__toRequestPayload();
+                return $s->__toRequestPayload();
             })->toArray();
         }
-        if (!empty($routes)) {
+        if (! empty($routes)) {
             $payload['routes'] = collect($routes)->map(function (Route $r) {
-               return $r->__toRequestPayload();
+                return $r->__toRequestPayload();
             })->toArray();
         }
-        if(!empty($labels)){
+        if (! empty($labels)) {
             $payload['labels'] = $labels;
         }
 
         $response = $this->httpClient->post('networks', [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create([
                 'network' => Network::parse($payload->network),
             ], $response->getHeaders());
@@ -130,7 +155,14 @@ return $s->__toRequestPayload();
      */
     public static function parse($input)
     {
-
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'network', 'many' => 'networks'];
     }
 }

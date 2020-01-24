@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 20:52
+ * Time: 20:52.
  */
 
 namespace LKDev\HetznerCloud\Models\Servers;
@@ -14,19 +14,19 @@ use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\Locations\Location;
+use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 use LKDev\HetznerCloud\RequestOpts;
+use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-/**
- *
- */
 class Servers extends Model
 {
+    use GetFunctionTrait;
     /**
      * @var array
      */
-    public $servers;
+    protected $servers;
 
     /**
      * Returns all existing server objects.
@@ -41,25 +41,31 @@ class Servers extends Model
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
-        $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody()))->servers;
-        }
+
+        return $this->_all($requestOpts);
     }
 
     /**
-     * Returns a specific server object. The server must exist inside the project.
+     * List server objects.
      *
-     * @see https://docs.hetzner.cloud/#resources-servers-get-1
-     * @param int $serverId
-     * @return \LKDev\HetznerCloud\Models\Servers\Server
+     * @see https://docs.hetzner.cloud/#resources-servers-get
+     * @param RequestOpts|null $requestOpts
+     * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function get(int $serverId): Server
+    public function list(RequestOpts $requestOpts = null): APIResponse
     {
-        $response = $this->httpClient->get('servers/' . $serverId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string)$response->getBody())->server);
+        if ($requestOpts == null) {
+            $requestOpts = new ServerRequestOpts();
+        }
+        $response = $this->httpClient->get('servers'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'meta' => Meta::parse($resp->meta),
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
         }
     }
 
@@ -73,13 +79,29 @@ class Servers extends Model
      */
     public function getByName(string $serverName)
     {
-        $servers = $this->all(new ServerRequestOpts($serverName));
+        $servers = $this->list(new ServerRequestOpts($serverName));
 
-        return (count($servers) > 0) ? $servers[0] : null;
+        return (count($servers->servers) > 0) ? $servers->servers[0] : null;
     }
 
     /**
-     * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation
+     * Returns a specific server object by its name. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#resources-servers-get
+     * @param string $serverId
+     * @return \LKDev\HetznerCloud\Models\Servers\Server|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function getById(int $serverId): Server
+    {
+        $response = $this->httpClient->get('servers/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
+        }
+    }
+
+    /**
+     * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-post
      * @param string $name
@@ -105,8 +127,7 @@ class Servers extends Model
         $user_data = '',
         $volumes = [],
         $automount = false
-    ): APIResponse
-    {
+    ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -117,11 +138,12 @@ class Servers extends Model
                 'user_data' => $user_data,
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
-                'automount' => $automount
+                'automount' => $automount,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
@@ -130,12 +152,11 @@ class Servers extends Model
                 })->toArray(),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
-
         }
     }
 
     /**
-     * Creates a new server in a location instead of in a datacenter. Returns preliminary information about the server as well as an action that covers progress of creation
+     * Creates a new server in a location instead of in a datacenter. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-post
      * @param string $name
@@ -159,8 +180,7 @@ class Servers extends Model
                                      $user_data = '',
                                      $volumes = [],
                                      $automount = false
-    ): APIResponse
-    {
+    ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -171,11 +191,12 @@ class Servers extends Model
                 'user_data' => $user_data,
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
-                'automount' => $automount
+                'automount' => $automount,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
@@ -184,7 +205,6 @@ class Servers extends Model
                 })->toArray(),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
-
         }
     }
 
@@ -194,7 +214,7 @@ class Servers extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->servers = collect($input->servers)
+        $this->servers = collect($input)
             ->map(function ($server) {
                 if ($server != null) {
                     return Server::parse($server);
@@ -211,7 +231,14 @@ class Servers extends Model
      */
     public static function parse($input)
     {
-
         return (new self())->setAdditionalData($input);
+    }
+
+    /**
+     * @return array
+     */
+    public function _getKeys(): array
+    {
+        return ['one' => 'server', 'many' => 'servers'];
     }
 }
