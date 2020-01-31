@@ -30,7 +30,7 @@ class FloatingIp extends Model implements Resource
     public $name;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $description;
 
@@ -81,7 +81,7 @@ class FloatingIp extends Model implements Resource
      * FloatingIp constructor.
      *
      * @param int $id
-     * @param string $description
+     * @param string|null $description
      * @param string $ip
      * @param string $type
      * @param int $server
@@ -95,7 +95,7 @@ class FloatingIp extends Model implements Resource
      */
     public function __construct(
         int $id,
-        string $description,
+        $description,
         string $ip,
         string $type,
         $server,
