@@ -1,5 +1,9 @@
 # Changelog
 
+## master
+* Bugfix: Fix wrong Guzzle Client Type on Server, Volume and FloatingIp Model.
+* Feature: Allow overriding of Guzzle Client configuration on `LKDev\HetznerCloud\Clients\GuzzleClient`
+
 ## 2.0.1 (29.01.2020)
 * Bugfix: Floating IP description which can be null [#36](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/36)
 

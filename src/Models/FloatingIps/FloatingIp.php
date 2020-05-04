@@ -256,7 +256,7 @@ class FloatingIp extends Model implements Resource
 
     /**
      * @param  $input
-     * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|static
+     * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|static|null
      */
     public static function parse($input): self
     {
