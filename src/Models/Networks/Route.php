@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud\Models\Networks;
 
+use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Model;
 
@@ -23,9 +24,9 @@ class Route extends Model
      * Subnet constructor.
      * @param string $destination
      * @param string $gateway
-     * @param GuzzleClient|null $client
+     * @param Client|null $client
      */
-    public function __construct(string $destination, string $gateway, GuzzleClient $client = null)
+    public function __construct(string $destination, string $gateway, Client $client = null)
     {
         $this->destination = $destination;
         $this->gateway = $gateway;

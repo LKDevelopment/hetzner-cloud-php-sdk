@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud\Models\Networks;
 
+use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Model;
 
@@ -11,6 +12,7 @@ use LKDev\HetznerCloud\Models\Model;
 class Subnet extends Model
 {
     const TYPE_SERVER = 'server';
+    const TYPE_CLOUD = 'cloud';
     /**
      * @var string
      */
@@ -34,9 +36,9 @@ class Subnet extends Model
      * @param string $ipRange
      * @param string $networkZone
      * @param string $gateway
-     * @param GuzzleClient|null $client
+     * @param Client|null $client
      */
-    public function __construct(string $type, string $ipRange, string $networkZone, string $gateway = null, GuzzleClient $client = null)
+    public function __construct(string $type, string $ipRange, string $networkZone, string $gateway = null, Client $client = null)
     {
         $this->type = $type;
         $this->ipRange = $ipRange;
