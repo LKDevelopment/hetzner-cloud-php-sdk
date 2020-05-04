@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## 2.1.0 (04.05.2020)
 * Bugfix: Fix wrong Guzzle Client Type on Server, Volume and FloatingIp Model.
 * Feature: Allow overriding of Guzzle Client configuration on `LKDev\HetznerCloud\Clients\GuzzleClient`
 
