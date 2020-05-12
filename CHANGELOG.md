@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.1.1 (12.05.2020)     
+## master (12.05.2020)     
 * Added possibility add private networks in server creating    
 
 ## 2.1.0 (04.05.2020)
