@@ -146,7 +146,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
-                'networks' => $networks,
+                'networks' => $networkIds,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
