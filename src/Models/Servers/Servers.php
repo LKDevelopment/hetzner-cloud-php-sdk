@@ -16,6 +16,7 @@ use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Networks\Network;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
@@ -114,6 +115,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $volumes
      * @param bool $automount
+     * @param Network[] $networks
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -126,8 +128,13 @@ class Servers extends Model
         $startAfterCreate = true,
         $user_data = '',
         $volumes = [],
-        $automount = false
+        $automount = false,
+        $networks = []
     ): APIResponse {
+        $networkIds = [];
+        foreach ($networks as $network) {
+            $networkIds[] = $network->id;
+        }
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -139,6 +146,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
+                'networks' => $networks,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
@@ -168,6 +176,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $volumes
      * @param bool $automount
+     * @param Network[] $networks
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -179,8 +188,13 @@ class Servers extends Model
                                      $startAfterCreate = true,
                                      $user_data = '',
                                      $volumes = [],
-                                     $automount = false
+                                     $automount = false,
+                                     $networks = []
     ): APIResponse {
+        $networkIds = [];
+        foreach ($networks as $network) {
+            $networkIds[] = $network->id;
+        }
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -192,6 +206,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
+                'networks' => $networkIds,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
