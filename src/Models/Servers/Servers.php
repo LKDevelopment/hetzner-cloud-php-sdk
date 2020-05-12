@@ -115,7 +115,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $volumes
      * @param bool $automount
-     * @param Network[] $networks
+     * @param array $networks
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -131,10 +131,6 @@ class Servers extends Model
         $automount = false,
         $networks = []
     ): APIResponse {
-        $networkIds = [];
-        foreach ($networks as $network) {
-            $networkIds[] = $network->id;
-        }
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -146,7 +142,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
-                'networks' => $networkIds,
+                'networks' => $networks,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
@@ -176,7 +172,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $volumes
      * @param bool $automount
-     * @param Network[] $networks
+     * @param array $networks
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -190,11 +186,7 @@ class Servers extends Model
                                      $volumes = [],
                                      $automount = false,
                                      $networks = []
-    ): APIResponse {
-        $networkIds = [];
-        foreach ($networks as $network) {
-            $networkIds[] = $network->id;
-        }
+    ): APIResponse { 
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -206,7 +198,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
-                'networks' => $networkIds,
+                'networks' => $networks,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
