@@ -1,7 +1,7 @@
 # Changelog
 
-## master (12.05.2020)     
-* Added possibility add private networks in server creating    
+## master (XX.XX.XXXX)
+* Feature: Allow creation of Servers with Networks
 
 ## 2.1.0 (04.05.2020)
 * Bugfix: Fix wrong Guzzle Client Type on Server, Volume and FloatingIp Model.
