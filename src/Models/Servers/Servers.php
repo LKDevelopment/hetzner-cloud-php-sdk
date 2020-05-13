@@ -129,7 +129,7 @@ class Servers extends Model
         $volumes = [],
         $automount = false,
         $networks = []
-    ): APIResponse { 
+    ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
