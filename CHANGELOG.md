@@ -2,6 +2,7 @@
 
 ## master (XX.XX.XXXX)
 * Feature: Allow creation of Servers with Networks
+* Bugfix: The name of ISOs is not set on private ISOs, use the ID instead
 
 ## 2.1.0 (04.05.2020)
 * Bugfix: Fix wrong Guzzle Client Type on Server, Volume and FloatingIp Model.
