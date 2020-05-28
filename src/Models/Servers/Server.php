@@ -447,7 +447,7 @@ class Server extends Model implements Resource
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
             'json' => [
-                'iso' => $iso->name,
+                'iso' => $iso->id,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
