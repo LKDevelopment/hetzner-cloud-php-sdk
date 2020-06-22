@@ -332,15 +332,17 @@ class Server extends Model implements Resource
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-8
      * @param string $description
      * @param string $type
+     * @param array $labels
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function createImage(string $description = '', string $type = 'snapshot'): APIResponse
+    public function createImage(string $description = '', string $type = 'snapshot', array $labels = []): APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/create_image'), [
             'json' => [
                 'description' => $description,
                 'type' => $type,
+                'labels' => $labels,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {

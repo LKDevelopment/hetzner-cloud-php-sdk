@@ -1,6 +1,7 @@
 # Changelog
 
-## master (XX.XX.XXXX)
+## master
+* Feature: Allow specifying labels on `createImage`
 * Feature: Allow creation of Servers with Networks
 * Bugfix: The name of ISOs is not set on private ISOs, use the ID instead
 
