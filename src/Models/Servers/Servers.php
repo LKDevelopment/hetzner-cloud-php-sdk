@@ -114,6 +114,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $volumes
      * @param bool $automount
+     * @param array $networks
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -126,7 +127,8 @@ class Servers extends Model
         $startAfterCreate = true,
         $user_data = '',
         $volumes = [],
-        $automount = false
+        $automount = false,
+        $networks = []
     ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
@@ -139,6 +141,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
+                'networks' => $networks,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
@@ -168,6 +171,7 @@ class Servers extends Model
      * @param string $user_data
      * @param array $volumes
      * @param bool $automount
+     * @param array $networks
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -179,7 +183,8 @@ class Servers extends Model
                                      $startAfterCreate = true,
                                      $user_data = '',
                                      $volumes = [],
-                                     $automount = false
+                                     $automount = false,
+                                     $networks = []
     ): APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
@@ -192,6 +197,7 @@ class Servers extends Model
                 'ssh_keys' => $ssh_keys,
                 'volumes' => $volumes,
                 'automount' => $automount,
+                'networks' => $networks,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {

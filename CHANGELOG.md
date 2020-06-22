@@ -1,8 +1,13 @@
 # Changelog
 
 ## master
-
 * Feature: Allow specifying labels on `createImage`
+* Feature: Allow creation of Servers with Networks
+* Bugfix: The name of ISOs is not set on private ISOs, use the ID instead
+
+## 2.1.0 (04.05.2020)
+* Bugfix: Fix wrong Guzzle Client Type on Server, Volume and FloatingIp Model.
+* Feature: Allow overriding of Guzzle Client configuration on `LKDev\HetznerCloud\Clients\GuzzleClient`
 
 ## 2.0.1 (29.01.2020)
 * Bugfix: Floating IP description which can be null [#36](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/36)

@@ -2,8 +2,8 @@
 
 namespace LKDev\HetznerCloud\Models\Networks;
 
+use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
-use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
@@ -56,9 +56,9 @@ class Network extends Model implements Resource
     /**
      * Network constructor.
      * @param int $id
-     * @param GuzzleClient|null $httpClient
+     * @param Client|null $httpClient
      */
-    public function __construct(int $id, GuzzleClient $httpClient = null)
+    public function __construct(int $id, Client $httpClient = null)
     {
         $this->id = $id;
         parent::__construct($httpClient);

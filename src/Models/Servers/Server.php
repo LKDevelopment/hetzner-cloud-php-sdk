@@ -8,8 +8,8 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
+use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
-use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
@@ -119,9 +119,9 @@ class Server extends Model implements Resource
 
     /**
      * @param int $serverId
-     * @param GuzzleClient|null $httpClient
+     * @param Client|null $httpClient
      */
-    public function __construct(int $serverId, GuzzleClient $httpClient = null)
+    public function __construct(int $serverId, Client $httpClient = null)
     {
         $this->id = $serverId;
         parent::__construct($httpClient);
@@ -449,7 +449,7 @@ class Server extends Model implements Resource
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
             'json' => [
-                'iso' => $iso->name,
+                'iso' => $iso->name == null ? $iso->id : $iso->name,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
