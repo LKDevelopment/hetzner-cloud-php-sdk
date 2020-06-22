@@ -1,5 +1,9 @@
 # Changelog
 
+## master
+
+* Feature: Allow specifying labels on `createImage`
+
 ## 2.0.1 (29.01.2020)
 * Bugfix: Floating IP description which can be null [#36](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/36)
 
