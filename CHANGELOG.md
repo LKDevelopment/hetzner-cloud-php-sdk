@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## 2.2.0 (22.06.2020)
 * Feature: Allow specifying labels on `createImage`
 * Feature: Allow creation of Servers with Networks
 * Bugfix: The name of ISOs is not set on private ISOs, use the ID instead
