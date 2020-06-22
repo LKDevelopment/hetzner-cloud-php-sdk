@@ -2,8 +2,6 @@
 
 namespace LKDev\HetznerCloud;
 
-use GuzzleHttp\Psr7\Response;
-
 class APIException extends \Exception
 {
     /**

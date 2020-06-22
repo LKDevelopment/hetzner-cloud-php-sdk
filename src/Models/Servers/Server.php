@@ -342,7 +342,7 @@ class Server extends Model implements Resource
             'json' => [
                 'description' => $description,
                 'type' => $type,
-                'labels' => $labels
+                'labels' => $labels,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
