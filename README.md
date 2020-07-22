@@ -43,7 +43,7 @@ If you discover any security related issues, please email kontakt@lukas-kaemmerl
 
 ## Credits
 
-- [Lukas Kämmerling](https://github.com/lkdevelopment)
+- [Lukas Kämmerling](https://github.com/lkaemmerling)
 - [All Contributors](../../contributors)
 
 ## License
