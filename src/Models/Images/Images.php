@@ -1,4 +1,5 @@
 <?php
+
 namespace LKDev\HetznerCloud\Models\Images;
 
 use LKDev\HetznerCloud\APIResponse;
