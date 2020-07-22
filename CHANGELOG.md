@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## 2.2.1 (22.07.2020)
 * Make package requirements less strict
 * Bugfix: getByName functions had a wrong return type and failed when a resource was not found by name [#50](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/issues/50)
 
