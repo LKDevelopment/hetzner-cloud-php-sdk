@@ -18,7 +18,7 @@ class ISOsTest extends TestCase
      */
     protected $isos;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->isos = new ISOs($this->hetznerApi->getHttpClient());

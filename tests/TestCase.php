@@ -17,7 +17,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
      */
     protected $hetznerApi;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->hetznerApi = new HetznerAPIClient('abcdef', 'http://localhost:4000/v1/');
     }

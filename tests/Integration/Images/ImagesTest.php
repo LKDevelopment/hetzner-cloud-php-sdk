@@ -18,7 +18,7 @@ class ImagesTest extends TestCase
      */
     protected $images;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->images = new Images($this->hetznerApi->getHttpClient());

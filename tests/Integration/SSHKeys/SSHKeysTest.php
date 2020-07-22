@@ -18,7 +18,7 @@ class SSHKeysTest extends TestCase
      */
     protected $ssh_keys;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->ssh_keys = new SSHKeys($this->hetznerApi->getHttpClient());

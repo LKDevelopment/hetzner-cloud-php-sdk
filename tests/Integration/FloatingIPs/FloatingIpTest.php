@@ -23,7 +23,7 @@ class FloatingIpTest extends TestCase
      */
     protected $floatingIp;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $tmp = new FloatingIps($this->hetznerApi->getHttpClient());

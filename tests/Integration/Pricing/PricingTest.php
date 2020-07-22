@@ -18,7 +18,7 @@ class PricingTest extends TestCase
      */
     protected $prices;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->prices = new Prices($this->hetznerApi->getHttpClient());
