@@ -18,7 +18,7 @@ class ImagesTest extends TestCase
      */
     protected $images;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->images = new Images($this->hetznerApi->getHttpClient());
@@ -28,16 +28,16 @@ class ImagesTest extends TestCase
     {
         $image = $this->images->get(4711);
         $this->assertEquals($image->id, 4711);
-        $this->assertEquals($image->name, 'ubuntu-16.04');
+        $this->assertEquals($image->name, 'ubuntu-20.04');
 
         $this->assertEmpty($image->labels);
     }
 
     public function testGetByName()
     {
-        $image = $this->images->getByName('ubuntu-16.04');
+        $image = $this->images->getByName('ubuntu-20.04');
         $this->assertEquals($image->id, 4711);
-        $this->assertEquals($image->name, 'ubuntu-16.04');
+        $this->assertEquals($image->name, 'ubuntu-20.04');
 
         $this->assertEmpty($image->labels);
     }
@@ -48,7 +48,7 @@ class ImagesTest extends TestCase
 
         $this->assertEquals(count($images), 1);
         $this->assertEquals($images[0]->id, 4711);
-        $this->assertEquals($images[0]->name, 'ubuntu-16.04');
+        $this->assertEquals($images[0]->name, 'ubuntu-20.04');
     }
 
     public function testUpdate()

@@ -15,7 +15,7 @@ class NetworkTest extends TestCase
      */
     protected $network;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $tmp = new Networks($this->hetznerApi->getHttpClient());

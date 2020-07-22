@@ -18,7 +18,7 @@ class DatacentersTest extends TestCase
      */
     protected $datacenters;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->datacenters = new Datacenters($this->hetznerApi->getHttpClient());

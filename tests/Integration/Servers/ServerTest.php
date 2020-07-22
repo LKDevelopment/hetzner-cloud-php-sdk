@@ -23,7 +23,7 @@ class ServerTest extends TestCase
      */
     protected $server;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $tmp = new Servers($this->hetznerApi->getHttpClient());
@@ -132,7 +132,7 @@ class ServerTest extends TestCase
 
     public function testRebuildFromImage()
     {
-        $apiResponse = $this->server->rebuildFromImage(new Image(4711, 'ubuntu', '', 'ubuntu-16.04'));
+        $apiResponse = $this->server->rebuildFromImage(new Image(4711, 'ubuntu', '', 'ubuntu-20.04'));
         $this->assertEquals('rebuild_server', $apiResponse->action->command);
         $this->assertEquals($this->server->id, $apiResponse->action->resources[0]->id);
         $this->assertEquals('server', $apiResponse->action->resources[0]->type);

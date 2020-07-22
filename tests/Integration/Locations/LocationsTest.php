@@ -18,7 +18,7 @@ class LocationsTest extends TestCase
      */
     protected $locations;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->locations = new Locations($this->hetznerApi->getHttpClient());

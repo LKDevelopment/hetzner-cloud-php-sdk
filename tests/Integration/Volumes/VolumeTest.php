@@ -14,7 +14,7 @@ class VolumeTest extends TestCase
      */
     protected $volume;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $tmp = new Volumes($this->hetznerApi->getHttpClient());

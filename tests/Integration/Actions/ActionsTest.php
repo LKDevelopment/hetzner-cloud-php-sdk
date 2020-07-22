@@ -18,7 +18,7 @@ class ActionsTest extends TestCase
      */
     protected $actions;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->actions = new Actions($this->hetznerApi->getHttpClient());

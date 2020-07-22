@@ -18,7 +18,7 @@ class ServerTypesTest extends TestCase
      */
     protected $server_types;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->server_types = new ServerTypes($this->hetznerApi->getHttpClient());

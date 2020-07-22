@@ -18,7 +18,7 @@ class PricingTest extends TestCase
      */
     protected $prices;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->prices = new Prices($this->hetznerApi->getHttpClient());
@@ -30,6 +30,6 @@ class PricingTest extends TestCase
         $this->assertEquals('EUR', $prices->currency);
         $this->assertEquals('19.000000', $prices->vat_rate);
         $this->assertEquals('1.0000000000', $prices->image->price_per_gb_month->net);
-        $this->assertInternalType('array', $prices->server_types);
+        $this->assertIsArray($prices->server_types);
     }
 }
