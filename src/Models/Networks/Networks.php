@@ -86,7 +86,7 @@ class Networks extends Model implements Resources
      * @return Network|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name)
+    public function getByName(string $name): ?Network
     {
         $networks = $this->list(new NetworkRequestOpts($name));
 

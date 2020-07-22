@@ -2,6 +2,7 @@
 
 ## master
 * Make package requirements less strict
+* Bugfix: getByName functions had a wrong return type and failed when a resource was not found by name [#50](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/issues/50)
 
 ## 2.2.0 (22.06.2020)
 * Feature: Allow specifying labels on `createImage`

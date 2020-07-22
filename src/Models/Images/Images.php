@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lukaskammerling
- * Date: 28.01.18
- * Time: 21:01.
- */
 
 namespace LKDev\HetznerCloud\Models\Images;
 
@@ -79,14 +73,14 @@ class Images extends Model implements Resources
     }
 
     /**
-     * Returns a specific datacenter object by its name.
+     * Returns a specific image object by its name.
      *
-     * @see https://docs.hetzner.cloud/#resources-datacenters-get-1
-     * @param int $datacenterId
-     * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     * @see https://docs.hetzner.cloud/#resources-images-get-1
+     * @param string $name
+     * @return \LKDev\HetznerCloud\Models\Images\Image|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name): Image
+    public function getByName(string $name): ?Image
     {
         $images = $this->list(new ImageRequestOpts($name));
 
