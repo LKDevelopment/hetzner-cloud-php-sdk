@@ -1,5 +1,8 @@
 # Changelog
 
+## master
+* Make package requirements less strict
+
 ## 2.2.0 (22.06.2020)
 * Feature: Allow specifying labels on `createImage`
 * Feature: Allow creation of Servers with Networks
