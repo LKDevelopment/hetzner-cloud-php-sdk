@@ -135,7 +135,7 @@ class SSHKeys extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name)
+    public function getByName(string $name): ?SSHKey
     {
         $sshKeys = $this->list(new SSHKeyRequestOpts($name));
 

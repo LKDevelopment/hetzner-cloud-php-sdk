@@ -77,7 +77,7 @@ class Servers extends Model
      * @return \LKDev\HetznerCloud\Models\Servers\Server|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $serverName)
+    public function getByName(string $serverName): ?Server
     {
         $servers = $this->list(new ServerRequestOpts($serverName));
 

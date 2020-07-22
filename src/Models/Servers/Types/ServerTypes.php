@@ -79,7 +79,7 @@ class ServerTypes extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name)
+    public function getByName(string $name): ?ServerType
     {
         $serverTypes = $this->list(new ServerTypesRequestOpts($name));
 

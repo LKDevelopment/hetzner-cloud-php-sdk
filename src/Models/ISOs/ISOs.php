@@ -89,7 +89,7 @@ class ISOs extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\ISOs\ISO
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name): ISO
+    public function getByName(string $name): ?ISO
     {
         $isos = $this->list(new ISORequestOpts($name));
 

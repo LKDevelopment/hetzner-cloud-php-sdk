@@ -89,7 +89,7 @@ class Locations extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\Locations\Location
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name): Location
+    public function getByName(string $name): ?Location
     {
         $locations = $this->list(new LocationRequestOpts($name));
 

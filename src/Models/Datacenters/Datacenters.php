@@ -93,7 +93,7 @@ class Datacenters extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name): Datacenter
+    public function getByName(string $name): ?Datacenter
     {
         $resp = $this->list(new DatacenterRequestOpts($name));
 

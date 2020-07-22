@@ -91,7 +91,7 @@ class FloatingIps extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getByName(string $name)
+    public function getByName(string $name): ?FloatingIp
     {
         $resp = $this->list(new FloatingIPRequestOpts($name));
 
