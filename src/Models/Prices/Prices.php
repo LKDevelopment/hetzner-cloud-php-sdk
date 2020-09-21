@@ -35,12 +35,13 @@ class Prices extends Model
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('pricing' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $this->prices = json_decode((string)$response->getBody())->pricing;
+        $response = $this->httpClient->get('pricing'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $this->prices = json_decode((string) $response->getBody())->pricing;
 
             return $this->prices;
         }
+
         return null;
     }
 }

@@ -55,15 +55,16 @@ class ISOs extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('isos' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('isos'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -77,10 +78,11 @@ class ISOs extends Model implements Resources
      */
     public function getById(int $isoId): ?ISO
     {
-        $response = $this->httpClient->get('isos/' . $isoId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return ISO::parse(json_decode((string)$response->getBody())->iso);
+        $response = $this->httpClient->get('isos/'.$isoId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return ISO::parse(json_decode((string) $response->getBody())->iso);
         }
+
         return null;
     }
 

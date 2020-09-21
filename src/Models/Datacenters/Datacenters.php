@@ -58,16 +58,17 @@ class Datacenters extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new DatacenterRequestOpts();
         }
-        $response = $this->httpClient->get('datacenters' . $requestOpts->buildQuery());
+        $response = $this->httpClient->get('datacenters'.$requestOpts->buildQuery());
 
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -81,10 +82,11 @@ class Datacenters extends Model implements Resources
      */
     public function getById(int $datacenterId): ?Datacenter
     {
-        $response = $this->httpClient->get('datacenters/' . $datacenterId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Datacenter::parse(json_decode((string)$response->getBody())->{$this->_getKeys()['one']});
+        $response = $this->httpClient->get('datacenters/'.$datacenterId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Datacenter::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
+
         return null;
     }
 

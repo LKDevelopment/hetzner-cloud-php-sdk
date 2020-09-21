@@ -58,6 +58,7 @@ class ServerTypes extends Model implements Resources
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -72,6 +73,7 @@ class ServerTypes extends Model implements Resources
         if (! HetznerAPIClient::hasError($response)) {
             return ServerType::parse(json_decode((string) $response->getBody())->server_type);
         }
+
         return null;
     }
 

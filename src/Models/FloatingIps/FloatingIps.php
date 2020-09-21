@@ -57,15 +57,16 @@ class FloatingIps extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
         }
-        $response = $this->httpClient->get('floating_ips' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('floating_ips'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -79,10 +80,11 @@ class FloatingIps extends Model implements Resources
      */
     public function getById(int $floatingIpId): ?FloatingIp
     {
-        $response = $this->httpClient->get('floating_ips/' . $floatingIpId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string)$response->getBody())->floating_ip);
+        $response = $this->httpClient->get('floating_ips/'.$floatingIpId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
         }
+
         return null;
     }
 
@@ -119,8 +121,7 @@ class FloatingIps extends Model implements Resources
         Location $location = null,
         Server $server = null,
         string $name = null
-    ): ?FloatingIp
-    {
+    ): ?FloatingIp {
         $response = $this->httpClient->post('floating_ips', [
             'type' => $type,
             'description' => $description,
@@ -128,9 +129,10 @@ class FloatingIps extends Model implements Resources
             'home_location' => $location ?: $location->name,
             'name' => $name ?: $name,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string)$response->getBody())->floating_ip);
+        if (! HetznerAPIClient::hasError($response)) {
+            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
         }
+
         return null;
     }
 

@@ -127,8 +127,7 @@ class Image extends Model implements Resource
         bool $rapidDeploy = null,
         Protection $protection = null,
         array $labels = []
-    )
-    {
+    ) {
         $this->id = $id;
         $this->type = $type;
         $this->status = $status;
@@ -157,12 +156,13 @@ class Image extends Model implements Resource
      */
     public function update(array $data): ?self
     {
-        $response = $this->httpClient->put('images/' . $this->id, [
+        $response = $this->httpClient->put('images/'.$this->id, [
             'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->image);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->image);
         }
+
         return null;
     }
 
@@ -176,16 +176,17 @@ class Image extends Model implements Resource
      */
     public function changeProtection(bool $delete = true): ?APIResponse
     {
-        $response = $this->httpClient->post('images/' . $this->id . '/actions/change_protection', [
+        $response = $this->httpClient->post('images/'.$this->id.'/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -198,10 +199,11 @@ class Image extends Model implements Resource
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('images/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('images/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
+
         return false;
     }
 

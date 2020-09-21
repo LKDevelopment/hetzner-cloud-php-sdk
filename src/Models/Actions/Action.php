@@ -94,6 +94,7 @@ class Action extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string) $response->getBody())->action);
         }
+
         return null;
     }
 

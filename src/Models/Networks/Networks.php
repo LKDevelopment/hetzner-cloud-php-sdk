@@ -52,15 +52,16 @@ class Networks extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
         }
-        $response = $this->httpClient->get('networks' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('networks'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -74,10 +75,11 @@ class Networks extends Model implements Resources
      */
     public function getById(int $serverId): ?Network
     {
-        $response = $this->httpClient->get('networks/' . $serverId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Network::parse(json_decode((string)$response->getBody())->network);
+        $response = $this->httpClient->get('networks/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Network::parse(json_decode((string) $response->getBody())->network);
         }
+
         return null;
     }
 
@@ -126,25 +128,25 @@ class Networks extends Model implements Resources
             'name' => $name,
             'ip_range' => $ipRange,
         ];
-        if (!empty($subnets)) {
+        if (! empty($subnets)) {
             $payload['subnets'] = collect($subnets)->map(function (Subnet $s) {
                 return $s->__toRequestPayload();
             })->toArray();
         }
-        if (!empty($routes)) {
+        if (! empty($routes)) {
             $payload['routes'] = collect($routes)->map(function (Route $r) {
                 return $r->__toRequestPayload();
             })->toArray();
         }
-        if (!empty($labels)) {
+        if (! empty($labels)) {
             $payload['labels'] = $labels;
         }
 
         $response = $this->httpClient->post('networks', [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'network' => Network::parse($payload->network),

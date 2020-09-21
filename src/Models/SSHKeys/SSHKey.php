@@ -75,6 +75,7 @@ class SSHKey extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string) $response->getBody())->ssh_key);
         }
+
         return null;
     }
 
@@ -105,6 +106,7 @@ class SSHKey extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
+
         return false;
     }
 

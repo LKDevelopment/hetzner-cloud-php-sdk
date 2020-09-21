@@ -46,15 +46,16 @@ class Images extends Model implements Resources
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
-        $response = $this->httpClient->get('images' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -68,10 +69,11 @@ class Images extends Model implements Resources
      */
     public function getById(int $imageId): ?Image
     {
-        $response = $this->httpClient->get('images/' . $imageId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Image::parse(json_decode((string)$response->getBody())->image);
+        $response = $this->httpClient->get('images/'.$imageId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Image::parse(json_decode((string) $response->getBody())->image);
         }
+
         return null;
     }
 

@@ -37,17 +37,17 @@ class SSHKeys extends Model implements Resources
     public function create(
         string $name,
         string $publicKey
-    ): ?SSHKey
-    {
+    ): ?SSHKey {
         $response = $this->httpClient->post('ssh_keys', [
             'json' => [
                 'name' => $name,
                 'public_key' => $publicKey,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        if (! HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
+
         return null;
     }
 
@@ -81,15 +81,16 @@ class SSHKeys extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('ssh_keys' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('ssh_keys'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -125,9 +126,9 @@ class SSHKeys extends Model implements Resources
      */
     public function getById(int $id)
     {
-        $response = $this->httpClient->get('ssh_keys/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        $response = $this->httpClient->get('ssh_keys/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
     }
 
