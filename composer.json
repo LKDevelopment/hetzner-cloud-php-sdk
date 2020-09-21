@@ -16,7 +16,8 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0|^8.5.5",
-    "brianium/paratest": "3.*"
+    "brianium/paratest": "3.*",
+    "phpstan/phpstan": "^0.12.43"
   },
   "license": "MIT",
   "authors": [

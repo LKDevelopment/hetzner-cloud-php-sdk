@@ -26,3 +26,5 @@ jobs:
          composer install
     - name: Run phpunit
       run: php vendor/bin/phpunit
+    - name: Run phpstan
+      run: php vendor/bin/phpstan analyse src --level 1

@@ -19,6 +19,7 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 class Locations extends Model implements Resources
 {
     use GetFunctionTrait;
+
     /**
      * @var array
      */
@@ -46,23 +47,24 @@ class Locations extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get
      * @param RequestOpts $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();
         }
-        $response = $this->httpClient->get('locations'.$requestOpts->buildQuery());
-        if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string) $response->getBody());
+        $response = $this->httpClient->get('locations' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string)$response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+        return null;
     }
 
     /**
@@ -73,12 +75,13 @@ class Locations extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\Locations\Location
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $locationId): Location
+    public function getById(int $locationId): ?Location
     {
-        $response = $this->httpClient->get('locations/'.$locationId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Location::parse(json_decode((string) $response->getBody())->location);
+        $response = $this->httpClient->get('locations/' . $locationId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Location::parse(json_decode((string)$response->getBody())->location);
         }
+        return null;
     }
 
     /**

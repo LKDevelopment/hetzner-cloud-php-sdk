@@ -19,6 +19,7 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 class ISOs extends Model implements Resources
 {
     use GetFunctionTrait;
+
     /**
      * @var array
      */
@@ -46,23 +47,24 @@ class ISOs extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-isos-get
      * @param RequestOpts $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('isos'.$requestOpts->buildQuery());
-        if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string) $response->getBody());
+        $response = $this->httpClient->get('isos' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string)$response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+        return null;
     }
 
     /**
@@ -70,15 +72,16 @@ class ISOs extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-iso-get-1
      * @param int $isoId
-     * @return \LKDev\HetznerCloud\Models\ISOs\ISO
+     * @return \LKDev\HetznerCloud\Models\ISOs\ISO|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $isoId): ISO
+    public function getById(int $isoId): ?ISO
     {
-        $response = $this->httpClient->get('isos/'.$isoId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return ISO::parse(json_decode((string) $response->getBody())->iso);
+        $response = $this->httpClient->get('isos/' . $isoId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return ISO::parse(json_decode((string)$response->getBody())->iso);
         }
+        return null;
     }
 
     /**
