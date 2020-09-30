@@ -181,10 +181,10 @@ class Server extends Model implements Resource
     /**
      * Starts a server by turning its power on.
      *
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function powerOn(): APIResponse
+    public function powerOn(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweron'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -192,16 +192,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-1
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function softReboot(): APIResponse
+    public function softReboot(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reboot'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -209,16 +211,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-2
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function reset(): APIResponse
+    public function reset(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -226,16 +230,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-3
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function shutdown(): APIResponse
+    public function shutdown(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/shutdown'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -243,16 +249,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-4
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function powerOff(): APIResponse
+    public function powerOff(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/poweroff'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -260,16 +268,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Resets the root password. Only works for Linux systems that are running the qemu guest agent. Server must be powered on (state on) in order for this operation to succeed.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-5
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function resetRootPassword(): APIResponse
+    public function resetRootPassword(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/reset_password'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -280,6 +290,8 @@ class Server extends Model implements Resource
                 'root_password' => $payload->root_password,
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -288,10 +300,10 @@ class Server extends Model implements Resource
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-6
      * @param string $type
      * @param array $ssh_keys
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableRescue($type = 'linux64', $ssh_keys = []): APIResponse
+    public function enableRescue($type = 'linux64', $ssh_keys = []): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_rescue'), [
             'json' => [
@@ -307,16 +319,18 @@ class Server extends Model implements Resource
                 'root_password' => $payload->root_password,
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Disables the Hetzner Rescue System for a server. This makes a server start from its disks on next reboot.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-7
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function disableRescue(): APIResponse
+    public function disableRescue(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_rescue'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -324,6 +338,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -333,10 +349,10 @@ class Server extends Model implements Resource
      * @param string $description
      * @param string $type
      * @param array $labels
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function createImage(string $description = '', string $type = 'snapshot', array $labels = []): APIResponse
+    public function createImage(string $description = '', string $type = 'snapshot', array $labels = []): ?APIResponse
     {
         $payload = [
             'description' => $description,
@@ -356,6 +372,8 @@ class Server extends Model implements Resource
                 'image' => Image::parse($payload->image),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -363,10 +381,10 @@ class Server extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-9
      * @param \LKDev\HetznerCloud\Models\Images\Image $image
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function rebuildFromImage(Image $image): APIResponse
+    public function rebuildFromImage(Image $image): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/rebuild'), [
             'json' => [
@@ -380,6 +398,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse($payload->action),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []), $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -388,10 +408,10 @@ class Server extends Model implements Resource
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-10
      * @param \LKDev\HetznerCloud\Models\Servers\Types\ServerType $serverType
      * @param bool $upgradeDisk
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeType(ServerType $serverType, bool $upgradeDisk = false): APIResponse
+    public function changeType(ServerType $serverType, bool $upgradeDisk = false): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_type'), [
             'json' => [
@@ -404,16 +424,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableBackups(string $backupWindow = null): APIResponse
+    public function enableBackups(string $backupWindow = null): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -421,16 +443,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Disables the automatic backup option and deletes all existing Backups for a Server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-12
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function disableBackups(): APIResponse
+    public function disableBackups(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/disable_backup'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -438,6 +462,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -445,10 +471,10 @@ class Server extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-13
      * @param \LKDev\HetznerCloud\Models\ISOs\ISO $iso
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function attachISO(ISO $iso): APIResponse
+    public function attachISO(ISO $iso): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
             'json' => [
@@ -460,16 +486,18 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Detaches an ISO from a server. In case no ISO image is attached to the server, the status of the returned action is immediately set to success.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-14
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function detachISO(): APIResponse
+    public function detachISO(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/detach_iso'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -477,6 +505,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -485,10 +515,10 @@ class Server extends Model implements Resource
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-15
      * @param string $ip
      * @param string $dnsPtr
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeReverseDNS(string $ip, string $dnsPtr): APIResponse
+    public function changeReverseDNS(string $ip, string $dnsPtr): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_dns_ptr'), [
             'json' => [
@@ -501,6 +531,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -511,7 +543,7 @@ class Server extends Model implements Resource
      * @param string $start
      * @param string $end
      * @param int|null $step
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function metrics(string $type, string $start, string $end, int $step = null)
@@ -522,16 +554,18 @@ class Server extends Model implements Resource
                 'metrics' => json_decode((string) $response->getBody())->metrics,
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Deletes a server. This immediately removes the server from your account, and it is no longer accessible.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-delete
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete(): APIResponse
+    public function delete(): ?APIResponse
     {
         $response = $this->httpClient->delete($this->replaceServerIdInUri('servers/{id}'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -539,6 +573,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -546,7 +582,7 @@ class Server extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-servers-put
      * @param array $data
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data)
@@ -559,16 +595,18 @@ class Server extends Model implements Resource
                 'server' => self::parse(json_decode((string) $response->getBody())->server),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function requestConsole(): APIResponse
+    public function requestConsole(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/request_console'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -580,6 +618,8 @@ class Server extends Model implements Resource
                 'password' => $payload->password,
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -588,10 +628,10 @@ class Server extends Model implements Resource
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
      * @param bool $delete
      * @param bool $rebuild
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeProtection(bool $delete = true, bool $rebuild = true): APIResponse
+    public function changeProtection(bool $delete = true, bool $rebuild = true): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_protection'), [
             'json' => [
@@ -604,13 +644,15 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * @param Network $network
      * @param string|null $ip
      * @param array $aliasIps
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function attachToNetwork(Network $network, string $ip = null, array $aliasIps = [])
@@ -632,11 +674,13 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * @param Network $network
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function detachFromNetwork(Network $network)
@@ -653,12 +697,14 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * @param Network $network
      * @param array $aliasIps
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeAliasIPs(Network $network, array $aliasIps)
@@ -675,6 +721,8 @@ class Server extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -688,12 +736,12 @@ class Server extends Model implements Resource
 
     /**
      * @param  $input
-     * @return \LKDev\HetznerCloud\Models\Servers\Server|static
+     * @return \LKDev\HetznerCloud\Models\Servers\Server|static |null
      */
     public static function parse($input)
     {
         if ($input == null) {
-            return;
+            return null;
         }
 
         return (new self($input->id))->setAdditionalData($input);

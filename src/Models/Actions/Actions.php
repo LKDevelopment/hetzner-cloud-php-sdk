@@ -31,10 +31,10 @@ class Actions extends Model implements Resources
 
     /**
      * @param RequestOpts $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
@@ -48,19 +48,23 @@ class Actions extends Model implements Resources
                 'actions' => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * @param $actionId
-     * @return \LKDev\HetznerCloud\Models\Actions\Action
+     * @return \LKDev\HetznerCloud\Models\Actions\Action|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $actionId): Action
+    public function getById(int $actionId): ?Action
     {
         $response = $this->httpClient->get('actions/'.$actionId);
         if (! HetznerAPIClient::hasError($response)) {
             return Action::parse(json_decode((string) $response->getBody())->action);
         }
+
+        return null;
     }
 
     public function getByName(string $name)

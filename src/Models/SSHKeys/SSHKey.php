@@ -63,10 +63,10 @@ class SSHKey extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-put
      * @param array $data
-     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data): self
+    public function update(array $data): ?self
     {
         $response = $this->httpClient->put('ssh_keys/'.$this->id, [
             'json' => $data,
@@ -75,6 +75,8 @@ class SSHKey extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string) $response->getBody())->ssh_key);
         }
+
+        return null;
     }
 
     /**
@@ -82,11 +84,11 @@ class SSHKey extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-put
      * @param string $newName
-     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey|null
      * @throws \LKDev\HetznerCloud\APIException
      * @deprecated 1.2.0
      */
-    public function changeName(string $newName): self
+    public function changeName(string $newName): ?self
     {
         return $this->update(['name' => $newName]);
     }
@@ -104,6 +106,8 @@ class SSHKey extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
+
+        return false;
     }
 
     /**

@@ -6,7 +6,7 @@
  * Time: 13:51.
  */
 
-namespace LKDev\HetznerCloud\Models\Datacenters;
+namespace LKDev\HetznerCloud\Models\Actions;
 
 use LKDev\HetznerCloud\RequestOpts;
 
@@ -16,6 +16,10 @@ class ActionRequestOpts extends RequestOpts
      * @var string
      */
     public $status;
+    /**
+     * @var string
+     */
+    public $sort;
 
     /**
      * RequestOpts constructor.

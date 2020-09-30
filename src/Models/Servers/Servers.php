@@ -23,6 +23,7 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 class Servers extends Model
 {
     use GetFunctionTrait;
+
     /**
      * @var array
      */
@@ -50,10 +51,10 @@ class Servers extends Model
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
      * @param RequestOpts|null $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -67,6 +68,8 @@ class Servers extends Model
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -92,12 +95,14 @@ class Servers extends Model
      * @return \LKDev\HetznerCloud\Models\Servers\Server|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $serverId): Server
+    public function getById(int $serverId): ?Server
     {
         $response = $this->httpClient->get('servers/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
             return Server::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
+
+        return null;
     }
 
     /**
@@ -115,7 +120,7 @@ class Servers extends Model
      * @param array $volumes
      * @param bool $automount
      * @param array $networks
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createInDatacenter(
@@ -129,7 +134,7 @@ class Servers extends Model
         $volumes = [],
         $automount = false,
         $networks = []
-    ): APIResponse {
+    ): ?APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -156,6 +161,8 @@ class Servers extends Model
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -172,7 +179,7 @@ class Servers extends Model
      * @param array $volumes
      * @param bool $automount
      * @param array $networks
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createInLocation(string $name,
@@ -185,7 +192,7 @@ class Servers extends Model
                                      $volumes = [],
                                      $automount = false,
                                      $networks = []
-    ): APIResponse {
+    ): ?APIResponse {
         $response = $this->httpClient->post('servers', [
             'json' => [
                 'name' => $name,
@@ -212,6 +219,8 @@ class Servers extends Model
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -225,6 +234,8 @@ class Servers extends Model
                 if ($server != null) {
                     return Server::parse($server);
                 }
+
+                return null;
             })
             ->toArray();
 

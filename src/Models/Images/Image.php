@@ -154,7 +154,7 @@ class Image extends Model implements Resource
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data): self
+    public function update(array $data): ?self
     {
         $response = $this->httpClient->put('images/'.$this->id, [
             'json' => $data,
@@ -162,6 +162,8 @@ class Image extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string) $response->getBody())->image);
         }
+
+        return null;
     }
 
     /**
@@ -172,7 +174,7 @@ class Image extends Model implements Resource
      * @return APIResponse
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeProtection(bool $delete = true): APIResponse
+    public function changeProtection(bool $delete = true): ?APIResponse
     {
         $response = $this->httpClient->post('images/'.$this->id.'/actions/change_protection', [
             'json' => [
@@ -184,6 +186,8 @@ class Image extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -199,16 +203,18 @@ class Image extends Model implements Resource
         if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
+
+        return false;
     }
 
     /**
      * @param  $input
      * @return \LKDev\HetznerCloud\Models\Images\Image|static
      */
-    public static function parse($input)
+    public static function parse($input): ?Image
     {
         if ($input == null) {
-            return;
+            return null;
         }
 
         return new self($input->id, $input->type, (property_exists($input, 'status') ? $input->status : null), $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), get_object_vars($input->labels));

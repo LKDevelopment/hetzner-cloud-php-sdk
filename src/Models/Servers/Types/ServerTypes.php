@@ -13,6 +13,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
@@ -40,10 +41,10 @@ class ServerTypes extends Model implements Resources
 
     /**
      * @param RequestOpts $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
@@ -57,6 +58,8 @@ class ServerTypes extends Model implements Resources
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -64,12 +67,14 @@ class ServerTypes extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $serverTypeId)
+    public function getById(int $serverTypeId): ?ServerType
     {
         $response = $this->httpClient->get('server_types/'.$serverTypeId);
         if (! HetznerAPIClient::hasError($response)) {
             return ServerType::parse(json_decode((string) $response->getBody())->server_type);
         }
+
+        return null;
     }
 
     /**

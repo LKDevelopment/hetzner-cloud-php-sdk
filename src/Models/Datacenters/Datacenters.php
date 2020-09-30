@@ -22,6 +22,7 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 class Datacenters extends Model implements Resources
 {
     use GetFunctionTrait;
+
     /**
      * @var array
      */
@@ -49,10 +50,10 @@ class Datacenters extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get
      * @param RequestOpts|null $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new DatacenterRequestOpts();
@@ -67,6 +68,8 @@ class Datacenters extends Model implements Resources
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -74,15 +77,17 @@ class Datacenters extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get-1
      * @param int $datacenterId
-     * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $datacenterId): Datacenter
+    public function getById(int $datacenterId): ?Datacenter
     {
         $response = $this->httpClient->get('datacenters/'.$datacenterId);
         if (! HetznerAPIClient::hasError($response)) {
             return Datacenter::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
+
+        return null;
     }
 
     /**

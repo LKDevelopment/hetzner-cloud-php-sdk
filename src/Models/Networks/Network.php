@@ -149,10 +149,10 @@ class Network extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
      * @param bool $delete
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeProtection(bool $delete = true): APIResponse
+    public function changeProtection(bool $delete = true): ?APIResponse
     {
         $response = $this->httpClient->post('networks/'.$this->id.'/actions/change_protection', [
             'json' => [
@@ -164,6 +164,8 @@ class Network extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**

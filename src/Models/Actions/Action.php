@@ -84,16 +84,18 @@ class Action extends Model implements Resource
 
     /**
      * @param $actionId
-     * @return Action
+     * @return Action|null
      * @throws \LKDev\HetznerCloud\APIException
      * @deprecated use Actions::getById instead
      */
-    public function getById($actionId): self
+    public function getById($actionId): ?self
     {
         $response = $this->httpClient->get('actions/'.$actionId);
         if (! HetznerAPIClient::hasError($response)) {
             return self::parse(json_decode((string) $response->getBody())->action);
         }
+
+        return null;
     }
 
     /**

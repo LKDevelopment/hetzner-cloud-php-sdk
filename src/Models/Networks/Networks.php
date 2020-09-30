@@ -16,6 +16,7 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 class Networks extends Model implements Resources
 {
     use GetFunctionTrait;
+
     /**
      * @var array
      */
@@ -43,10 +44,10 @@ class Networks extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#networks-get-all-networks
      * @param RequestOpts|null $requestOpts
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new NetworkRequestOpts();
@@ -60,6 +61,8 @@ class Networks extends Model implements Resources
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -70,12 +73,14 @@ class Networks extends Model implements Resources
      * @return  Network
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $serverId): Network
+    public function getById(int $serverId): ?Network
     {
         $response = $this->httpClient->get('networks/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
             return Network::parse(json_decode((string) $response->getBody())->network);
         }
+
+        return null;
     }
 
     /**

@@ -95,23 +95,25 @@ class Volume extends Model implements Resource
      * Deletes a volume. This immediately removes the volume from your account, and it is no longer accessible.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-delete
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete(): APIResponse
+    public function delete(): ?APIResponse
     {
         $response = $this->httpClient->delete('volumes/'.$this->id);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * @param Server $server
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function attach(Server $server)
+    public function attach(Server $server): ?APIResponse
     {
         $response = $this->httpClient->post('volumes/'.$this->id.'/actions/attach', [
             'json' => [
@@ -123,13 +125,15 @@ class Volume extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function detach()
+    public function detach(): ?APIResponse
     {
         $response = $this->httpClient->post('volumes/'.$this->id.'/actions/detach');
         if (! HetznerAPIClient::hasError($response)) {
@@ -137,14 +141,16 @@ class Volume extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
      * @param int $size
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function resize(int $size)
+    public function resize(int $size): ?APIResponse
     {
         $response = $this->httpClient->post('volumes/'.$this->id.'/actions/resize', [
             'json' => [
@@ -156,6 +162,8 @@ class Volume extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -163,10 +171,10 @@ class Volume extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-volume-put
      * @param array $data
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data)
+    public function update(array $data): ?APIResponse
     {
         $response = $this->httpClient->put('volumes/'.$this->id, [
             'json' => $data,
@@ -176,6 +184,8 @@ class Volume extends Model implements Resource
                 'volume' => self::parse(json_decode((string) $response->getBody())->volume),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -183,10 +193,10 @@ class Volume extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ip-actions-post-3
      * @param bool $delete
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeProtection(bool $delete = true): APIResponse
+    public function changeProtection(bool $delete = true): ?APIResponse
     {
         $response = $this->httpClient->post('volumes/'.$this->id.'/actions/change_protection', [
             'json' => [
@@ -198,6 +208,8 @@ class Volume extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**

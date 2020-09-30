@@ -49,10 +49,10 @@ class ISO extends Model implements Resource
      * @param $input
      * @return \LKDev\HetznerCloud\Models\ISOs\ISO|static
      */
-    public static function parse($input)
+    public static function parse($input): ?self
     {
         if ($input == null) {
-            return;
+            return null;
         }
 
         return new self($input->id, $input->name, $input->description, $input->type);

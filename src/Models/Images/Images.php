@@ -13,6 +13,7 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 class Images extends Model implements Resources
 {
     use GetFunctionTrait;
+
     /**
      * @var array
      */
@@ -40,10 +41,10 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
      * @param string|null $name
-     * @return APIResponse
+     * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): APIResponse
+    public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
         $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
@@ -54,6 +55,8 @@ class Images extends Model implements Resources
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
+
+        return null;
     }
 
     /**
@@ -64,12 +67,14 @@ class Images extends Model implements Resources
      * @return \LKDev\HetznerCloud\Models\Images\Image
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $imageId): Image
+    public function getById(int $imageId): ?Image
     {
         $response = $this->httpClient->get('images/'.$imageId);
         if (! HetznerAPIClient::hasError($response)) {
             return Image::parse(json_decode((string) $response->getBody())->image);
         }
+
+        return null;
     }
 
     /**
