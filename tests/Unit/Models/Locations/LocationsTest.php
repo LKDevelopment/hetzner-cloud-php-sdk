@@ -27,43 +27,43 @@ class LocationsTest extends TestCase
 
     public function testGet()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/location.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/location.json')));
         $location = $this->locations->get(1);
         $this->assertEquals($location->id, 1);
         $this->assertEquals($location->name, 'fsn1');
 
-        $this->assertLastRequestEquals("GET", "/locations/1");
+        $this->assertLastRequestEquals('GET', '/locations/1');
     }
 
     public function testGetByName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/locations.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/locations.json')));
         $location = $this->locations->getByName('fsn1');
         $this->assertEquals($location->id, 1);
         $this->assertEquals($location->name, 'fsn1');
-        $this->assertLastRequestEquals("GET", "/locations");
-        $this->assertLastRequestQueryParametersContains("name", "fsn1");
+        $this->assertLastRequestEquals('GET', '/locations');
+        $this->assertLastRequestQueryParametersContains('name', 'fsn1');
     }
 
     public function testAll()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/locations.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/locations.json')));
         $locations = $this->locations->all();
 
         $this->assertEquals(count($locations), 1);
         $this->assertEquals($locations[0]->id, 1);
         $this->assertEquals($locations[0]->name, 'fsn1');
-        $this->assertLastRequestEquals("GET", "/locations");
+        $this->assertLastRequestEquals('GET', '/locations');
     }
 
     public function testList()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/locations.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/locations.json')));
         $locations = $this->locations->list()->locations;
 
         $this->assertEquals(count($locations), 1);
         $this->assertEquals($locations[0]->id, 1);
         $this->assertEquals($locations[0]->name, 'fsn1');
-        $this->assertLastRequestEquals("GET", "/locations");
+        $this->assertLastRequestEquals('GET', '/locations');
     }
 }

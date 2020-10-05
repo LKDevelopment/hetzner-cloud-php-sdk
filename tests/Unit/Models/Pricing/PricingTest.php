@@ -27,12 +27,12 @@ class PricingTest extends TestCase
 
     public function testAll()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/pricing.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/pricing.json')));
         $prices = $this->prices->all();
         $this->assertEquals('EUR', $prices->currency);
         $this->assertEquals('19.000000', $prices->vat_rate);
         $this->assertEquals('1.0000000000', $prices->image->price_per_gb_month->net);
         $this->assertIsArray($prices->server_types);
-        $this->assertLastRequestEquals("GET", "/pricing");
+        $this->assertLastRequestEquals('GET', '/pricing');
     }
 }
