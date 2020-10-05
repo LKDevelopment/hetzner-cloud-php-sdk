@@ -40,15 +40,15 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     public function assertLastRequestEquals($method, $urlFragment)
     {
         $this->assertEquals($this->mockHandler->getLastRequest()->getMethod(), $method);
-        $this->assertEquals("/" . $this->mockHandler->getLastRequest()->getUri()->getPath(), $urlFragment);
+        $this->assertEquals('/'.$this->mockHandler->getLastRequest()->getUri()->getPath(), $urlFragment);
     }
 
     public function assertLastRequestBodyParametersEqual(array $parameters)
     {
-        $body = (string)$this->mockHandler->getLastRequest()->getBody();
+        $body = (string) $this->mockHandler->getLastRequest()->getBody();
         $bodyParameters = json_decode($body, true);
         if (json_last_error() != JSON_ERROR_NONE) {
-            $this->fail("Invalid json within request: " . json_last_error_msg() . ":" . $body);
+            $this->fail('Invalid json within request: '.json_last_error_msg().':'.$body);
         }
         foreach ($parameters as $parameter => $value) {
             $this->assertArrayHasKey($parameter, $bodyParameters);
@@ -58,14 +58,13 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
     public function assertLastRequestBodyIsEmpty()
     {
-        $body = (string)$this->mockHandler->getLastRequest()->getBody();
+        $body = (string) $this->mockHandler->getLastRequest()->getBody();
         $this->assertEmpty($body);
     }
 
     public function assertLastRequestQueryParametersContains(string $key, string $value)
     {
         $query = $this->mockHandler->getLastRequest()->getUri()->getQuery();
-        $this->assertStringContainsString(implode("=", [urlencode($key), urlencode($value)]), $query);
-
+        $this->assertStringContainsString(implode('=', [urlencode($key), urlencode($value)]), $query);
     }
 }

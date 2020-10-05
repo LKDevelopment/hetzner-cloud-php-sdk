@@ -27,42 +27,42 @@ class DatacentersTest extends TestCase
 
     public function testGet()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/datacenter.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/datacenter.json')));
         $datacenter = $this->datacenters->get(1);
         $this->assertEquals($datacenter->id, 1);
         $this->assertEquals($datacenter->name, 'fsn1-dc8');
-        $this->assertLastRequestEquals("GET", "/datacenters/1");
+        $this->assertLastRequestEquals('GET', '/datacenters/1');
     }
 
     public function testGetByName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/datacenters.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/datacenters.json')));
         $datacenter = $this->datacenters->getByName('fsn1-dc8');
         $this->assertEquals($datacenter->id, 1);
         $this->assertEquals($datacenter->name, 'fsn1-dc8');
-        $this->assertLastRequestQueryParametersContains("name", "fsn1-dc8");
-        $this->assertLastRequestEquals("GET", "/datacenters");
+        $this->assertLastRequestQueryParametersContains('name', 'fsn1-dc8');
+        $this->assertLastRequestEquals('GET', '/datacenters');
     }
 
     public function testAll()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/datacenters.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/datacenters.json')));
         $datacenters = $this->datacenters->all();
 
         $this->assertEquals(count($datacenters), 1);
         $this->assertEquals($datacenters[0]->id, 1);
         $this->assertEquals($datacenters[0]->name, 'fsn1-dc8');
-        $this->assertLastRequestEquals("GET", "/datacenters");
+        $this->assertLastRequestEquals('GET', '/datacenters');
     }
 
     public function testList()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/datacenters.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/datacenters.json')));
         $datacenters = $this->datacenters->list()->datacenters;
 
         $this->assertEquals(count($datacenters), 1);
         $this->assertEquals($datacenters[0]->id, 1);
         $this->assertEquals($datacenters[0]->name, 'fsn1-dc8');
-        $this->assertLastRequestEquals("GET", "/datacenters");
+        $this->assertLastRequestEquals('GET', '/datacenters');
     }
 }
