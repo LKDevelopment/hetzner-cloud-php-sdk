@@ -11,7 +11,6 @@ namespace LKDev\HetznerCloud\Models\Volumes;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
-use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Meta;
@@ -62,9 +61,9 @@ class Volumes extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new VolumeRequestOpts();
         }
-        $response = $this->httpClient->get('volumes' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('volumes'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -100,9 +99,9 @@ class Volumes extends Model implements Resources
      */
     public function getById(int $id): ?Volume
     {
-        $response = $this->httpClient->get('volumes/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Volume::parse(json_decode((string)$response->getBody())->volume);
+        $response = $this->httpClient->get('volumes/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Volume::parse(json_decode((string) $response->getBody())->volume);
         }
 
         return null;
@@ -138,8 +137,8 @@ class Volumes extends Model implements Resources
         $response = $this->httpClient->post('volumes', [
             'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
