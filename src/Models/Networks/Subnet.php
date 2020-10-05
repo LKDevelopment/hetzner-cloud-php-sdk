@@ -3,7 +3,6 @@
 namespace LKDev\HetznerCloud\Models\Networks;
 
 use GuzzleHttp\Client;
-use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Model;
 
 /**

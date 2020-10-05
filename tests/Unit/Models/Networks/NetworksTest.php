@@ -33,11 +33,11 @@ class NetworksTest extends TestCase
      */
     public function testAll()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/networks.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/networks.json')));
         $networks = $this->networks->all();
         $this->assertCount(1, $networks);
 
-        $this->assertLastRequestEquals("GET", "/networks");
+        $this->assertLastRequestEquals('GET', '/networks');
     }
 
     /**
@@ -45,10 +45,10 @@ class NetworksTest extends TestCase
      */
     public function testList()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/networks.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/networks.json')));
         $networks = $this->networks->list()->networks;
         $this->assertCount(1, $networks);
-        $this->assertLastRequestEquals("GET", "/networks");
+        $this->assertLastRequestEquals('GET', '/networks');
     }
 
     /**
@@ -56,7 +56,7 @@ class NetworksTest extends TestCase
      */
     public function testGetByName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/networks.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/networks.json')));
         $network = $this->networks->getByName('mynet');
         $this->assertEquals(4711, $network->id);
         $this->assertEquals('mynet', $network->name);
@@ -74,7 +74,7 @@ class NetworksTest extends TestCase
 
         $this->assertEmpty($network->labels);
 
-        $this->assertLastRequestEquals("GET", "/networks");
+        $this->assertLastRequestEquals('GET', '/networks');
     }
 
     /**
@@ -82,7 +82,7 @@ class NetworksTest extends TestCase
      */
     public function testGet()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/network.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/network.json')));
         $network = $this->networks->get(4711);
         $this->assertEquals(4711, $network->id);
         $this->assertEquals('mynet', $network->name);
@@ -100,30 +100,28 @@ class NetworksTest extends TestCase
 
         $this->assertEmpty($network->labels);
 
-
-        $this->assertLastRequestEquals("GET", "/networks/4711");
+        $this->assertLastRequestEquals('GET', '/networks/4711');
     }
 
     public function testBasicCreate()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/network.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/network.json')));
         $resp = $this->networks->create('mynet', '10.0.0.0/16');
         $this->assertInstanceOf(APIResponse::class, $resp);
         $this->assertInstanceOf(Network::class, $resp->getResponsePart('network'));
 
-        $this->assertLastRequestEquals("POST", "/networks");
-        $this->assertLastRequestBodyParametersEqual(["name" => "mynet", "ip_range" => "10.0.0.0/16"]);
-
+        $this->assertLastRequestEquals('POST', '/networks');
+        $this->assertLastRequestBodyParametersEqual(['name' => 'mynet', 'ip_range' => '10.0.0.0/16']);
     }
 
     public function testAdvancedCreate()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/network.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/network.json')));
         $resp = $this->networks->create('mynet', '10.0.0.0/16', [new Subnet(Subnet::TYPE_CLOUD, '10.0.1.0/24', 'eu-central')], [new Route('10.100.1.0/24', '10.0.1.1')]);
         $this->assertInstanceOf(APIResponse::class, $resp);
         $this->assertInstanceOf(Network::class, $resp->getResponsePart('network'));
 
-        $this->assertLastRequestEquals("POST", "/networks");
-        $this->assertLastRequestBodyParametersEqual(["name" => "mynet", "ip_range" => "10.0.0.0/16", "subnets" => [["type" => "cloud", "ip_range" => "10.0.1.0/24", "network_zone" => "eu-central"]], "routes" => [["destination" => "10.100.1.0/24", "gateway" => "10.0.1.1"]]]);
+        $this->assertLastRequestEquals('POST', '/networks');
+        $this->assertLastRequestBodyParametersEqual(['name' => 'mynet', 'ip_range' => '10.0.0.0/16', 'subnets' => [['type' => 'cloud', 'ip_range' => '10.0.1.0/24', 'network_zone' => 'eu-central']], 'routes' => [['destination' => '10.100.1.0/24', 'gateway' => '10.0.1.1']]]);
     }
 }
