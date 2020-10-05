@@ -86,7 +86,6 @@ class Certificate extends Model implements Resource
         parent::__construct();
     }
 
-
     /**
      * Update a ssh key.
      *
@@ -97,12 +96,12 @@ class Certificate extends Model implements Resource
      */
     public function update(array $data): ?self
     {
-        $response = $this->httpClient->put('certificates/' . $this->id, [
+        $response = $this->httpClient->put('certificates/'.$this->id, [
             'json' => $data,
 
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->certificate);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->certificate);
         }
 
         return null;
@@ -117,8 +116,8 @@ class Certificate extends Model implements Resource
      */
     public function delete(): bool
     {
-        $response = $this->httpClient->delete('certificates/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('certificates/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
 

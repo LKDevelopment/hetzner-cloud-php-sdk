@@ -30,7 +30,7 @@ class CertificatesTest extends TestCase
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/certificate.json')));
         $certificate = $this->certificates->get(897);
         $this->assertEquals($certificate->id, 897);
-        $this->assertEquals($certificate->name, "my website cert");
+        $this->assertEquals($certificate->name, 'my website cert');
         $this->assertEquals($certificate->certificate, "-----BEGIN CERTIFICATE-----\n...");
 
         $this->assertLastRequestEquals('GET', '/certificates/897');
@@ -39,13 +39,13 @@ class CertificatesTest extends TestCase
     public function testGetByName()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/certificates.json')));
-        $certificate = $this->certificates->getByName("my website cert");
+        $certificate = $this->certificates->getByName('my website cert');
         $this->assertEquals($certificate->id, 897);
-        $this->assertEquals($certificate->name, "my website cert");
+        $this->assertEquals($certificate->name, 'my website cert');
         $this->assertEquals($certificate->certificate, "-----BEGIN CERTIFICATE-----\n...");
 
         $this->assertLastRequestEquals('GET', '/certificates');
-        $this->assertLastRequestQueryParametersContains('name', "my website cert");
+        $this->assertLastRequestQueryParametersContains('name', 'my website cert');
     }
 
     public function testAll()
@@ -55,7 +55,7 @@ class CertificatesTest extends TestCase
 
         $this->assertEquals(count($certificates), 1);
         $this->assertEquals($certificates[0]->id, 897);
-        $this->assertEquals($certificates[0]->name, "my website cert");
+        $this->assertEquals($certificates[0]->name, 'my website cert');
         $this->assertEquals($certificates[0]->certificate, "-----BEGIN CERTIFICATE-----\n...");
 
         $this->assertLastRequestEquals('GET', '/certificates');
@@ -68,7 +68,7 @@ class CertificatesTest extends TestCase
 
         $this->assertEquals(count($certificates), 1);
         $this->assertEquals($certificates[0]->id, 897);
-        $this->assertEquals($certificates[0]->name, "my website cert");
+        $this->assertEquals($certificates[0]->name, 'my website cert');
         $this->assertEquals($certificates[0]->certificate, "-----BEGIN CERTIFICATE-----\n...");
 
         $this->assertLastRequestEquals('GET', '/certificates');
@@ -78,10 +78,10 @@ class CertificatesTest extends TestCase
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/certificate.json')));
 
-        $this->certificates->create('my cert', "-----BEGIN CERTIFICATE-----\n...",  "-----BEGIN PRIVATE KEY-----\n...");
+        $this->certificates->create('my cert', "-----BEGIN CERTIFICATE-----\n...", "-----BEGIN PRIVATE KEY-----\n...");
 
         $this->assertLastRequestEquals('POST', '/certificates');
-        $this->assertLastRequestBodyParametersEqual(['name' => 'my cert', 'certificate' => "-----BEGIN CERTIFICATE-----\n...", "private_key" =>  "-----BEGIN PRIVATE KEY-----\n..."]);
+        $this->assertLastRequestBodyParametersEqual(['name' => 'my cert', 'certificate' => "-----BEGIN CERTIFICATE-----\n...", 'private_key' =>  "-----BEGIN PRIVATE KEY-----\n..."]);
     }
 
     public function testDelete()
