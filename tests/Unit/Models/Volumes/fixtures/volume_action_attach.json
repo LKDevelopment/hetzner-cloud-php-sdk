@@ -1,0 +1,21 @@
+{
+  "action": {
+    "id": 13,
+    "command": "attach_volume",
+    "status": "running",
+    "progress": 0,
+    "started": "2016-01-30T23:50:00+00:00",
+    "finished": null,
+    "resources": [
+      {
+        "id": 43,
+        "type": "server"
+      },
+      {
+        "id": 554,
+        "type": "volume"
+      }
+    ],
+    "error": null
+  }
+}

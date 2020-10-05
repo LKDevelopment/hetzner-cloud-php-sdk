@@ -125,9 +125,9 @@ class Volumes extends Model implements Resources
             'automount' => $automount,
         ];
         if ($location == null && $server != null) {
-            $payload['server'] = $server->id;
+            $payload['server'] = $server->name ?: $server->id;
         } elseif ($location != null && $server == null) {
-            $payload['location'] = $location->id;
+            $payload['location'] = $location->name ?: $location->id;
         } else {
             throw new \InvalidArgumentException('Please specify only a server or a location');
         }
@@ -143,6 +143,9 @@ class Volumes extends Model implements Resources
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
                 'volume' => Volume::parse($payload->volume),
+                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                    return Action::parse($action);
+                })->toArray(),
             ], $response->getHeaders());
         }
 

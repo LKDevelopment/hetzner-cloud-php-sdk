@@ -1,0 +1,44 @@
+{
+  "networks": [
+    {
+      "id": 4711,
+      "name": "mynet",
+      "ip_range": "10.0.0.0/16",
+      "subnets": [
+        {
+          "type": "cloud",
+          "ip_range": "10.0.1.0/24",
+          "network_zone": "eu-central",
+          "gateway": "10.0.0.1"
+        }
+      ],
+      "routes": [
+        {
+          "destination": "10.100.1.0/24",
+          "gateway": "10.0.1.1"
+        }
+      ],
+      "servers": [
+        42
+      ],
+      "load_balancers": [
+        42
+      ],
+      "protection": {
+        "delete": false
+      },
+      "labels": {},
+      "created": "2016-01-30T23:50:00+00:00"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "next_page": null,
+      "last_page": 1,
+      "total_entries": 1
+    }
+  }
+}

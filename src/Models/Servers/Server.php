@@ -118,6 +118,11 @@ class Server extends Model implements Resource
     public $volumes;
 
     /**
+     * @var int
+     */
+    public $primaryDiskSize;
+
+    /**
      * @param int $serverId
      * @param Client|null $httpClient
      */
@@ -151,6 +156,7 @@ class Server extends Model implements Resource
         $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
+        $this->primaryDiskSize = $data->primary_disk_size ?: null;
 
         return $this;
     }
@@ -388,7 +394,7 @@ class Server extends Model implements Resource
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/rebuild'), [
             'json' => [
-                'image' => $image->name,
+                'image' => $image->id ?: $image->name,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {
@@ -478,7 +484,7 @@ class Server extends Model implements Resource
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/attach_iso'), [
             'json' => [
-                'iso' => $iso->name == null ? $iso->id : $iso->name,
+                'iso' => $iso->name ?: $iso->id,
             ],
         ]);
         if (! HetznerAPIClient::hasError($response)) {

@@ -1,0 +1,25 @@
+{
+  "image": {
+    "id": 4711,
+    "type": "snapshot",
+    "status": "available",
+    "name": "ubuntu-20.04",
+    "description": "Ubuntu 20.04 Standard 64 bit",
+    "image_size": 2.3,
+    "disk_size": 10,
+    "created": "2016-01-30T23:50:00+00:00",
+    "created_from": {
+      "id": 1,
+      "name": "Server"
+    },
+    "bound_to": null,
+    "os_flavor": "ubuntu",
+    "os_version": "20.04",
+    "rapid_deploy": false,
+    "protection": {
+      "delete": false
+    },
+    "deprecated": "2018-02-28T00:00:00+00:00",
+    "labels": {}
+  }
+}

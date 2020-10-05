@@ -1,0 +1,40 @@
+{
+  "image": {
+    "id": 4711,
+    "type": "snapshot",
+    "status": "creating",
+    "name": null,
+    "description": "my image",
+    "image_size": 2.3,
+    "disk_size": 10,
+    "created": "2016-01-30T23:50:00+00:00",
+    "created_from": {
+      "id": 1,
+      "name": "Server"
+    },
+    "bound_to": null,
+    "os_flavor": "ubuntu",
+    "os_version": "20.04",
+    "rapid_deploy": false,
+    "protection": {
+      "delete": false
+    },
+    "deprecated": "2018-02-28T00:00:00+00:00",
+    "labels": {}
+  },
+  "action": {
+    "id": 13,
+    "command": "create_image",
+    "status": "success",
+    "progress": 100,
+    "started": "2016-01-30T23:55:00+00:00",
+    "finished": "2016-01-30T23:56:00+00:00",
+    "resources": [
+      {
+        "id": 42,
+        "type": "server"
+      }
+    ],
+    "error": null
+  }
+}

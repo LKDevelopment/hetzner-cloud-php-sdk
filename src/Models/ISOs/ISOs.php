@@ -96,9 +96,9 @@ class ISOs extends Model implements Resources
      */
     public function getByName(string $name): ?ISO
     {
-        $isos = $this->list(new ISORequestOpts($name));
+        $resp = $this->list(new ISORequestOpts($name));
 
-        return (count($isos) > 0) ? $isos[0] : null;
+        return (count($resp->isos) > 0) ? $resp->isos[0] : null;
     }
 
     /**

@@ -82,7 +82,7 @@ class FloatingIps extends Model implements Resources
     {
         $response = $this->httpClient->get('floating_ips/'.$floatingIpId);
         if (! HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
+            return FloatingIp::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
 
         return null;
@@ -122,15 +122,26 @@ class FloatingIps extends Model implements Resources
         Server $server = null,
         string $name = null
     ): ?FloatingIp {
-        $response = $this->httpClient->post('floating_ips', [
+        $parameters = [
             'type' => $type,
-            'description' => $description,
-            'server' => $server ?: $server->id,
-            'home_location' => $location ?: $location->name,
-            'name' => $name ?: $name,
+        ];
+        if ($description != null) {
+            $parameters['description'] = $description;
+        }
+        if ($name != null) {
+            $parameters['name'] = $name;
+        }
+        if ($location != null) {
+            $parameters['home_location'] = $location->name;
+        }
+        if ($server != null) {
+            $parameters['server'] = $server->id ?: $server->name;
+        }
+        $response = $this->httpClient->post('floating_ips', [
+            'json' => $parameters,
         ]);
         if (! HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string) $response->getBody())->floating_ip);
+            return FloatingIp::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
 
         return null;

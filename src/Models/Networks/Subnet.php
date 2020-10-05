@@ -3,7 +3,6 @@
 namespace LKDev\HetznerCloud\Models\Networks;
 
 use GuzzleHttp\Client;
-use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Model;
 
 /**
@@ -49,10 +48,10 @@ class Subnet extends Model
 
     /**
      * @param $input
-     * @param GuzzleClient|null $client
+     * @param Client|null $client
      * @return array|Model
      */
-    public static function parse($input, GuzzleClient $client = null)
+    public static function parse($input, Client $client = null)
     {
         return collect($input)->map(function ($subnet) use ($client) {
             return new self($subnet->type, $subnet->ip_range, $subnet->network_zone, $subnet->gateway, $client);

@@ -1,0 +1,32 @@
+{
+  "actions": [
+    {
+      "id": 13,
+      "command": "start_server",
+      "status": "success",
+      "progress": 100,
+      "started": "2016-01-30T23:55:00+00:00",
+      "finished": "2016-01-30T23:56:00+00:00",
+      "resources": [
+        {
+          "id": 42,
+          "type": "server"
+        }
+      ],
+      "error": {
+        "code": "action_failed",
+        "message": "Action failed"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "next_page": null,
+      "last_page": 1,
+      "total_entries": 1
+    }
+  }
+}

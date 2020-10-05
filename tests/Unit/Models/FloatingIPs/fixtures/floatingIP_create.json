@@ -1,0 +1,47 @@
+{
+  "floating_ip": {
+    "id": 4711,
+    "name": "Web Frontend",
+    "description": "Web Frontend",
+    "ip": "131.232.99.1",
+    "type": "ipv4",
+    "server": 42,
+    "dns_ptr": [
+      {
+        "ip": "2001:db8::1",
+        "dns_ptr": "server.example.com"
+      }
+    ],
+    "home_location": {
+      "id": 1,
+      "name": "fsn1",
+      "description": "Falkenstein DC Park 1",
+      "country": "DE",
+      "city": "Falkenstein",
+      "latitude": 50.47612,
+      "longitude": 12.370071,
+      "network_zone": "eu-central"
+    },
+    "blocked": false,
+    "protection": {
+      "delete": false
+    },
+    "labels": {},
+    "created": "2016-01-30T23:50:00+00:00"
+  },
+  "action": {
+    "id": 13,
+    "command": "create_floating_ip",
+    "status": "running",
+    "progress": 0,
+    "started": "2016-01-30T23:50:00+00:00",
+    "finished": null,
+    "resources": [
+      {
+        "id": 42,
+        "type": "server"
+      }
+    ],
+    "error": null
+  }
+}

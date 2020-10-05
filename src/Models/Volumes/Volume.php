@@ -110,16 +110,23 @@ class Volume extends Model implements Resource
 
     /**
      * @param Server $server
+     * @param bool|null $automount
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function attach(Server $server): ?APIResponse
+    public function attach(Server $server, $automount = null): ?APIResponse
     {
+        $payload = [
+            'server' => $server->id,
+        ];
+        if ($automount !== null) {
+            $payload['automount'] = $automount;
+        }
+
         $response = $this->httpClient->post('volumes/'.$this->id.'/actions/attach', [
-            'json' => [
-                'server' => $server->id,
-            ],
+            'json' => $payload,
         ]);
+
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
