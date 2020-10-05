@@ -1,0 +1,19 @@
+{
+  "wss_url": "wss://console.hetzner.cloud/?server_id=1&token=3db32d15-af2f-459c-8bf8-dee1fd05f49c",
+  "password": "9MQaTg2VAGI0FIpc10k3UpRXcHj2wQ6x",
+  "action": {
+    "id": 13,
+    "command": "request_console",
+    "status": "success",
+    "progress": 100,
+    "started": "2016-01-30T23:55:00+00:00",
+    "finished": "2016-01-30T23:56:00+00:00",
+    "resources": [
+      {
+        "id": 42,
+        "type": "server"
+      }
+    ],
+    "error": null
+  }
+}

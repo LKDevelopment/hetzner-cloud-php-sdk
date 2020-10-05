@@ -1,0 +1,136 @@
+{
+  "server": {
+    "id": 42,
+    "name": "my-server",
+    "status": "running",
+    "created": "2016-01-30T23:50:00+00:00",
+    "public_net": {
+      "ipv4": {
+        "ip": "1.2.3.4",
+        "blocked": false,
+        "dns_ptr": "server01.example.com"
+      },
+      "ipv6": {
+        "ip": "2001:db8::/64",
+        "blocked": false,
+        "dns_ptr": [
+          {
+            "ip": "2001:db8::1",
+            "dns_ptr": "server.example.com"
+          }
+        ]
+      },
+      "floating_ips": [
+        478
+      ]
+    },
+    "private_net": [
+      {
+        "network": 4711,
+        "ip": "10.0.0.2",
+        "alias_ips": [],
+        "mac_address": "86:00:ff:2a:7d:e1"
+      }
+    ],
+    "server_type": {
+      "id": 1,
+      "name": "cx11",
+      "description": "CX11",
+      "cores": 1,
+      "memory": 1,
+      "disk": 25,
+      "deprecated": false,
+      "prices": [
+        {
+          "location": "fsn1",
+          "price_hourly": {
+            "net": "1.0000000000",
+            "gross": "1.1900000000000000"
+          },
+          "price_monthly": {
+            "net": "1.0000000000",
+            "gross": "1.1900000000000000"
+          }
+        }
+      ],
+      "storage_type": "local",
+      "cpu_type": "shared"
+    },
+    "datacenter": {
+      "id": 1,
+      "name": "fsn1-dc8",
+      "description": "Falkenstein 1 DC 8",
+      "location": {
+        "id": 1,
+        "name": "fsn1",
+        "description": "Falkenstein DC Park 1",
+        "country": "DE",
+        "city": "Falkenstein",
+        "latitude": 50.47612,
+        "longitude": 12.370071,
+        "network_zone": "eu-central"
+      },
+      "server_types": {
+        "supported": [
+          1,
+          2,
+          3
+        ],
+        "available": [
+          1,
+          2,
+          3
+        ],
+        "available_for_migration": [
+          1,
+          2,
+          3
+        ]
+      }
+    },
+    "image": {
+      "id": 4711,
+      "type": "snapshot",
+      "status": "available",
+      "name": "ubuntu-20.04",
+      "description": "Ubuntu 20.04 Standard 64 bit",
+      "image_size": 2.3,
+      "disk_size": 10,
+      "created": "2016-01-30T23:50:00+00:00",
+      "created_from": {
+        "id": 1,
+        "name": "Server"
+      },
+      "bound_to": null,
+      "os_flavor": "ubuntu",
+      "os_version": "20.04",
+      "rapid_deploy": false,
+      "protection": {
+        "delete": false
+      },
+      "deprecated": "2018-02-28T00:00:00+00:00",
+      "labels": {}
+    },
+    "iso": {
+      "id": 4711,
+      "name": "FreeBSD-11.0-RELEASE-amd64-dvd1",
+      "description": "FreeBSD 11.0 x64",
+      "type": "public",
+      "deprecated": "2018-02-28T00:00:00+00:00"
+    },
+    "rescue_enabled": false,
+    "locked": false,
+    "backup_window": "22-02",
+    "outgoing_traffic": 123456,
+    "ingoing_traffic": 123456,
+    "included_traffic": 654321,
+    "protection": {
+      "delete": false,
+      "rebuild": false
+    },
+    "labels": {},
+    "volumes": [],
+    "load_balancers": [],
+    "primary_disk_size": 50
+  }
+}

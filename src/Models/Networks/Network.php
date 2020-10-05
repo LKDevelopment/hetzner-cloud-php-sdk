@@ -123,7 +123,7 @@ class Network extends Model implements Resource
     public function deleteRoute(Route $route)
     {
         $response = $this->httpClient->post('networks/'.$this->id.'/actions/delete_route', [
-            'json' => [$route->__toRequestPayload()],
+            'json' => $route->__toRequestPayload(),
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
