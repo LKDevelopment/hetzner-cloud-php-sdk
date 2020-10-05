@@ -5,6 +5,7 @@ namespace LKDev\HetznerCloud;
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
+use LKDev\HetznerCloud\Models\Certificates\Certificates;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
@@ -17,6 +18,10 @@ use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class HetznerAPIClient
+ * @package LKDev\HetznerCloud
+ */
 class HetznerAPIClient
 {
     /**
@@ -24,6 +29,9 @@ class HetznerAPIClient
      */
     const VERSION = '2.2.2';
 
+    /**
+     *
+     */
     const MAX_ENTITIES_PER_PAGE = 50;
 
     /**
@@ -136,7 +144,7 @@ class HetznerAPIClient
      */
     public static function throwError(ResponseInterface $response)
     {
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
         if (strlen($body) > 0) {
             $error = \GuzzleHttp\json_decode($body);
             throw new APIException(APIResponse::create([
@@ -155,8 +163,8 @@ class HetznerAPIClient
      */
     public static function hasError(ResponseInterface $response)
     {
-        $responseDecoded = json_decode((string) $response->getBody());
-        if (strlen((string) $response->getBody()) > 0) {
+        $responseDecoded = json_decode((string)$response->getBody());
+        if (strlen((string)$response->getBody()) > 0) {
             if (property_exists($responseDecoded, 'error')) {
                 self::throwError($response);
 
@@ -265,6 +273,15 @@ class HetznerAPIClient
     public function networks()
     {
         return new Networks($this->httpClient);
+    }
+
+
+    /**
+     * @return Certificates
+     */
+    public function certificates()
+    {
+        return new Certificates($this->httpClient);
     }
 
     /**
