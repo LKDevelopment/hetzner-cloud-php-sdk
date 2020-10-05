@@ -28,5 +28,20 @@
     },
     "labels": {},
     "created": "2016-01-30T23:50:00+00:00"
+  },
+  "action": {
+    "id": 13,
+    "command": "create_floating_ip",
+    "status": "running",
+    "progress": 0,
+    "started": "2016-01-30T23:50:00+00:00",
+    "finished": null,
+    "resources": [
+      {
+        "id": 42,
+        "type": "server"
+      }
+    ],
+    "error": null
   }
 }
