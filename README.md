@@ -26,11 +26,7 @@ foreach ($hetznerClient->servers()->all() as $server) {
 
 ### Testing
 
-We use the [Hetzner Cloud API Mock Server](https://github.com/LKDevelopment/hetzner-cloud-api-mock) for testing against the API. For testing run the commands:
-```bash
-docker run -d -p 127.0.0.1:4000:8080 lkdevelopment/hetzner-cloud-api-mock
-phpunit
-```
+You can just run `phpunit`. The whole library is based on unit tests and sample responses from the official Hetzner Cloud documentation.
 
 ### Changelog
 
