@@ -1,0 +1,17 @@
+{
+  "action": {
+    "id": 13,
+    "command": "change_protection",
+    "status": "success",
+    "progress": 100,
+    "started": "2016-01-30T23:55:00+00:00",
+    "finished": "2016-01-30T23:56:00+00:00",
+    "resources": [
+      {
+        "id": 4711,
+        "type": "floating_ip"
+      }
+    ],
+    "error": null
+  }
+}
