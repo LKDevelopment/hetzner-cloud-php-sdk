@@ -5,6 +5,7 @@ namespace LKDev\HetznerCloud;
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
+use LKDev\HetznerCloud\Models\Certificates\Certificates;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
@@ -17,6 +18,9 @@ use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Class HetznerAPIClient.
+ */
 class HetznerAPIClient
 {
     /**
@@ -265,6 +269,14 @@ class HetznerAPIClient
     public function networks()
     {
         return new Networks($this->httpClient);
+    }
+
+    /**
+     * @return Certificates
+     */
+    public function certificates()
+    {
+        return new Certificates($this->httpClient);
     }
 
     /**
