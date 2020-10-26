@@ -17,7 +17,6 @@ jobs:
         php-version: ${{ matrix.php-versions }}
     - name: Install depdendencies
       run: |
-         composer global require hirak/prestissimo
          composer install
     - name: Run phpunit
       run: php vendor/bin/phpunit
