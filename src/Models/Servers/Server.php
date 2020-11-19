@@ -44,12 +44,12 @@ class Server extends Model implements Resource
     public $created;
 
     /**
-     * @var array
+     * @var stdClass|array (empty array if empty)
      */
     public $publicNet;
 
     /**
-     * @var array
+     * @var stdClass|array (empty array if empty)
      */
     public $privateNet;
     /**
@@ -103,12 +103,12 @@ class Server extends Model implements Resource
     public $includedTraffic;
 
     /**
-     * @var array|\LKDev\HetznerCloud\Models\Protection
+     * @var stdClass|\LKDev\HetznerCloud\Models\Protection
      */
     public $protection;
 
     /**
-     * @var array
+     * @var  stdClass
      */
     public $labels;
 
