@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpdox xmlns="https://xml.phpdox.net/config">
+<phpdox xmlns="http://xml.phpdox.net/config">
     <project name="Unofficial Hetzner Cloud PHP SDK" source="${basedir}/src" workdir="${basedir}/build/">
         <collector backend="parser" />
         <generator output="${basedir}/docs">
