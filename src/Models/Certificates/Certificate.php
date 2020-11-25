@@ -130,7 +130,7 @@ class Certificate extends Model implements Resource
      */
     public static function parse($input)
     {
-        return new self($input->id, $input->name, $input->certificate, $input->created, $input->not_valid_before, $input->not_valid_after, $input->domain_names, $input->fingerprint, $input->used_by, $input->labels);
+        return new self($input->id, $input->name, $input->certificate, $input->created, $input->not_valid_before, $input->not_valid_after, $input->domain_names, $input->fingerprint, $input->used_by, get_object_vars($input->labels));
     }
 
     /**
