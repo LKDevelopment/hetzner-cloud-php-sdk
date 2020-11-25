@@ -1,12 +1,9 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Servers;
 
-
 /**
- * Class ServerPublicNetIPv6
- * @package LKDev\HetznerCloud\Models\Servers
+ * Class ServerPublicNetIPv6.
  */
 class ServerPublicNetIPv6
 {
@@ -46,7 +43,7 @@ class ServerPublicNetIPv6
         foreach ($data->dns_ptr as $dnsPtr) {
             $dnsPtrs[] = new ServerPublicNetIPv6DnsPtr($dnsPtr->ip, $dnsPtr->dns_ptr);
         }
+
         return new self($data->ip, $data->blocked, $dnsPtrs);
     }
-
 }

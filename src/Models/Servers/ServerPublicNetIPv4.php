@@ -1,12 +1,9 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Servers;
 
-
 /**
- * Class ServerPublicNetIPv4
- * @package LKDev\HetznerCloud\Models\Servers
+ * Class ServerPublicNetIPv4.
  */
 class ServerPublicNetIPv4
 {
@@ -44,5 +41,4 @@ class ServerPublicNetIPv4
     {
         return new self($data->ip, $data->blocked, $data->dns_ptr);
     }
-
 }

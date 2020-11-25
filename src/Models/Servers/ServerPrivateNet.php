@@ -1,9 +1,6 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Servers;
-
-
 
 class ServerPrivateNet
 {

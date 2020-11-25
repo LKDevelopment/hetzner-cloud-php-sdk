@@ -1,12 +1,9 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Servers;
 
-
 /**
- * Class ServerPublicNet
- * @package LKDev\HetznerCloud\Models\Servers
+ * Class ServerPublicNet.
  */
 class ServerPublicNet
 {

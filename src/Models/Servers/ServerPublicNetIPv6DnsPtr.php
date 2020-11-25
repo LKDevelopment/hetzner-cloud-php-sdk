@@ -1,12 +1,9 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Servers;
 
-
 /**
- * Class ServerPublicNetIPv6DnsPtr
- * @package LKDev\HetznerCloud\Models\Servers
+ * Class ServerPublicNetIPv6DnsPtr.
  */
 class ServerPublicNetIPv6DnsPtr
 {
@@ -30,7 +27,4 @@ class ServerPublicNetIPv6DnsPtr
         $this->ip = $ip;
         $this->dnsPtr = $dnsPtr;
     }
-
-
-
 }
