@@ -44,12 +44,12 @@ class Server extends Model implements Resource
     public $created;
 
     /**
-     * @var array
+     * @var ServerPublicNet
      */
     public $publicNet;
 
     /**
-     * @var array
+     * @var ServerPrivateNet[]
      */
     public $privateNet;
     /**
@@ -103,7 +103,7 @@ class Server extends Model implements Resource
     public $includedTraffic;
 
     /**
-     * @var array|\LKDev\HetznerCloud\Models\Protection
+     * @var \LKDev\HetznerCloud\Models\Protection
      */
     public $protection;
 
@@ -140,13 +140,13 @@ class Server extends Model implements Resource
     {
         $this->name = $data->name;
         $this->status = $data->status ?: null;
-        $this->publicNet = $data->public_net ?: null;
-        $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
-        $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
-        $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
+        $this->publicNet = property_exists($data, 'public_net') ? ServerPublicNet::parse($data->public_net) : null;
+        $this->privateNet = property_exists($data, 'private_net') ? $this->parsePrivateNet($data->private_net) : [];
+        $this->serverType = property_exists($data, 'server_type') ? ServerType::parse($data->server_type) : null;
+        $this->datacenter = property_exists($data, 'datacenter') ? Datacenter::parse($data->datacenter) : null;
         $this->created = $data->created;
-        $this->image = $data->image ?: Image::parse($data->image);
-        $this->iso = $data->iso ?: ISO::parse($data->iso);
+        $this->image = property_exists($data, 'image') ? Image::parse($data->image) : null;
+        $this->iso = property_exists($data, 'iso') ? ISO::parse($data->iso) : null;
         $this->rescueEnabled = $data->rescue_enabled ?: null;
         $this->locked = $data->locked ?: null;
         $this->backupWindow = $data->backup_window ?: null;
@@ -154,11 +154,24 @@ class Server extends Model implements Resource
         $this->ingoingTraffic = $data->ingoing_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
         $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
-        $this->protection = $data->protection ?: Protection::parse($data->protection);
-        $this->labels = $data->labels;
+        $this->labels = get_object_vars($data->labels);
         $this->primaryDiskSize = $data->primary_disk_size ?: null;
 
         return $this;
+    }
+
+    /**
+     * @param \stdClass[] $privateNets
+     * @return ServerPrivateNet[]
+     */
+    protected function parsePrivateNet(array $privateNets)
+    {
+        $parsed = [];
+        foreach ($privateNets as $privateNet) {
+            $parsed[] = new ServerPrivateNet($privateNet->network, $privateNet->ip, $privateNet->alias_ips, $privateNet->mac_address);
+        }
+
+        return $parsed;
     }
 
     /**
