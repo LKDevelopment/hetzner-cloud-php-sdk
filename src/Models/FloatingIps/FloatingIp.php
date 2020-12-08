@@ -126,7 +126,7 @@ class FloatingIp extends Model implements Resource
      * Update a Floating IP.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-put
-     * @param string $description
+     * @param array $data
      * @return static|null
      * @throws \LKDev\HetznerCloud\APIException
      */

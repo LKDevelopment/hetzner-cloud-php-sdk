@@ -59,9 +59,9 @@ class Servers extends Model
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
         }
-        $response = $this->httpClient->get('servers'.$requestOpts->buildQuery());
-        if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string) $response->getBody());
+        $response = $this->httpClient->get('servers' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string)$response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -97,9 +97,9 @@ class Servers extends Model
      */
     public function getById(int $serverId): ?Server
     {
-        $response = $this->httpClient->get('servers/'.$serverId);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
+        $response = $this->httpClient->get('servers/' . $serverId);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Server::parse(json_decode((string)$response->getBody())->{$this->_getKeys()['one']});
         }
 
         return null;
@@ -120,6 +120,7 @@ class Servers extends Model
      * @param array $volumes
      * @param bool $automount
      * @param array $networks
+     * @param array $labels
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -133,24 +134,31 @@ class Servers extends Model
         $user_data = '',
         $volumes = [],
         $automount = false,
-        $networks = []
-    ): ?APIResponse {
+        $networks = [],
+        array $labels = []
+    ): ?APIResponse
+    {
+        $parameters = [
+            'name' => $name,
+            'server_type' => $serverType->id,
+            'datacenter' => $datacenter == null ? null : $datacenter->id,
+            'image' => $image->id,
+            'start_after_create' => $startAfterCreate,
+            'user_data' => $user_data,
+            'ssh_keys' => $ssh_keys,
+            'volumes' => $volumes,
+            'automount' => $automount,
+            'networks' => $networks
+        ];
+        if (!empty($labels)) {
+            $parameters['labels'] = $labels;
+        }
         $response = $this->httpClient->post('servers', [
-            'json' => [
-                'name' => $name,
-                'server_type' => $serverType->id,
-                'datacenter' => $datacenter == null ? null : $datacenter->id,
-                'image' => $image->id,
-                'start_after_create' => $startAfterCreate,
-                'user_data' => $user_data,
-                'ssh_keys' => $ssh_keys,
-                'volumes' => $volumes,
-                'automount' => $automount,
-                'networks' => $networks,
-            ],
+            'json' => $parameters,
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string) $response->getBody());
+
+        if (!HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string)$response->getBody());
 
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
@@ -179,6 +187,7 @@ class Servers extends Model
      * @param array $volumes
      * @param bool $automount
      * @param array $networks
+     * @param array $labels
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -186,29 +195,35 @@ class Servers extends Model
                                      ServerType $serverType,
                                      Image $image,
                                      Location $location = null,
-                                     $ssh_keys = [],
-                                     $startAfterCreate = true,
-                                     $user_data = '',
-                                     $volumes = [],
-                                     $automount = false,
-                                     $networks = []
-    ): ?APIResponse {
+                                     array $ssh_keys = [],
+                                     bool $startAfterCreate = true,
+                                     string $user_data = '',
+                                     array $volumes = [],
+                                     bool $automount = false,
+                                     array $networks = [],
+                                     array $labels = []
+    ): ?APIResponse
+    {
+        $parameters = [
+            'name' => $name,
+            'server_type' => $serverType->id,
+            'location' => $location == null ? null : $location->id,
+            'image' => $image->id,
+            'start_after_create' => $startAfterCreate,
+            'user_data' => $user_data,
+            'ssh_keys' => $ssh_keys,
+            'volumes' => $volumes,
+            'automount' => $automount,
+            'networks' => $networks
+        ];
+        if (!empty($labels)) {
+            $parameters['labels'] = $labels;
+        }
         $response = $this->httpClient->post('servers', [
-            'json' => [
-                'name' => $name,
-                'server_type' => $serverType->id,
-                'location' => $location == null ? null : $location->id,
-                'image' => $image->id,
-                'start_after_create' => $startAfterCreate,
-                'user_data' => $user_data,
-                'ssh_keys' => $ssh_keys,
-                'volumes' => $volumes,
-                'automount' => $automount,
-                'networks' => $networks,
-            ],
+            'json' => $parameters,
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string) $response->getBody());
+        if (!HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string)$response->getBody());
 
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),

@@ -29,7 +29,7 @@ class FloatingIPsTest extends TestCase
 
     public function testGet()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
         $floatingIp = $this->floatingIps->get(1);
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->description, 'Web Frontend');
@@ -38,7 +38,7 @@ class FloatingIPsTest extends TestCase
 
     public function testGetByName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIPs.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIPs.json')));
         $floatingIp = $this->floatingIps->getByName('Web Frontend');
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->name, 'Web Frontend');
@@ -49,7 +49,7 @@ class FloatingIPsTest extends TestCase
 
     public function testAll()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIPs.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIPs.json')));
         $floatingIps = $this->floatingIps->all();
 
         $this->assertEquals(count($floatingIps), 1);
@@ -60,7 +60,7 @@ class FloatingIPsTest extends TestCase
 
     public function testList()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIPs.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIPs.json')));
         $floatingIps = $this->floatingIps->list()->floating_ips;
 
         $this->assertEquals(count($floatingIps), 1);
@@ -74,13 +74,13 @@ class FloatingIPsTest extends TestCase
      */
     public function testCreateWithLocation()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
-        $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
+        $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'), null, "my-fip", ["key" => "value"]);
 
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->description, 'Web Frontend');
         $this->assertLastRequestEquals('POST', '/floating_ips');
-        $this->assertLastRequestBodyParametersEqual(['type' => 'ipv4', 'description' => 'Web Frontend', 'home_location' => 'nbg1']);
+        $this->assertLastRequestBodyParametersEqual(['type' => 'ipv4', 'description' => 'Web Frontend', 'home_location' => 'nbg1', 'name' => 'my-fip', 'labels' => ["key" => "value"]]);
     }
 
     /**
@@ -88,7 +88,7 @@ class FloatingIPsTest extends TestCase
      */
     public function testCreateWithServer()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
         $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', null, new Server(23));
 
         $this->assertEquals($floatingIp->id, 4711);
@@ -102,7 +102,7 @@ class FloatingIPsTest extends TestCase
      */
     public function testCreateWithName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
         $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'), null, 'WebServer');
 
         $this->assertEquals($floatingIp->id, 4711);
@@ -116,7 +116,7 @@ class FloatingIPsTest extends TestCase
      */
     public function testDelete()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
         $floatingIp = $this->floatingIps->get(4711);
         $this->assertLastRequestEquals('GET', '/floating_ips/4711');
 

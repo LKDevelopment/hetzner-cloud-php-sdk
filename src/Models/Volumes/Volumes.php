@@ -61,9 +61,9 @@ class Volumes extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new VolumeRequestOpts();
         }
-        $response = $this->httpClient->get('volumes'.$requestOpts->buildQuery());
-        if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string) $response->getBody());
+        $response = $this->httpClient->get('volumes' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string)$response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -99,9 +99,9 @@ class Volumes extends Model implements Resources
      */
     public function getById(int $id): ?Volume
     {
-        $response = $this->httpClient->get('volumes/'.$id);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Volume::parse(json_decode((string) $response->getBody())->volume);
+        $response = $this->httpClient->get('volumes/' . $id);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Volume::parse(json_decode((string)$response->getBody())->volume);
         }
 
         return null;
@@ -114,36 +114,40 @@ class Volumes extends Model implements Resources
      * @param Location|null $location
      * @param bool $automount
      * @param string|null $format
+     * @param array $labels
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function create(string $name, int $size, Server $server = null, Location $location = null, bool $automount = false, string $format = null): ?APIResponse
+    public function create(string $name, int $size, Server $server = null, Location $location = null, bool $automount = false, string $format = null, array $labels = []): ?APIResponse
     {
-        $payload = [
+        $parameters = [
             'name' => $name,
             'size' => $size,
             'automount' => $automount,
         ];
         if ($location == null && $server != null) {
-            $payload['server'] = $server->name ?: $server->id;
+            $parameters['server'] = $server->name ?: $server->id;
         } elseif ($location != null && $server == null) {
-            $payload['location'] = $location->name ?: $location->id;
+            $parameters['location'] = $location->name ?: $location->id;
         } else {
             throw new \InvalidArgumentException('Please specify only a server or a location');
         }
         if ($format != null) {
-            $payload['format'] = $format;
+            $parameters['format'] = $format;
+        }
+        if (!empty($labels)) {
+            $parameters['labels'] = $labels;
         }
         $response = $this->httpClient->post('volumes', [
-            'json' => $payload,
+            'json' => $parameters,
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string) $response->getBody());
+        if (!HetznerAPIClient::hasError($response)) {
+            $data = json_decode((string)$response->getBody());
 
             return APIResponse::create([
-                'action' => Action::parse($payload->action),
-                'volume' => Volume::parse($payload->volume),
-                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                'action' => Action::parse($data->action),
+                'volume' => Volume::parse($data->volume),
+                'next_actions' => collect($data->next_actions)->map(function ($action) {
                     return Action::parse($action);
                 })->toArray(),
             ], $response->getHeaders());

@@ -32,23 +32,30 @@ class Certificates extends Model implements Resources
      * @param string $name
      * @param string $certificate
      * @param string $privateKey
+     * @param array $labels
      * @return \LKDev\HetznerCloud\Models\Certificates\Certificate
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(
         string $name,
         string $certificate,
-        string $privateKey
-    ): ?Certificate {
+        string $privateKey,
+        array $labels = []
+    ): ?Certificate
+    {
+        $parameters = [
+            'name' => $name,
+            'certificate' => $certificate,
+            'private_key' => $privateKey,
+        ];
+        if (!empty($labels)) {
+            $parameters['labels'] = $labels;
+        }
         $response = $this->httpClient->post('certificates', [
-            'json' => [
-                'name' => $name,
-                'certificate' => $certificate,
-                'private_key' => $privateKey,
-            ],
+            'json' => $parameters,
         ]);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Certificate::parse(json_decode((string) $response->getBody())->certificate);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Certificate::parse(json_decode((string)$response->getBody())->certificate);
         }
 
         return null;
@@ -84,9 +91,9 @@ class Certificates extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('certificates'.$requestOpts->buildQuery());
-        if (! HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string) $response->getBody());
+        $response = $this->httpClient->get('certificates' . $requestOpts->buildQuery());
+        if (!HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string)$response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -129,9 +136,9 @@ class Certificates extends Model implements Resources
      */
     public function getById(int $id)
     {
-        $response = $this->httpClient->get('certificates/'.$id);
-        if (! HetznerAPIClient::hasError($response)) {
-            return Certificate::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
+        $response = $this->httpClient->get('certificates/' . $id);
+        if (!HetznerAPIClient::hasError($response)) {
+            return Certificate::parse(json_decode((string)$response->getBody())->{$this->_getKeys()['one']});
         }
     }
 
