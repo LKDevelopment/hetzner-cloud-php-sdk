@@ -39,20 +39,19 @@ class SSHKeys extends Model implements Resources
         string $name,
         string $publicKey,
         array $labels = []
-    ): ?SSHKey
-    {
+    ): ?SSHKey {
         $parameters = [
             'name' => $name,
             'public_key' => $publicKey,
         ];
-        if (!empty($labels)) {
+        if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         $response = $this->httpClient->post('ssh_keys', [
             'json' => $parameters,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        if (! HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
 
         return null;
@@ -88,9 +87,9 @@ class SSHKeys extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
         }
-        $response = $this->httpClient->get('ssh_keys' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('ssh_keys'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -133,9 +132,9 @@ class SSHKeys extends Model implements Resources
      */
     public function getById(int $id)
     {
-        $response = $this->httpClient->get('ssh_keys/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return SSHKey::parse(json_decode((string)$response->getBody())->ssh_key);
+        $response = $this->httpClient->get('ssh_keys/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
     }
 

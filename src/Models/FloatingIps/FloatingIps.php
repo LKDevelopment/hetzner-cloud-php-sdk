@@ -139,7 +139,7 @@ class FloatingIps extends Model implements Resources
         if ($server != null) {
             $parameters['server'] = $server->id ?: $server->name;
         }
-        if (!empty($labels)) {
+        if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         $response = $this->httpClient->post('floating_ips', [
