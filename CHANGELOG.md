@@ -4,6 +4,16 @@
 * Add support for creating Certificates
 * Add support for creating resources with labels
 
+## 2.2.2 (05.10.2020)
+
+**Bugfixes:**
+
+* Wrong Import Path on src/Models/Actions/ActionRequestOpts.php
+* Server->createImage did not work correctly when specifying not label
+
+**Notes:**
+* Improved code quality with phpstan
+
 ## 2.2.1 (22.07.2020)
 * Make package requirements less strict
 * Bugfix: getByName functions had a wrong return type and failed when a resource was not found by name [#50](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/issues/50)
