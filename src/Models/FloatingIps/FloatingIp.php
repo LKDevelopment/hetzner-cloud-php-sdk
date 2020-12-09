@@ -245,11 +245,11 @@ class FloatingIp extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#floating-ip-actions-change-reverse-dns-entry-for-a-floating-ip
      * @param string $ip
-     * @param string $dnsPtr
+     * @param string|null $dnsPtr
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeReverseDNS(string $ip, string $dnsPtr): ?APIResponse
+    public function changeReverseDNS(string $ip, string $dnsPtr=null): ?APIResponse
     {
         $response = $this->httpClient->post('floating_ips/'.$this->id.'/actions/change_dns_ptr', [
             'json' => [

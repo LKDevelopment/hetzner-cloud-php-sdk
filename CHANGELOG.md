@@ -3,6 +3,7 @@
 ## master
 * Add support for creating Certificates
 * Add support for creating resources with labels
+* Allow setting of "null" `$dnsPtr` value on `changeReverseDNS` of FloatingIP & Server, this resets the DNS PTR to the default value
 
 ## 2.2.2 (05.10.2020)
 

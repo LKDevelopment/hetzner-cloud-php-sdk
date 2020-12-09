@@ -226,6 +226,17 @@ class ServerTest extends TestCase
         $this->assertLastRequestBodyParametersEqual(['ip' => '127.0.0.1', 'dns_ptr' => 'hello.world']);
     }
 
+    public function testChangeReverseDNSSetToDefault()
+    {
+        $this->mockHandler->append(new Response(200, [], $this->getGenericActionResponse('change_dns_ptr')));
+        $apiResponse = $this->server->changeReverseDNS('127.0.0.1');
+        $this->assertEquals('change_dns_ptr', $apiResponse->action->command);
+        $this->assertEquals($this->server->id, $apiResponse->action->resources[0]->id);
+        $this->assertEquals('server', $apiResponse->action->resources[0]->type);
+        $this->assertLastRequestEquals('POST', '/servers/42/actions/change_dns_ptr');
+        $this->assertLastRequestBodyParametersEqual(['ip' => '127.0.0.1', 'dns_ptr' => null]);
+    }
+
     public function testDelete()
     {
         $this->mockHandler->append(new Response(200, [], $this->getGenericActionResponse('delete_server')));
