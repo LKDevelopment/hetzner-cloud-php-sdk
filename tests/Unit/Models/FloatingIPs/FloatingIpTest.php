@@ -28,7 +28,7 @@ class FloatingIpTest extends TestCase
     {
         parent::setUp();
         $tmp = new FloatingIps($this->hetznerApi->getHttpClient());
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
         $this->floatingIp = $tmp->get(4711);
     }
 
@@ -37,7 +37,7 @@ class FloatingIpTest extends TestCase
      */
     public function testChangeProtection()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP_action_change_protection.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP_action_change_protection.json')));
         $apiResponse = $this->floatingIp->changeProtection(true);
         $this->assertEquals('change_protection', $apiResponse->action->command);
         $this->assertEquals($this->floatingIp->id, $apiResponse->action->resources[0]->id);
@@ -60,7 +60,7 @@ class FloatingIpTest extends TestCase
      */
     public function testChangeDescription()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
         $this->assertEquals($this->floatingIp->id, 4711);
         $this->assertEquals($this->floatingIp->description, 'Web Frontend');
         $result = $this->floatingIp->update(['description' => 'New description']);
@@ -73,7 +73,7 @@ class FloatingIpTest extends TestCase
      */
     public function testAssign()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP_action_assign_floating_ip.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP_action_assign_floating_ip.json')));
         $apiResponse = $this->floatingIp->assignTo(new Server(42));
         $this->assertEquals('assign_floating_ip', $apiResponse->action->command);
         $this->assertEquals(42, $apiResponse->action->resources[0]->id);
@@ -89,7 +89,7 @@ class FloatingIpTest extends TestCase
      */
     public function testUnassign()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP_action_unassign_floating_ip.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP_action_unassign_floating_ip.json')));
         $apiResponse = $this->floatingIp->unassign();
         $this->assertEquals('unassign_floating_ip', $apiResponse->action->command);
         $this->assertEquals(42, $apiResponse->action->resources[0]->id);
@@ -105,7 +105,7 @@ class FloatingIpTest extends TestCase
      */
     public function testChangeReverseDNS()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP_action_change_dns_ptr.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP_action_change_dns_ptr.json')));
         $apiResponse = $this->floatingIp->changeReverseDNS('1.2.3.4', 'server02.example.com');
         $this->assertEquals('change_dns_ptr', $apiResponse->action->command);
         $this->assertEquals($this->floatingIp->id, $apiResponse->action->resources[0]->id);
@@ -119,7 +119,7 @@ class FloatingIpTest extends TestCase
      */
     public function testChangeReverseDNSSetToDefault()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/floatingIP_action_change_dns_ptr.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP_action_change_dns_ptr.json')));
         $apiResponse = $this->floatingIp->changeReverseDNS('1.2.3.4');
         $this->assertEquals('change_dns_ptr', $apiResponse->action->command);
         $this->assertEquals($this->floatingIp->id, $apiResponse->action->resources[0]->id);
