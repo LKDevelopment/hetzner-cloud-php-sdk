@@ -17,7 +17,7 @@ echo date('H:i:s').PHP_EOL;
 $action->waitUntilCompleted();
 
 foreach ($next_actions as $na) {
-  $na->waitUntilCompleted();
+    $na->waitUntilCompleted();
 }
 echo date('H:i:s').PHP_EOL;
 echo 'Done!';
