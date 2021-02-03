@@ -1,10 +1,11 @@
 # Changelog
 
-## master
+## 2.3.0 (03.02.2021)
 * Add support for creating Certificates
 * Add support for creating resources with labels
 * Allow setting of "null" `$dnsPtr` value on `changeReverseDNS` of FloatingIP & Server, this resets the DNS PTR to the default value
 * Support PHP 8.0
+* Improve Creating Floating IPs
 
 ## 2.2.2 (05.10.2020)
 
