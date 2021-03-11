@@ -53,9 +53,9 @@ class Firewalls extends Model implements Resources
      */
     public function getById(int $firewallId): ?Firewall
     {
-        $response = $this->httpClient->get('firewalls/' . $firewallId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Firewall::parse(json_decode((string)$response->getBody())->{$this->_getKeys()['one']});
+        $response = $this->httpClient->get('firewalls/'.$firewallId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Firewall::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
 
         return null;
@@ -97,9 +97,9 @@ class Firewalls extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new FirewallRequestOpts();
         }
-        $response = $this->httpClient->get('firewalls' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('firewalls'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -133,7 +133,7 @@ class Firewalls extends Model implements Resources
     }
 
     /**
-     * Creates a new Firewall
+     * Creates a new Firewall.
      *
      * @see https://docs.hetzner.cloud/#firewalls-create-a-firewall
      * @param string $name
@@ -147,30 +147,29 @@ class Firewalls extends Model implements Resources
         array $rules = [],
         array $applyTo = [],
         array $labels = []
-    ): ?APIResponse
-    {
+    ): ?APIResponse {
         $parameters = [
             'name' => $name,
         ];
-        if (!empty($rules)) {
+        if (! empty($rules)) {
             $parameters['rules'] = collect($rules)->map(function ($r) {
                 return $r->toRequestSchema();
             });
         }
 
-        if (!empty($applyTo)) {
+        if (! empty($applyTo)) {
             $parameters['apply_to'] = collect($applyTo)->map(function ($r) {
                 return $r->toRequestSchema();
-            });;
+            });
         }
-        if (!empty($labels)) {
+        if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         $response = $this->httpClient->post('firewalls', [
             'json' => $parameters,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            $payload = json_decode((string)$response->getBody());
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'firewall' => Firewall::parse($payload->{$this->_getKeys()['one']}),

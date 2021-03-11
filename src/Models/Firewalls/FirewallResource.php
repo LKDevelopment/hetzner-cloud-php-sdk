@@ -1,20 +1,14 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Firewalls;
-
 
 use LKDev\HetznerCloud\Models\Servers\Server;
 
 /**
- * Class FirewallResource
- * @package LKDev\HetznerCloud\Models\Firewalls
+ * Class FirewallResource.
  */
 class FirewallResource
 {
-    /**
-     *
-     */
     const TYPE_SERVER = 'server';
 
     /**
@@ -42,11 +36,11 @@ class FirewallResource
      */
     public function toRequestSchema(): array
     {
-        $s = ["type" => $this->type];
+        $s = ['type' => $this->type];
         if ($this->type == self::TYPE_SERVER) {
-            $s['server'] = ["id" => $this->server->id];
+            $s['server'] = ['id' => $this->server->id];
         }
+
         return $s;
     }
-
 }

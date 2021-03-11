@@ -1,35 +1,20 @@
 <?php
 
-
 namespace LKDev\HetznerCloud\Models\Firewalls;
 
-
 /**
- * Class FirewallRule
- * @package LKDev\HetznerCloud\Models\Firewalls
+ * Class FirewallRule.
  */
 class FirewallRule
 {
-    /**
-     *
-     */
     const DIRECTION_IN = 'in';
-    /**
-     *
-     */
+
     const DIRECTION_OUT = 'out';
 
-    /**
-     *
-     */
     const PROTOCOL_TCP = 'tcp';
-    /**
-     *
-     */
+
     const PROTOCOL_UDP = 'udp';
-    /**
-     *
-     */
+
     const PROTOCOL_ICMP = 'icmp';
     /**
      * @var string
@@ -75,16 +60,17 @@ class FirewallRule
     public function toRequestSchema(): array
     {
         $s = [
-            "direction" => $this->direction,
-            "source_ips" => $this->sourceIPs,
-            "protocol" => $this->protocol
+            'direction' => $this->direction,
+            'source_ips' => $this->sourceIPs,
+            'protocol' => $this->protocol,
         ];
-        if (!empty($this->destinationIPs)) {
-            $s["destination_ips"] = $this->destinationIPs;
+        if (! empty($this->destinationIPs)) {
+            $s['destination_ips'] = $this->destinationIPs;
         }
-        if ($this->port != "") {
-            $s["port"] = $this->port;
+        if ($this->port != '') {
+            $s['port'] = $this->port;
         }
+
         return $s;
     }
 }
