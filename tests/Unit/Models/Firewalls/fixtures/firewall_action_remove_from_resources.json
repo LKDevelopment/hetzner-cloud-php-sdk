@@ -1,0 +1,23 @@
+{
+  "actions": [
+    {
+      "id": 14,
+      "command": "remove_firewall",
+      "status": "success",
+      "progress": 100,
+      "started": "2016-01-30T23:55:00+00:00",
+      "finished": "2016-01-30T23:56:00+00:00",
+      "resources": [
+        {
+          "id": 42,
+          "type": "server"
+        },
+        {
+          "id": 38,
+          "type": "firewall"
+        }
+      ],
+      "error": null
+    }
+  ]
+}

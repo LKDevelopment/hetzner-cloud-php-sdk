@@ -12,6 +12,7 @@ use GuzzleHttp\Client;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
+use LKDev\HetznerCloud\Models\Firewalls\Firewalls;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\Locations\Locations;
@@ -74,5 +75,6 @@ class BasicClientTest extends TestCase
         $this->assertInstanceOf(SSHKeys::class, $this->hetznerApi->sshKeys());
         $this->assertInstanceOf(Volumes::class, $this->hetznerApi->volumes());
         $this->assertInstanceOf(Networks::class, $this->hetznerApi->networks());
+        $this->assertInstanceOf(Firewalls::class, $this->hetznerApi->firewalls());
     }
 }
