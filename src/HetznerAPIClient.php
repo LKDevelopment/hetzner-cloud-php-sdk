@@ -7,6 +7,7 @@ use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Certificates\Certificates;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
+use LKDev\HetznerCloud\Models\Firewalls\Firewalls;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
@@ -277,6 +278,14 @@ class HetznerAPIClient
     public function certificates()
     {
         return new Certificates($this->httpClient);
+    }
+
+    /**
+     * @return Firewalls
+     */
+    public function firewalls()
+    {
+        return new Firewalls($this->httpClient);
     }
 
     /**

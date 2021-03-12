@@ -1,0 +1,44 @@
+{
+  "actions": [
+    {
+      "id": 13,
+      "command": "set_firewall_rules",
+      "status": "success",
+      "progress": 100,
+      "started": "2016-01-30T23:55:00+00:00",
+      "finished": "2016-01-30T23:56:00+00:00",
+      "resources": [
+        {
+          "id": 38,
+          "type": "firewall"
+        }
+      ],
+      "error": {
+        "code": "action_failed",
+        "message": "Action failed"
+      }
+    },
+    {
+      "id": 14,
+      "command": "apply_firewall",
+      "status": "success",
+      "progress": 100,
+      "started": "2016-01-30T23:55:00+00:00",
+      "finished": "2016-01-30T23:56:00+00:00",
+      "resources": [
+        {
+          "id": 38,
+          "type": "firewall"
+        },
+        {
+          "id": 42,
+          "type": "server"
+        }
+      ],
+      "error": {
+        "code": "action_failed",
+        "message": "Action failed"
+      }
+    }
+  ]
+}
