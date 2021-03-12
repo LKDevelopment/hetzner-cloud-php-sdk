@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.4.0 (12.03.2021)
 
 * Add support for Firewalls
 
