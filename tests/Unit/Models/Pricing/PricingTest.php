@@ -6,11 +6,11 @@
  * Time: 18:31.
  */
 
-namespace Tests\Unit\Pricing;
+namespace LKDev\Tests\Unit\Pricing;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Prices\Prices;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class PricingTest extends TestCase
 {

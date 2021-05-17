@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Models\Networks;
+namespace LKDev\Tests\Unit\Models\Networks;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Networks\Network;
 use LKDev\HetznerCloud\Models\Networks\Networks;
 use LKDev\HetznerCloud\Models\Networks\Route;
 use LKDev\HetznerCloud\Models\Networks\Subnet;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class NetworkTest extends TestCase
 {

@@ -6,11 +6,11 @@
  * Time: 18:31.
  */
 
-namespace Tests\Unit\ISO;
+namespace LKDev\Tests\Unit\ISO;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class ISOsTest extends TestCase
 {

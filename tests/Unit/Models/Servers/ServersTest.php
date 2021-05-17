@@ -6,11 +6,11 @@
  * Time: 18:31.
  */
 
-namespace Tests\Integration\Servers;
+namespace LKDev\Tests\Integration\Servers;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Servers\Servers;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class ServersTest extends TestCase
 {

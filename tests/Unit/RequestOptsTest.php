@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit;
+namespace LKDev\Tests\Unit;
 
 use LKDev\HetznerCloud\RequestOpts;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class RequestOptsTest extends TestCase
 {

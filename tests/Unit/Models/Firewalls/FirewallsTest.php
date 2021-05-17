@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models\Firewalls;
+namespace LKDev\Tests\Unit\Models\Firewalls;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\APIResponse;
@@ -9,7 +9,7 @@ use LKDev\HetznerCloud\Models\Firewalls\FirewallResource;
 use LKDev\HetznerCloud\Models\Firewalls\FirewallRule;
 use LKDev\HetznerCloud\Models\Firewalls\Firewalls;
 use LKDev\HetznerCloud\Models\Servers\Server;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 /**
  * Class FirewallsTest.

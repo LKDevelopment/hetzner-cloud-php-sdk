@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Models\Volumes;
+namespace LKDev\Tests\Unit\Models\Volumes;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\HetznerCloud\Models\Volumes\Volume;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class VolumeTest extends TestCase
 {

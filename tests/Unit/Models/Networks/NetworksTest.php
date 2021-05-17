@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Models\Networks;
+namespace LKDev\Tests\Unit\Models\Networks;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\APIResponse;
@@ -10,7 +10,7 @@ use LKDev\HetznerCloud\Models\Networks\Route;
 use LKDev\HetznerCloud\Models\Networks\Subnet;
 use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Server;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 /**
  * Class NetworksTest.
