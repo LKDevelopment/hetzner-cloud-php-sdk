@@ -23,7 +23,7 @@ class Images extends Model implements Resources
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
-     * @param string|null $name
+     * @param RequestOpts|null $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -40,7 +40,7 @@ class Images extends Model implements Resources
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
-     * @param string|null $name
+     * @param RequestOpts|null $requestOpts
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
