@@ -140,7 +140,7 @@ class Server extends Model implements Resource
     {
         $this->name = $data->name;
         $this->status = $data->status ?: null;
-        $this->publicNet = $data->public_net ?: null;
+        $this->public_net = $data->public_net ?: null;
         $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
         $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
         $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
