@@ -17,6 +17,8 @@ use LKDev\HetznerCloud\Models\Protection;
 
 class Image extends Model implements Resource
 {
+    const TYPE_SYSTEM = 'system';
+
     /**
      * @var int
      */
