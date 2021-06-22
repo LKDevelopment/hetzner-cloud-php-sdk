@@ -28,4 +28,13 @@ abstract class Model
     public static function parse($input)
     {
     }
+
+    /**
+     * Replaces or sets the http client.
+     * @param Client $httpClient
+     */
+    public function setHttpClient(Client $httpClient = null)
+    {
+        $this->httpClient = $httpClient;
+    }
 }
