@@ -46,23 +46,30 @@ class Server extends Model implements Resource
     /**
      * @var array
      */
-    public $publicNet;
-    /**
-     * @var array
-     */
     public $public_net;
-
     /**
      * @var array
+     * @deprecated Use $public_net instead
      */
-    public $privateNet;
+    public $publicNet;
+
     /**
      * @var array
      */
     public $private_net;
+    /**
+     * @var array
+     * @deprecated Use $private_net instead
+     */
+    public $privateNet;
 
     /**
      * @var ServerType
+     */
+    public $server_type;
+    /**
+     * @var ServerType
+     * @deprecated Use $server_type instead
      */
     public $serverType;
 
@@ -84,30 +91,55 @@ class Server extends Model implements Resource
     /**
      * @var bool
      */
+    public $rescue_enabled;
+    /**
+     * @var bool
+     * @deprecated Use $rescue_enabled instead
+     */
     public $rescueEnabled;
 
     /**
      * @var bool
      */
     public $locked;
-
+    
     /**
      * @var string
+     */
+    public $backup_window;
+    /**
+     * @var string
+     * @deprecated Use $backup_window instead
      */
     public $backupWindow;
 
     /**
      * @var int
      */
+    public $outgoing_traffic;
+    /**
+     * @var int
+     * @deprecated Use $outgoing_traffic instead
+     */
     public $outgoingTraffic;
 
     /**
      * @var int
      */
+    public $ingoing_traffic;
+    /**
+     * @var int
+     * @deprecated Use $ingoing_traffic instead
+     */
     public $ingoingTraffic;
 
     /**
      * @var int
+     */
+    public $included_traffic;
+    /**
+     * @var int
+     * @deprecated Use $included_traffic instead
      */
     public $includedTraffic;
 
@@ -129,6 +161,11 @@ class Server extends Model implements Resource
     /**
      * @var int
      */
+    public $primary_disk_size;
+    /**
+     * @var int
+     * @deprecated Use $primary_disk_size instead
+     */
     public $primaryDiskSize;
 
     /**
@@ -149,24 +186,31 @@ class Server extends Model implements Resource
     {
         $this->name = $data->name;
         $this->status = $data->status ?: null;
-        $this->publicNet = $data->public_net ?: null;
         $this->public_net = $data->public_net ?: null;
-        $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
+        $this->publicNet = $data->public_net ?: null;
         $this->private_net = property_exists($data, 'private_net') ? $data->private_net : [];
+        $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
+        $this->server_type = $data->server_type ?: ServerType::parse($data->server_type);
         $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
         $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
         $this->created = $data->created;
         $this->image = $data->image ?: Image::parse($data->image);
         $this->iso = $data->iso ?: ISO::parse($data->iso);
+        $this->rescue_enabled = $data->rescue_enabled ?: null;
         $this->rescueEnabled = $data->rescue_enabled ?: null;
         $this->locked = $data->locked ?: null;
+        $this->backup_window = $data->backup_window ?: null;
         $this->backupWindow = $data->backup_window ?: null;
+        $this->outgoing_traffic = $data->outgoing_traffic ?: null;
         $this->outgoingTraffic = $data->outgoing_traffic ?: null;
+        $this->ingoing_traffic = $data->ingoing_traffic ?: null;
         $this->ingoingTraffic = $data->ingoing_traffic ?: null;
+        $this->included_traffic = $data->included_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
         $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
         $this->protection = $data->protection ?: Protection::parse($data->protection);
         $this->labels = $data->labels;
+        $this->primary_disk_size = $data->primary_disk_size ?: null;
         $this->primaryDiskSize = $data->primary_disk_size ?: null;
 
         return $this;
