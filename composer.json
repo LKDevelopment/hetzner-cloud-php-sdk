@@ -32,7 +32,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "LKDev\\Tests\\": "tests/"
     }
   },
   "scripts": {

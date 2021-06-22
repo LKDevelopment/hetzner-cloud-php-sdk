@@ -6,11 +6,11 @@
  * Time: 18:31.
  */
 
-namespace Tests\Unit\Models\SSHKeys;
+namespace LKDev\Tests\Unit\Models\SSHKeys;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class SSHKeysTest extends TestCase
 {

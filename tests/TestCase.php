@@ -6,7 +6,7 @@
  * Time: 14:13.
  */
 
-namespace Tests;
+namespace LKDev\Tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;

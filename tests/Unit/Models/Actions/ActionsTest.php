@@ -6,11 +6,11 @@
  * Time: 18:31.
  */
 
-namespace Tests\Unit\Models\Actions;
+namespace LKDev\Tests\Unit\Models\Actions;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Actions\Actions;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class ActionsTest extends TestCase
 {

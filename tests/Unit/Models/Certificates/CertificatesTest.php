@@ -6,11 +6,11 @@
  * Time: 18:31.
  */
 
-namespace Tests\Unit\Models\Certificates;
+namespace LKDev\Tests\Unit\Models\Certificates;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Certificates\Certificates;
-use Tests\TestCase;
+use LKDev\Tests\TestCase;
 
 class CertificatesTest extends TestCase
 {
