@@ -18,6 +18,8 @@ use LKDev\HetznerCloud\Models\Protection;
 class Image extends Model implements Resource
 {
     const TYPE_SYSTEM = 'system';
+    const TYPE_SNAPSHOT = 'snapshot';
+    const TYPE_BACKUP = 'backup';
 
     /**
      * @var int
