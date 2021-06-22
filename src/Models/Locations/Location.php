@@ -52,6 +52,11 @@ class Location extends Model implements Resource
     /**
      * @var string
      */
+    public $network_zone;
+    /**
+     * @var string
+     * @deprecated Use $network_zone instead
+     */
     public $networkZone;
 
     /**
@@ -83,6 +88,7 @@ class Location extends Model implements Resource
         $this->city = $city;
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+        $this->network_zone = $networkZone;
         $this->networkZone = $networkZone;
         parent::__construct();
     }
