@@ -102,7 +102,7 @@ class Server extends Model implements Resource
      * @var bool
      */
     public $locked;
-    
+
     /**
      * @var string
      */
