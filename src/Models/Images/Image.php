@@ -45,10 +45,20 @@ class Image extends Model implements Resource
     /**
      * @var float
      */
+    public $image_size;
+    /**
+     * @var float
+     * @deprecated Use $image_size instead
+     */
     public $imageSize;
 
     /**
      * @var int
+     */
+    public $disk_size;
+    /**
+     * @var int
+     * @deprecated Use $disk_size instead
      */
     public $diskSize;
 
