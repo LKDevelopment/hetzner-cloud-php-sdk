@@ -45,7 +45,7 @@ class FirewallRule
      * @param string $protocol
      * @param string $port
      */
-    public function __construct(string $direction, string $protocol, array $sourceIPs = [], array $destinationIPs = [], string $port = '')
+    public function __construct(string $direction, string $protocol, array $sourceIPs = [], array $destinationIPs = [], ?string $port = '')
     {
         $this->direction = $direction;
         $this->sourceIPs = $sourceIPs;
