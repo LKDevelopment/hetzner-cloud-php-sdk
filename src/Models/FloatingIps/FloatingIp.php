@@ -55,10 +55,20 @@ class FloatingIp extends Model implements Resource
     /**
      * @var array
      */
+    public $dns_ptr;
+    /**
+     * @var array
+     * @deprecated Use $dns_ptr instead
+     */
     public $dnsPtr;
 
     /**
      * @var \LKDev\HetznerCloud\Models\Locations\Location
+     */
+    public $home_location;
+    /**
+     * @var \LKDev\HetznerCloud\Models\Locations\Location
+     * @deprecated Use $home_location instead
      */
     public $homeLocation;
 
@@ -112,7 +122,9 @@ class FloatingIp extends Model implements Resource
         $this->ip = $ip;
         $this->type = $type;
         $this->server = $server;
+        $this->dns_ptr = $dnsPtr;
         $this->dnsPtr = $dnsPtr;
+        $this->home_location = $homeLocation;
         $this->homeLocation = $homeLocation;
         $this->blocked = $blocked;
         $this->protection = $protection;
