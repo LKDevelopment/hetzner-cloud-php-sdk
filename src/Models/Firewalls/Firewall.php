@@ -46,10 +46,15 @@ class Firewall extends Model implements Resource
     /**
      * @var FirewallResource[]
      */
+    public $applied_to;
+    /**
+     * @var FirewallResource[]
+     * @deprecated Use $applied_to instead
+     */
     public $appliedTo;
 
     /**
-     * FloatingIp constructor.
+     * Firewall constructor.
      *
      * @param int $id
      * @param string $name
@@ -72,6 +77,7 @@ class Firewall extends Model implements Resource
         $this->created = $created;
         $this->name = $name;
         $this->rules = $rules;
+        $this->applied_to = $appliedTo;
         $this->appliedTo = $appliedTo;
         parent::__construct();
     }
