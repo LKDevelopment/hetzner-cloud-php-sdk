@@ -46,6 +46,9 @@ class Images extends Model implements Resources
      */
     public function list(RequestOpts $requestOpts): ?APIResponse
     {
+        if ($requestOpts == null) {
+            $requestOpts = new ImageRequestOpts();
+        }
         $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
             $resp = json_decode((string) $response->getBody());
