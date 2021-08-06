@@ -20,34 +20,47 @@ class Network extends Model implements Resource
      * @var int
      */
     public $id;
+
     /**
      * @var string
      */
     public $name;
+
     /**
      * @var string
      */
+    public $ip_range;
+    /**
+     * @var string
+     * @deprecated Use $ip_range instead
+     */
     public $ipRange;
+
     /**
      * @var array
      */
     public $subnets;
+
     /**
      * @var array
      */
     public $routes;
+
     /**
      * @var array
      */
     public $servers;
+
     /**
      * @var Protection
      */
     public $protection;
+
     /**
      * @var array
      */
     public $labels;
+
     /**
      * @var string
      */
@@ -175,6 +188,7 @@ class Network extends Model implements Resource
     private function setAdditionalData($data)
     {
         $this->name = $data->name;
+        $this->ip_range = $data->ip_range;
         $this->ipRange = $data->ip_range;
         $this->subnets = Subnet::parse($data->subnets, $this->httpClient);
         $this->routes = Route::parse($data->routes, $this->httpClient);

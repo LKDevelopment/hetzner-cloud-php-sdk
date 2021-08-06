@@ -38,6 +38,11 @@ class Datacenter extends Model implements Resource
     /**
      * @var array
      */
+    public $server_types;
+    /**
+     * @var array
+     * @deprecated Use $server_types instead
+     */
     public $serverTypes;
 
     /**
@@ -60,6 +65,7 @@ class Datacenter extends Model implements Resource
         $this->name = $name;
         $this->description = $description;
         $this->location = $location;
+        $this->server_types = $server_types;
         $this->serverTypes = $server_types;
         parent::__construct();
     }

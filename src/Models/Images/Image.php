@@ -49,10 +49,20 @@ class Image extends Model implements Resource
     /**
      * @var float
      */
+    public $image_size;
+    /**
+     * @var float
+     * @deprecated Use $image_size instead
+     */
     public $imageSize;
 
     /**
      * @var int
+     */
+    public $disk_size;
+    /**
+     * @var int
+     * @deprecated Use $disk_size instead
      */
     public $diskSize;
 
@@ -64,25 +74,50 @@ class Image extends Model implements Resource
     /**
      * @var \LKDev\HetznerCloud\Models\Servers\Server
      */
+    public $created_from;
+    /**
+     * @var \LKDev\HetznerCloud\Models\Servers\Server
+     * @deprecated Use $created_from instead
+     */
     public $createdFrom;
 
     /**
      * @var int
+     */
+    public $bound_to;
+    /**
+     * @var int
+     * @deprecated Use $bound_to instead
      */
     public $boundTo;
 
     /**
      * @var string
      */
+    public $os_flavor;
+    /**
+     * @var string
+     * @deprecated Use $os_flavor instead
+     */
     public $osFlavor;
 
     /**
      * @var string
      */
+    public $os_version;
+    /**
+     * @var string
+     * @deprecated Use $os_version instead
+     */
     public $osVersion;
 
     /**
      * @var bool
+     */
+    public $rapid_deploy;
+    /**
+     * @var bool
+     * @deprecated Use $rapid_deploy instead
      */
     public $rapidDeploy;
 
@@ -137,13 +172,20 @@ class Image extends Model implements Resource
         $this->status = $status;
         $this->name = $name;
         $this->description = $description;
+        $this->image_size = $imageSize;
         $this->imageSize = $imageSize;
+        $this->disk_size = $diskSize;
         $this->diskSize = $diskSize;
         $this->created = $created;
+        $this->created_from = $createdFrom;
         $this->createdFrom = $createdFrom;
+        $this->bound_to = $boundTo;
         $this->boundTo = $boundTo;
+        $this->os_flavor = $osFlavor;
         $this->osFlavor = $osFlavor;
+        $this->os_version = $osVersion;
         $this->osVersion = $osVersion;
+        $this->rapid_deploy = $rapidDeploy;
         $this->rapidDeploy = $rapidDeploy;
         $this->protection = $protection;
         $this->labels = $labels;
