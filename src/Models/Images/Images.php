@@ -23,7 +23,7 @@ class Images extends Model implements Resources
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
-     * @param string|null $name
+     * @param RequestOpts|null $requestOpts
      * @return array
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -40,12 +40,15 @@ class Images extends Model implements Resources
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
-     * @param string|null $name
+     * @param RequestOpts $requestOpts
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
+        if ($requestOpts == null) {
+            $requestOpts = new ImageRequestOpts();
+        }
         $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
         if (! HetznerAPIClient::hasError($response)) {
             $resp = json_decode((string) $response->getBody());
