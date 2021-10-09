@@ -121,6 +121,7 @@ class Servers extends Model
      * @param bool $automount
      * @param array $networks
      * @param array $labels
+     * @param array $firewalls
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -135,7 +136,8 @@ class Servers extends Model
         $volumes = [],
         $automount = false,
         $networks = [],
-        array $labels = []
+        array $labels = [],
+        array $firewalls = []
     ): ?APIResponse {
         $parameters = [
             'name' => $name,
@@ -151,6 +153,9 @@ class Servers extends Model
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
+        }
+        if (! empty($firewalls)) {
+            $parameters['firewalls'] = json_encode($firewalls);
         }
         $response = $this->httpClient->post('servers', [
             'json' => $parameters,
@@ -187,6 +192,7 @@ class Servers extends Model
      * @param bool $automount
      * @param array $networks
      * @param array $labels
+     * @param array $firewalls
      * @return APIResponse|null
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -200,7 +206,8 @@ class Servers extends Model
                                      array $volumes = [],
                                      bool $automount = false,
                                      array $networks = [],
-                                     array $labels = []
+                                     array $labels = [],
+                                     array $firewalls =[]
     ): ?APIResponse {
         $parameters = [
             'name' => $name,
@@ -216,6 +223,9 @@ class Servers extends Model
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
+        }
+        if (! empty($firewalls)) {
+            $parameters['firewalls'] = json_encode($firewalls);
         }
         $response = $this->httpClient->post('servers', [
             'json' => $parameters,
