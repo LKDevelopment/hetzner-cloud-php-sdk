@@ -115,7 +115,7 @@ class Firewall extends Model implements Resource
         $rules = [];
 
         foreach ($input->rules as $r) {
-            $rules[] = new FirewallRule($r->direction, $r->protocol, $r->source_ips, $r->destination_ips, $r->port);
+            $rules[] = new FirewallRule($r->direction, $r->protocol, $r->source_ips, $r->destination_ips, (string) $r->port);
         }
 
         foreach ($input->applied_to as $a) {
