@@ -207,7 +207,7 @@ class Servers extends Model
                                      bool $automount = false,
                                      array $networks = [],
                                      array $labels = [],
-                                     array $firewalls =[]
+                                     array $firewalls = []
     ): ?APIResponse {
         $parameters = [
             'name' => $name,
