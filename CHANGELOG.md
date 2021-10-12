@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.5.0 (12.10.2021)
+
+* Upgrade to GitHub-native Dependabot by @dependabot-preview in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/73
+* Fixed error on firewall rule when no port is present by @stefangeorgescu in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/72
+* change test classes prefix namespace to LKDev\Tests by @masoudniki in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/74
+* Adding "type" const by @ThomasLandauer in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/78
+* Implement `Model::setHttpClient()` by @mutec in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/80
+* Fixing docblock by @ThomasLandauer in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/76
+* Keep Hetzner's snake_case for properties by @ThomasLandauer in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/75
+* [FEATURE] Add firewalls parameter for server by @ayacoo in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/82
+* fixes nullable port by @jprangenbergde in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/81
+
 ## 2.4.0 (12.03.2021)
 
 * Add support for Firewalls
