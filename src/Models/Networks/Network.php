@@ -95,6 +95,7 @@ class Network extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -114,6 +115,7 @@ class Network extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -133,6 +135,7 @@ class Network extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -152,6 +155,7 @@ class Network extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
@@ -165,6 +169,7 @@ class Network extends Model implements Resource
                 'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
