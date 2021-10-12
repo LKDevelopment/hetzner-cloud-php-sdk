@@ -147,6 +147,7 @@ class Certificates extends Model implements Resources
         if (! HetznerAPIClient::hasError($response)) {
             return Certificate::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
+        return null;
     }
 
     /**

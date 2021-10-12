@@ -144,6 +144,7 @@ class SSHKeys extends Model implements Resources
         if (! HetznerAPIClient::hasError($response)) {
             return SSHKey::parse(json_decode((string) $response->getBody())->ssh_key);
         }
+        return null;
     }
 
     /**

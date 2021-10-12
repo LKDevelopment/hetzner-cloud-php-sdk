@@ -28,6 +28,7 @@ abstract class Model
      */
     public static function parse($input)
     {
+        return null;
     }
 
     /**
