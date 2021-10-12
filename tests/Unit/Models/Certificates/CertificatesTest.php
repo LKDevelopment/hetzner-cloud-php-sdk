@@ -15,7 +15,7 @@ use LKDev\Tests\TestCase;
 class CertificatesTest extends TestCase
 {
     /**
-     * @var  \LKDev\HetznerCloud\Models\Certificates\Certificates
+     * @var \LKDev\HetznerCloud\Models\Certificates\Certificates
      */
     protected $certificates;
 

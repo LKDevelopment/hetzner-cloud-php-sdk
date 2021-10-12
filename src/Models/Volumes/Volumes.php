@@ -35,8 +35,10 @@ class Volumes extends Model implements Resources
      * Returns all existing volume objects.
      *
      * @see https://docs.hetzner.cloud/#resources-volumes-get
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -52,8 +54,10 @@ class Volumes extends Model implements Resources
      * Returns all existing volume objects.
      *
      * @see https://docs.hetzner.cloud/#resources-volumes-get
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -78,8 +82,10 @@ class Volumes extends Model implements Resources
      * Returns a specific server object by its name. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-volumes-get
-     * @param string $volumeName
+     *
+     * @param  string  $volumeName
      * @return \LKDev\HetznerCloud\Models\Volumes\Volume|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $volumeName): ?Volume
@@ -93,8 +99,10 @@ class Volumes extends Model implements Resources
      * Returns a specific volume object. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-volume-get-1
-     * @param int $id
+     *
+     * @param  int  $id
      * @return Volume|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $id): ?Volume
@@ -108,14 +116,15 @@ class Volumes extends Model implements Resources
     }
 
     /**
-     * @param string $name
-     * @param int $size
-     * @param Server|null $server
-     * @param Location|null $location
-     * @param bool $automount
-     * @param string|null $format
-     * @param array $labels
+     * @param  string  $name
+     * @param  int  $size
+     * @param  Server|null  $server
+     * @param  Location|null  $location
+     * @param  bool  $automount
+     * @param  string|null  $format
+     * @param  array  $labels
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(string $name, int $size, Server $server = null, Location $location = null, bool $automount = false, string $format = null, array $labels = []): ?APIResponse

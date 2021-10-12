@@ -15,7 +15,7 @@ use LKDev\Tests\TestCase;
 class ServerTypesTest extends TestCase
 {
     /**
-     * @var  \LKDev\HetznerCloud\Models\Servers\Types\ServerTypes
+     * @var \LKDev\HetznerCloud\Models\Servers\Types\ServerTypes
      */
     protected $server_types;
 

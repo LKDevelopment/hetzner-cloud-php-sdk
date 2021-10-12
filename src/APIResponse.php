@@ -33,7 +33,7 @@ class APIResponse
     }
 
     /**
-     * @param string|null $resource
+     * @param  string|null  $resource
      * @return Model|string|bool
      */
     public function getResponsePart(string $resource = null)
@@ -42,7 +42,7 @@ class APIResponse
     }
 
     /**
-     * @param array $response
+     * @param  array  $response
      */
     public function setResponse(array $response)
     {
@@ -50,7 +50,7 @@ class APIResponse
     }
 
     /**
-     * @param array $header
+     * @param  array  $header
      */
     public function setHeader(array $header)
     {
@@ -66,8 +66,8 @@ class APIResponse
     }
 
     /**
-     * @param array $response
-     * @param array $header
+     * @param  array  $response
+     * @param  array  $header
      * @return APIResponse
      */
     public static function create(array $response, array $header = [])

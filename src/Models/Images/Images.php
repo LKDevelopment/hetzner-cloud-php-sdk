@@ -23,8 +23,10 @@ class Images extends Model implements Resources
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -40,8 +42,10 @@ class Images extends Model implements Resources
      * Returns all image objects.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -66,8 +70,10 @@ class Images extends Model implements Resources
      * Returns a specific image object.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get-1
-     * @param int $imageId
+     *
+     * @param  int  $imageId
      * @return \LKDev\HetznerCloud\Models\Images\Image
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $imageId): ?Image
@@ -84,8 +90,10 @@ class Images extends Model implements Resources
      * Returns a specific image object by its name.
      *
      * @see https://docs.hetzner.cloud/#resources-images-get-1
-     * @param string $name
+     *
+     * @param  string  $name
      * @return \LKDev\HetznerCloud\Models\Images\Image|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?Image

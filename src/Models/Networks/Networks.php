@@ -26,8 +26,10 @@ class Networks extends Model implements Resources
      * Returns all existing server objects.
      *
      * @see https://docs.hetzner.cloud/#networks-get-all-networks
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -43,8 +45,10 @@ class Networks extends Model implements Resources
      * Returns all existing server objects.
      *
      * @see https://docs.hetzner.cloud/#networks-get-all-networks
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -69,8 +73,10 @@ class Networks extends Model implements Resources
      * Returns a specific server object. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#networks-get-a-network
-     * @param int $serverId
-     * @return  Network
+     *
+     * @param  int  $serverId
+     * @return Network
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $serverId): ?Network
@@ -87,8 +93,10 @@ class Networks extends Model implements Resources
      * Returns a specific network object by its name. The network must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#networks-get-all-networks
-     * @param string $name
+     *
+     * @param  string  $name
      * @return Network|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?Network
@@ -116,11 +124,11 @@ class Networks extends Model implements Resources
     }
 
     /**
-     * @param string $name
-     * @param string $ipRange
-     * @param array $subnets
-     * @param array $routes
-     * @param array $labels
+     * @param  string  $name
+     * @param  string  $ipRange
+     * @param  array  $subnets
+     * @param  array  $routes
+     * @param  array  $labels
      */
     public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [])
     {

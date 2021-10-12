@@ -41,6 +41,7 @@ class Datacenter extends Model implements Resource
     public $server_types;
     /**
      * @var array
+     *
      * @deprecated Use $server_types instead
      */
     public $serverTypes;
@@ -48,11 +49,11 @@ class Datacenter extends Model implements Resource
     /**
      * Datacenter constructor.
      *
-     * @param int $id
-     * @param string $name
-     * @param string $description
-     * @param \LKDev\HetznerCloud\Models\Locations\Location $location
-     * @param array $server_types
+     * @param  int  $id
+     * @param  string  $name
+     * @param  string  $description
+     * @param  \LKDev\HetznerCloud\Models\Locations\Location  $location
+     * @param  array  $server_types
      */
     public function __construct(
         int $id,

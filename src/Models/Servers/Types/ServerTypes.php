@@ -26,8 +26,9 @@ class ServerTypes extends Model implements Resources
     protected $server_types;
 
     /**
-     * @param RequestOpts $requestOpts
+     * @param  RequestOpts  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -40,8 +41,9 @@ class ServerTypes extends Model implements Resources
     }
 
     /**
-     * @param RequestOpts $requestOpts
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -63,8 +65,9 @@ class ServerTypes extends Model implements Resources
     }
 
     /**
-     * @param int $serverTypeId
+     * @param  int  $serverTypeId
      * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $serverTypeId): ?ServerType
@@ -80,8 +83,9 @@ class ServerTypes extends Model implements Resources
     /**
      * Returns a specific server type object by its name.
      *
-     * @param int $serverTypeId
+     * @param  int  $serverTypeId
      * @return \LKDev\HetznerCloud\Models\Servers\Types\ServerType
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?ServerType

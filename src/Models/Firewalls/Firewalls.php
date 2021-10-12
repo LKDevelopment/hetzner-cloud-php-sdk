@@ -30,8 +30,10 @@ class Firewalls extends Model implements Resources
      * Returns all Firewall objects.
      *
      * @see https://docs.hetzner.cloud/#firewalls
-     * @param FirewallRequestOpts|RequestOpts|null $requestOpts
+     *
+     * @param  FirewallRequestOpts|RequestOpts|null  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -47,8 +49,10 @@ class Firewalls extends Model implements Resources
      * Returns a specific Firewall objects.
      *
      * @see https://docs.hetzner.cloud/#firewalls-get-a-firewall
-     * @param int $firewallId
+     *
+     * @param  int  $firewallId
      * @return \LKDev\HetznerCloud\Models\Firewalls\Firewall|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $firewallId): ?Firewall
@@ -73,8 +77,10 @@ class Firewalls extends Model implements Resources
      * Returns a specific Firewall object by its name.
      *
      * @see https://docs.hetzner.cloud/#firewalls-get-all-firewalls
-     * @param string $name
+     *
+     * @param  string  $name
      * @return \LKDev\HetznerCloud\Models\Firewalls\Firewall
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?Firewall
@@ -88,8 +94,10 @@ class Firewalls extends Model implements Resources
      * Returns all Firewall objects.
      *
      * @see https://docs.hetzner.cloud/#firewalls-get-all-firewalls
-     * @param FirewallRequestOpts|RequestOpts|null $requestOpts
+     *
+     * @param  FirewallRequestOpts|RequestOpts|null  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -136,10 +144,12 @@ class Firewalls extends Model implements Resources
      * Creates a new Firewall.
      *
      * @see https://docs.hetzner.cloud/#firewalls-create-a-firewall
-     * @param string $name
-     * @param FirewallRule[] $rules
-     * @param FirewallResource[] $applyTo
+     *
+     * @param  string  $name
+     * @param  FirewallRule[]  $rules
+     * @param  FirewallResource[]  $applyTo
      * @return ?APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(

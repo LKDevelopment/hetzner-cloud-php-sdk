@@ -29,8 +29,10 @@ class Locations extends Model implements Resources
      * Returns all location objects.
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -46,8 +48,10 @@ class Locations extends Model implements Resources
      * Returns all location objects.
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -72,8 +76,10 @@ class Locations extends Model implements Resources
      * Returns a specific location object.
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get-1
-     * @param int $locationId
+     *
+     * @param  int  $locationId
      * @return \LKDev\HetznerCloud\Models\Locations\Location
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $locationId): ?Location
@@ -90,8 +96,10 @@ class Locations extends Model implements Resources
      * Returns a specific location object by its name.
      *
      * @see https://docs.hetzner.cloud/#resources-locations-get-1
-     * @param int $locationId
+     *
+     * @param  int  $locationId
      * @return \LKDev\HetznerCloud\Models\Locations\Location
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?Location

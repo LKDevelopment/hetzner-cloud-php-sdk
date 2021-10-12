@@ -29,8 +29,10 @@ class ISOs extends Model implements Resources
      * Returns all iso objects.
      *
      * @see https://docs.hetzner.cloud/#resources-isos-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -46,8 +48,10 @@ class ISOs extends Model implements Resources
      * Returns all iso objects.
      *
      * @see https://docs.hetzner.cloud/#resources-isos-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -72,8 +76,10 @@ class ISOs extends Model implements Resources
      * Returns a specific iso object.
      *
      * @see https://docs.hetzner.cloud/#resources-iso-get-1
-     * @param int $isoId
+     *
+     * @param  int  $isoId
      * @return \LKDev\HetznerCloud\Models\ISOs\ISO|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $isoId): ?ISO
@@ -90,8 +96,10 @@ class ISOs extends Model implements Resources
      * Returns a specific iso object by its name.
      *
      * @see https://docs.hetzner.cloud/#resources-iso-get-1
-     * @param int $isoId
+     *
+     * @param  int  $isoId
      * @return \LKDev\HetznerCloud\Models\ISOs\ISO
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?ISO

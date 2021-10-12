@@ -31,8 +31,10 @@ class FloatingIps extends Model implements Resources
      * Returns all floating ip objects.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-get
-     * @param FloatingIPRequestOpts|RequestOpts|null $requestOpts
+     *
+     * @param  FloatingIPRequestOpts|RequestOpts|null  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -48,8 +50,10 @@ class FloatingIps extends Model implements Resources
      * Returns all floating ip objects.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-get
-     * @param FloatingIPRequestOpts|RequestOpts|null $requestOpts
+     *
+     * @param  FloatingIPRequestOpts|RequestOpts|null  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -74,8 +78,10 @@ class FloatingIps extends Model implements Resources
      * Returns a specific floating ip object.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-get-1
-     * @param int $locationId
+     *
+     * @param  int  $locationId
      * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $floatingIpId): ?FloatingIp
@@ -92,8 +98,10 @@ class FloatingIps extends Model implements Resources
      * Returns a specific Floating IP object by its name.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-get-1
-     * @param string $name
+     *
+     * @param  string  $name
      * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?FloatingIp
@@ -107,13 +115,15 @@ class FloatingIps extends Model implements Resources
      * Creates a new Floating IP assigned to a server.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-post
-     * @param string $type
-     * @param string|null $description
-     * @param \LKDev\HetznerCloud\Models\Locations\Location|null $location
-     * @param \LKDev\HetznerCloud\Models\Servers\Server|null $server
-     * @param string|null $name
-     * @param array $labels
+     *
+     * @param  string  $type
+     * @param  string|null  $description
+     * @param  \LKDev\HetznerCloud\Models\Locations\Location|null  $location
+     * @param  \LKDev\HetznerCloud\Models\Servers\Server|null  $server
+     * @param  string|null  $name
+     * @param  array  $labels
      * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(

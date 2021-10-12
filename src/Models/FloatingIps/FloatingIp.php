@@ -58,6 +58,7 @@ class FloatingIp extends Model implements Resource
     public $dns_ptr;
     /**
      * @var array
+     *
      * @deprecated Use $dns_ptr instead
      */
     public $dnsPtr;
@@ -68,6 +69,7 @@ class FloatingIp extends Model implements Resource
     public $home_location;
     /**
      * @var \LKDev\HetznerCloud\Models\Locations\Location
+     *
      * @deprecated Use $home_location instead
      */
     public $homeLocation;
@@ -90,18 +92,18 @@ class FloatingIp extends Model implements Resource
     /**
      * FloatingIp constructor.
      *
-     * @param int $id
-     * @param string|null $description
-     * @param string $ip
-     * @param string $type
-     * @param int $server
-     * @param array $dnsPtr
-     * @param \LKDev\HetznerCloud\Models\Locations\Location $homeLocation
-     * @param bool $blocked
-     * @param Protection $protection
-     * @param array $labels
-     * @param string $created
-     * @param string $name
+     * @param  int  $id
+     * @param  string|null  $description
+     * @param  string  $ip
+     * @param  string  $type
+     * @param  int  $server
+     * @param  array  $dnsPtr
+     * @param  \LKDev\HetznerCloud\Models\Locations\Location  $homeLocation
+     * @param  bool  $blocked
+     * @param  Protection  $protection
+     * @param  array  $labels
+     * @param  string  $created
+     * @param  string  $name
      */
     public function __construct(
         int $id,
@@ -138,8 +140,10 @@ class FloatingIp extends Model implements Resource
      * Update a Floating IP.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-put
-     * @param array $data
+     *
+     * @param  array  $data
      * @return static|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data): ?self
@@ -158,9 +162,12 @@ class FloatingIp extends Model implements Resource
      * Changes the description of a Floating IP.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-put
-     * @param string $description
+     *
+     * @param  string  $description
      * @return static|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
+     *
      * @deprecated 1.2.0
      */
     public function changeDescription(string $description): ?self
@@ -172,7 +179,9 @@ class FloatingIp extends Model implements Resource
      * Deletes a Floating IP. If it is currently assigned to a server it will automatically get unassigned.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-delete
+     *
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): bool
@@ -189,8 +198,10 @@ class FloatingIp extends Model implements Resource
      * Changes the protection configuration of the Floating IP.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ip-actions-post-3
-     * @param bool $delete
+     *
+     * @param  bool  $delete
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeProtection(bool $delete = true): ?APIResponse
@@ -213,8 +224,10 @@ class FloatingIp extends Model implements Resource
      * Assigns a Floating IP to a server.
      *
      * @see https://docs.hetzner.cloud/#floating-ip-actions-assign-a-floating-ip-to-a-server
-     * @param Server $server
+     *
+     * @param  Server  $server
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function assignTo(Server $server): ?APIResponse
@@ -237,7 +250,9 @@ class FloatingIp extends Model implements Resource
      * Unassigns a Floating IP, resulting in it being unreachable. You may assign it to a server again at a later time.
      *
      * @see https://docs.hetzner.cloud/#floating-ip-actions-unassign-a-floating-ip
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function unassign(): ?APIResponse
@@ -256,9 +271,11 @@ class FloatingIp extends Model implements Resource
      * Changes the hostname that will appear when getting the hostname belonging to this Floating IP.
      *
      * @see https://docs.hetzner.cloud/#floating-ip-actions-change-reverse-dns-entry-for-a-floating-ip
-     * @param string $ip
-     * @param string|null $dnsPtr
+     *
+     * @param  string  $ip
+     * @param  string|null  $dnsPtr
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeReverseDNS(string $ip, string $dnsPtr = null): ?APIResponse

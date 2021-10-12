@@ -63,8 +63,8 @@ class Volume extends Model implements Resource
     public $linux_device;
 
     /**
-     * @param int $volumeId
-     * @param Client|null $httpClient
+     * @param  int  $volumeId
+     * @param  Client|null  $httpClient
      */
     public function __construct(int $volumeId = null, Client $httpClient = null)
     {
@@ -95,7 +95,9 @@ class Volume extends Model implements Resource
      * Deletes a volume. This immediately removes the volume from your account, and it is no longer accessible.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-delete
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): ?APIResponse
@@ -109,9 +111,10 @@ class Volume extends Model implements Resource
     }
 
     /**
-     * @param Server $server
-     * @param bool|null $automount
+     * @param  Server  $server
+     * @param  bool|null  $automount
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function attach(Server $server, $automount = null): ?APIResponse
@@ -138,6 +141,7 @@ class Volume extends Model implements Resource
 
     /**
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function detach(): ?APIResponse
@@ -153,8 +157,9 @@ class Volume extends Model implements Resource
     }
 
     /**
-     * @param int $size
+     * @param  int  $size
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function resize(int $size): ?APIResponse
@@ -177,8 +182,10 @@ class Volume extends Model implements Resource
      * Update a volume with new meta data.
      *
      * @see https://docs.hetzner.cloud/#resources-volume-put
-     * @param array $data
+     *
+     * @param  array  $data
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data): ?APIResponse
@@ -199,8 +206,10 @@ class Volume extends Model implements Resource
      * Changes the protection configuration of the volume.
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ip-actions-post-3
-     * @param bool $delete
+     *
+     * @param  bool  $delete
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeProtection(bool $delete = true): ?APIResponse
@@ -236,6 +245,7 @@ class Volume extends Model implements Resource
      * Reload the data of the volume.
      *
      * @return Volume
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function reload()

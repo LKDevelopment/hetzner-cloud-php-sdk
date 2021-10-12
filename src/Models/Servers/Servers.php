@@ -33,8 +33,10 @@ class Servers extends Model
      * Returns all existing server objects.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -50,8 +52,10 @@ class Servers extends Model
      * List server objects.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -76,8 +80,10 @@ class Servers extends Model
      * Returns a specific server object by its name. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
-     * @param string $serverName
+     *
+     * @param  string  $serverName
      * @return \LKDev\HetznerCloud\Models\Servers\Server|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $serverName): ?Server
@@ -91,8 +97,10 @@ class Servers extends Model
      * Returns a specific server object by its name. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
-     * @param string $serverId
+     *
+     * @param  string  $serverId
      * @return \LKDev\HetznerCloud\Models\Servers\Server|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $serverId): ?Server
@@ -109,20 +117,22 @@ class Servers extends Model
      * Creates a new server in a datacenter instead of in a location. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-post
-     * @param string $name
-     * @param \LKDev\HetznerCloud\Models\Servers\Types\ServerType $serverType
-     * @param \LKDev\HetznerCloud\Models\Images\Image $image
-     * @param \LKDev\HetznerCloud\Models\Locations\Location $location
-     * @param \LKDev\HetznerCloud\Models\Datacenters\Datacenter $datacenter
-     * @param array $ssh_keys
-     * @param bool $startAfterCreate
-     * @param string $user_data
-     * @param array $volumes
-     * @param bool $automount
-     * @param array $networks
-     * @param array $labels
-     * @param array $firewalls
+     *
+     * @param  string  $name
+     * @param  \LKDev\HetznerCloud\Models\Servers\Types\ServerType  $serverType
+     * @param  \LKDev\HetznerCloud\Models\Images\Image  $image
+     * @param  \LKDev\HetznerCloud\Models\Locations\Location  $location
+     * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
+     * @param  array  $ssh_keys
+     * @param  bool  $startAfterCreate
+     * @param  string  $user_data
+     * @param  array  $volumes
+     * @param  bool  $automount
+     * @param  array  $networks
+     * @param  array  $labels
+     * @param  array  $firewalls
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createInDatacenter(
@@ -181,19 +191,21 @@ class Servers extends Model
      * Creates a new server in a location instead of in a datacenter. Returns preliminary information about the server as well as an action that covers progress of creation.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-post
-     * @param string $name
-     * @param ServerType $serverType
-     * @param Image $image
-     * @param Location|null $location
-     * @param array $ssh_keys
-     * @param bool $startAfterCreate
-     * @param string $user_data
-     * @param array $volumes
-     * @param bool $automount
-     * @param array $networks
-     * @param array $labels
-     * @param array $firewalls
+     *
+     * @param  string  $name
+     * @param  ServerType  $serverType
+     * @param  Image  $image
+     * @param  Location|null  $location
+     * @param  array  $ssh_keys
+     * @param  bool  $startAfterCreate
+     * @param  string  $user_data
+     * @param  array  $volumes
+     * @param  bool  $automount
+     * @param  array  $networks
+     * @param  array  $labels
+     * @param  array  $firewalls
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createInLocation(string $name,

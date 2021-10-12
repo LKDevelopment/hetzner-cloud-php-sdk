@@ -34,12 +34,13 @@ class Pagination extends Model
 
     /**
      * Pagination constructor.
-     * @param int $page
-     * @param int $per_page
-     * @param int $previous_page
-     * @param int $next_page
-     * @param int $last_page
-     * @param int $total_entries
+     *
+     * @param  int  $page
+     * @param  int  $per_page
+     * @param  int  $previous_page
+     * @param  int  $next_page
+     * @param  int  $last_page
+     * @param  int  $total_entries
      */
     public function __construct($page, $per_page, $previous_page, $next_page, $last_page, $total_entries)
     {

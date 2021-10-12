@@ -29,10 +29,12 @@ class SSHKeys extends Model implements Resources
      * Creates a new SSH Key with the given name and public_key.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-post
-     * @param string $name
-     * @param string $publicKey
-     * @param array $labels
+     *
+     * @param  string  $name
+     * @param  string  $publicKey
+     * @param  array  $labels
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(
@@ -61,8 +63,10 @@ class SSHKeys extends Model implements Resources
      * Returns all ssh key objects.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -78,8 +82,10 @@ class SSHKeys extends Model implements Resources
      * Returns all ssh key objects.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -126,8 +132,10 @@ class SSHKeys extends Model implements Resources
      * Returns a specific ssh key object.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get-1
-     * @param int $sshKeyId
+     *
+     * @param  int  $sshKeyId
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $id)
@@ -142,8 +150,10 @@ class SSHKeys extends Model implements Resources
      * Returns a specific ssh key object.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-get-1
-     * @param int $sshKeyId
+     *
+     * @param  int  $sshKeyId
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?SSHKey

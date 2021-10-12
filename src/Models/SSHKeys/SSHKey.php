@@ -42,11 +42,11 @@ class SSHKey extends Model implements Resource
     /**
      * SSHKey constructor.
      *
-     * @param int $id
-     * @param string $name
-     * @param string $fingerprint
-     * @param string $publicKey
-     * @param array $labels
+     * @param  int  $id
+     * @param  string  $name
+     * @param  string  $fingerprint
+     * @param  string  $publicKey
+     * @param  array  $labels
      */
     public function __construct(int $id, string $name, string $fingerprint, string $publicKey, array $labels = [])
     {
@@ -62,8 +62,10 @@ class SSHKey extends Model implements Resource
      * Update a ssh key.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-put
-     * @param array $data
+     *
+     * @param  array  $data
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data): ?self
@@ -83,9 +85,12 @@ class SSHKey extends Model implements Resource
      * Changes the name of a ssh key.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-put
-     * @param string $newName
+     *
+     * @param  string  $newName
      * @return \LKDev\HetznerCloud\Models\SSHKeys\SSHKey|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
+     *
      * @deprecated 1.2.0
      */
     public function changeName(string $newName): ?self
@@ -97,7 +102,9 @@ class SSHKey extends Model implements Resource
      * Deletes a SSH key. It cannot be used anymore.
      *
      * @see https://docs.hetzner.cloud/#resources-ssh-keys-delete
+     *
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): bool
@@ -123,6 +130,7 @@ class SSHKey extends Model implements Resource
      * Reload the data of the SSH Key.
      *
      * @return SSHKey
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function reload()

@@ -8,8 +8,8 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 class GuzzleClient extends Client
 {
     /**
-     * @param HetznerAPIClient $client
-     * @param array $additionalGuzzleConfig
+     * @param  HetznerAPIClient  $client
+     * @param  array  $additionalGuzzleConfig
      */
     public function __construct(HetznerAPIClient $client, $additionalGuzzleConfig = [])
     {

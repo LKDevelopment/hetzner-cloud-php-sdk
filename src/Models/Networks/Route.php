@@ -21,9 +21,10 @@ class Route extends Model
 
     /**
      * Subnet constructor.
-     * @param string $destination
-     * @param string $gateway
-     * @param Client|null $client
+     *
+     * @param  string  $destination
+     * @param  string  $gateway
+     * @param  Client|null  $client
      */
     public function __construct(string $destination, string $gateway, Client $client = null)
     {
@@ -34,7 +35,7 @@ class Route extends Model
 
     /**
      * @param $input
-     * @param Client|null $client
+     * @param  Client|null  $client
      * @return array|Model
      */
     public static function parse($input, Client $client = null)

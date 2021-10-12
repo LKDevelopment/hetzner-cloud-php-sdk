@@ -52,6 +52,7 @@ class Image extends Model implements Resource
     public $image_size;
     /**
      * @var float
+     *
      * @deprecated Use $image_size instead
      */
     public $imageSize;
@@ -62,6 +63,7 @@ class Image extends Model implements Resource
     public $disk_size;
     /**
      * @var int
+     *
      * @deprecated Use $disk_size instead
      */
     public $diskSize;
@@ -77,6 +79,7 @@ class Image extends Model implements Resource
     public $created_from;
     /**
      * @var \LKDev\HetznerCloud\Models\Servers\Server
+     *
      * @deprecated Use $created_from instead
      */
     public $createdFrom;
@@ -87,6 +90,7 @@ class Image extends Model implements Resource
     public $bound_to;
     /**
      * @var int
+     *
      * @deprecated Use $bound_to instead
      */
     public $boundTo;
@@ -97,6 +101,7 @@ class Image extends Model implements Resource
     public $os_flavor;
     /**
      * @var string
+     *
      * @deprecated Use $os_flavor instead
      */
     public $osFlavor;
@@ -107,6 +112,7 @@ class Image extends Model implements Resource
     public $os_version;
     /**
      * @var string
+     *
      * @deprecated Use $os_version instead
      */
     public $osVersion;
@@ -117,6 +123,7 @@ class Image extends Model implements Resource
     public $rapid_deploy;
     /**
      * @var bool
+     *
      * @deprecated Use $rapid_deploy instead
      */
     public $rapidDeploy;
@@ -134,21 +141,21 @@ class Image extends Model implements Resource
     /**
      * Image constructor.
      *
-     * @param int $id
-     * @param string $type
-     * @param string $status
-     * @param string $name
-     * @param string $description
-     * @param float $imageSize
-     * @param int $diskSize
-     * @param string $created
-     * @param \LKDev\HetznerCloud\Models\Servers\Server $createdFrom
-     * @param int $boundTo
-     * @param string $osFlavor
-     * @param string $osVersion
-     * @param bool $rapidDeploy
-     * @param Protection $protection
-     * @param array $labels
+     * @param  int  $id
+     * @param  string  $type
+     * @param  string  $status
+     * @param  string  $name
+     * @param  string  $description
+     * @param  float  $imageSize
+     * @param  int  $diskSize
+     * @param  string  $created
+     * @param  \LKDev\HetznerCloud\Models\Servers\Server  $createdFrom
+     * @param  int  $boundTo
+     * @param  string  $osFlavor
+     * @param  string  $osVersion
+     * @param  bool  $rapidDeploy
+     * @param  Protection  $protection
+     * @param  array  $labels
      */
     public function __construct(
         int $id,
@@ -196,8 +203,10 @@ class Image extends Model implements Resource
      * Updates the Image. You may change the description or convert a Backup image to a Snapshot Image. Only images of type snapshot and backup can be updated.
      *
      * @see https://docs.hetzner.cloud/#resources-images-put
-     * @param array $data
+     *
+     * @param  array  $data
      * @return \LKDev\HetznerCloud\Models\Images\Image
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data): ?self
@@ -216,8 +225,10 @@ class Image extends Model implements Resource
      * Changes the protection configuration of the image. Can only be used on snapshots.
      *
      * @see https://docs.hetzner.cloud/#resources-image-actions-post
-     * @param bool $delete
+     *
+     * @param  bool  $delete
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeProtection(bool $delete = true): ?APIResponse
@@ -240,7 +251,9 @@ class Image extends Model implements Resource
      * Deletes an Image. Only images of type snapshot and backup can be deleted.
      *
      * @see https://docs.hetzner.cloud/#resources-images-delete
+     *
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): bool

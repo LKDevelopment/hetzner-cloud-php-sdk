@@ -49,6 +49,7 @@ class Server extends Model implements Resource
     public $public_net;
     /**
      * @var array
+     *
      * @deprecated Use $public_net instead
      */
     public $publicNet;
@@ -59,6 +60,7 @@ class Server extends Model implements Resource
     public $private_net;
     /**
      * @var array
+     *
      * @deprecated Use $private_net instead
      */
     public $privateNet;
@@ -69,6 +71,7 @@ class Server extends Model implements Resource
     public $server_type;
     /**
      * @var ServerType
+     *
      * @deprecated Use $server_type instead
      */
     public $serverType;
@@ -94,6 +97,7 @@ class Server extends Model implements Resource
     public $rescue_enabled;
     /**
      * @var bool
+     *
      * @deprecated Use $rescue_enabled instead
      */
     public $rescueEnabled;
@@ -109,6 +113,7 @@ class Server extends Model implements Resource
     public $backup_window;
     /**
      * @var string
+     *
      * @deprecated Use $backup_window instead
      */
     public $backupWindow;
@@ -119,6 +124,7 @@ class Server extends Model implements Resource
     public $outgoing_traffic;
     /**
      * @var int
+     *
      * @deprecated Use $outgoing_traffic instead
      */
     public $outgoingTraffic;
@@ -129,6 +135,7 @@ class Server extends Model implements Resource
     public $ingoing_traffic;
     /**
      * @var int
+     *
      * @deprecated Use $ingoing_traffic instead
      */
     public $ingoingTraffic;
@@ -139,6 +146,7 @@ class Server extends Model implements Resource
     public $included_traffic;
     /**
      * @var int
+     *
      * @deprecated Use $included_traffic instead
      */
     public $includedTraffic;
@@ -164,13 +172,14 @@ class Server extends Model implements Resource
     public $primary_disk_size;
     /**
      * @var int
+     *
      * @deprecated Use $primary_disk_size instead
      */
     public $primaryDiskSize;
 
     /**
-     * @param int $serverId
-     * @param Client|null $httpClient
+     * @param  int  $serverId
+     * @param  Client|null  $httpClient
      */
     public function __construct(int $serverId, Client $httpClient = null)
     {
@@ -220,7 +229,9 @@ class Server extends Model implements Resource
      * Reload the data of the server.
      *
      * @return Server
+     *
      * @throws \LKDev\HetznerCloud\APIException
+     *
      * @deprecated 2.0.0-alpha1 use reload() instead
      */
     public function get()
@@ -232,6 +243,7 @@ class Server extends Model implements Resource
      * Reload the data of the server.
      *
      * @return Server
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function reload()
@@ -243,6 +255,7 @@ class Server extends Model implements Resource
      * Starts a server by turning its power on.
      *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function powerOn(): ?APIResponse
@@ -261,7 +274,9 @@ class Server extends Model implements Resource
      * Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-1
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function softReboot(): ?APIResponse
@@ -280,7 +295,9 @@ class Server extends Model implements Resource
      * Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-2
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function reset(): ?APIResponse
@@ -299,7 +316,9 @@ class Server extends Model implements Resource
      * Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-3
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function shutdown(): ?APIResponse
@@ -318,7 +337,9 @@ class Server extends Model implements Resource
      * Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-4
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function powerOff(): ?APIResponse
@@ -337,7 +358,9 @@ class Server extends Model implements Resource
      * Resets the root password. Only works for Linux systems that are running the qemu guest agent. Server must be powered on (state on) in order for this operation to succeed.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-5
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function resetRootPassword(): ?APIResponse
@@ -359,9 +382,11 @@ class Server extends Model implements Resource
      * Enable the Hetzner Rescue System for this server. The next time a Server with enabled rescue mode boots it will start a special minimal Linux distribution designed for repair and reinstall.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-6
-     * @param string $type
-     * @param array $ssh_keys
+     *
+     * @param  string  $type
+     * @param  array  $ssh_keys
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function enableRescue($type = 'linux64', $ssh_keys = []): ?APIResponse
@@ -388,7 +413,9 @@ class Server extends Model implements Resource
      * Disables the Hetzner Rescue System for a server. This makes a server start from its disks on next reboot.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-7
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function disableRescue(): ?APIResponse
@@ -407,10 +434,12 @@ class Server extends Model implements Resource
      * Creates an image (snapshot) from a server by copying the contents of its disks. This creates a snapshot of the current state of the disk and copies it into an image. If the server is currently running you must make sure that its disk content is consistent. Otherwise, the created image may not be readable.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-8
-     * @param string $description
-     * @param string $type
-     * @param array $labels
+     *
+     * @param  string  $description
+     * @param  string  $type
+     * @param  array  $labels
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function createImage(string $description = '', string $type = 'snapshot', array $labels = []): ?APIResponse
@@ -441,8 +470,10 @@ class Server extends Model implements Resource
      * Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-9
-     * @param \LKDev\HetznerCloud\Models\Images\Image $image
+     *
+     * @param  \LKDev\HetznerCloud\Models\Images\Image  $image
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function rebuildFromImage(Image $image): ?APIResponse
@@ -467,9 +498,11 @@ class Server extends Model implements Resource
      * Changes the type (Cores, RAM and disk sizes) of a server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-10
-     * @param \LKDev\HetznerCloud\Models\Servers\Types\ServerType $serverType
-     * @param bool $upgradeDisk
+     *
+     * @param  \LKDev\HetznerCloud\Models\Servers\Types\ServerType  $serverType
+     * @param  bool  $upgradeDisk
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeType(ServerType $serverType, bool $upgradeDisk = false): ?APIResponse
@@ -493,7 +526,9 @@ class Server extends Model implements Resource
      * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function enableBackups(string $backupWindow = null): ?APIResponse
@@ -512,7 +547,9 @@ class Server extends Model implements Resource
      * Disables the automatic backup option and deletes all existing Backups for a Server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-12
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function disableBackups(): ?APIResponse
@@ -531,8 +568,10 @@ class Server extends Model implements Resource
      * Attaches an ISO to a server. The Server will immediately see it as a new disk. An already attached ISO will automatically be detached before the new ISO is attached.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-13
-     * @param \LKDev\HetznerCloud\Models\ISOs\ISO $iso
+     *
+     * @param  \LKDev\HetznerCloud\Models\ISOs\ISO  $iso
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function attachISO(ISO $iso): ?APIResponse
@@ -555,7 +594,9 @@ class Server extends Model implements Resource
      * Detaches an ISO from a server. In case no ISO image is attached to the server, the status of the returned action is immediately set to success.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-14
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function detachISO(): ?APIResponse
@@ -574,9 +615,11 @@ class Server extends Model implements Resource
      * Changes the hostname that will appear when getting the hostname belonging to the primary IPs (ipv4 and ipv6) of this server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-15
-     * @param string $ip
-     * @param string|null $dnsPtr
+     *
+     * @param  string  $ip
+     * @param  string|null  $dnsPtr
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeReverseDNS(string $ip, string $dnsPtr = null): ?APIResponse
@@ -600,11 +643,13 @@ class Server extends Model implements Resource
      * Get Metrics for specified server.
      *
      * @see https://docs.hetzner.cloud/#servers-get-metrics-for-a-server
-     * @param string $type
-     * @param string $start
-     * @param string $end
-     * @param int|null $step
+     *
+     * @param  string  $type
+     * @param  string  $start
+     * @param  string  $end
+     * @param  int|null  $step
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function metrics(string $type, string $start, string $end, int $step = null)
@@ -623,7 +668,9 @@ class Server extends Model implements Resource
      * Deletes a server. This immediately removes the server from your account, and it is no longer accessible.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-delete
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): ?APIResponse
@@ -642,8 +689,10 @@ class Server extends Model implements Resource
      * Update a server with new meta data.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-put
-     * @param array $data
+     *
+     * @param  array  $data
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data)
@@ -664,7 +713,9 @@ class Server extends Model implements Resource
      * Requests credentials for remote access via vnc over websocket to keyboard, monitor, and mouse for a server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
+     *
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function requestConsole(): ?APIResponse
@@ -687,9 +738,11 @@ class Server extends Model implements Resource
      * Changes the protection configuration of the server.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
-     * @param bool $delete
-     * @param bool $rebuild
+     *
+     * @param  bool  $delete
+     * @param  bool  $rebuild
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeProtection(bool $delete = true, bool $rebuild = true): ?APIResponse
@@ -710,10 +763,11 @@ class Server extends Model implements Resource
     }
 
     /**
-     * @param Network $network
-     * @param string|null $ip
-     * @param array $aliasIps
+     * @param  Network  $network
+     * @param  string|null  $ip
+     * @param  array  $aliasIps
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function attachToNetwork(Network $network, string $ip = null, array $aliasIps = [])
@@ -740,8 +794,9 @@ class Server extends Model implements Resource
     }
 
     /**
-     * @param Network $network
+     * @param  Network  $network
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function detachFromNetwork(Network $network)
@@ -763,9 +818,10 @@ class Server extends Model implements Resource
     }
 
     /**
-     * @param Network $network
-     * @param array $aliasIps
+     * @param  Network  $network
+     * @param  array  $aliasIps
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeAliasIPs(Network $network, array $aliasIps)
@@ -787,7 +843,7 @@ class Server extends Model implements Resource
     }
 
     /**
-     * @param string $uri
+     * @param  string  $uri
      * @return string
      */
     protected function replaceServerIdInUri(string $uri): string

@@ -26,8 +26,10 @@ class Prices extends Model
      * Returns all pricing information.
      *
      * @see https://docs.hetzner.cloud/#pricing-get-all-prices
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return \stdClass|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): ?\stdClass

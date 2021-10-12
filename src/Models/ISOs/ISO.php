@@ -31,10 +31,10 @@ class ISO extends Model implements Resource
     /**
      * ISO constructor.
      *
-     * @param int $id
-     * @param string $name
-     * @param string $description
-     * @param string $type
+     * @param  int  $id
+     * @param  string  $name
+     * @param  string  $description
+     * @param  string  $type
      */
     public function __construct(int $id, string $name = null, string $description = null, string $type = null)
     {

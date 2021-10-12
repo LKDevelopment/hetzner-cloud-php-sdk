@@ -16,7 +16,8 @@ class Meta extends Model
 
     /**
      * Meta constructor.
-     * @param Pagination $pagination
+     *
+     * @param  Pagination  $pagination
      */
     public function __construct(Pagination $pagination)
     {

@@ -29,11 +29,13 @@ class Certificates extends Model implements Resources
      * Creates a new SSH Key with the given name and certificate.
      *
      * @see https://docs.hetzner.cloud/#certificates-create-a-certificate
-     * @param string $name
-     * @param string $certificate
-     * @param string $privateKey
-     * @param array $labels
+     *
+     * @param  string  $name
+     * @param  string  $certificate
+     * @param  string  $privateKey
+     * @param  array  $labels
      * @return \LKDev\HetznerCloud\Models\Certificates\Certificate
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function create(
@@ -64,8 +66,10 @@ class Certificates extends Model implements Resources
      * Returns all certificate objects.
      *
      * @see https://docs.hetzner.cloud/#certificates-get-all-certificates
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -81,8 +85,10 @@ class Certificates extends Model implements Resources
      * Returns all certificate objects.
      *
      * @see https://docs.hetzner.cloud/#certificates-get-all-certificates
-     * @param RequestOpts $requestOpts
+     *
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -129,8 +135,10 @@ class Certificates extends Model implements Resources
      * Returns a specific certificate object.
      *
      * @see https://docs.hetzner.cloud/#certificates-get-a-certificate
-     * @param int $id
+     *
+     * @param  int  $id
      * @return \LKDev\HetznerCloud\Models\Certificates\Certificate
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $id)
@@ -145,8 +153,10 @@ class Certificates extends Model implements Resources
      * Returns a specific certificate object.
      *
      * @see https://docs.hetzner.cloud/#certificates-get-a-certificate
-     * @param string $name
+     *
+     * @param  string  $name
      * @return \LKDev\HetznerCloud\Models\Certificates\Certificate
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?Certificate

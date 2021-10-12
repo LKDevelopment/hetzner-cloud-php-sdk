@@ -49,6 +49,7 @@ class Firewall extends Model implements Resource
     public $applied_to;
     /**
      * @var FirewallResource[]
+     *
      * @deprecated Use $applied_to instead
      */
     public $appliedTo;
@@ -56,12 +57,12 @@ class Firewall extends Model implements Resource
     /**
      * Firewall constructor.
      *
-     * @param int $id
-     * @param string $name
-     * @param array $rules
-     * @param array $appliedTo
-     * @param array $labels
-     * @param string $created
+     * @param  int  $id
+     * @param  string  $name
+     * @param  array  $rules
+     * @param  array  $appliedTo
+     * @param  array  $labels
+     * @param  string  $created
      */
     public function __construct(
         int $id,
@@ -86,8 +87,10 @@ class Firewall extends Model implements Resource
      * Update a Firewall.
      *
      * @see https://docs.hetzner.cloud/#firewalls-update-a-firewall
-     * @param array $data
+     *
+     * @param  array  $data
      * @return static|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data): ?self
@@ -129,8 +132,10 @@ class Firewall extends Model implements Resource
      * Sets the rules of a Firewall.
      *
      * @see https://docs.hetzner.cloud/#firewall-actions-set-rules
-     * @param FirewallRule[] $rules
+     *
+     * @param  FirewallRule[]  $rules
      * @return ?APIResponse|null
+     *
      * @throws APIException
      */
     public function setRules(array $rules): ?ApiResponse
@@ -159,7 +164,9 @@ class Firewall extends Model implements Resource
      * Deletes a Firewall.
      *
      * @see https://docs.hetzner.cloud/#firewalls-delete-a-firewall
+     *
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): bool
@@ -176,8 +183,10 @@ class Firewall extends Model implements Resource
      * Applies one Firewall to multiple resources.
      *
      * @see https://docs.hetzner.cloud/#firewall-actions-apply-to-resources
-     * @param FirewallResource[] $resources
+     *
+     * @param  FirewallResource[]  $resources
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function applyToResources(array $resources): ?APIResponse
@@ -206,8 +215,10 @@ class Firewall extends Model implements Resource
      * Removes one Firewall from multiple resources.
      *
      * @see https://docs.hetzner.cloud/#firewall-actions-remove-from-resources
-     * @param FirewallResource[] $resources
+     *
+     * @param  FirewallResource[]  $resources
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function removeFromResources(array $resources): ?APIResponse

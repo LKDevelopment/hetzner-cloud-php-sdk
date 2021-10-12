@@ -22,8 +22,9 @@ class FirewallResource
 
     /**
      * FirewallResource constructor.
-     * @param string $type
-     * @param Server|null $server
+     *
+     * @param  string  $type
+     * @param  Server|null  $server
      */
     public function __construct(string $type, ?Server $server)
     {

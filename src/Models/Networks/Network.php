@@ -32,6 +32,7 @@ class Network extends Model implements Resource
     public $ip_range;
     /**
      * @var string
+     *
      * @deprecated Use $ip_range instead
      */
     public $ipRange;
@@ -68,8 +69,9 @@ class Network extends Model implements Resource
 
     /**
      * Network constructor.
-     * @param int $id
-     * @param Client|null $httpClient
+     *
+     * @param  int  $id
+     * @param  Client|null  $httpClient
      */
     public function __construct(int $id, Client $httpClient = null)
     {
@@ -78,8 +80,9 @@ class Network extends Model implements Resource
     }
 
     /**
-     * @param Subnet $subnet
+     * @param  Subnet  $subnet
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function addSubnet(Subnet $subnet)
@@ -95,8 +98,9 @@ class Network extends Model implements Resource
     }
 
     /**
-     * @param Subnet $subnet
+     * @param  Subnet  $subnet
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function deleteSubnet(Subnet $subnet)
@@ -112,8 +116,9 @@ class Network extends Model implements Resource
     }
 
     /**
-     * @param Route $route
+     * @param  Route  $route
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function addRoute(Route $route)
@@ -129,8 +134,9 @@ class Network extends Model implements Resource
     }
 
     /**
-     * @param Route $route
+     * @param  Route  $route
      * @return APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function deleteRoute(Route $route)
@@ -161,8 +167,10 @@ class Network extends Model implements Resource
      * Changes the protection configuration of the network.
      *
      * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
-     * @param bool $delete
+     *
+     * @param  bool  $delete
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeProtection(bool $delete = true): ?APIResponse

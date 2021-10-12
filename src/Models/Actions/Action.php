@@ -50,16 +50,16 @@ class Action extends Model implements Resource
     /**
      * Action constructor.
      *
-     * @param int $id
-     * @param string $command
-     * @param int $progress
-     * @param string $status
-     * @param string $started
-     * @param string $finished
-     * @param array $resources
+     * @param  int  $id
+     * @param  string  $command
+     * @param  int  $progress
+     * @param  string  $status
+     * @param  string  $started
+     * @param  string  $finished
+     * @param  array  $resources
      * @param null| $error
-     * @param string|null $root_password
-     * @param string|null $wss_url
+     * @param  string|null  $root_password
+     * @param  string|null  $wss_url
      */
     public function __construct(
         int $id,
@@ -85,7 +85,9 @@ class Action extends Model implements Resource
     /**
      * @param $actionId
      * @return Action|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
+     *
      * @deprecated use Actions::getById instead
      */
     public function getById($actionId): ?self
@@ -100,6 +102,7 @@ class Action extends Model implements Resource
 
     /**
      * @return Action
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function refresh(): self
@@ -109,8 +112,10 @@ class Action extends Model implements Resource
 
     /**
      * Wait for an action to complete.
-     * @param float $pollingInterval seconds
+     *
+     * @param  float  $pollingInterval  seconds
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function waitUntilCompleted($pollingInterval = 0.5)

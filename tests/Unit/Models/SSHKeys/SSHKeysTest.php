@@ -15,7 +15,7 @@ use LKDev\Tests\TestCase;
 class SSHKeysTest extends TestCase
 {
     /**
-     * @var  \LKDev\HetznerCloud\Models\SSHKeys\SSHKeys
+     * @var \LKDev\HetznerCloud\Models\SSHKeys\SSHKeys
      */
     protected $ssh_keys;
 

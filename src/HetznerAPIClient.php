@@ -48,6 +48,7 @@ class HetznerAPIClient
 
     /**
      * The default instance of the HTTP client, for easily getting it in the child models.
+     *
      * @var HetznerAPIClient
      */
     public static $instance;
@@ -58,9 +59,9 @@ class HetznerAPIClient
     protected $httpClient;
 
     /**
-     * @param string $apiToken
-     * @param string $baseUrl
-     * @param string $userAgent
+     * @param  string  $apiToken
+     * @param  string  $baseUrl
+     * @param  string  $userAgent
      */
     public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/', $userAgent = '')
     {
@@ -96,7 +97,7 @@ class HetznerAPIClient
     }
 
     /**
-     * @param string $userAgent
+     * @param  string  $userAgent
      * @return HetznerAPIClient
      */
     public function setUserAgent(string $userAgent): self
@@ -107,7 +108,7 @@ class HetznerAPIClient
     }
 
     /**
-     * @param string $baseUrl
+     * @param  string  $baseUrl
      * @return HetznerAPIClient
      */
     public function setBaseUrl(string $baseUrl): self
@@ -136,7 +137,8 @@ class HetznerAPIClient
     }
 
     /**
-     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param  \Psr\Http\Message\ResponseInterface  $response
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function throwError(ResponseInterface $response)
@@ -154,8 +156,9 @@ class HetznerAPIClient
     }
 
     /**
-     * @param \Psr\Http\Message\ResponseInterface $response
+     * @param  \Psr\Http\Message\ResponseInterface  $response
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function hasError(ResponseInterface $response)

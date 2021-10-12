@@ -30,8 +30,9 @@ class Actions extends Model implements Resources
     }
 
     /**
-     * @param RequestOpts $requestOpts
+     * @param  RequestOpts  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -55,6 +56,7 @@ class Actions extends Model implements Resources
     /**
      * @param $actionId
      * @return \LKDev\HetznerCloud\Models\Actions\Action|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $actionId): ?Action
@@ -87,7 +89,7 @@ class Actions extends Model implements Resources
 
     /**
      * @param $input
-     * @param Server $server
+     * @param  Server  $server
      * @return $this|static
      */
     public static function parse($input)
@@ -98,9 +100,10 @@ class Actions extends Model implements Resources
     /**
      * Wait for an action to complete.
      *
-     * @param Action $action
-     * @param float $pollingInterval in seconds
+     * @param  Action  $action
+     * @param  float  $pollingInterval  in seconds
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function waitActionCompleted(Action $action, $pollingInterval = 0.5)

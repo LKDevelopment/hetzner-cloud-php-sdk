@@ -32,8 +32,10 @@ class Datacenters extends Model implements Resources
      * Returns all datacenter objects.
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get
-     * @param string $name
+     *
+     * @param  string  $name
      * @return array
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function all(RequestOpts $requestOpts = null): array
@@ -49,8 +51,10 @@ class Datacenters extends Model implements Resources
      * List datacenter objects.
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get
-     * @param RequestOpts|null $requestOpts
+     *
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
@@ -76,8 +80,10 @@ class Datacenters extends Model implements Resources
      * Returns a specific datacenter object.
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get-1
-     * @param int $datacenterId
+     *
+     * @param  int  $datacenterId
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $datacenterId): ?Datacenter
@@ -94,8 +100,10 @@ class Datacenters extends Model implements Resources
      * Returns a specific datacenter object by its name.
      *
      * @see https://docs.hetzner.cloud/#resources-datacenters-get-1
-     * @param int $datacenterId
+     *
+     * @param  int  $datacenterId
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getByName(string $name): ?Datacenter

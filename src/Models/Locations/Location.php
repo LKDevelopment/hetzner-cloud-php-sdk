@@ -55,6 +55,7 @@ class Location extends Model implements Resource
     public $network_zone;
     /**
      * @var string
+     *
      * @deprecated Use $network_zone instead
      */
     public $networkZone;
@@ -62,14 +63,14 @@ class Location extends Model implements Resource
     /**
      * Location constructor.
      *
-     * @param int $id
-     * @param string $name
-     * @param string $description
-     * @param string $country
-     * @param string $city
-     * @param float $latitude
-     * @param float $longitude
-     * @param string $networkZone
+     * @param  int  $id
+     * @param  string  $name
+     * @param  string  $description
+     * @param  string  $country
+     * @param  string  $city
+     * @param  float  $latitude
+     * @param  float  $longitude
+     * @param  string  $networkZone
      */
     public function __construct(
         int $id,

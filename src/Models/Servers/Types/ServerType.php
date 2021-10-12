@@ -54,7 +54,7 @@ class ServerType extends Model
     /**
      * ServerType constructor.
      *
-     * @param int $serverTypeId
+     * @param  int  $serverTypeId
      */
     public function __construct(int $serverTypeId, string $name = '')
     {

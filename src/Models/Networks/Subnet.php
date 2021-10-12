@@ -31,11 +31,12 @@ class Subnet extends Model
 
     /**
      * Subnet constructor.
-     * @param string $type
-     * @param string $ipRange
-     * @param string $networkZone
-     * @param string $gateway
-     * @param Client|null $client
+     *
+     * @param  string  $type
+     * @param  string  $ipRange
+     * @param  string  $networkZone
+     * @param  string  $gateway
+     * @param  Client|null  $client
      */
     public function __construct(string $type, string $ipRange, string $networkZone, string $gateway = null, Client $client = null)
     {
@@ -48,7 +49,7 @@ class Subnet extends Model
 
     /**
      * @param $input
-     * @param Client|null $client
+     * @param  Client|null  $client
      * @return array|Model
      */
     public static function parse($input, Client $client = null)

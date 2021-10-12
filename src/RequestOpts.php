@@ -30,6 +30,7 @@ class RequestOpts
 
     /**
      * RequestOpts constructor.
+     *
      * @param $perPage
      * @param $page
      * @param $labelSelector

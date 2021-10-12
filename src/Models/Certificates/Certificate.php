@@ -59,16 +59,17 @@ class Certificate extends Model implements Resource
 
     /**
      * Certificate constructor.
-     * @param int $id
-     * @param string|null $name
-     * @param string|null $certificate
-     * @param string|null $created
-     * @param string|null $not_valid_before
-     * @param string|null $not_valid_after
-     * @param array|null $domain_names
-     * @param string|null $fingerprint
-     * @param array|null $used_by
-     * @param array|null $labels
+     *
+     * @param  int  $id
+     * @param  string|null  $name
+     * @param  string|null  $certificate
+     * @param  string|null  $created
+     * @param  string|null  $not_valid_before
+     * @param  string|null  $not_valid_after
+     * @param  array|null  $domain_names
+     * @param  string|null  $fingerprint
+     * @param  array|null  $used_by
+     * @param  array|null  $labels
      */
     public function __construct(int $id, string $name = null, string $certificate = null, string $created = null, string $not_valid_before = null, string $not_valid_after = null, array $domain_names = null, string $fingerprint = null, $used_by = null, $labels = [])
     {
@@ -90,8 +91,10 @@ class Certificate extends Model implements Resource
      * Update a ssh key.
      *
      * @see https://docs.hetzner.cloud/#resources-certificates-put
-     * @param array $data
+     *
+     * @param  array  $data
      * @return \LKDev\HetznerCloud\Models\Certificates\Certificate|null
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function update(array $data): ?self
@@ -111,7 +114,9 @@ class Certificate extends Model implements Resource
      * Deletes a SSH key. It cannot be used anymore.
      *
      * @see https://docs.hetzner.cloud/#resources-certificates-delete
+     *
      * @return bool
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function delete(): bool
@@ -137,6 +142,7 @@ class Certificate extends Model implements Resource
      * Reload the data of the SSH Key.
      *
      * @return Certificate
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function reload()

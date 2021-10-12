@@ -39,11 +39,12 @@ class FirewallRule
 
     /**
      * FirewallRule constructor.
-     * @param string $direction
-     * @param string[] $sourceIPs
-     * @param string[] $destinationIPs
-     * @param string $protocol
-     * @param string $port
+     *
+     * @param  string  $direction
+     * @param  string[]  $sourceIPs
+     * @param  string[]  $destinationIPs
+     * @param  string  $protocol
+     * @param  string  $port
      */
     public function __construct(string $direction, string $protocol, array $sourceIPs = [], array $destinationIPs = [], ?string $port = '')
     {
