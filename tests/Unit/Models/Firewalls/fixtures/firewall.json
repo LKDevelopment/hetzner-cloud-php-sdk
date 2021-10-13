@@ -27,6 +27,12 @@
         "server": {
           "id": 42
         }
+      },
+      {
+        "type": "label_selector",
+        "label_selector": {
+          "applied_to_resources": []
+        }
       }
     ]
   }
