@@ -254,6 +254,8 @@ class Server extends Model implements Resource
     /**
      * Starts a server by turning its power on.
      *
+     * @see https://docs.hetzner.cloud/#server-actions-power-on-a-server
+     *
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -273,7 +275,7 @@ class Server extends Model implements Resource
     /**
      * Reboots a server gracefully by sending an ACPI request. The server operating system must support ACPI and react to the request, otherwise the server will not reboot.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-1
+     * @see https://docs.hetzner.cloud/#server-actions-soft-reboot-a-server
      *
      * @return APIResponse|null
      *
@@ -294,7 +296,7 @@ class Server extends Model implements Resource
     /**
      * Cuts power to a server and starts it again. This forcefully stops it without giving the server operating system time to gracefully stop. This may lead to data loss, it’s equivalent to pulling the power cord and plugging it in again. Reset should only be used when reboot does not work.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-2
+     * @see https://docs.hetzner.cloud/#server-actions-reset-a-server
      *
      * @return APIResponse|null
      *
@@ -315,7 +317,7 @@ class Server extends Model implements Resource
     /**
      * Shuts down a server gracefully by sending an ACPI shutdown request. The server operating system must support ACPI and react to the request, otherwise the server will not shut down.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-3
+     * @see https://docs.hetzner.cloud/#server-actions-shutdown-a-server
      *
      * @return APIResponse|null
      *
@@ -336,7 +338,7 @@ class Server extends Model implements Resource
     /**
      * Cuts power to the server. This forcefully stops it without giving the server operating system time to gracefully stop. May lead to data loss, equivalent to pulling the power cord. Power off should only be used when shutdown does not work.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-4
+     * @see https://docs.hetzner.cloud/#server-actions-power-off-a-server
      *
      * @return APIResponse|null
      *
@@ -357,7 +359,7 @@ class Server extends Model implements Resource
     /**
      * Resets the root password. Only works for Linux systems that are running the qemu guest agent. Server must be powered on (state on) in order for this operation to succeed.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-5
+     * @see https://docs.hetzner.cloud/#server-actions-reset-root-password-of-a-server
      *
      * @return APIResponse|null
      *
@@ -381,7 +383,7 @@ class Server extends Model implements Resource
     /**
      * Enable the Hetzner Rescue System for this server. The next time a Server with enabled rescue mode boots it will start a special minimal Linux distribution designed for repair and reinstall.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-6
+     * @see https://docs.hetzner.cloud/#server-actions-enable-rescue-mode-for-a-server
      *
      * @param  string  $type
      * @param  array  $ssh_keys
@@ -412,7 +414,7 @@ class Server extends Model implements Resource
     /**
      * Disables the Hetzner Rescue System for a server. This makes a server start from its disks on next reboot.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-7
+     * @see https://docs.hetzner.cloud/#server-actions-disable-rescue-mode-for-a-server
      *
      * @return APIResponse|null
      *
@@ -433,7 +435,7 @@ class Server extends Model implements Resource
     /**
      * Creates an image (snapshot) from a server by copying the contents of its disks. This creates a snapshot of the current state of the disk and copies it into an image. If the server is currently running you must make sure that its disk content is consistent. Otherwise, the created image may not be readable.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-8
+     * @see https://docs.hetzner.cloud/#server-actions-create-image-from-a-server
      *
      * @param  string  $description
      * @param  string  $type
@@ -469,7 +471,7 @@ class Server extends Model implements Resource
     /**
      * Rebuilds a server overwriting its disk with the content of an image, thereby destroying all data on the target server.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-9
+     * @see https://docs.hetzner.cloud/#server-actions-rebuild-a-server-from-an-image
      *
      * @param  \LKDev\HetznerCloud\Models\Images\Image  $image
      * @return APIResponse|null
@@ -497,7 +499,7 @@ class Server extends Model implements Resource
     /**
      * Changes the type (Cores, RAM and disk sizes) of a server.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-10
+     * @see https://docs.hetzner.cloud/#server-actions-change-the-type-of-a-server
      *
      * @param  \LKDev\HetznerCloud\Models\Servers\Types\ServerType  $serverType
      * @param  bool  $upgradeDisk
@@ -525,7 +527,7 @@ class Server extends Model implements Resource
     /**
      * Enables and configures the automatic daily backup option for the server. Enabling automatic backups will increase the price of the server by 20%.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-11
+     * @see https://docs.hetzner.cloud/#server-actions-enable-and-configure-backups-for-a-server
      *
      * @return APIResponse|null
      *
@@ -546,7 +548,7 @@ class Server extends Model implements Resource
     /**
      * Disables the automatic backup option and deletes all existing Backups for a Server.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-12
+     * @see https://docs.hetzner.cloud/#server-actions-disable-backups-for-a-server
      *
      * @return APIResponse|null
      *
@@ -567,7 +569,7 @@ class Server extends Model implements Resource
     /**
      * Attaches an ISO to a server. The Server will immediately see it as a new disk. An already attached ISO will automatically be detached before the new ISO is attached.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-13
+     * @see https://docs.hetzner.cloud/#server-actions-attach-an-iso-to-a-server
      *
      * @param  \LKDev\HetznerCloud\Models\ISOs\ISO  $iso
      * @return APIResponse|null
@@ -593,7 +595,7 @@ class Server extends Model implements Resource
     /**
      * Detaches an ISO from a server. In case no ISO image is attached to the server, the status of the returned action is immediately set to success.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-14
+     * @see https://docs.hetzner.cloud/#server-actions-detach-an-iso-from-a-server
      *
      * @return APIResponse|null
      *
@@ -614,7 +616,7 @@ class Server extends Model implements Resource
     /**
      * Changes the hostname that will appear when getting the hostname belonging to the primary IPs (ipv4 and ipv6) of this server.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-15
+     * @see https://docs.hetzner.cloud/#server-actions-change-reverse-dns-entry-for-this-server
      *
      * @param  string  $ip
      * @param  string|null  $dnsPtr
@@ -737,7 +739,7 @@ class Server extends Model implements Resource
     /**
      * Changes the protection configuration of the server.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
+     * @see https://docs.hetzner.cloud/#server-actions-change-server-protection
      *
      * @param  bool  $delete
      * @param  bool  $rebuild
@@ -767,6 +769,8 @@ class Server extends Model implements Resource
      * @param  string|null  $ip
      * @param  array  $aliasIps
      * @return APIResponse|null
+     *
+     * @see https://docs.hetzner.cloud/#server-actions-attach-a-server-to-a-network
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
