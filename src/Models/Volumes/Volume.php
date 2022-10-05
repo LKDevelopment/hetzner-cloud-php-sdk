@@ -115,6 +115,8 @@ class Volume extends Model implements Resource
      * @param  bool|null  $automount
      * @return APIResponse|null
      *
+     * @see https://docs.hetzner.cloud/#volume-actions-attach-volume-to-a-server
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function attach(Server $server, $automount = null): ?APIResponse
@@ -142,6 +144,8 @@ class Volume extends Model implements Resource
     /**
      * @return APIResponse|null
      *
+     * @see https://docs.hetzner.cloud/#volume-actions-detach-volume
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function detach(): ?APIResponse
@@ -159,6 +163,8 @@ class Volume extends Model implements Resource
     /**
      * @param  int  $size
      * @return APIResponse|null
+     *
+     * @see https://docs.hetzner.cloud/#volume-actions-resize-volume
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -205,7 +211,7 @@ class Volume extends Model implements Resource
     /**
      * Changes the protection configuration of the volume.
      *
-     * @see https://docs.hetzner.cloud/#resources-floating-ip-actions-post-3
+     * @see https://docs.hetzner.cloud/#volume-actions-change-volume-protection
      *
      * @param  bool  $delete
      * @return APIResponse|null

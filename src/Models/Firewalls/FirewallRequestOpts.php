@@ -5,7 +5,7 @@ namespace LKDev\HetznerCloud\Models\Firewalls;
 use LKDev\HetznerCloud\RequestOpts;
 
 /**
- * Class FloatingIPRequestOpts.
+ * Class FirewallRequestOpts.
  */
 class FirewallRequestOpts extends RequestOpts
 {

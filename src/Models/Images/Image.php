@@ -224,7 +224,7 @@ class Image extends Model implements Resource
     /**
      * Changes the protection configuration of the image. Can only be used on snapshots.
      *
-     * @see https://docs.hetzner.cloud/#resources-image-actions-post
+     * @see https://docs.hetzner.cloud/#image-actions-change-image-protection
      *
      * @param  bool  $delete
      * @return APIResponse

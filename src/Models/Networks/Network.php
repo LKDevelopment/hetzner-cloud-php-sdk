@@ -83,6 +83,8 @@ class Network extends Model implements Resource
      * @param  Subnet  $subnet
      * @return APIResponse
      *
+     * @see https://docs.hetzner.cloud/#network-actions-add-a-subnet-to-a-network
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function addSubnet(Subnet $subnet)
@@ -102,6 +104,8 @@ class Network extends Model implements Resource
     /**
      * @param  Subnet  $subnet
      * @return APIResponse
+     *
+     * @see https://docs.hetzner.cloud/#network-actions-delete-a-subnet-from-a-network
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -123,6 +127,8 @@ class Network extends Model implements Resource
      * @param  Route  $route
      * @return APIResponse
      *
+     * @see https://docs.hetzner.cloud/#network-actions-add-a-route-to-a-network
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function addRoute(Route $route)
@@ -143,6 +149,8 @@ class Network extends Model implements Resource
      * @param  Route  $route
      * @return APIResponse
      *
+     * @see https://docs.hetzner.cloud/#network-actions-delete-a-route-from-a-network
+     *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function deleteRoute(Route $route)
@@ -159,6 +167,14 @@ class Network extends Model implements Resource
         return null;
     }
 
+    /**
+     * @param string $ipRange
+     * @return APIResponse|null
+     *
+     * @see https://docs.hetzner.cloud/#network-actions-change-ip-range-of-a-network
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
     public function changeIPRange(string $ipRange)
     {
         $response = $this->httpClient->post('networks/'.$this->id.'/actions/change_ip_range', [
@@ -176,7 +192,7 @@ class Network extends Model implements Resource
     /**
      * Changes the protection configuration of the network.
      *
-     * @see https://docs.hetzner.cloud/#resources-server-actions-post-16
+     * @see https://docs.hetzner.cloud/#network-actions-change-network-protection
      *
      * @param  bool  $delete
      * @return APIResponse|null
