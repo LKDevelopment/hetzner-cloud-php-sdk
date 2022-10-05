@@ -168,7 +168,7 @@ class Network extends Model implements Resource
     }
 
     /**
-     * @param string $ipRange
+     * @param  string  $ipRange
      * @return APIResponse|null
      *
      * @see https://docs.hetzner.cloud/#network-actions-change-ip-range-of-a-network
