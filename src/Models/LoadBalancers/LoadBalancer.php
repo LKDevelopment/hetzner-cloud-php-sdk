@@ -27,7 +27,7 @@ class LoadBalancer extends Model implements Resource
     public $name;
 
     /**
-     * @var array
+     * @var LoadBalancerAlgorithm
      */
     public $algorithm;
 
@@ -94,7 +94,7 @@ class LoadBalancer extends Model implements Resource
     /**
      * @param int $id
      * @param string $name
-     * @param array $algorithm
+     * @param LoadBalancerAlgorithm $algorithm
      * @param string $created
      * @param int $included_traffic
      * @param int $ingoing_traffic
@@ -108,7 +108,7 @@ class LoadBalancer extends Model implements Resource
      * @param array $services
      * @param array $targets
      */
-    public function __construct(int $id, string $name, array $algorithm, string $created, int $included_traffic, int $ingoing_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, int $outgoing_traffic, array $private_net, $protection, array $public_net, array $services, array $targets)
+    public function __construct(int $id, string $name, LoadBalancerAlgorithm $algorithm, string $created, int $included_traffic, int $ingoing_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, int $outgoing_traffic, array $private_net, $protection, array $public_net, array $services, array $targets)
     {
         $this->id = $id;
         $this->name = $name;
@@ -139,7 +139,7 @@ class LoadBalancer extends Model implements Resource
             return;
         }
 
-        return new self($input->id, $input->name, $input->algorithm, $input->created, $input->included_traffic, $input->ingoing_traffic, get_object_vars($input->labels), LoadBalancerType::parse($input->loadBalancerType), Location::parse($input->location), $input->outgoing_traffic, $input->private_net, Protection::parse($input->protection), $input->public_net, $input->services, $input->targets);
+        return new self($input->id, $input->name, LoadBalancerAlgorithm::parse($input->algorithm), $input->created, $input->included_traffic, $input->ingoing_traffic, get_object_vars($input->labels), LoadBalancerType::parse($input->loadBalancerType), Location::parse($input->location), $input->outgoing_traffic, $input->private_net, Protection::parse($input->protection), $input->public_net, $input->services, $input->targets);
     }
 
     public function reload()
@@ -184,16 +184,17 @@ class LoadBalancer extends Model implements Resource
      * @see https://docs.hetzner.cloud/#load-balancer-actions-add-service
      *
      * @param string $destinationPort
-     * @param array $healthCheck
+     * @param LoadBalancerHealthCheck $healthCheck
      * @param int $listenPort
      * @param string $protocol
      * @param string $proxyprotocol
-     * @param array $http
+     * @param LoadBalancerServiceHttp|null $http
      * @return APIResponse|null
      *
      * @throws APIException
+     * @throws GuzzleException
      */
-    public function addService(string $destinationPort, array $healthCheck, int $listenPort, string $protocol, string $proxyprotocol, array $http = []): ?APIResponse
+    public function addService(string $destinationPort, LoadBalancerHealthCheck $healthCheck, int $listenPort, string $protocol, string $proxyprotocol, LoadBalancerServiceHttp $http = null): ?APIResponse
     {
         $payload = [
             'destination_port' => $destinationPort,
@@ -202,7 +203,7 @@ class LoadBalancer extends Model implements Resource
             'protocol' => $protocol,
             'proxyprotocol' => $proxyprotocol,
         ];
-        if (!empty($http)) {
+        if ($http != null) {
             $payload['http'] = $http;
         }
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/add_service'), [
@@ -222,8 +223,8 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-add-target
      *
-     * @param string $ip
      * @param string $type
+     * @param LoadBalancerTargetIp|null $ip
      * @param bool $usePrivateIp
      * @param array $labelSelector
      * @param Server|null $server
@@ -232,13 +233,15 @@ class LoadBalancer extends Model implements Resource
      * @throws APIException
      * @throws GuzzleException
      */
-    public function addTarget(string $ip, string $type, bool $usePrivateIp = false, array $labelSelector = [], Server $server = null): ?APIResponse
+    public function addTarget(string $type, LoadBalancerTargetIp $ip = null, bool $usePrivateIp = false, array $labelSelector = [], Server $server = null): ?APIResponse
     {
         $payload = [
-            'ip' => $ip,
             'type' => $type,
             'use_private_ip' => $usePrivateIp
         ];
+        if ($ip != null) {
+            $payload['ip'] = $ip;
+        }
         if (!empty($labelSelector)) {
             $payload['label_selector'] = $labelSelector;
         }
@@ -246,6 +249,334 @@ class LoadBalancer extends Model implements Resource
             $payload['server'] = $server;
         }
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/add_target'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Attach a Load Balancer to a Network.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-attach-a-load-balancer-to-a-network
+     *
+     * @param int $network
+     * @param string $ip
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function attachLoadBalancerToNetwork(int $network, string $ip = ''): ?APIResponse
+    {
+        $payload = [
+            'network' => $network
+        ];
+        if (!empty($ip)) {
+            $payload['ip'] = $ip;
+        }
+
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/attach_to_network'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Change the algorithm that determines to which target new requests are sent.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-change-algorithm
+     *
+     * @param string $type
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function changeAlgorithm(string $type): ?APIResponse
+    {
+        $payload = [
+            'type' => $type
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_algorithm'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Changes the hostname that will appear when getting the hostname belonging to the public IPs (IPv4 and IPv6) of this Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-change-reverse-dns-entry-for-this-load-balancer
+     *
+     * @param string $dnsPtr
+     * @param string $ip
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function changeReverseDnsEntry(string $dnsPtr, string $ip): ?APIResponse
+    {
+        $payload = [
+            'dns_ptr' => $dnsPtr,
+            'ip' => $ip
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_dns_ptr'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Changes the protection configuration of a Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-change-load-balancer-protection
+     *
+     * @param bool $delete
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function changeProtection(bool $delete = false): ?APIResponse
+    {
+        $payload = [
+            'delete' => $delete
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_protection'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Changes the type (Max Services, Max Targets and Max Connections) of a Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-change-the-type-of-a-load-balancer
+     *
+     * @param string $loadBalancerType
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function changeType(string $loadBalancerType): ?APIResponse
+    {
+        $payload = [
+            'load_balancer_type' => $loadBalancerType
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_type'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Delete a service of a Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-delete-service
+     *
+     * @param int $listenPort
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function deleteService(int $listenPort): ?APIResponse
+    {
+        $payload = [
+            'listen_port' => $listenPort
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/delete_service'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Detaches a Load Balancer from a network.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-detach-a-load-balancer-from-a-network
+     *
+     * @param int $network
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function detachFromNetwork(int $network): ?APIResponse
+    {
+        $payload = [
+            'network' => $network
+        ];
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/detach_from_network'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Disable the public interface of a Load Balancer. The Load Balancer will be not accessible from the internet via its public IPs.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-disable-the-public-interface-of-a-load-balancer
+     *
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function disablePublicInterface(): ?APIResponse
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/disable_public_interface'), []);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Enable the public interface of a Load Balancer. The Load Balancer will be accessible from the internet via its public IPs.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-enable-the-public-interface-of-a-load-balancer
+     *
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function enablePublicInterface(): ?APIResponse
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/enable_public_interface'), []);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Removes a target from a Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-remove-target
+     *
+     * @param string $type
+     * @param LoadBalancerTargetIp|null $ip
+     * @param array|null $labelSelector
+     * @param Server|null $server
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function removeTarget(string $type, LoadBalancerTargetIp $ip = null, array $labelSelector = null, Server $server = null): ?APIResponse
+    {
+        $payload = [
+            'type' => $type
+        ];
+        if ($ip != null) {
+            $payload['ip'] = $ip;
+        }
+        if (!empty($labelSelector)) {
+            $payload['label_selector'] = $labelSelector;
+        }
+        if ($server != null) {
+            $payload['server'] = $server;
+        }
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/remove_target'), [
+            'json' => $payload
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Updates a Load Balancer Service.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-update-service
+     *
+     * @param int $destinationPort
+     * @param LoadBalancerHealthCheck $healthCheck
+     * @param int $listenPort
+     * @param string $protocol
+     * @param bool $proxyprotocol
+     * @param LoadBalancerServiceHttp|null $http
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function updateService(int $destinationPort, LoadBalancerHealthCheck $healthCheck, int $listenPort, string $protocol, bool $proxyprotocol, LoadBalancerServiceHttp $http = null): ?APIResponse
+    {
+        $payload = [
+            'destination_port' => $destinationPort,
+            'health_check' => $healthCheck,
+            'listen_port' => $listenPort,
+            'protocol' => $protocol,
+            'proxyprotocol' => $proxyprotocol
+        ];
+        if ($http != null) {
+            $payload['http'] = $http;
+        }
+
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/detach_from_network'), [
             'json' => $payload
         ]);
         if (!HetznerAPIClient::hasError($response)) {
