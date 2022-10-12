@@ -575,7 +575,7 @@ class LoadBalancer extends Model implements Resource
             $payload['http'] = $http;
         }
 
-        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/detach_from_network'), [
+        $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/update_service'), [
             'json' => $payload,
         ]);
         if (! HetznerAPIClient::hasError($response)) {
