@@ -94,7 +94,7 @@ class LoadBalancerTest extends TestCase
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_add_target.json')));
 
         $loadBalancerTargetIp = new LoadBalancerTargetIp(
-            '1.2.3.4',
+            '1.2.3.4'
         );
 
         $apiResponse = $this->load_balancer->addTarget(
@@ -276,7 +276,7 @@ class LoadBalancerTest extends TestCase
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_remove_target.json')));
 
         $loadBalancerTargetIp = new LoadBalancerTargetIp(
-            '1.2.3.4',
+            '1.2.3.4'
         );
 
         $apiResponse = $this->load_balancer->removeTarget(
