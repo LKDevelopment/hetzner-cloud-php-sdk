@@ -12,14 +12,13 @@ class LoadBalancerAlgorithm extends Model
     public $type;
 
     /**
-     * @param string $type
+     * @param  string  $type
      */
     public function __construct(string $type)
     {
         $this->type = $type;
         parent::__construct();
     }
-
 
     /**
      * @param $input

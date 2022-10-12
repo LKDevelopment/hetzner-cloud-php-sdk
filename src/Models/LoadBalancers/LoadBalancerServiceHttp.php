@@ -32,11 +32,11 @@ class LoadBalancerServiceHttp extends Model
     public $sticky_sessions;
 
     /**
-     * @param array $certificates
-     * @param int $cookie_lifetime
-     * @param string $cookie_name
-     * @param bool $redirect_http
-     * @param bool $sticky_sessions
+     * @param  array  $certificates
+     * @param  int  $cookie_lifetime
+     * @param  string  $cookie_name
+     * @param  bool  $redirect_http
+     * @param  bool  $sticky_sessions
      */
     public function __construct(array $certificates, int $cookie_lifetime, string $cookie_name, bool $redirect_http, bool $sticky_sessions)
     {

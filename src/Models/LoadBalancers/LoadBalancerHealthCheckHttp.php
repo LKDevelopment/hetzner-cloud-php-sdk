@@ -32,11 +32,11 @@ class LoadBalancerHealthCheckHttp extends Model
     public $tls;
 
     /**
-     * @param string|null $domain
-     * @param string $path
-     * @param string $response
-     * @param array $status_codes
-     * @param bool $tls
+     * @param  string|null  $domain
+     * @param  string  $path
+     * @param  string  $response
+     * @param  array  $status_codes
+     * @param  bool  $tls
      */
     public function __construct(?string $domain, string $path, string $response, array $status_codes, bool $tls)
     {

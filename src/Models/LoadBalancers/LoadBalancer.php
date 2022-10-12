@@ -92,21 +92,21 @@ class LoadBalancer extends Model implements Resource
     public $targets;
 
     /**
-     * @param int $id
-     * @param string $name
-     * @param LoadBalancerAlgorithm $algorithm
-     * @param string $created
-     * @param int $included_traffic
-     * @param array $labels
-     * @param LoadBalancerType $loadBalancerType
-     * @param Location $location
-     * @param array $private_net
-     * @param array|Protection $protection
-     * @param array $public_net
-     * @param array $services
-     * @param array $targets
-     * @param int|null $ingoing_traffic
-     * @param int|null $outgoing_traffic
+     * @param  int  $id
+     * @param  string  $name
+     * @param  LoadBalancerAlgorithm  $algorithm
+     * @param  string  $created
+     * @param  int  $included_traffic
+     * @param  array  $labels
+     * @param  LoadBalancerType  $loadBalancerType
+     * @param  Location  $location
+     * @param  array  $private_net
+     * @param  array|Protection  $protection
+     * @param  array  $public_net
+     * @param  array  $services
+     * @param  array  $targets
+     * @param  int|null  $ingoing_traffic
+     * @param  int|null  $outgoing_traffic
      */
     public function __construct(int $id, string $name, LoadBalancerAlgorithm $algorithm, string $created, int $included_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, array $private_net, $protection, $public_net, array $services, array $targets, int $ingoing_traffic = null, int $outgoing_traffic = null)
     {
@@ -128,7 +128,6 @@ class LoadBalancer extends Model implements Resource
         parent::__construct();
     }
 
-
     /**
      * @param $input
      * @return \LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancer|static
@@ -149,8 +148,8 @@ class LoadBalancer extends Model implements Resource
 
     public function delete()
     {
-        $response = $this->httpClient->delete('load_balancers/' . $this->id);
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->delete('load_balancers/'.$this->id);
+        if (! HetznerAPIClient::hasError($response)) {
             return true;
         }
 
@@ -159,18 +158,18 @@ class LoadBalancer extends Model implements Resource
 
     public function update(array $data)
     {
-        $response = $this->httpClient->put('load_balancers/' . $this->id, [
+        $response = $this->httpClient->put('load_balancers/'.$this->id, [
             'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string)$response->getBody())->load_balancer);
+        if (! HetznerAPIClient::hasError($response)) {
+            return self::parse(json_decode((string) $response->getBody())->load_balancer);
         }
 
         return null;
     }
 
     /**
-     * @param string $uri
+     * @param  string  $uri
      * @return string
      */
     protected function replaceServerIdInUri(string $uri): string
@@ -183,12 +182,12 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-add-service
      *
-     * @param string $destinationPort
-     * @param LoadBalancerHealthCheck $healthCheck
-     * @param int $listenPort
-     * @param string $protocol
-     * @param string $proxyprotocol
-     * @param LoadBalancerServiceHttp|null $http
+     * @param  string  $destinationPort
+     * @param  LoadBalancerHealthCheck  $healthCheck
+     * @param  int  $listenPort
+     * @param  string  $protocol
+     * @param  string  $proxyprotocol
+     * @param  LoadBalancerServiceHttp|null  $http
      * @return APIResponse|null
      *
      * @throws APIException
@@ -207,11 +206,11 @@ class LoadBalancer extends Model implements Resource
             $payload['http'] = $http;
         }
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/add_service'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -223,11 +222,11 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-add-target
      *
-     * @param string $type
-     * @param LoadBalancerTargetIp|null $ip
-     * @param bool $usePrivateIp
-     * @param array $labelSelector
-     * @param Server|null $server
+     * @param  string  $type
+     * @param  LoadBalancerTargetIp|null  $ip
+     * @param  bool  $usePrivateIp
+     * @param  array  $labelSelector
+     * @param  Server|null  $server
      * @return APIResponse|null
      *
      * @throws APIException
@@ -237,23 +236,23 @@ class LoadBalancer extends Model implements Resource
     {
         $payload = [
             'type' => $type,
-            'use_private_ip' => $usePrivateIp
+            'use_private_ip' => $usePrivateIp,
         ];
         if ($ip != null) {
             $payload['ip'] = $ip;
         }
-        if (!empty($labelSelector)) {
+        if (! empty($labelSelector)) {
             $payload['label_selector'] = $labelSelector;
         }
         if ($server != null) {
             $payload['server'] = $server;
         }
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/add_target'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -265,8 +264,8 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-attach-a-load-balancer-to-a-network
      *
-     * @param int $network
-     * @param string $ip
+     * @param  int  $network
+     * @param  string  $ip
      * @return APIResponse|null
      *
      * @throws APIException
@@ -275,18 +274,18 @@ class LoadBalancer extends Model implements Resource
     public function attachLoadBalancerToNetwork(int $network, string $ip = ''): ?APIResponse
     {
         $payload = [
-            'network' => $network
+            'network' => $network,
         ];
-        if (!empty($ip)) {
+        if (! empty($ip)) {
             $payload['ip'] = $ip;
         }
 
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/attach_to_network'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -298,7 +297,7 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-change-algorithm
      *
-     * @param string $type
+     * @param  string  $type
      * @return APIResponse|null
      *
      * @throws APIException
@@ -307,14 +306,14 @@ class LoadBalancer extends Model implements Resource
     public function changeAlgorithm(string $type): ?APIResponse
     {
         $payload = [
-            'type' => $type
+            'type' => $type,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_algorithm'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -326,8 +325,8 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-change-reverse-dns-entry-for-this-load-balancer
      *
-     * @param string $dnsPtr
-     * @param string $ip
+     * @param  string  $dnsPtr
+     * @param  string  $ip
      * @return APIResponse|null
      *
      * @throws APIException
@@ -337,14 +336,14 @@ class LoadBalancer extends Model implements Resource
     {
         $payload = [
             'dns_ptr' => $dnsPtr,
-            'ip' => $ip
+            'ip' => $ip,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_dns_ptr'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -356,7 +355,7 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-change-load-balancer-protection
      *
-     * @param bool $delete
+     * @param  bool  $delete
      * @return APIResponse|null
      *
      * @throws APIException
@@ -365,14 +364,14 @@ class LoadBalancer extends Model implements Resource
     public function changeProtection(bool $delete = false): ?APIResponse
     {
         $payload = [
-            'delete' => $delete
+            'delete' => $delete,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_protection'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -384,7 +383,7 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-change-the-type-of-a-load-balancer
      *
-     * @param string $loadBalancerType
+     * @param  string  $loadBalancerType
      * @return APIResponse|null
      *
      * @throws APIException
@@ -393,14 +392,14 @@ class LoadBalancer extends Model implements Resource
     public function changeType(string $loadBalancerType): ?APIResponse
     {
         $payload = [
-            'load_balancer_type' => $loadBalancerType
+            'load_balancer_type' => $loadBalancerType,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/change_type'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -412,7 +411,7 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-delete-service
      *
-     * @param int $listenPort
+     * @param  int  $listenPort
      * @return APIResponse|null
      *
      * @throws APIException
@@ -421,14 +420,14 @@ class LoadBalancer extends Model implements Resource
     public function deleteService(int $listenPort): ?APIResponse
     {
         $payload = [
-            'listen_port' => $listenPort
+            'listen_port' => $listenPort,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/delete_service'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -440,7 +439,7 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-detach-a-load-balancer-from-a-network
      *
-     * @param int $network
+     * @param  int  $network
      * @return APIResponse|null
      *
      * @throws APIException
@@ -449,14 +448,14 @@ class LoadBalancer extends Model implements Resource
     public function detachFromNetwork(int $network): ?APIResponse
     {
         $payload = [
-            'network' => $network
+            'network' => $network,
         ];
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/detach_from_network'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -476,9 +475,9 @@ class LoadBalancer extends Model implements Resource
     public function disablePublicInterface(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/disable_public_interface'), []);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -498,9 +497,9 @@ class LoadBalancer extends Model implements Resource
     public function enablePublicInterface(): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/enable_public_interface'), []);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -512,10 +511,10 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-remove-target
      *
-     * @param string $type
-     * @param LoadBalancerTargetIp|null $ip
-     * @param array|null $labelSelector
-     * @param Server|null $server
+     * @param  string  $type
+     * @param  LoadBalancerTargetIp|null  $ip
+     * @param  array|null  $labelSelector
+     * @param  Server|null  $server
      * @return APIResponse|null
      *
      * @throws APIException
@@ -524,23 +523,23 @@ class LoadBalancer extends Model implements Resource
     public function removeTarget(string $type, LoadBalancerTargetIp $ip = null, array $labelSelector = null, Server $server = null): ?APIResponse
     {
         $payload = [
-            'type' => $type
+            'type' => $type,
         ];
         if ($ip != null) {
             $payload['ip'] = $ip;
         }
-        if (!empty($labelSelector)) {
+        if (! empty($labelSelector)) {
             $payload['label_selector'] = $labelSelector;
         }
         if ($server != null) {
             $payload['server'] = $server;
         }
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/remove_target'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -552,12 +551,12 @@ class LoadBalancer extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-update-service
      *
-     * @param int $destinationPort
-     * @param LoadBalancerHealthCheck $healthCheck
-     * @param int $listenPort
-     * @param string $protocol
-     * @param bool $proxyprotocol
-     * @param LoadBalancerServiceHttp|null $http
+     * @param  int  $destinationPort
+     * @param  LoadBalancerHealthCheck  $healthCheck
+     * @param  int  $listenPort
+     * @param  string  $protocol
+     * @param  bool  $proxyprotocol
+     * @param  LoadBalancerServiceHttp|null  $http
      * @return APIResponse|null
      *
      * @throws APIException
@@ -570,18 +569,18 @@ class LoadBalancer extends Model implements Resource
             'health_check' => $healthCheck,
             'listen_port' => $listenPort,
             'protocol' => $protocol,
-            'proxyprotocol' => $proxyprotocol
+            'proxyprotocol' => $proxyprotocol,
         ];
         if ($http != null) {
             $payload['http'] = $http;
         }
 
         $response = $this->httpClient->post($this->replaceServerIdInUri('load_balancers/{id}/actions/detach_from_network'), [
-            'json' => $payload
+            'json' => $payload,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 

@@ -24,7 +24,7 @@ class LoadBalancerTypes extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#load-balancer-types-get-all-load-balancer-types
      *
-     * @param RequestOpts|null $requestOpts
+     * @param  RequestOpts|null  $requestOpts
      * @return array
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -43,7 +43,7 @@ class LoadBalancerTypes extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#load-balancer-types-get-all-load-balancer-types
      *
-     * @param RequestOpts|null $requestOpts
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -53,9 +53,9 @@ class LoadBalancerTypes extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new LoadBalancerTypeRequestOpts();
         }
-        $response = $this->httpClient->get('load_balancer_types' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('load_balancer_types'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -71,16 +71,16 @@ class LoadBalancerTypes extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#load-balancer-types-get-a-load-balancer-type
      *
-     * @param int $id
+     * @param  int  $id
      * @return \LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerType
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $id): ?LoadBalancerType
     {
-        $response = $this->httpClient->get('load_balancer_types/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return LoadBalancerType::parse(json_decode((string)$response->getBody())->load_balancer_type);
+        $response = $this->httpClient->get('load_balancer_types/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return LoadBalancerType::parse(json_decode((string) $response->getBody())->load_balancer_type);
         }
 
         return null;
@@ -91,7 +91,7 @@ class LoadBalancerTypes extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#load-balancer-types-get-a-load-balancer-type
      *
-     * @param string $name
+     * @param  string  $name
      * @return \LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerType
      *
      * @throws \LKDev\HetznerCloud\APIException

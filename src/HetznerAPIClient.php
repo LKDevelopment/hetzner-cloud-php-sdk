@@ -309,7 +309,6 @@ class HetznerAPIClient
         return new LoadBalancerTypes($this->httpClient);
     }
 
-
     /**
      * @return GuzzleClient
      */

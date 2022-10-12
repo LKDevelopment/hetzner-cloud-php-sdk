@@ -55,15 +55,15 @@ class LoadBalancerType extends Model implements Resource
     public $prices;
 
     /**
-     * @param int $id
-     * @param string $name
-     * @param string $deprecated
-     * @param string $description
-     * @param int $max_assigned_certificates
-     * @param int $max_connections
-     * @param int $max_services
-     * @param int $max_targets
-     * @param array|\LKDev\HetznerCloud\Models\Prices\Prices $prices
+     * @param  int  $id
+     * @param  string  $name
+     * @param  string  $deprecated
+     * @param  string  $description
+     * @param  int  $max_assigned_certificates
+     * @param  int  $max_connections
+     * @param  int  $max_services
+     * @param  int  $max_targets
+     * @param  array|\LKDev\HetznerCloud\Models\Prices\Prices  $prices
      */
     public function __construct(int $id, string $name, string $deprecated, string $description, int $max_assigned_certificates, int $max_connections, int $max_services, int $max_targets, $prices)
     {
@@ -75,10 +75,9 @@ class LoadBalancerType extends Model implements Resource
         $this->max_connections = $max_connections;
         $this->max_services = $max_services;
         $this->max_targets = $max_targets;
-        $this->prices = $prices;#
+        $this->prices = $prices; //
         parent::__construct();
     }
-
 
     /**
      * @param $input

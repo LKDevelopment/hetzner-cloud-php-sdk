@@ -12,7 +12,7 @@ class LoadBalancerTargetIp extends Model
     public $ip;
 
     /**
-     * @param string $ip
+     * @param  string  $ip
      */
     public function __construct(string $ip)
     {
