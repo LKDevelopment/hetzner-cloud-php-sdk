@@ -18,6 +18,7 @@ use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\Locations\Locations;
 use LKDev\HetznerCloud\Models\Networks\Networks;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIps;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
@@ -72,6 +73,7 @@ class BasicClientTest extends TestCase
         $this->assertInstanceOf(Locations::class, $this->hetznerApi->locations());
         $this->assertInstanceOf(Datacenters::class, $this->hetznerApi->datacenters());
         $this->assertInstanceOf(FloatingIps::class, $this->hetznerApi->floatingIps());
+        $this->assertInstanceOf(PrimaryIps::class, $this->hetznerApi->primaryIps());
         $this->assertInstanceOf(SSHKeys::class, $this->hetznerApi->sshKeys());
         $this->assertInstanceOf(Volumes::class, $this->hetznerApi->volumes());
         $this->assertInstanceOf(Networks::class, $this->hetznerApi->networks());

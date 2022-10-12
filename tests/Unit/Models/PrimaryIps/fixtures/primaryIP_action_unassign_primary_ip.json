@@ -1,0 +1,24 @@
+{
+	"action": {
+		"command": "unassign_primary_ip",
+		"error": {
+			"code": "action_failed",
+			"message": "Action failed"
+		},
+		"finished": null,
+		"id": 13,
+		"progress": 0,
+		"resources": [
+			{
+				"id": 42,
+				"type": "server"
+			},
+			{
+				"id": 4711,
+				"type": "primary_ip"
+			}
+		],
+		"started": "2016-01-30T23:50:00+00:00",
+		"status": "running"
+	}
+}
