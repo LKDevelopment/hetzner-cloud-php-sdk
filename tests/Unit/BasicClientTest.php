@@ -15,6 +15,8 @@ use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\Firewalls\Firewalls;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
+use LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancers;
+use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerTypes;
 use LKDev\HetznerCloud\Models\Locations\Locations;
 use LKDev\HetznerCloud\Models\Networks\Networks;
 use LKDev\HetznerCloud\Models\Prices\Prices;
@@ -76,5 +78,7 @@ class BasicClientTest extends TestCase
         $this->assertInstanceOf(Volumes::class, $this->hetznerApi->volumes());
         $this->assertInstanceOf(Networks::class, $this->hetznerApi->networks());
         $this->assertInstanceOf(Firewalls::class, $this->hetznerApi->firewalls());
+        $this->assertInstanceOf(LoadBalancers::class, $this->hetznerApi->loadBalancers());
+        $this->assertInstanceOf(LoadBalancerTypes::class, $this->hetznerApi->loadBalancerTypes());
     }
 }

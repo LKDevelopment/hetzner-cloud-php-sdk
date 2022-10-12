@@ -7,16 +7,16 @@ use LKDev\HetznerCloud\Models\Model;
 class LoadBalancerAlgorithm extends Model
 {
     /**
-     * @var array
+     * @var string
      */
-    public $str;
+    public $type;
 
     /**
-     * @param array $str
+     * @param string $type
      */
-    public function __construct(array $str)
+    public function __construct(string $type)
     {
-        $this->str = $str;
+        $this->type = $type;
         parent::__construct();
     }
 
@@ -31,6 +31,6 @@ class LoadBalancerAlgorithm extends Model
             return;
         }
 
-        return new self($input->str);
+        return new self($input->type);
     }
 }

@@ -97,34 +97,34 @@ class LoadBalancer extends Model implements Resource
      * @param LoadBalancerAlgorithm $algorithm
      * @param string $created
      * @param int $included_traffic
-     * @param int $ingoing_traffic
      * @param array $labels
      * @param LoadBalancerType $loadBalancerType
      * @param Location $location
-     * @param int $outgoing_traffic
      * @param array $private_net
      * @param array|Protection $protection
      * @param array $public_net
      * @param array $services
      * @param array $targets
+     * @param int|null $ingoing_traffic
+     * @param int|null $outgoing_traffic
      */
-    public function __construct(int $id, string $name, LoadBalancerAlgorithm $algorithm, string $created, int $included_traffic, int $ingoing_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, int $outgoing_traffic, array $private_net, $protection, array $public_net, array $services, array $targets)
+    public function __construct(int $id, string $name, LoadBalancerAlgorithm $algorithm, string $created, int $included_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, array $private_net, $protection, $public_net, array $services, array $targets, int $ingoing_traffic = null, int $outgoing_traffic = null)
     {
         $this->id = $id;
         $this->name = $name;
         $this->algorithm = $algorithm;
         $this->created = $created;
         $this->included_traffic = $included_traffic;
-        $this->ingoing_traffic = $ingoing_traffic;
         $this->labels = $labels;
         $this->loadBalancerType = $loadBalancerType;
         $this->location = $location;
-        $this->outgoing_traffic = $outgoing_traffic;
         $this->private_net = $private_net;
         $this->protection = $protection;
         $this->public_net = $public_net;
         $this->services = $services;
         $this->targets = $targets;
+        $this->ingoing_traffic = $ingoing_traffic;
+        $this->outgoing_traffic = $outgoing_traffic;
         parent::__construct();
     }
 
@@ -139,7 +139,7 @@ class LoadBalancer extends Model implements Resource
             return;
         }
 
-        return new self($input->id, $input->name, LoadBalancerAlgorithm::parse($input->algorithm), $input->created, $input->included_traffic, $input->ingoing_traffic, get_object_vars($input->labels), LoadBalancerType::parse($input->loadBalancerType), Location::parse($input->location), $input->outgoing_traffic, $input->private_net, Protection::parse($input->protection), $input->public_net, $input->services, $input->targets);
+        return new self($input->id, $input->name, LoadBalancerAlgorithm::parse($input->algorithm), $input->created, $input->included_traffic, get_object_vars($input->labels), LoadBalancerType::parse($input->load_balancer_type), Location::parse($input->location), $input->private_net, Protection::parse($input->protection), $input->public_net, $input->services, $input->targets, $input->ingoing_traffic, $input->outgoing_traffic);
     }
 
     public function reload()

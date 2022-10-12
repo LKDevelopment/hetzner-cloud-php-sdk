@@ -100,7 +100,7 @@ class LoadBalancers extends Model implements Resources
     {
         $loadBalancers = $this->list(new LoadBalancerRequestOpts($name));
 
-        return (count($loadBalancers->load_balancer) > 0) ? $loadBalancers->load_balancer[0] : null;
+        return (count($loadBalancers->load_balancers) > 0) ? $loadBalancers->load_balancers[0] : null;
     }
 
     /**
