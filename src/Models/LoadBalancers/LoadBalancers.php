@@ -17,7 +17,7 @@ class LoadBalancers extends Model implements Resources
     /**
      * @var array
      */
-    protected $loadBalancers;
+    protected $load_balancers;
 
     /**
      * Gets all existing Load Balancers that you have available.
@@ -80,7 +80,7 @@ class LoadBalancers extends Model implements Resources
     {
         $response = $this->httpClient->get('load_balancers/' . $id);
         if (!HetznerAPIClient::hasError($response)) {
-            return LoadBalancer::parse(json_decode((string)$response->getBody())->location);
+            return LoadBalancer::parse(json_decode((string)$response->getBody())->load_balancer);
         }
 
         return null;
@@ -109,7 +109,7 @@ class LoadBalancers extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->loadBalancers = collect($input)->map(function ($loadBalancer, $key) {
+        $this->load_balancers = collect($input)->map(function ($loadBalancer, $key) {
             return LoadBalancer::parse($loadBalancer);
         })->toArray();
 

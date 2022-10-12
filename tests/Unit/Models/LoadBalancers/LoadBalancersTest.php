@@ -38,6 +38,6 @@ class LoadBalancersTest extends TestCase
         $this->assertEquals($location->id, 4711);
         $this->assertEquals($location->name, 'my-resource');
 
-        $this->assertLastRequestEquals('GET', '/load_balancers/1111');
+        $this->assertLastRequestEquals('GET', '/load_balancers/4711');
     }
 }
