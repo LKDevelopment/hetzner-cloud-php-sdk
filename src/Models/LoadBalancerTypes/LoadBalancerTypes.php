@@ -17,7 +17,7 @@ class LoadBalancerTypes extends Model implements Resources
     /**
      * @var array
      */
-    protected $loadBalancerTypes;
+    protected $load_balancer_types;
 
     /**
      * Returns all load balancer type objects.
@@ -100,7 +100,7 @@ class LoadBalancerTypes extends Model implements Resources
     {
         $loadBalancerTypes = $this->list(new LoadBalancerTypeRequestOpts($name));
 
-        return (count($loadBalancerTypes->load_balancer_type) > 0) ? $loadBalancerTypes->load_balancer_type[0] : null;
+        return (count($loadBalancerTypes->load_balancer_types) > 0) ? $loadBalancerTypes->load_balancer_types[0] : null;
     }
 
     /**
@@ -109,7 +109,7 @@ class LoadBalancerTypes extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->loadBalancerTypes = collect($input)->map(function ($loadBalancerType, $key) {
+        $this->load_balancer_types = collect($input)->map(function ($loadBalancerType, $key) {
             return LoadBalancerType::parse($loadBalancerType);
         })->toArray();
 
