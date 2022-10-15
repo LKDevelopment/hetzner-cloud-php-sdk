@@ -22,7 +22,7 @@ class LoadBalancerTypeTest extends TestCase
     {
         parent::setUp();
         $tmp = new LoadBalancerTypes($this->hetznerApi->getHttpClient());
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancerType.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancerType.json')));
         $this->load_balancer_type = $tmp->get(4711);
     }
 

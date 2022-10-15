@@ -24,7 +24,7 @@ class LoadBalancerTest extends TestCase
     {
         parent::setUp();
         $tmp = new LoadBalancers($this->hetznerApi->getHttpClient());
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer.json')));
         $this->load_balancer = $tmp->get(4711);
     }
 
@@ -33,7 +33,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testChangeName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer.json')));
         $this->assertEquals($this->load_balancer->id, 4711);
         $this->assertEquals($this->load_balancer->name, 'my-resource');
 
@@ -47,7 +47,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testAddService()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_add_service.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_add_service.json')));
 
         $loadBalancerHealthCheckHttp = new LoadBalancerHealthCheckHttp(
             'example.com',
@@ -82,7 +82,7 @@ class LoadBalancerTest extends TestCase
         $this->assertLastRequestBodyParametersEqual([
             'destination_port' => 80,
             'listen_port' => 443,
-            'protocol' => 'https'
+            'protocol' => 'https',
         ]);
     }
 
@@ -91,7 +91,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testAddTarget()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_add_target.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_add_target.json')));
 
         $loadBalancerTargetIp = new LoadBalancerTargetIp(
             '1.2.3.4'
@@ -122,7 +122,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testAttachLoadBalancer()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_attach_loadbalancer_network.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_attach_loadbalancer_network.json')));
 
         $apiResponse = $this->load_balancer->attachLoadBalancerToNetwork(
             4711,
@@ -145,7 +145,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testChangeAlgorithm()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_change_algorithm.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_change_algorithm.json')));
 
         $apiResponse = $this->load_balancer->changeAlgorithm('round_robin');
 
@@ -178,7 +178,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testChangeProtection()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_change_protection.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_change_protection.json')));
         $apiResponse = $this->load_balancer->changeProtection(true);
 
         $this->assertEquals('change_protection', $apiResponse->action->command);
@@ -273,7 +273,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testRemoveTarget()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_remove_target.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_remove_target.json')));
 
         $loadBalancerTargetIp = new LoadBalancerTargetIp(
             '1.2.3.4'
@@ -302,7 +302,7 @@ class LoadBalancerTest extends TestCase
      */
     public function testUpdateService()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/loadBalancer_action_update_service.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_action_update_service.json')));
 
         $loadBalancerHealthCheckHttp = new LoadBalancerHealthCheckHttp(
             'example.com',
@@ -337,7 +337,7 @@ class LoadBalancerTest extends TestCase
         $this->assertLastRequestBodyParametersEqual([
             'destination_port' => 80,
             'listen_port' => 443,
-            'protocol' => 'https'
+            'protocol' => 'https',
         ]);
     }
 }
