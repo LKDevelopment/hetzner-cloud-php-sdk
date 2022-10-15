@@ -1,0 +1,37 @@
+{
+	"load_balancer_types": [
+		{
+			"deprecated": "2016-01-30T23:50:00+00:00",
+			"description": "LB11",
+			"id": 4711,
+			"max_assigned_certificates": 10,
+			"max_connections": 20000,
+			"max_services": 5,
+			"max_targets": 25,
+			"name": "lb11",
+			"prices": [
+				{
+					"location": "fsn1",
+					"price_hourly": {
+						"gross": "1.1900000000000000",
+						"net": "1.0000000000"
+					},
+					"price_monthly": {
+						"gross": "1.1900000000000000",
+						"net": "1.0000000000"
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"pagination": {
+			"last_page": 1,
+			"next_page": 1,
+			"page": 1,
+			"per_page": 25,
+			"previous_page": 1,
+			"total_entries": 100
+		}
+	}
+}

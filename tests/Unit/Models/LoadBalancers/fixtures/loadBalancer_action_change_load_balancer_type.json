@@ -1,0 +1,20 @@
+{
+	"action": {
+		"command": "change_load_balancer_type",
+		"error": {
+			"code": "action_failed",
+			"message": "Action failed"
+		},
+		"finished": null,
+		"id": 13,
+		"progress": 0,
+		"resources": [
+			{
+				"id": 4711,
+				"type": "server"
+			}
+		],
+		"started": "2016-01-30T23:50:00+00:00",
+		"status": "running"
+	}
+}

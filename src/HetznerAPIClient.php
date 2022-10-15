@@ -11,6 +11,8 @@ use LKDev\HetznerCloud\Models\Firewalls\Firewalls;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
 use LKDev\HetznerCloud\Models\Images\Images;
 use LKDev\HetznerCloud\Models\ISOs\ISOs;
+use LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancers;
+use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerTypes;
 use LKDev\HetznerCloud\Models\Networks\Networks;
 use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Servers\Servers;
@@ -289,6 +291,22 @@ class HetznerAPIClient
     public function firewalls()
     {
         return new Firewalls($this->httpClient);
+    }
+
+    /**
+     * @return LoadBalancers
+     */
+    public function loadBalancers()
+    {
+        return new LoadBalancers($this->httpClient);
+    }
+
+    /**
+     * @return LoadBalancerTypes
+     */
+    public function loadBalancerTypes()
+    {
+        return new LoadBalancerTypes($this->httpClient);
     }
 
     /**
