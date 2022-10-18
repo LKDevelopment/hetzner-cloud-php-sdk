@@ -122,7 +122,9 @@ class Firewall extends Model implements Resource
         }
 
         foreach ($input->applied_to as $a) {
-            $appliedTo[] = new FirewallResource($a->type, new Server($a->server->id));
+            if($a->type === 'server'){
+                $appliedTo[] = new FirewallResource($a->type, new Server($a->server->id));
+            }
         }
 
         return new self($input->id, $input->name, $rules, $appliedTo, get_object_vars($input->labels), $input->created);
