@@ -122,7 +122,7 @@ class Firewall extends Model implements Resource
         }
 
         foreach ($input->applied_to as $a) {
-            if($a->type === 'server'){
+            if ($a->type === 'server') {
                 $appliedTo[] = new FirewallResource($a->type, new Server($a->server->id));
             }
         }
