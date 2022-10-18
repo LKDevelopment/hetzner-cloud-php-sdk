@@ -15,6 +15,7 @@ use LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancers;
 use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerTypes;
 use LKDev\HetznerCloud\Models\Networks\Networks;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIps;
 use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
@@ -267,6 +268,14 @@ class HetznerAPIClient
     public function floatingIps()
     {
         return new FloatingIps($this->httpClient);
+    }
+
+    /**
+     * @return PrimaryIps
+     */
+    public function primaryIps()
+    {
+        return new PrimaryIps($this->httpClient);
     }
 
     /**

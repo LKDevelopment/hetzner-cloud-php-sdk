@@ -1,0 +1,20 @@
+{
+	"action": {
+		"command": "change_protection",
+		"error": {
+			"code": "action_failed",
+			"message": "Action failed"
+		},
+		"finished": "2016-01-30T23:56:00+00:00",
+		"id": 13,
+		"progress": 100,
+		"resources": [
+			{
+				"id": 4711,
+				"type": "primary_ip"
+			}
+		],
+		"started": "2016-01-30T23:55:00+00:00",
+		"status": "success"
+	}
+}
