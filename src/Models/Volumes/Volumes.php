@@ -135,7 +135,7 @@ class Volumes extends Model implements Resources
             'automount' => $automount,
         ];
         if ($location == null && $server != null) {
-            $parameters['server'] = $server->name ?: $server->id;
+            $parameters['server'] = $server->id;
         } elseif ($location != null && $server == null) {
             $parameters['location'] = $location->name ?: $location->id;
         } else {
