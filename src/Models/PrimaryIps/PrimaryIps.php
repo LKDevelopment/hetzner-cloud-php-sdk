@@ -25,7 +25,7 @@ class PrimaryIps extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#primary-ips-get-all-primary-ips
      *
-     * @param PrimaryIPRequestOpts|RequestOpts|null $requestOpts
+     * @param  PrimaryIPRequestOpts|RequestOpts|null  $requestOpts
      * @return array
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -44,7 +44,7 @@ class PrimaryIps extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#primary-ips-get-all-primary-ips
      *
-     * @param PrimaryIPRequestOpts|RequestOpts|null $requestOpts
+     * @param  PrimaryIPRequestOpts|RequestOpts|null  $requestOpts
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -54,9 +54,9 @@ class PrimaryIps extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new PrimaryIPRequestOpts();
         }
-        $response = $this->httpClient->get('primary_ips' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('primary_ips'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -72,16 +72,16 @@ class PrimaryIps extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#primary-ips-get-a-primary-ip
      *
-     * @param int $id
+     * @param  int  $id
      * @return \LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIp|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $id): ?PrimaryIp
     {
-        $response = $this->httpClient->get('primary_ips/' . $id);
-        if (!HetznerAPIClient::hasError($response)) {
-            return PrimaryIp::parse(json_decode((string)$response->getBody())->{$this->_getKeys()['one']});
+        $response = $this->httpClient->get('primary_ips/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return PrimaryIp::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
 
         return null;
@@ -92,7 +92,7 @@ class PrimaryIps extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#primary-ips-get-a-primary-ip
      *
-     * @param string $name
+     * @param  string  $name
      * @return \LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIp
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -109,13 +109,12 @@ class PrimaryIps extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#primary-ips-create-a-primary-ip
      *
-     * @param string $type
-     * @param string $name
-     * @param string $assigneeType
-     * @param int|null $assigneeId
-     * @param \LKDev\HetznerCloud\Models\Datacenters\Datacenter|null $datacenter
-     * @param array $labels
-     *
+     * @param  string  $type
+     * @param  string  $name
+     * @param  string  $assigneeType
+     * @param  int|null  $assigneeId
+     * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter|null  $datacenter
+     * @param  array  $labels
      * @return \LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIp|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -127,14 +126,13 @@ class PrimaryIps extends Model implements Resources
         bool $autoDelete = false,
         int $assigneeId = null,
         Datacenter $datacenter = null,
-        array  $labels = []
-    ): ?PrimaryIp
-    {
+        array $labels = []
+    ): ?PrimaryIp {
         $parameters = [
             'type' => $type,
             'name' => $name,
             'assignee_type' => $assigneeType,
-            'auto_delete' => $autoDelete
+            'auto_delete' => $autoDelete,
         ];
         if ($assigneeId != null) {
             $parameters['assignee_id'] = $assigneeId;
@@ -142,14 +140,14 @@ class PrimaryIps extends Model implements Resources
         if ($datacenter != null) {
             $parameters['datacenter'] = $datacenter->id ?: $datacenter->name;
         }
-        if (!empty($labels)) {
+        if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         $response = $this->httpClient->post('primary_ips', [
             'json' => $parameters,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
-            return PrimaryIp::parse(json_decode((string)$response->getBody())->{$this->_getKeys()['one']});
+        if (! HetznerAPIClient::hasError($response)) {
+            return PrimaryIp::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
         }
 
         return null;
