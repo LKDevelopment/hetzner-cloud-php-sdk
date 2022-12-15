@@ -163,7 +163,7 @@ class Servers extends Model
             'volumes' => $volumes,
             'automount' => $automount,
             'networks' => $networks,
-            'public_net' => $public_net
+            'public_net' => $public_net,
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
@@ -171,7 +171,7 @@ class Servers extends Model
         if (! empty($firewalls)) {
             $parameters['firewalls'] = json_encode($firewalls);
         }
-        if($placement_group != null) {
+        if ($placement_group != null) {
             $parameters['placement_group'] = $placement_group;
         }
         $response = $this->httpClient->post('servers', [
@@ -241,7 +241,7 @@ class Servers extends Model
             'volumes' => $volumes,
             'automount' => $automount,
             'networks' => $networks,
-            'public_net' => $public_net
+            'public_net' => $public_net,
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
@@ -249,7 +249,7 @@ class Servers extends Model
         if (! empty($firewalls)) {
             $parameters['firewalls'] = json_encode($firewalls);
         }
-        if($placement_group != null) {
+        if ($placement_group != null) {
             $parameters['placement_group'] = $placement_group;
         }
         $response = $this->httpClient->post('servers', [
