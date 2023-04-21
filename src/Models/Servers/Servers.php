@@ -119,15 +119,16 @@ class Servers extends Model
      * @see https://docs.hetzner.cloud/#servers-delete-a-server
      *
      * @param  int  $serverId
-     * @return \LKDev\HetznerCloud\Models\Servers\Server|null
+     * @return \LKDev\HetznerCloud\Models\Actions\Action|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function deleteById(int $serverId): ?Server
+    public function deleteById(int $serverId): ?Action
     {
         $response = $this->httpClient->delete('servers/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
-            return Server::parse(json_decode((string) $response->getBody()));
+            $payload = json_decode((string) $response->getBody());
+            return Action::parse($payload->action);
         }
 
         return null;
