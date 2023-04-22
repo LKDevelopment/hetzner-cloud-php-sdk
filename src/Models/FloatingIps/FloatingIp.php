@@ -305,6 +305,10 @@ class FloatingIp extends Model implements Resource
             return null;
         }
 
+        if (!property_exists($input, 'description')) {
+            $input->description = null;
+        }
+
         return new self($input->id, $input->description, $input->ip, $input->type, $input->server, $input->dns_ptr, Location::parse($input->home_location), $input->blocked, Protection::parse($input->protection), get_object_vars($input->labels), $input->created, $input->name);
     }
 
