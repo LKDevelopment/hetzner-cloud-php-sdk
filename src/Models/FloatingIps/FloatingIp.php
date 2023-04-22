@@ -305,7 +305,7 @@ class FloatingIp extends Model implements Resource
             return null;
         }
 
-        if (!property_exists($input, 'description')) {
+        if (! property_exists($input, 'description')) {
             $input->description = null;
         }
 
