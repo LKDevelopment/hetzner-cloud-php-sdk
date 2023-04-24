@@ -27,7 +27,7 @@ trait GetFunctionTrait
             $requestOpts->page = $i;
             $_f = $this->list($requestOpts);
             $entities = array_merge($entities, $_f->{$this->_getKeys()['many']});
-            if ($_f->meta->pagination->page === $_f->meta->pagination->last_page) {
+            if ($_f->meta->pagination->page === $_f->meta->pagination->last_page || $_f->meta->pagination->last_page === null) {
                 $max_pages = 0;
             }
         }
