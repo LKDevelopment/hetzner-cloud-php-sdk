@@ -258,7 +258,7 @@ class Servers extends Model
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
-            $parameters['firewalls'] = json_encode($firewalls);
+            $parameters['firewalls'] = $firewalls;
         }
         $response = $this->httpClient->post('servers', [
             'json' => $parameters,
