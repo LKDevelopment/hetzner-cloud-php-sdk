@@ -33,6 +33,7 @@ class RequestOptsTest extends TestCase
 
     /**
      * @dataProvider buildQueryTestProvider
+     *
      * @test
      */
     public function buildQuery($perPage, $page, $labelSelector, $expectedResult)

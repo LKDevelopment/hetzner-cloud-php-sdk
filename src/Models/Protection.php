@@ -45,6 +45,6 @@ class Protection extends Model
             return;
         }
 
-        return new self($input->delete, (property_exists($input, 'rebuild') ? $input->rebuild : null));
+        return new self($input->delete, property_exists($input, 'rebuild') ? $input->rebuild : null);
     }
 }
