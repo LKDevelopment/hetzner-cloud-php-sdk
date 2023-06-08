@@ -128,6 +128,7 @@ class Servers extends Model
         $response = $this->httpClient->delete('servers/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
             $payload = json_decode((string) $response->getBody());
+
             return Action::parse($payload->action);
         }
 
