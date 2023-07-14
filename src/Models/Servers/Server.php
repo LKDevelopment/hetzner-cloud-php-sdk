@@ -157,7 +157,7 @@ class Server extends Model implements Resource
     public $protection;
 
     /**
-     * @var array
+     * @var object
      */
     public $labels;
 
