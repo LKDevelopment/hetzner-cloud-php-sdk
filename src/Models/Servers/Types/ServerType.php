@@ -6,36 +6,51 @@ use LKDev\HetznerCloud\Models\Model;
 
 class ServerType extends Model
 {
-    /**
-     * @var int
-     */
-    public $id;
 
     /**
      * @var string
      */
-    public $name;
-
-    /**
-     * @var string
-     */
-    public $description;
-
+    public $architecture;
     /**
      * @var string
      */
     public $cores;
-
     /**
      * @var string
      */
-    public $memory;
-
+    public $cpuType;
+    /**
+     * @var bool
+     */
+    public $deprecated;
+    /**
+     * @var array
+     */
+    public $deprecation;
+    /**
+     * @var string
+     */
+    public $description;
     /**
      * @var string
      */
     public $disk;
-
+    /**
+     * @var int
+     */
+    public $id;
+    /**
+     * @var int
+     */
+    public $includedTraffic;
+    /**
+     * @var string
+     */
+    public $memory;
+    /**
+     * @var string
+     */
+    public $name;
     /**
      * @var array
      */
@@ -47,14 +62,9 @@ class ServerType extends Model
     public $storageType;
 
     /**
-     * @var string
-     */
-    public $cpuType;
-
-    /**
      * ServerType constructor.
      *
-     * @param  int  $serverTypeId
+     * @param int $serverTypeId
      */
     public function __construct(int $serverTypeId, string $name = '')
     {
@@ -69,14 +79,18 @@ class ServerType extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->name = $input->name;
-        $this->description = $input->description;
+        $this->architecture = $input->architecture;
         $this->cores = $input->cores;
-        $this->memory = $input->memory;
+        $this->cpuType = $input->cpu_type;
+        $this->deprecated = (bool)$input->deprecated;
+        $this->deprecation = $input->deprecation;
+        $this->description = $input->description;
         $this->disk = $input->disk;
+        $this->includedTraffic = $input->included_traffic;
+        $this->memory = $input->memory;
+        $this->name = $input->name;
         $this->prices = $input->prices;
         $this->storageType = $input->storage_type;
-        $this->cpuType = $input->cpu_type;
 
         return $this;
     }
