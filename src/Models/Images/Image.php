@@ -139,6 +139,11 @@ class Image extends Model implements Resource
     public $labels;
 
     /**
+     * @var string
+     */
+    public $architecture;
+
+    /**
      * Image constructor.
      *
      * @param  int  $id
@@ -155,6 +160,7 @@ class Image extends Model implements Resource
      * @param  string  $osVersion
      * @param  bool  $rapidDeploy
      * @param  Protection  $protection
+     * @param  string  $architecture
      * @param  array  $labels
      */
     public function __construct(
@@ -172,6 +178,7 @@ class Image extends Model implements Resource
         string $osVersion = null,
         bool $rapidDeploy = null,
         Protection $protection = null,
+        string $architecture = null,
         array $labels = []
     ) {
         $this->id = $id;
@@ -195,6 +202,7 @@ class Image extends Model implements Resource
         $this->rapid_deploy = $rapidDeploy;
         $this->rapidDeploy = $rapidDeploy;
         $this->protection = $protection;
+        $this->architecture = $architecture;
         $this->labels = $labels;
         parent::__construct();
     }
@@ -276,7 +284,7 @@ class Image extends Model implements Resource
             return null;
         }
 
-        return new self($input->id, $input->type, property_exists($input, 'status') ? $input->status : null, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), get_object_vars($input->labels));
+        return new self($input->id, $input->type, property_exists($input, 'status') ? $input->status : null, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), $input->architecture, get_object_vars($input->labels));
     }
 
     public function reload()
