@@ -14,7 +14,6 @@ use LKDev\HetznerCloud\Models\Servers\Server;
  */
 class PlacementGroup extends Model implements Resource
 {
-
     /**
      * @var int
      */
@@ -111,5 +110,4 @@ class PlacementGroup extends Model implements Resource
             ], $response->getHeaders());
         }
     }
-
 }
