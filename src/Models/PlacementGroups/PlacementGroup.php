@@ -12,7 +12,8 @@ use LKDev\HetznerCloud\Models\Servers\Server;
 /**
  * Class PlacementGroup.
  */
-class PlacementGroup extends Model implements Resource {
+class PlacementGroup extends Model implements Resource
+{
 
     /**
      * @var int
@@ -57,7 +58,7 @@ class PlacementGroup extends Model implements Resource {
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return $this
      */
     private function setAdditionalData($data)

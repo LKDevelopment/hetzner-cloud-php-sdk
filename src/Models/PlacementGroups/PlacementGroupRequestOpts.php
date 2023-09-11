@@ -19,11 +19,11 @@ class PlacementGroupRequestOpts extends RequestOpts
     /**
      * RequestOpts constructor.
      *
-     * @param $name
-     * @param $type
-     * @param $perPage
-     * @param $page
-     * @param $labelSelector
+     * @param  $name
+     * @param  $type
+     * @param  $perPage
+     * @param  $page
+     * @param  $labelSelector
      */
     public function __construct(string $name = null, int $type = null, int $perPage = null, int $page = null, string $labelSelector = null)
     {

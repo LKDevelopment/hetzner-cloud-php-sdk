@@ -4,13 +4,8 @@ namespace LKDev\Tests\Unit\Models\PlacementGroups;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\APIResponse;
-use LKDev\HetznerCloud\Models\Networks\Network;
-use LKDev\HetznerCloud\Models\Networks\Networks;
-use LKDev\HetznerCloud\Models\Networks\Route;
-use LKDev\HetznerCloud\Models\Networks\Subnet;
 use LKDev\HetznerCloud\Models\PlacementGroups\PlacementGroup;
 use LKDev\HetznerCloud\Models\PlacementGroups\PlacementGroups;
-use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Server;
 use LKDev\Tests\TestCase;
 
@@ -92,12 +87,11 @@ class PlacementGroupsTest extends TestCase
     public function testBasicCreate()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/placement_group.json')));
-        $resp = $this->placement_groups->create('my_placemengroup', "spread", []);
+        $resp = $this->placement_groups->create('my_placemengroup', 'spread', []);
         $this->assertInstanceOf(APIResponse::class, $resp);
         $this->assertInstanceOf(PlacementGroup::class, $resp->getResponsePart('placement_group'));
 
         $this->assertLastRequestEquals('POST', '/placement_groups');
         $this->assertLastRequestBodyParametersEqual(['name' => 'my_placemengroup', 'type' => 'spread']);
     }
-
 }

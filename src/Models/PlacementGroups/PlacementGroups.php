@@ -11,7 +11,8 @@ use LKDev\HetznerCloud\Models\PlacementGroups\PlacementGroupRequestOpts;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-class PlacementGroups extends Model implements Resources {
+class PlacementGroups extends Model implements Resources
+{
 
     use GetFunctionTrait;
 
