@@ -12,7 +12,6 @@ use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
 class PlacementGroups extends Model implements Resources
 {
-
     use GetFunctionTrait;
 
     /**
