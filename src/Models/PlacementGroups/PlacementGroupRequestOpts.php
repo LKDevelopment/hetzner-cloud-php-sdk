@@ -31,6 +31,4 @@ class PlacementGroupRequestOpts extends RequestOpts
         $this->type = $type;
         parent::__construct($perPage, $page, $labelSelector);
     }
-
-
 }
