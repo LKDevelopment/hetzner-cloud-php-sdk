@@ -109,6 +109,7 @@ class PlacementGroup extends Model implements Resource
                 'placement_group' => self::parse(json_decode((string) $response->getBody())->network),
             ], $response->getHeaders());
         }
+
         return null;
     }
 }
