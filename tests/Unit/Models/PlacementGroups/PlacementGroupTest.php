@@ -21,5 +21,4 @@ class PlacementGroupTest extends TestCase
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/placement_group.json')));
         $this->network = $tmp->get(4711);
     }
-
 }
