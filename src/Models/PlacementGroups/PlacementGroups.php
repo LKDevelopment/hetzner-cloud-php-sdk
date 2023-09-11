@@ -7,7 +7,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\PlacementGroups\PlacementGroupRequestOpts;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
@@ -61,7 +60,7 @@ class PlacementGroups extends Model implements Resources
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
-                $this->_getKeys()['many' ]=> self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+                $this->_getKeys()['many']=> self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
 
@@ -165,5 +164,4 @@ class PlacementGroups extends Model implements Resources
     {
         return ['one' => 'placementgroup', 'many' => 'placementgroups'];
     }
-
 }
