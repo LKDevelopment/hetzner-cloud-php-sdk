@@ -14,6 +14,7 @@ use LKDev\HetznerCloud\Models\ISOs\ISOs;
 use LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancers;
 use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerTypes;
 use LKDev\HetznerCloud\Models\Networks\Networks;
+use LKDev\HetznerCloud\Models\PlacementGroups\PlacementGroups;
 use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIps;
 use LKDev\HetznerCloud\Models\Servers\Servers;
@@ -284,6 +285,13 @@ class HetznerAPIClient
     public function networks()
     {
         return new Networks($this->httpClient);
+    }
+
+    /**
+     * @return PlacementGroups
+     */
+    public function placementGroups() {
+        return new PlacementGroups($this->httpClient);
     }
 
     /**
