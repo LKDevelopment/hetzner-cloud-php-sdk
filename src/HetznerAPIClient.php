@@ -290,7 +290,8 @@ class HetznerAPIClient
     /**
      * @return PlacementGroups
      */
-    public function placementGroups() {
+    public function placementGroups()
+    {
         return new PlacementGroups($this->httpClient);
     }
 
