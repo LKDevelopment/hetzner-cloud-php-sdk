@@ -26,7 +26,7 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
      *
-     * @param RequestOpts|null $requestOpts
+     * @param  RequestOpts|null  $requestOpts
      * @return array
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -45,7 +45,7 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
      *
-     * @param RequestOpts|null $requestOpts
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
      *
      * @throws APIException
@@ -56,9 +56,9 @@ class Images extends Model implements Resources
         if ($requestOpts == null) {
             $requestOpts = new ImageRequestOpts();
         }
-        $response = $this->httpClient->get('images' . $requestOpts->buildQuery());
-        if (!HetznerAPIClient::hasError($response)) {
-            $resp = json_decode((string)$response->getBody());
+        $response = $this->httpClient->get('images'.$requestOpts->buildQuery());
+        if (! HetznerAPIClient::hasError($response)) {
+            $resp = json_decode((string) $response->getBody());
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
@@ -74,16 +74,16 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get-1
      *
-     * @param int $imageId
+     * @param  int  $imageId
      * @return \LKDev\HetznerCloud\Models\Images\Image
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function getById(int $imageId): ?Image
     {
-        $response = $this->httpClient->get('images/' . $imageId);
-        if (!HetznerAPIClient::hasError($response)) {
-            return Image::parse(json_decode((string)$response->getBody())->image);
+        $response = $this->httpClient->get('images/'.$imageId);
+        if (! HetznerAPIClient::hasError($response)) {
+            return Image::parse(json_decode((string) $response->getBody())->image);
         }
 
         return null;
@@ -94,8 +94,8 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get-1
      *
-     * @param string $name
-     * @param string|null $architecture
+     * @param  string  $name
+     * @param  string|null  $architecture
      * @return Image|null
      *
      * @throws APIException
