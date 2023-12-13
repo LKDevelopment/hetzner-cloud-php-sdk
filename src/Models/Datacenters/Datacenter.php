@@ -72,7 +72,7 @@ class Datacenter extends Model implements Resource
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\Datacenters\Datacenter|static
      */
     public static function parse($input)

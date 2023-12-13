@@ -36,7 +36,7 @@ class Protection extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\Protection|null|static
      */
     public static function parse($input)

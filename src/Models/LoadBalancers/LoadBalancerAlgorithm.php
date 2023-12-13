@@ -21,7 +21,7 @@ class LoadBalancerAlgorithm extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancerAlgorithm|null|static
      */
     public static function parse($input)

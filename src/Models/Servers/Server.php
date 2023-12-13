@@ -188,7 +188,7 @@ class Server extends Model implements Resource
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return \LKDev\HetznerCloud\Models\Servers\Server
      */
     public function setAdditionalData($data)
