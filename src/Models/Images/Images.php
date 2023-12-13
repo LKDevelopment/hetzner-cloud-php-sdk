@@ -2,6 +2,8 @@
 
 namespace LKDev\HetznerCloud\Models\Images;
 
+use GuzzleHttp\Exception\GuzzleException;
+use LKDev\HetznerCloud\APIException;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
@@ -43,10 +45,11 @@ class Images extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#resources-images-get
      *
-     * @param  RequestOpts  $requestOpts
+     * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
      *
-     * @throws \LKDev\HetznerCloud\APIException
+     * @throws APIException
+     * @throws GuzzleException
      */
     public function list(RequestOpts $requestOpts = null): ?APIResponse
     {
@@ -92,13 +95,14 @@ class Images extends Model implements Resources
      * @see https://docs.hetzner.cloud/#resources-images-get-1
      *
      * @param  string  $name
-     * @return \LKDev\HetznerCloud\Models\Images\Image|null
+     * @param  string|null  $architecture
+     * @return Image|null
      *
-     * @throws \LKDev\HetznerCloud\APIException
+     * @throws APIException
      */
-    public function getByName(string $name): ?Image
+    public function getByName(string $name, string $architecture = null): ?Image
     {
-        $images = $this->list(new ImageRequestOpts($name));
+        $images = $this->list(new ImageRequestOpts($name, null, null, null, $architecture));
 
         return (count($images->images) > 0) ? $images->images[0] : null;
     }
