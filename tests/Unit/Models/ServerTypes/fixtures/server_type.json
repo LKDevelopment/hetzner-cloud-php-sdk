@@ -3,6 +3,7 @@
     "id": 1,
     "name": "cx11",
     "description": "CX11",
+    "architecture": "arm",
     "cores": 1,
     "memory": 1,
     "disk": 24,
