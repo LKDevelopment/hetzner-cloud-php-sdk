@@ -49,6 +49,19 @@ class ImagesTest extends TestCase
         $this->assertLastRequestQueryParametersContains('name', 'ubuntu-20.04');
     }
 
+    public function testGetByNameWithArchitecture()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/images.json')));
+        $image = $this->images->getByName('ubuntu-20.04', 'arm');
+        $this->assertEquals($image->id, 4711);
+        $this->assertEquals($image->name, 'ubuntu-20.04');
+
+        $this->assertEmpty($image->labels);
+        $this->assertLastRequestEquals('GET', '/images');
+        $this->assertLastRequestQueryParametersContains('name', 'ubuntu-20.04');
+        $this->assertLastRequestQueryParametersContains('architecture', 'arm');
+    }
+
     public function testAll()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/images.json')));
