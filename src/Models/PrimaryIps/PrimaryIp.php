@@ -90,10 +90,10 @@ class PrimaryIp extends Model implements Resource
      * @param  array  $labels
      * @param  array|\LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
      * @param  string  $assignee_type
-     * @param  int  $assignee_id
+     * @param  int|null  $assignee_id
      * @param  bool  $auto_delete
      */
-    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, int $assignee_id, bool $auto_delete)
+    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, int $assignee_id = null, bool $auto_delete)
     {
         $this->id = $id;
         $this->name = $name;
