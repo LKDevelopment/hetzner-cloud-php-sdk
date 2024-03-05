@@ -124,7 +124,7 @@ class Firewall extends Model implements Resource
         foreach ($input->applied_to as $a) {
             if ($a->type === FirewallResource::TYPE_SERVER) {
                 $appliedTo[] = new FirewallResource($a->type, new Server($a->server->id));
-            }elseif ($a->type == FirewallResource::TYPE_LABEL_SELECTOR) {
+            } elseif ($a->type == FirewallResource::TYPE_LABEL_SELECTOR) {
                 $appliedTo[] = new FirewallResource($a->type, null, $a->label_selector->selector);
             }
         }
