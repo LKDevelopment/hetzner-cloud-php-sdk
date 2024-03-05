@@ -40,7 +40,6 @@ class FirewallResource
         $this->selector = $selector;
     }
 
-
     /**
      * @return array
      */
