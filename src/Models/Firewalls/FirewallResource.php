@@ -21,7 +21,7 @@ class FirewallResource
      */
     public $server;
 
-     /**
+    /**
      * @var string|null
      */
     public $selector;
@@ -29,9 +29,9 @@ class FirewallResource
     /**
      * FirewallResource constructor.
      *
-     * @param string $type
-     * @param Server|null $server
-     * @param string|null $selector
+     * @param  string  $type
+     * @param  Server|null  $server
+     * @param  string|null  $selector
      */
     public function __construct(string $type, ?Server $server = null, ?string $selector = null)
     {
@@ -50,7 +50,7 @@ class FirewallResource
 
         if ($this->type == self::TYPE_SERVER && $this->server !== null) {
             $s['server'] = ['id' => $this->server->id];
-        } else if ($this->type == self::TYPE_LABEL_SELECTOR && $this->selector !== null) {
+        } elseif ($this->type == self::TYPE_LABEL_SELECTOR && $this->selector !== null) {
             $s['label_selector'] = ['selector' => $this->selector];
         }
 
