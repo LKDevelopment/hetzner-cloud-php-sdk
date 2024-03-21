@@ -1,0 +1,24 @@
+{
+  "placement_groups": [
+    {
+      "id": 4862,
+      "name": "my_placemengroup",
+      "type": "spread",
+      "servers": [
+        42
+      ],
+      "labels": {},
+      "created": "2016-01-30T23:50:00+00:00"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "next_page": null,
+      "last_page": 1,
+      "total_entries": 1
+    }
+  }
+}
