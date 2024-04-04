@@ -73,7 +73,7 @@ class Volume extends Model implements Resource
     }
 
     /**
-     * @param $data
+     * @param  $data
      * @return Volume
      */
     public function setAdditionalData($data)

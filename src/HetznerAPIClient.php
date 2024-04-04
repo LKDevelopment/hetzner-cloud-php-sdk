@@ -31,7 +31,7 @@ class HetznerAPIClient
     /**
      * Version of the API Client.
      */
-    const VERSION = '2.6.2';
+    const VERSION = '2.7.0';
 
     const MAX_ENTITIES_PER_PAGE = 50;
 

@@ -247,7 +247,7 @@ class Servers extends Model
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
-            $parameters['firewalls'] = json_encode($firewalls);
+            $parameters['firewalls'] = $firewalls;
         }
         if ($placement_group != null) {
             $parameters['placement_group'] = $placement_group;

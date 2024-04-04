@@ -123,7 +123,7 @@ class Locations extends Model implements Resources
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return $this|static
      */
     public static function parse($input)

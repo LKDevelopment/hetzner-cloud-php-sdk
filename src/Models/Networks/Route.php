@@ -34,7 +34,7 @@ class Route extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @param  Client|null  $client
      * @return array|Model
      */

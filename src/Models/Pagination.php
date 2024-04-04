@@ -55,7 +55,7 @@ class Pagination extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\Pagination|null|static
      */
     public static function parse($input)

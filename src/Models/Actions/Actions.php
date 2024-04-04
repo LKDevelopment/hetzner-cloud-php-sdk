@@ -54,7 +54,7 @@ class Actions extends Model implements Resources
     }
 
     /**
-     * @param $actionId
+     * @param  $actionId
      * @return \LKDev\HetznerCloud\Models\Actions\Action|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -88,7 +88,7 @@ class Actions extends Model implements Resources
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @param  Server  $server
      * @return $this|static
      */

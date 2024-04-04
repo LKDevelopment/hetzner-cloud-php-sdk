@@ -25,11 +25,11 @@ class VolumeRequestOpts extends RequestOpts
     /**
      * RequestOpts constructor.
      *
-     * @param $name
-     * @param $status
-     * @param $perPage
-     * @param $page
-     * @param $labelSelector
+     * @param  $name
+     * @param  $status
+     * @param  $perPage
+     * @param  $page
+     * @param  $labelSelector
      */
     public function __construct(string $name = null, string $status = null, int $perPage = null, int $page = null, string $labelSelector = null)
     {

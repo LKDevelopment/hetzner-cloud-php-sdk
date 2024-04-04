@@ -12,7 +12,7 @@ class APIException extends \Exception
     /**
      * APIException constructor.
      *
-     * @param $response
+     * @param  $response
      * @param  string  $message
      * @param  int  $code
      * @param  \Throwable|null  $previous
