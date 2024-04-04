@@ -59,7 +59,7 @@ class PlacementGroups extends Model implements Resources
 
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
-                $this->_getKeys()['many']=> self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+                $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
             ], $response->getHeaders());
         }
 
