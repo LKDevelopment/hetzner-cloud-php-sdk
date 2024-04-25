@@ -98,7 +98,7 @@ class PlacementGroups extends Model implements Resources
      */
     public function getByName(string $name): ?PlacementGroup
     {
-        $placementGroups = $this->list(new NetworkRequestOpts($name));
+        $placementGroups = $this->list(new PlacementGroupRequestOpts($name));
 
         return (count($placementGroups->placement_groups) > 0) ? $placementGroups->placement_groups[0] : null;
     }
