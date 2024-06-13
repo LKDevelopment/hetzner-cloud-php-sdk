@@ -291,4 +291,9 @@ class Image extends Model implements Resource
     {
         return HetznerAPIClient::$instance->images()->get($this->id);
     }
+
+    public function getCreatedDateTime()
+    {
+        return new \DateTime($this->created);
+    }
 }
