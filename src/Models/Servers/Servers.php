@@ -94,11 +94,11 @@ class Servers extends Model
     }
 
     /**
-     * Returns a specific server object by its name. The server must exist inside the project.
+     * Returns a specific server object by its id. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
      *
-     * @param  string  $serverId
+     * @param  int  $serverId
      * @return \LKDev\HetznerCloud\Models\Servers\Server|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -108,6 +108,28 @@ class Servers extends Model
         $response = $this->httpClient->get('servers/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
             return Server::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
+        }
+
+        return null;
+    }
+
+    /**
+     * Deletes a specific server object by its id. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#servers-delete-a-server
+     *
+     * @param  int  $serverId
+     * @return \LKDev\HetznerCloud\Models\Actions\Action|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function deleteById(int $serverId): ?Action
+    {
+        $response = $this->httpClient->delete('servers/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
+            return Action::parse($payload->action);
         }
 
         return null;
