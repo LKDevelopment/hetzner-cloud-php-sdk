@@ -2,6 +2,7 @@
   "image": {
     "id": 4711,
     "type": "snapshot",
+    "architecture": "arm",
     "status": "creating",
     "name": null,
     "description": "my image",

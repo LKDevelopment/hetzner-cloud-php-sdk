@@ -129,7 +129,7 @@ class LoadBalancer extends Model implements Resource
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancer|static
      */
     public static function parse($input)

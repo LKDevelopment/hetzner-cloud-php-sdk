@@ -46,7 +46,7 @@ class ISO extends Model implements Resource
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\ISOs\ISO|static
      */
     public static function parse($input): ?self

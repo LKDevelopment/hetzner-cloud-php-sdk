@@ -83,7 +83,7 @@ class Action extends Model implements Resource
     }
 
     /**
-     * @param $actionId
+     * @param  $actionId
      * @return Action|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -139,7 +139,7 @@ class Action extends Model implements Resource
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\Actions\Action|static
      */
     public static function parse($input)

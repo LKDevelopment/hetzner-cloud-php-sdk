@@ -3,6 +3,7 @@
     {
       "id": 4711,
       "type": "snapshot",
+      "architecture": "arm",
       "status": "available",
       "name": "ubuntu-20.04",
       "description": "Ubuntu 20.04 Standard 64 bit",

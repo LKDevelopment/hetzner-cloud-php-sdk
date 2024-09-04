@@ -21,7 +21,7 @@ class LoadBalancerTargetIp extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancerTargetIp|null|static
      */
     public static function parse($input)

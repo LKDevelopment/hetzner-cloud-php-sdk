@@ -56,7 +56,7 @@ class LoadBalancerHealthCheck extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\LoadBalancers\LoadBalancerHealthCheck|null|static
      */
     public static function parse($input)

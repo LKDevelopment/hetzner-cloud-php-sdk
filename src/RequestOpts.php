@@ -31,9 +31,9 @@ class RequestOpts
     /**
      * RequestOpts constructor.
      *
-     * @param $perPage
-     * @param $page
-     * @param $labelSelector
+     * @param  $perPage
+     * @param  $page
+     * @param  $labelSelector
      */
     public function __construct(int $perPage = null, int $page = null, string $labelSelector = null)
     {

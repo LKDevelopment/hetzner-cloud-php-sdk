@@ -23,7 +23,7 @@ abstract class Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return static
      */
     public static function parse($input)

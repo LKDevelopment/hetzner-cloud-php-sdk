@@ -26,7 +26,7 @@ class Meta extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return \LKDev\HetznerCloud\Models\Meta|null|static
      */
     public static function parse($input)
