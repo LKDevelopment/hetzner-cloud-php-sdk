@@ -55,11 +55,11 @@ class Server extends Model implements Resource
     public $publicNet;
 
     /**
-     * @var object
+     * @var array
      */
     public $private_net;
     /**
-     * @var object
+     * @var array
      *
      * @deprecated Use $private_net instead
      */
