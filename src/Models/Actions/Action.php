@@ -148,6 +148,6 @@ class Action extends Model implements Resource
             return;
         }
 
-        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error);
+        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error ?? null);
     }
 }

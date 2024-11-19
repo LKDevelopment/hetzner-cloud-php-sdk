@@ -44,11 +44,11 @@ class Server extends Model implements Resource
     public $created;
 
     /**
-     * @var array
+     * @var object
      */
     public $public_net;
     /**
-     * @var array
+     * @var object
      *
      * @deprecated Use $public_net instead
      */
@@ -157,7 +157,7 @@ class Server extends Model implements Resource
     public $protection;
 
     /**
-     * @var array
+     * @var object
      */
     public $labels;
 
