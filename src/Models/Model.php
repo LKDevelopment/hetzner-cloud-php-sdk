@@ -34,9 +34,9 @@ abstract class Model
     /**
      * Replaces or sets the http client.
      *
-     * @param  Client  $httpClient
+     * @param ?Client $httpClient
      */
-    public function setHttpClient(Client $httpClient = null)
+    public function setHttpClient(?Client $httpClient = null)
     {
         $this->httpClient = $httpClient;
     }
