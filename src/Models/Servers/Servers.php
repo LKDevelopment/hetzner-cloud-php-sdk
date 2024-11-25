@@ -39,7 +39,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
