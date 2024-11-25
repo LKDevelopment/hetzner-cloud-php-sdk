@@ -15,9 +15,9 @@ abstract class Model
     /**
      * Model constructor.
      *
-     * @param  Client  $httpClient
+     * @param ?Client $httpClient
      */
-    public function __construct(Client $httpClient = null)
+    public function __construct(?Client $httpClient = null)
     {
         $this->httpClient = $httpClient == null ? HetznerAPIClient::$instance->getHttpClient() : $httpClient;
     }
