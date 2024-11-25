@@ -533,7 +533,7 @@ class Server extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableBackups(string $backupWindow = null): ?APIResponse
+    public function enableBackups(?string $backupWindow = null): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'));
         if (! HetznerAPIClient::hasError($response)) {
