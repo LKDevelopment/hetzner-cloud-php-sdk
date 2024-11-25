@@ -181,7 +181,7 @@ class Server extends Model implements Resource
      * @param  int  $serverId
      * @param  Client|null  $httpClient
      */
-    public function __construct(int $serverId, Client $httpClient = null)
+    public function __construct(int $serverId, ?Client $httpClient = null)
     {
         $this->id = $serverId;
         parent::__construct($httpClient);
