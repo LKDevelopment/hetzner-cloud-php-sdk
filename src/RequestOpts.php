@@ -35,7 +35,7 @@ class RequestOpts
      * @param  $page
      * @param  $labelSelector
      */
-    public function __construct(int $perPage = null, int $page = null, string $labelSelector = null)
+    public function __construct(?int $perPage = null, ?int $page = null, ?string $labelSelector = null)
     {
         if ($perPage > HetznerAPIClient::MAX_ENTITIES_PER_PAGE) {
             throw new \InvalidArgumentException('perPage can not be larger than '.HetznerAPIClient::MAX_ENTITIES_PER_PAGE);

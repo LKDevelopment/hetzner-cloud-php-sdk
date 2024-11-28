@@ -67,7 +67,7 @@ class Action extends Model implements Resource
         int $progress,
         string $status,
         string $started,
-        string $finished = null,
+        ?string $finished = null,
         $resources = null,
         $error = null
     ) {

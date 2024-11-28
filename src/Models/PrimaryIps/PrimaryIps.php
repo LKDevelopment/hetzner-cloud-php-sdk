@@ -30,7 +30,7 @@ class PrimaryIps extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new PrimaryIPRequestOpts();
@@ -49,7 +49,7 @@ class PrimaryIps extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new PrimaryIPRequestOpts();
@@ -124,8 +124,8 @@ class PrimaryIps extends Model implements Resources
         string $name,
         string $assigneeType,
         bool $autoDelete = false,
-        int $assigneeId = null,
-        Datacenter $datacenter = null,
+        ?int $assigneeId = null,
+        ?Datacenter $datacenter = null,
         array $labels = []
     ): ?PrimaryIp {
         $parameters = [

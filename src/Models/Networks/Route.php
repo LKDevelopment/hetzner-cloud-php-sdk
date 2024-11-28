@@ -26,7 +26,7 @@ class Route extends Model
      * @param  string  $gateway
      * @param  Client|null  $client
      */
-    public function __construct(string $destination, string $gateway, Client $client = null)
+    public function __construct(string $destination, string $gateway, ?Client $client = null)
     {
         $this->destination = $destination;
         $this->gateway = $gateway;
@@ -38,7 +38,7 @@ class Route extends Model
      * @param  Client|null  $client
      * @return array|Model
      */
-    public static function parse($input, Client $client = null)
+    public static function parse($input, ?Client $client = null)
     {
         return collect($input)->map(function ($route) use ($client) {
             return new self($route->destination, $route->gateway, $client);
