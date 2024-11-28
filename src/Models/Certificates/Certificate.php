@@ -71,7 +71,7 @@ class Certificate extends Model implements Resource
      * @param  array|null  $used_by
      * @param  array|null  $labels
      */
-    public function __construct(int $id, string $name = null, string $certificate = null, string $created = null, string $not_valid_before = null, string $not_valid_after = null, array $domain_names = null, string $fingerprint = null, $used_by = null, $labels = [])
+    public function __construct(int $id, ?string $name = null, ?string $certificate = null, ?string $created = null, ?string $not_valid_before = null, ?string $not_valid_after = null, ?array $domain_names = null, ?string $fingerprint = null, $used_by = null, $labels = [])
     {
         $this->id = $id;
         $this->name = $name;
