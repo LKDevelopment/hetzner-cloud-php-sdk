@@ -7,7 +7,7 @@ use LKDev\Tests\TestCase;
 
 class RequestOptsTest extends TestCase
 {
-    public function buildQueryTestProvider()
+    public static function buildQueryTestProvider()
     {
         return [
             [
