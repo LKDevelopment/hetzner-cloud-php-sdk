@@ -25,7 +25,7 @@ class LocationRequestOpts extends RequestOpts
      * @param  $page
      * @param  $labelSelector
      */
-    public function __construct(string $name = null, int $perPage = null, int $page = null, string $labelSelector = null)
+    public function __construct(?string $name = null, ?int $perPage = null, ?int $page = null, ?string $labelSelector = null)
     {
         parent::__construct($perPage, $page, $labelSelector);
         $this->name = $name;

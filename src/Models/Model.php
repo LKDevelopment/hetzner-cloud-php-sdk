@@ -17,7 +17,7 @@ abstract class Model
      *
      * @param  Client  $httpClient
      */
-    public function __construct(Client $httpClient = null)
+    public function __construct(?Client $httpClient = null)
     {
         $this->httpClient = $httpClient == null ? HetznerAPIClient::$instance->getHttpClient() : $httpClient;
     }
@@ -36,7 +36,7 @@ abstract class Model
      *
      * @param  Client  $httpClient
      */
-    public function setHttpClient(Client $httpClient = null)
+    public function setHttpClient(?Client $httpClient = null)
     {
         $this->httpClient = $httpClient;
     }

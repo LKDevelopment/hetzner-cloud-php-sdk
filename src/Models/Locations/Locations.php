@@ -35,7 +35,7 @@ class Locations extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();
@@ -54,7 +54,7 @@ class Locations extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new LocationRequestOpts();

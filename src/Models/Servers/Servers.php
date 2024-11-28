@@ -39,7 +39,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -58,7 +58,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -161,7 +161,7 @@ class Servers extends Model
         string $name,
         ServerType $serverType,
         Image $image,
-        Datacenter $datacenter = null,
+        ?Datacenter $datacenter = null,
         $ssh_keys = [],
         $startAfterCreate = true,
         $user_data = '',
@@ -233,7 +233,7 @@ class Servers extends Model
     public function createInLocation(string $name,
                                      ServerType $serverType,
                                      Image $image,
-                                     Location $location = null,
+                                     ?Location $location = null,
                                      array $ssh_keys = [],
                                      bool $startAfterCreate = true,
                                      string $user_data = '',

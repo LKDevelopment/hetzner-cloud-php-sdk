@@ -41,7 +41,7 @@ class Volumes extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new RequestOpts();
@@ -60,7 +60,7 @@ class Volumes extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new VolumeRequestOpts();
@@ -127,7 +127,7 @@ class Volumes extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function create(string $name, int $size, Server $server = null, Location $location = null, bool $automount = false, string $format = null, array $labels = []): ?APIResponse
+    public function create(string $name, int $size, ?Server $server = null, ?Location $location = null, bool $automount = false, ?string $format = null, array $labels = []): ?APIResponse
     {
         $parameters = [
             'name' => $name,

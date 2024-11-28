@@ -27,7 +27,7 @@ class Protection extends Model
      * @param  bool  $delete
      * @param  bool  $rebuild
      */
-    public function __construct(bool $delete, bool $rebuild = null)
+    public function __construct(bool $delete, ?bool $rebuild = null)
     {
         $this->delete = $delete;
         $this->rebuild = $rebuild;

@@ -7,9 +7,9 @@ use LKDev\HetznerCloud\RequestOpts;
 
 interface Resources
 {
-    public function all(RequestOpts $requestOpts = null): array;
+    public function all(?RequestOpts $requestOpts = null): array;
 
-    public function list(RequestOpts $requestOpts = null): ?APIResponse;
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse;
 
     public function getById(int $id);
 

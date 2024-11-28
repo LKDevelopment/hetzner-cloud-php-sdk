@@ -165,20 +165,20 @@ class Image extends Model implements Resource
      */
     public function __construct(
         int $id,
-        string $type = null,
-        string $status = null,
-        string $name = null,
-        string $description = null,
-        float $imageSize = null,
-        int $diskSize = null,
-        string $created = null,
+        ?string $type = null,
+        ?string $status = null,
+        ?string $name = null,
+        ?string $description = null,
+        ?float $imageSize = null,
+        ?int $diskSize = null,
+        ?string $created = null,
         $createdFrom = null,
-        int $boundTo = null,
-        string $osFlavor = null,
-        string $osVersion = null,
-        bool $rapidDeploy = null,
-        Protection $protection = null,
-        string $architecture = null,
+        ?int $boundTo = null,
+        ?string $osFlavor = null,
+        ?string $osVersion = null,
+        ?bool $rapidDeploy = null,
+        ?Protection $protection = null,
+        ?string $architecture = null,
         array $labels = []
     ) {
         $this->id = $id;

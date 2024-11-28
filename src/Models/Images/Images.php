@@ -31,7 +31,7 @@ class Images extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new ImageRequestOpts();
@@ -51,7 +51,7 @@ class Images extends Model implements Resources
      * @throws APIException
      * @throws GuzzleException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new ImageRequestOpts();
@@ -100,7 +100,7 @@ class Images extends Model implements Resources
      *
      * @throws APIException
      */
-    public function getByName(string $name, string $architecture = null): ?Image
+    public function getByName(string $name, ?string $architecture = null): ?Image
     {
         $images = $this->list(new ImageRequestOpts($name, null, null, null, $architecture));
 

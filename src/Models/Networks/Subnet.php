@@ -38,7 +38,7 @@ class Subnet extends Model
      * @param  string  $gateway
      * @param  Client|null  $client
      */
-    public function __construct(string $type, string $ipRange, string $networkZone, string $gateway = null, Client $client = null)
+    public function __construct(string $type, string $ipRange, string $networkZone, ?string $gateway = null, ?Client $client = null)
     {
         $this->type = $type;
         $this->ipRange = $ipRange;
@@ -52,7 +52,7 @@ class Subnet extends Model
      * @param  Client|null  $client
      * @return array|Model
      */
-    public static function parse($input, Client $client = null)
+    public static function parse($input, ?Client $client = null)
     {
         return collect($input)->map(function ($subnet) use ($client) {
             return new self($subnet->type, $subnet->ip_range, $subnet->network_zone, $subnet->gateway, $client);
