@@ -17,7 +17,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
     - name: Install depdendencies
       run: |
-         composer install
+         composer update
     - name: Run phpunit
       run: php vendor/bin/phpunit
     - name: Run phpstan
