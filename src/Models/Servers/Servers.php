@@ -144,7 +144,7 @@ class Servers extends Model
      * @param  \LKDev\HetznerCloud\Models\Servers\Types\ServerType  $serverType
      * @param  \LKDev\HetznerCloud\Models\Images\Image  $image
      * @param  \LKDev\HetznerCloud\Models\Locations\Location  $location
-     * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
+     * @param  ?\LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
      * @param  array  $ssh_keys
      * @param  bool  $startAfterCreate
      * @param  string  $user_data
