@@ -5,6 +5,7 @@ namespace LKDev\HetznerCloud\Clients;
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\HetznerAPIClient;
 
+/* @phpstan-ignore class.extendsFinalByPhpDoc */
 class GuzzleClient extends Client
 {
     /**
