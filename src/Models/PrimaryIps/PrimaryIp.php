@@ -93,7 +93,7 @@ class PrimaryIp extends Model implements Resource
      * @param  int|null  $assignee_id
      * @param  bool  $auto_delete
      */
-    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, int $assignee_id = null, bool $auto_delete=false)
+    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, int $assignee_id = null, bool $auto_delete = false)
     {
         $this->id = $id;
         $this->name = $name;
