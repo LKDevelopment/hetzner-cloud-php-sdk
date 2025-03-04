@@ -1,6 +1,6 @@
 {
   "name": "lkdevelopment/hetzner-cloud-php-sdk",
-  "description": "A inofficial PHP SDK for the Hetzner Cloud API.",
+  "description": "An unofficial PHP SDK for the Hetzner Cloud API.",
   "type": "library",
   "keywords": [
     "hetzner",
