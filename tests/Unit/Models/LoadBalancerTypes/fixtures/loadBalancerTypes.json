@@ -22,6 +22,29 @@
 					}
 				}
 			]
+		},
+		{
+			"deprecated": null,
+			"description": "LB11",
+			"id": 1174,
+			"max_assigned_certificates": 10,
+			"max_connections": 20000,
+			"max_services": 15,
+			"max_targets": 75,
+			"name": "lb21",
+			"prices": [
+				{
+					"location": "fsn1",
+					"price_hourly": {
+						"gross": "1.1900000000000000",
+						"net": "1.0000000000"
+					},
+					"price_monthly": {
+						"gross": "1.1900000000000000",
+						"net": "1.0000000000"
+					}
+				}
+			]
 		}
 	],
 	"meta": {
