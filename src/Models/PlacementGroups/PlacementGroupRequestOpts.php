@@ -25,7 +25,7 @@ class PlacementGroupRequestOpts extends RequestOpts
      * @param  $page
      * @param  $labelSelector
      */
-    public function __construct(string $name = null, string $type = null, int $perPage = null, int $page = null, string $labelSelector = null)
+    public function __construct(?string $name = null, ?string $type = null, ?int $perPage = null, ?int $page = null, ?string $labelSelector = null)
     {
         $this->name = $name;
         $this->type = $type;
