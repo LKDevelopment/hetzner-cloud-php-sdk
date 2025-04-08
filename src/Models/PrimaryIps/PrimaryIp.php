@@ -90,10 +90,10 @@ class PrimaryIp extends Model implements Resource
      * @param  array  $labels
      * @param  array|\LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
      * @param  string  $assignee_type
-     * @param  int  $assignee_id
+     * @param  int|null  $assignee_id
      * @param  bool  $auto_delete
      */
-    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, int $assignee_id, bool $auto_delete)
+    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, ?int $assignee_id = null, bool $auto_delete = false)
     {
         $this->id = $id;
         $this->name = $name;
@@ -235,7 +235,7 @@ class PrimaryIp extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeReverseDNS(string $ip, string $dnsPtr = null): ?APIResponse
+    public function changeReverseDNS(string $ip, ?string $dnsPtr = null): ?APIResponse
     {
         $response = $this->httpClient->post('primary_ips/'.$this->id.'/actions/change_dns_ptr', [
             'json' => [

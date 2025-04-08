@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lkaemmerling
@@ -66,7 +67,7 @@ class Volume extends Model implements Resource
      * @param  int  $volumeId
      * @param  Client|null  $httpClient
      */
-    public function __construct(int $volumeId = null, Client $httpClient = null)
+    public function __construct(?int $volumeId = null, ?Client $httpClient = null)
     {
         $this->id = $volumeId;
         parent::__construct($httpClient);

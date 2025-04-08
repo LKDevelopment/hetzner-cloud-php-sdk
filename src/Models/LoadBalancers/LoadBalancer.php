@@ -108,7 +108,7 @@ class LoadBalancer extends Model implements Resource
      * @param  int|null  $ingoing_traffic
      * @param  int|null  $outgoing_traffic
      */
-    public function __construct(int $id, string $name, LoadBalancerAlgorithm $algorithm, string $created, int $included_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, array $private_net, $protection, $public_net, array $services, array $targets, int $ingoing_traffic = null, int $outgoing_traffic = null)
+    public function __construct(int $id, string $name, LoadBalancerAlgorithm $algorithm, string $created, int $included_traffic, array $labels, LoadBalancerType $loadBalancerType, Location $location, array $private_net, $protection, $public_net, array $services, array $targets, ?int $ingoing_traffic = null, ?int $outgoing_traffic = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -193,7 +193,7 @@ class LoadBalancer extends Model implements Resource
      * @throws APIException
      * @throws GuzzleException
      */
-    public function addService(string $destinationPort, LoadBalancerHealthCheck $healthCheck, int $listenPort, string $protocol, string $proxyprotocol, LoadBalancerServiceHttp $http = null): ?APIResponse
+    public function addService(string $destinationPort, LoadBalancerHealthCheck $healthCheck, int $listenPort, string $protocol, string $proxyprotocol, ?LoadBalancerServiceHttp $http = null): ?APIResponse
     {
         $payload = [
             'destination_port' => $destinationPort,
@@ -232,7 +232,7 @@ class LoadBalancer extends Model implements Resource
      * @throws APIException
      * @throws GuzzleException
      */
-    public function addTarget(string $type, LoadBalancerTargetIp $ip = null, bool $usePrivateIp = false, array $labelSelector = [], Server $server = null): ?APIResponse
+    public function addTarget(string $type, ?LoadBalancerTargetIp $ip = null, bool $usePrivateIp = false, array $labelSelector = [], ?Server $server = null): ?APIResponse
     {
         $payload = [
             'type' => $type,
@@ -520,7 +520,7 @@ class LoadBalancer extends Model implements Resource
      * @throws APIException
      * @throws GuzzleException
      */
-    public function removeTarget(string $type, LoadBalancerTargetIp $ip = null, array $labelSelector = null, Server $server = null): ?APIResponse
+    public function removeTarget(string $type, ?LoadBalancerTargetIp $ip = null, ?array $labelSelector = null, ?Server $server = null): ?APIResponse
     {
         $payload = [
             'type' => $type,
@@ -562,7 +562,7 @@ class LoadBalancer extends Model implements Resource
      * @throws APIException
      * @throws GuzzleException
      */
-    public function updateService(int $destinationPort, LoadBalancerHealthCheck $healthCheck, int $listenPort, string $protocol, bool $proxyprotocol, LoadBalancerServiceHttp $http = null): ?APIResponse
+    public function updateService(int $destinationPort, LoadBalancerHealthCheck $healthCheck, int $listenPort, string $protocol, bool $proxyprotocol, ?LoadBalancerServiceHttp $http = null): ?APIResponse
     {
         $payload = [
             'destination_port' => $destinationPort,

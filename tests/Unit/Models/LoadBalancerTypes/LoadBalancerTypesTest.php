@@ -27,7 +27,7 @@ class LoadBalancerTypesTest extends TestCase
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancerTypes.json')));
         $loadBalancerTypes = $this->load_balancer_types->all();
 
-        $this->assertCount(1, $loadBalancerTypes);
+        $this->assertCount(2, $loadBalancerTypes);
         $this->assertLastRequestEquals('GET', '/load_balancer_types');
     }
 
@@ -58,7 +58,7 @@ class LoadBalancerTypesTest extends TestCase
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancerTypes.json')));
         $loadBalancerTypes = $this->load_balancer_types->list()->load_balancer_types;
 
-        $this->assertEquals(count($loadBalancerTypes), 1);
+        $this->assertEquals(count($loadBalancerTypes), 2);
         $this->assertEquals($loadBalancerTypes[0]->id, 4711);
         $this->assertEquals($loadBalancerTypes[0]->name, 'lb11');
         $this->assertLastRequestEquals('GET', '/load_balancer_types');

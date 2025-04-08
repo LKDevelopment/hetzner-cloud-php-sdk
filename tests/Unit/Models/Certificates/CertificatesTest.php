@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -81,7 +82,7 @@ class CertificatesTest extends TestCase
         $this->certificates->create('my cert', "-----BEGIN CERTIFICATE-----\n...", "-----BEGIN PRIVATE KEY-----\n...");
 
         $this->assertLastRequestEquals('POST', '/certificates');
-        $this->assertLastRequestBodyParametersEqual(['name' => 'my cert', 'certificate' => "-----BEGIN CERTIFICATE-----\n...", 'private_key' =>  "-----BEGIN PRIVATE KEY-----\n..."]);
+        $this->assertLastRequestBodyParametersEqual(['name' => 'my cert', 'certificate' => "-----BEGIN CERTIFICATE-----\n...", 'private_key' => "-----BEGIN PRIVATE KEY-----\n..."]);
     }
 
     public function testDelete()

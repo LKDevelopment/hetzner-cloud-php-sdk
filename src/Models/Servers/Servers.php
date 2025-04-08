@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -39,7 +40,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -58,7 +59,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -94,11 +95,11 @@ class Servers extends Model
     }
 
     /**
-     * Returns a specific server object by its name. The server must exist inside the project.
+     * Returns a specific server object by its id. The server must exist inside the project.
      *
      * @see https://docs.hetzner.cloud/#resources-servers-get
      *
-     * @param  string  $serverId
+     * @param  int  $serverId
      * @return \LKDev\HetznerCloud\Models\Servers\Server|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -108,6 +109,28 @@ class Servers extends Model
         $response = $this->httpClient->get('servers/'.$serverId);
         if (! HetznerAPIClient::hasError($response)) {
             return Server::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
+        }
+
+        return null;
+    }
+
+    /**
+     * Deletes a specific server object by its id. The server must exist inside the project.
+     *
+     * @see https://docs.hetzner.cloud/#servers-delete-a-server
+     *
+     * @param  int  $serverId
+     * @return \LKDev\HetznerCloud\Models\Actions\Action|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function deleteById(int $serverId): ?Action
+    {
+        $response = $this->httpClient->delete('servers/'.$serverId);
+        if (! HetznerAPIClient::hasError($response)) {
+            $payload = json_decode((string) $response->getBody());
+
+            return Action::parse($payload->action);
         }
 
         return null;
@@ -140,7 +163,7 @@ class Servers extends Model
         string $name,
         ServerType $serverType,
         Image $image,
-        Datacenter $datacenter = null,
+        ?Datacenter $datacenter = null,
         $ssh_keys = [],
         $startAfterCreate = true,
         $user_data = '',
@@ -218,7 +241,7 @@ class Servers extends Model
     public function createInLocation(string $name,
                                      ServerType $serverType,
                                      Image $image,
-                                     Location $location = null,
+                                     ?Location $location = null,
                                      array $ssh_keys = [],
                                      bool $startAfterCreate = true,
                                      string $user_data = '',

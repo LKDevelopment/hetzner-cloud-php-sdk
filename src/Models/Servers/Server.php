@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -44,11 +45,11 @@ class Server extends Model implements Resource
     public $created;
 
     /**
-     * @var array
+     * @var object
      */
     public $public_net;
     /**
-     * @var array
+     * @var object
      *
      * @deprecated Use $public_net instead
      */
@@ -157,7 +158,7 @@ class Server extends Model implements Resource
     public $protection;
 
     /**
-     * @var array
+     * @var object
      */
     public $labels;
 
@@ -181,7 +182,7 @@ class Server extends Model implements Resource
      * @param  int  $serverId
      * @param  Client|null  $httpClient
      */
-    public function __construct(int $serverId, Client $httpClient = null)
+    public function __construct(int $serverId, ?Client $httpClient = null)
     {
         $this->id = $serverId;
         parent::__construct($httpClient);
@@ -533,7 +534,7 @@ class Server extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function enableBackups(string $backupWindow = null): ?APIResponse
+    public function enableBackups(?string $backupWindow = null): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/enable_backup'));
         if (! HetznerAPIClient::hasError($response)) {
@@ -624,7 +625,7 @@ class Server extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function changeReverseDNS(string $ip, string $dnsPtr = null): ?APIResponse
+    public function changeReverseDNS(string $ip, ?string $dnsPtr = null): ?APIResponse
     {
         $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/change_dns_ptr'), [
             'json' => [
@@ -654,7 +655,7 @@ class Server extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function metrics(string $type, string $start, string $end, int $step = null)
+    public function metrics(string $type, string $start, string $end, ?int $step = null)
     {
         $response = $this->httpClient->get($this->replaceServerIdInUri('servers/{id}/metrics?').http_build_query(compact('type', 'start', 'end', 'step')));
         if (! HetznerAPIClient::hasError($response)) {
@@ -774,7 +775,7 @@ class Server extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function attachToNetwork(Network $network, string $ip = null, array $aliasIps = [])
+    public function attachToNetwork(Network $network, ?string $ip = null, array $aliasIps = [])
     {
         $payload = [
             'network' => $network->id,

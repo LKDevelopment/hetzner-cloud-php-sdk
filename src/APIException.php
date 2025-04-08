@@ -17,7 +17,7 @@ class APIException extends \Exception
      * @param  int  $code
      * @param  \Throwable|null  $previous
      */
-    public function __construct(APIResponse $response, string $message = '', int $code = 0, \Throwable $previous = null)
+    public function __construct(APIResponse $response, string $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         $this->response = $response;
         parent::__construct($message, $code, $previous);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -37,7 +38,7 @@ class FloatingIps extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
@@ -56,7 +57,7 @@ class FloatingIps extends Model implements Resources
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new FloatingIPRequestOpts();
@@ -128,10 +129,10 @@ class FloatingIps extends Model implements Resources
      */
     public function create(
         string $type,
-        string $description = null,
-        Location $location = null,
-        Server $server = null,
-        string $name = null,
+        ?string $description = null,
+        ?Location $location = null,
+        ?Server $server = null,
+        ?string $name = null,
         array $labels = []
     ): ?FloatingIp {
         $parameters = [
