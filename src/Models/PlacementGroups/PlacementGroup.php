@@ -50,7 +50,7 @@ class PlacementGroup extends Model implements Resource
      * @param  int  $id
      * @param  Client|null  $httpClient
      */
-    public function __construct(int $id, Client $httpClient = null)
+    public function __construct(int $id, ?Client $httpClient = null)
     {
         $this->id = $id;
         parent::__construct($httpClient);
