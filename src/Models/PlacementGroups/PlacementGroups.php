@@ -124,8 +124,8 @@ class PlacementGroups extends Model implements Resources
      * @param  string  $name
      * @param  string  $type
      * @param  array  $labels
-     *
      * @return ?APIResponse
+     *
      * @throws \LKDev\HetznerCloud\APIException|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(string $name, string $type, array $labels = [])
@@ -148,6 +148,7 @@ class PlacementGroups extends Model implements Resources
                 'placement_group' => PlacementGroup::parse($payload->placement_group),
             ], $response->getHeaders());
         }
+
         return null;
     }
 
