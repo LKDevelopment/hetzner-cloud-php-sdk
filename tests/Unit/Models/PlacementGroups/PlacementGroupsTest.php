@@ -82,7 +82,7 @@ class PlacementGroupsTest extends TestCase
 
         $this->assertEmpty($placement_group->labels);
 
-        $this->assertLastRequestEquals('GET', '/placement_groups/4711');
+        $this->assertLastRequestEquals('GET', '/placement_groups/4862');
     }
 
     public function testBasicCreate()

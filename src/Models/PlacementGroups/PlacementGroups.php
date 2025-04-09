@@ -71,14 +71,14 @@ class PlacementGroups extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/#placement-groups-get-a-PlacementGroup
      *
-     * @param  int  $placementGroupId
+     * @param  int  $id
      * @return ?PlacementGroup
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $placementGroupId): ?PlacementGroup
+    public function getById(int $id): ?PlacementGroup
     {
-        $response = $this->httpClient->get('placement_group/'.$placementGroupId);
+        $response = $this->httpClient->get('placement_groups/'.$id);
         if (! HetznerAPIClient::hasError($response)) {
             return PlacementGroup::parse(json_decode((string) $response->getBody())->placement_group);
         }
