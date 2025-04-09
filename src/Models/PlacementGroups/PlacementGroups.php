@@ -20,9 +20,9 @@ class PlacementGroups extends Model implements Resources
     protected $placement_groups;
 
     /**
-     * Returns all existing placementGroup objects.
+     * Returns all existing PlacementGroup objects.
      *
-     * @see https://docs.hetzner.cloud/#placement-groups-get-all-placementgroups
+     * @see https://docs.hetzner.cloud/#placement-groups-get-all-PlacementGroups
      *
      * @param  RequestOpts|null  $requestOpts
      * @return array
@@ -41,7 +41,7 @@ class PlacementGroups extends Model implements Resources
     /**
      * Returns all existing PlacementGroup objects.
      *
-     * @see https://docs.hetzner.cloud/#placement-groups-get-all-placementgroups
+     * @see https://docs.hetzner.cloud/#placement-groups-get-all-PlacementGroups
      *
      * @param  RequestOpts|null  $requestOpts
      * @return APIResponse|null
@@ -69,27 +69,27 @@ class PlacementGroups extends Model implements Resources
     /**
      * Returns a specific PlacementGroup object. The PlacementGroup must exist inside the project.
      *
-     * @see https://docs.hetzner.cloud/#placement-groups-get-a-placementgroup
+     * @see https://docs.hetzner.cloud/#placement-groups-get-a-PlacementGroup
      *
-     * @param  int  $serverId
-     * @return PlacementGroup
+     * @param  int  $placementGroupId
+     * @return ?PlacementGroup
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $serverId): ?PlacementGroup
+    public function getById(int $placementGroupId): ?PlacementGroup
     {
-        $response = $this->httpClient->get('placement_group/'.$serverId);
+        $response = $this->httpClient->get('placement_group/'.$placementGroupId);
         if (! HetznerAPIClient::hasError($response)) {
-            return PlacementGroup::parse(json_decode((string) $response->getBody())->network);
+            return PlacementGroup::parse(json_decode((string) $response->getBody())->placement_group);
         }
 
         return null;
     }
 
     /**
-     * Returns a specific placementGroup object by its name. The placementGroup must exist inside the project.
+     * Returns a specific PlacementGroup object by its name. The PlacementGroup must exist inside the project.
      *
-     * @see https://docs.hetzner.cloud/#placement-groups-get-all-placementgroups
+     * @see https://docs.hetzner.cloud/#placement-groups
      *
      * @param  string  $name
      * @return PlacementGroup|null
@@ -124,6 +124,9 @@ class PlacementGroups extends Model implements Resources
      * @param  string  $name
      * @param  string  $type
      * @param  array  $labels
+     *
+     * @return ?APIResponse
+     * @throws \LKDev\HetznerCloud\APIException|\GuzzleHttp\Exception\GuzzleException
      */
     public function create(string $name, string $type, array $labels = [])
     {
@@ -145,6 +148,7 @@ class PlacementGroups extends Model implements Resources
                 'placement_group' => PlacementGroup::parse($payload->placement_group),
             ], $response->getHeaders());
         }
+        return null;
     }
 
     /**
@@ -161,6 +165,6 @@ class PlacementGroups extends Model implements Resources
      */
     public function _getKeys(): array
     {
-        return ['one' => 'placementgroup', 'many' => 'placementgroups'];
+        return ['one' => 'placement_group', 'many' => 'placement_groups'];
     }
 }

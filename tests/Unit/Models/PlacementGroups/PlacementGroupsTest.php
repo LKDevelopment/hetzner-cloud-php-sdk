@@ -55,7 +55,7 @@ class PlacementGroupsTest extends TestCase
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/placement_groups.json')));
         $placement_group = $this->placement_groups->getByName('my_placemengroup');
-        $this->assertEquals(4711, $placement_group->id);
+        $this->assertEquals(4862, $placement_group->id);
         $this->assertEquals('my_placemengroup', $placement_group->name);
 
         $this->assertCount(1, $placement_group->servers);
@@ -72,8 +72,9 @@ class PlacementGroupsTest extends TestCase
     public function testGet()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/placement_group.json')));
-        $placement_group = $this->placement_groups->get(4711);
-        $this->assertEquals(4711, $placement_group->id);
+        $placement_group = $this->placement_groups->get(4862);
+
+        $this->assertEquals(4862, $placement_group->id);
         $this->assertEquals('my_placemengroup', $placement_group->name);
 
         $this->assertCount(1, $placement_group->servers);

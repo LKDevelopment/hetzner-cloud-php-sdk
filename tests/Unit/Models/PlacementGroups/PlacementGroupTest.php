@@ -19,6 +19,6 @@ class PlacementGroupTest extends TestCase
         parent::setUp();
         $tmp = new PlacementGroups($this->hetznerApi->getHttpClient());
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/placement_group.json')));
-        $this->network = $tmp->get(4711);
+        $this->placement_group = $tmp->get(4862);
     }
 }
