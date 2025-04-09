@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud\Models\PlacementGroups;
 
+use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
