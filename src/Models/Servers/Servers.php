@@ -185,14 +185,16 @@ class Servers extends Model
             'ssh_keys' => $ssh_keys,
             'volumes' => $volumes,
             'automount' => $automount,
-            'networks' => $networks,
-            'public_net' => $public_net,
+            'networks' => $networks
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
             $parameters['firewalls'] = $firewalls;
+        }
+        if (! empty($public_net)) {
+            $parameters['public_net'] = $public_net;
         }
         if ($placement_group != null) {
             $parameters['placement_group'] = $placement_group;
