@@ -93,18 +93,18 @@ class Server extends Model implements Resource
     public $iso;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     public $rescue_enabled;
     /**
-     * @var bool
+     * @var ?bool
      *
      * @deprecated Use $rescue_enabled instead
      */
     public $rescueEnabled;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     public $locked;
 
@@ -206,9 +206,9 @@ class Server extends Model implements Resource
         $this->created = $data->created;
         $this->image = $data->image ?: Image::parse($data->image);
         $this->iso = $data->iso ?: ISO::parse($data->iso);
-        $this->rescue_enabled = $data->rescue_enabled ?: null;
-        $this->rescueEnabled = $data->rescue_enabled ?: null;
-        $this->locked = $data->locked ?: null;
+        $this->rescue_enabled = $data->rescue_enabled ?? null;
+        $this->rescueEnabled = $data->rescue_enabled ?? null;
+        $this->locked = $data->locked ?? null;
         $this->backup_window = $data->backup_window ?: null;
         $this->backupWindow = $data->backup_window ?: null;
         $this->outgoing_traffic = $data->outgoing_traffic ?: null;
