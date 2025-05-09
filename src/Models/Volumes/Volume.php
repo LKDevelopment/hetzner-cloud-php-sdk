@@ -9,7 +9,7 @@
 
 namespace LKDev\HetznerCloud\Models\Volumes;
 
-use GuzzleHttp\Client;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
@@ -65,9 +65,9 @@ class Volume extends Model implements Resource
 
     /**
      * @param  int  $volumeId
-     * @param  Client|null  $httpClient
+     * @param  GuzzleClient|null  $httpClient
      */
-    public function __construct(?int $volumeId = null, ?Client $httpClient = null)
+    public function __construct(?int $volumeId = null, ?GuzzleClient $httpClient = null)
     {
         $this->id = $volumeId;
         parent::__construct($httpClient);

@@ -9,7 +9,7 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
-use GuzzleHttp\Client;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
@@ -180,9 +180,9 @@ class Server extends Model implements Resource
 
     /**
      * @param  int  $serverId
-     * @param  Client|null  $httpClient
+     * @param  GuzzleClient|null  $httpClient
      */
-    public function __construct(int $serverId, ?Client $httpClient = null)
+    public function __construct(int $serverId, ?GuzzleClient $httpClient = null)
     {
         $this->id = $serverId;
         parent::__construct($httpClient);

@@ -11,6 +11,7 @@ namespace LKDev\Tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
@@ -29,7 +30,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     {
         $this->mockHandler = new MockHandler();
         $this->hetznerApi = new HetznerAPIClient('abcdef', 'http://localhost:4000/v1/');
-        $this->hetznerApi->setHttpClient(new Client(['handler' => $this->mockHandler]));
+
+        $guzzleClient = new GuzzleClient($this->hetznerApi, ['handler' => $this->mockHandler]);
+
+        $this->hetznerApi->setHttpClient($guzzleClient);
     }
 
     public function tearDown(): void
@@ -41,7 +45,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     public function assertLastRequestEquals($method, $urlFragment)
     {
         $this->assertEquals($this->mockHandler->getLastRequest()->getMethod(), $method);
-        $this->assertEquals('/'.$this->mockHandler->getLastRequest()->getUri()->getPath(), $urlFragment);
+        $this->assertStringEndsWith($urlFragment, $this->mockHandler->getLastRequest()->getUri()->getPath());
     }
 
     public function assertLastRequestBodyParametersEqual(array $parameters)
