@@ -2,7 +2,6 @@
 
 namespace LKDev\HetznerCloud;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Certificates\Certificates;
@@ -122,18 +121,12 @@ class HetznerAPIClient
         return $this;
     }
 
-    /**
-     * @return Client
-     */
     public function getHttpClient(): GuzzleClient
     {
         return $this->httpClient;
     }
 
-    /**
-     * @return Client
-     */
-    public function setHttpClient(Client $client): self
+    public function setHttpClient(GuzzleClient $client): self
     {
         $this->httpClient = $client;
 

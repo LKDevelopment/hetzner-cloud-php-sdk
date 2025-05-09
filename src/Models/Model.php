@@ -2,22 +2,13 @@
 
 namespace LKDev\HetznerCloud\Models;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 
 abstract class Model
 {
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    protected $httpClient;
+    protected GuzzleClient $httpClient;
 
-    /**
-     * Model constructor.
-     *
-     * @param  Client  $httpClient
-     */
     public function __construct(?GuzzleClient $httpClient = null)
     {
         $this->httpClient = $httpClient == null ? HetznerAPIClient::$instance->getHttpClient() : $httpClient;
@@ -35,9 +26,8 @@ abstract class Model
     /**
      * Replaces or sets the http client.
      *
-     * @param  Client  $httpClient
      */
-    public function setHttpClient(?Client $httpClient = null)
+    public function setHttpClient(?GuzzleClient $httpClient = null)
     {
         $this->httpClient = $httpClient;
     }
