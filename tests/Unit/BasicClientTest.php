@@ -10,6 +10,7 @@
 namespace LKDev\Tests\Unit;
 
 use GuzzleHttp\Client;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
@@ -61,7 +62,7 @@ class BasicClientTest extends TestCase
     public function testSetHttpClient()
     {
         $client = new HetznerAPIClient('IAmTheTestToken', '');
-        $httpClient = new Client();
+        $httpClient = new GuzzleClient($client);
         $client->setHttpClient($httpClient);
         $this->assertEquals($httpClient, $client->getHttpClient());
     }
