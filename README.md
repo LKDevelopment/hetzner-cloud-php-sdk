@@ -20,6 +20,9 @@ foreach ($hetznerClient->servers()->all() as $server) {
     echo 'ID: '.$server->id.' Name:'.$server->name.' Status: '.$server->status.PHP_EOL;
 }
 ```
+### PHP Support
+
+We test on all supported PHP Versions. The library can still work on older versions, however it is no longer actively tested.
 
 ### Old Releases: v1.x
 [Version 1.x](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/tree/v1) is abandoned and will not receive any new updates or features. V2 was created with Backward Compatibility in mind. So it should work as a drop-in replacement. Therefor it does not give a "Migration to v2"-Guide. It should just work!

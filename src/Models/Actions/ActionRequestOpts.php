@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -30,7 +31,7 @@ class ActionRequestOpts extends RequestOpts
      * @param  $page
      * @param  $labelSelector
      */
-    public function __construct(string $status = null, string $sort = null, int $perPage = null, int $page = null, string $labelSelector = null)
+    public function __construct(?string $status = null, ?string $sort = null, ?int $perPage = null, ?int $page = null, ?string $labelSelector = null)
     {
         parent::__construct($perPage, $page, $labelSelector);
         $this->status = $status;

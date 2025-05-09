@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -29,7 +30,7 @@ class ImageRequestOpts extends RequestOpts
      * @param  string|null  $labelSelector
      * @param  string|null  $architecture
      */
-    public function __construct(string $name = null, int $perPage = null, int $page = null, string $labelSelector = null, string $architecture = null)
+    public function __construct(?string $name = null, ?int $perPage = null, ?int $page = null, ?string $labelSelector = null, ?string $architecture = null)
     {
         parent::__construct($perPage, $page, $labelSelector);
         $this->name = $name;

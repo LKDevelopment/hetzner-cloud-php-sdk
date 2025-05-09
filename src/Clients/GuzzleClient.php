@@ -5,8 +5,10 @@ namespace LKDev\HetznerCloud\Clients;
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\HetznerAPIClient;
 
-class GuzzleClient extends Client
+class GuzzleClient
 {
+    protected Client $client;
+
     /**
      * @param  HetznerAPIClient  $client
      * @param  array  $additionalGuzzleConfig
@@ -21,6 +23,11 @@ class GuzzleClient extends Client
                 'User-Agent' => ((strlen($client->getUserAgent()) > 0) ? $client->getUserAgent().' ' : '').'hcloud-php/'.HetznerAPIClient::VERSION,
             ],
         ], $additionalGuzzleConfig);
-        parent::__construct($guzzleConfig);
+        $this->client = new Client($guzzleConfig);
+    }
+
+    public function __call($name, $arguments)
+    {
+        return $this->client->$name(...$arguments);
     }
 }

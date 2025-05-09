@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -39,7 +40,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function all(RequestOpts $requestOpts = null): array
+    public function all(?RequestOpts $requestOpts = null): array
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -58,7 +59,7 @@ class Servers extends Model
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function list(RequestOpts $requestOpts = null): ?APIResponse
+    public function list(?RequestOpts $requestOpts = null): ?APIResponse
     {
         if ($requestOpts == null) {
             $requestOpts = new ServerRequestOpts();
@@ -153,6 +154,7 @@ class Servers extends Model
      * @param  array  $networks
      * @param  array  $labels
      * @param  array  $firewalls
+     * @param  array  $public_net
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -161,7 +163,7 @@ class Servers extends Model
         string $name,
         ServerType $serverType,
         Image $image,
-        Datacenter $datacenter = null,
+        ?Datacenter $datacenter = null,
         $ssh_keys = [],
         $startAfterCreate = true,
         $user_data = '',
@@ -169,7 +171,9 @@ class Servers extends Model
         $automount = false,
         $networks = [],
         array $labels = [],
-        array $firewalls = []
+        array $firewalls = [],
+        array $public_net = [],
+        ?int $placement_group = null
     ): ?APIResponse {
         $parameters = [
             'name' => $name,
@@ -182,12 +186,16 @@ class Servers extends Model
             'volumes' => $volumes,
             'automount' => $automount,
             'networks' => $networks,
+            'public_net' => $public_net,
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
             $parameters['firewalls'] = $firewalls;
+        }
+        if ($placement_group != null) {
+            $parameters['placement_group'] = $placement_group;
         }
         $response = $this->httpClient->post('servers', [
             'json' => $parameters,
@@ -233,7 +241,7 @@ class Servers extends Model
     public function createInLocation(string $name,
                                      ServerType $serverType,
                                      Image $image,
-                                     Location $location = null,
+                                     ?Location $location = null,
                                      array $ssh_keys = [],
                                      bool $startAfterCreate = true,
                                      string $user_data = '',
@@ -241,7 +249,9 @@ class Servers extends Model
                                      bool $automount = false,
                                      array $networks = [],
                                      array $labels = [],
-                                     array $firewalls = []
+                                     array $firewalls = [],
+                                     array $public_net = [],
+                                     ?int $placement_group = null
     ): ?APIResponse {
         $parameters = [
             'name' => $name,
@@ -254,12 +264,16 @@ class Servers extends Model
             'volumes' => $volumes,
             'automount' => $automount,
             'networks' => $networks,
+            'public_net' => $public_net,
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
             $parameters['firewalls'] = $firewalls;
+        }
+        if ($placement_group != null) {
+            $parameters['placement_group'] = $placement_group;
         }
         $response = $this->httpClient->post('servers', [
             'json' => $parameters,

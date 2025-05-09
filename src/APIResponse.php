@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lkaemmerling
@@ -36,7 +37,7 @@ class APIResponse
      * @param  string|null  $resource
      * @return Model|string|bool
      */
-    public function getResponsePart(string $resource = null)
+    public function getResponsePart(?string $resource = null)
     {
         return (array_key_exists($resource, $this->response)) ? $this->response[$resource] : false;
     }

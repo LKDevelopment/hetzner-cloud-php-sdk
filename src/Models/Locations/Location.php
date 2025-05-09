@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: lukaskammerling
@@ -75,12 +76,12 @@ class Location extends Model implements Resource
     public function __construct(
         int $id,
         string $name,
-        string $description = null,
-        string $country = null,
-        string $city = null,
-        float $latitude = null,
-        float $longitude = null,
-        string $networkZone = null
+        ?string $description = null,
+        ?string $country = null,
+        ?string $city = null,
+        ?float $latitude = null,
+        ?float $longitude = null,
+        ?string $networkZone = null
     ) {
         $this->id = $id;
         $this->name = $name;
