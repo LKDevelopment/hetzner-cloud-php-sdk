@@ -9,7 +9,6 @@
 
 namespace LKDev\Tests\Unit;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;

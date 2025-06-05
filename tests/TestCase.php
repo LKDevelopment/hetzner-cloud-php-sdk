@@ -9,7 +9,6 @@
 
 namespace LKDev\Tests;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
