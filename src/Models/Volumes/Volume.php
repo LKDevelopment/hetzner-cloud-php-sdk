@@ -9,7 +9,6 @@
 
 namespace LKDev\HetznerCloud\Models\Volumes;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
