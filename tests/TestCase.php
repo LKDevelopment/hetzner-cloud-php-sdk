@@ -11,6 +11,7 @@ namespace LKDev\Tests;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 
 abstract class TestCase extends \PHPUnit\Framework\TestCase
@@ -28,8 +29,8 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
     public function setUp(): void
     {
         $this->mockHandler = new MockHandler();
-        $this->hetznerApi = new HetznerAPIClient('abcdef', 'http://localhost:4000/v1/');
-        $this->hetznerApi->setHttpClient(new Client(['handler' => $this->mockHandler]));
+        $this->hetznerApi = new HetznerAPIClient('abcdef', '');
+        $this->hetznerApi->setHttpClient(new GuzzleClient($this->hetznerApi, ['handler' => $this->mockHandler]));
     }
 
     public function tearDown(): void
