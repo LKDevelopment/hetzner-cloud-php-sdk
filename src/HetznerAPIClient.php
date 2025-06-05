@@ -60,7 +60,7 @@ class HetznerAPIClient
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
-    protected $httpClient;
+    protected GuzzleClient $httpClient;
 
     /**
      * @param  string  $apiToken
@@ -123,17 +123,17 @@ class HetznerAPIClient
     }
 
     /**
-     * @return Client
+     * @return GuzzleClient
      */
-    public function getHttpClient(): Client
+    public function getHttpClient(): GuzzleClient
     {
         return $this->httpClient;
     }
 
     /**
-     * @return Client
+     * @return GuzzleClient
      */
-    public function setHttpClient(Client $client): self
+    public function setHttpClient(GuzzleClient $client): self
     {
         $this->httpClient = $client;
 

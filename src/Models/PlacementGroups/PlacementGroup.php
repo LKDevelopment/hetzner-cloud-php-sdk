@@ -4,6 +4,7 @@ namespace LKDev\HetznerCloud\Models\PlacementGroups;
 
 use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
@@ -49,9 +50,9 @@ class PlacementGroup extends Model implements Resource
      * PlacementGroup constructor.
      *
      * @param  int  $id
-     * @param  Client|null  $httpClient
+     * @param  GuzzleClient|null  $httpClient
      */
-    public function __construct(int $id, ?Client $httpClient = null)
+    public function __construct(int $id, ?GuzzleClient $httpClient = null)
     {
         $this->id = $id;
         parent::__construct($httpClient);
