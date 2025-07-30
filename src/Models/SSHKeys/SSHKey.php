@@ -4,7 +4,7 @@
  * Created by PhpStorm.
  * User: lukaskammerling
  * Date: 28.01.18
- * Time: 21:00.
+ * Time: 21:00
  */
 
 namespace LKDev\HetznerCloud\Models\SSHKeys;
@@ -41,22 +41,33 @@ class SSHKey extends Model implements Resource
     public $labels;
 
     /**
+     * @var \DateTimeInterface
+     */
+    public $created;
+
+    /**
      * SSHKey constructor.
      *
      * @param  int  $id
      * @param  string  $name
-     * @param  string  $fingerprint
-     * @param  string  $publicKey
-     * @param  array  $labels
      */
-    public function __construct(int $id, string $name, string $fingerprint, string $publicKey, array $labels = [])
+    public function __construct(int $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->fingerprint = $fingerprint;
-        $this->public_key = $publicKey;
-        $this->labels = $labels;
+
         parent::__construct();
+
+        // @deprecated code
+        if (func_num_args() > 2) {
+            $this->fingerprint = func_get_arg(2);
+            if (func_get_arg(3)) {
+                $this->public_key = func_get_arg(3);
+            }
+            if (func_get_arg(4)) {
+                $this->labels = func_get_arg(4);
+            }
+        }
     }
 
     /**
@@ -69,14 +80,14 @@ class SSHKey extends Model implements Resource
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function update(array $data): ?self
+    public function update(array $data): ?static
     {
         $response = $this->httpClient->put('ssh_keys/'.$this->id, [
             'json' => $data,
 
         ]);
         if (! HetznerAPIClient::hasError($response)) {
-            return self::parse(json_decode((string) $response->getBody())->ssh_key);
+            return static::parse(json_decode((string) $response->getBody())->ssh_key);
         }
 
         return null;
@@ -94,7 +105,7 @@ class SSHKey extends Model implements Resource
      *
      * @deprecated 1.2.0
      */
-    public function changeName(string $newName): ?self
+    public function changeName(string $newName): ?static
     {
         return $this->update(['name' => $newName]);
     }
@@ -124,7 +135,7 @@ class SSHKey extends Model implements Resource
      */
     public static function parse($input)
     {
-        return new self($input->id, $input->name, $input->fingerprint, $input->public_key, get_object_vars($input->labels));
+        return (new static($input->id, $input->name))->setAdditionalData($input);
     }
 
     /**
@@ -137,5 +148,15 @@ class SSHKey extends Model implements Resource
     public function reload()
     {
         return HetznerAPIClient::$instance->sshKeys()->get($this->id);
+    }
+
+    public function setAdditionalData($data): static
+    {
+        $this->fingerprint = $data->fingerprint;
+        $this->public_key = $data->public_key;
+        $this->labels = get_object_vars($data->labels);
+        $this->created = new \DateTime($data->created);
+
+        return $this;
     }
 }
