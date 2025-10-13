@@ -21,6 +21,7 @@ use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
+use LKDev\HetznerCloud\Models\Zones\Zones;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -63,9 +64,9 @@ class HetznerAPIClient
     protected GuzzleClient $httpClient;
 
     /**
-     * @param  string  $apiToken
-     * @param  string  $baseUrl
-     * @param  string  $userAgent
+     * @param string $apiToken
+     * @param string $baseUrl
+     * @param string $userAgent
      */
     public function __construct(string $apiToken, $baseUrl = 'https://api.hetzner.cloud/v1/', $userAgent = '')
     {
@@ -101,7 +102,7 @@ class HetznerAPIClient
     }
 
     /**
-     * @param  string  $userAgent
+     * @param string $userAgent
      * @return HetznerAPIClient
      */
     public function setUserAgent(string $userAgent): self
@@ -112,7 +113,7 @@ class HetznerAPIClient
     }
 
     /**
-     * @param  string  $baseUrl
+     * @param string $baseUrl
      * @return HetznerAPIClient
      */
     public function setBaseUrl(string $baseUrl): self
@@ -141,13 +142,13 @@ class HetznerAPIClient
     }
 
     /**
-     * @param  \Psr\Http\Message\ResponseInterface  $response
+     * @param \Psr\Http\Message\ResponseInterface $response
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function throwError(ResponseInterface $response)
     {
-        $body = (string) $response->getBody();
+        $body = (string)$response->getBody();
         if (strlen($body) > 0) {
             $error = \GuzzleHttp\json_decode($body);
             throw new APIException(APIResponse::create([
@@ -160,15 +161,15 @@ class HetznerAPIClient
     }
 
     /**
-     * @param  \Psr\Http\Message\ResponseInterface  $response
+     * @param \Psr\Http\Message\ResponseInterface $response
      * @return bool
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public static function hasError(ResponseInterface $response)
     {
-        $responseDecoded = json_decode((string) $response->getBody());
-        if (strlen((string) $response->getBody()) > 0) {
+        $responseDecoded = json_decode((string)$response->getBody());
+        if (strlen((string)$response->getBody()) > 0) {
             if (property_exists($responseDecoded, 'error')) {
                 self::throwError($response);
 
@@ -325,6 +326,12 @@ class HetznerAPIClient
     public function loadBalancerTypes()
     {
         return new LoadBalancerTypes($this->httpClient);
+    }
+
+
+    public function zones()
+    {
+        return new Zones($this->httpClient);
     }
 
     /**
