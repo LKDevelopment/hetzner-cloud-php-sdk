@@ -190,6 +190,50 @@ class Zone extends Model implements Resource
         return null;
     }
 
+    public function exportZonefile(): ?APIResponse
+    {
+        $response = $this->httpClient->get('zones/' . $this->id . '/zonefile');
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'zonefile' => json_decode((string)$response->getBody())->zonefile,
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    public function changeTTL(int $ttl): ?APIResponse
+    {
+        $response = $this->httpClient->post('zones/' . $this->id . '/actions/change_ttl', [
+            'json' => [
+                'ttl' => $ttl,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    public function importZonefile(string $zonefile): ?APIResponse
+    {
+        $response = $this->httpClient->post('zones/' . $this->id . '/actions/import_zonefile', [
+            'json' => [
+                'zonefile' => $zonefile,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
     /**
      * @param  string  $uri
      * @return string
@@ -198,6 +242,7 @@ class Zone extends Model implements Resource
     {
         return str_replace('{id}', $this->id, $uri);
     }
+
 
     /**
      * @param  $input
@@ -210,5 +255,25 @@ class Zone extends Model implements Resource
         }
 
         return (new self($input->id))->setAdditionalData($input);
+    }
+
+    /**
+     * @param array<PrimaryNameserver> $primary_nameservers
+     * @return void#
+     */
+    public function changePrimaryNameservers(array $primary_nameservers)
+    {
+        $response = $this->httpClient->post('zones/' . $this->id . '/actions/change_primary_nameservers', [
+            'json' => [
+                'primary_nameservers' => $primary_nameservers,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 }
