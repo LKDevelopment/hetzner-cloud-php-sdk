@@ -192,10 +192,10 @@ class Zone extends Model implements Resource
 
     public function exportZonefile(): ?APIResponse
     {
-        $response = $this->httpClient->get('zones/' . $this->id . '/zonefile');
-        if (!HetznerAPIClient::hasError($response)) {
+        $response = $this->httpClient->get('zones/'.$this->id.'/zonefile');
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'zonefile' => json_decode((string)$response->getBody())->zonefile,
+                'zonefile' => json_decode((string) $response->getBody())->zonefile,
             ], $response->getHeaders());
         }
 
@@ -204,14 +204,14 @@ class Zone extends Model implements Resource
 
     public function changeTTL(int $ttl): ?APIResponse
     {
-        $response = $this->httpClient->post('zones/' . $this->id . '/actions/change_ttl', [
+        $response = $this->httpClient->post('zones/'.$this->id.'/actions/change_ttl', [
             'json' => [
                 'ttl' => $ttl,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -220,14 +220,14 @@ class Zone extends Model implements Resource
 
     public function importZonefile(string $zonefile): ?APIResponse
     {
-        $response = $this->httpClient->post('zones/' . $this->id . '/actions/import_zonefile', [
+        $response = $this->httpClient->post('zones/'.$this->id.'/actions/import_zonefile', [
             'json' => [
                 'zonefile' => $zonefile,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -243,7 +243,6 @@ class Zone extends Model implements Resource
         return str_replace('{id}', $this->id, $uri);
     }
 
-
     /**
      * @param  $input
      * @return \LKDev\HetznerCloud\Models\Zones\Zone|static |null
@@ -258,19 +257,19 @@ class Zone extends Model implements Resource
     }
 
     /**
-     * @param array<PrimaryNameserver> $primary_nameservers
+     * @param  array<PrimaryNameserver>  $primary_nameservers
      * @return void#
      */
     public function changePrimaryNameservers(array $primary_nameservers)
     {
-        $response = $this->httpClient->post('zones/' . $this->id . '/actions/change_primary_nameservers', [
+        $response = $this->httpClient->post('zones/'.$this->id.'/actions/change_primary_nameservers', [
             'json' => [
                 'primary_nameservers' => $primary_nameservers,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
