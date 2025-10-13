@@ -19,11 +19,10 @@ class RRSetProtection extends Model
      */
     public $change;
 
-
     /**
      * Protection constructor.
      *
-     * @param bool $delete
+     * @param  bool  $delete
      */
     public function __construct(bool $delete)
     {
@@ -33,7 +32,7 @@ class RRSetProtection extends Model
     }
 
     /**
-     * @param array $input
+     * @param  array  $input
      * @return ?RRSetProtection
      */
     public static function parse($input)
@@ -41,9 +40,10 @@ class RRSetProtection extends Model
         if ($input == null) {
             return null;
         }
-        if (!is_array($input)) {
+        if (! is_array($input)) {
             return null;
         }
+
         return new self($input['change'] ?? false);
     }
 }

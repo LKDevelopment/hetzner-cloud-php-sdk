@@ -10,10 +10,10 @@ class AuthoritativeNameservers
     public string $delegation_status;
 
     /**
-     * @param array $assigned
-     * @param array $delegated
-     * @param string $delegation_last_check
-     * @param string $delegation_status
+     * @param  array  $assigned
+     * @param  array  $delegated
+     * @param  string  $delegation_last_check
+     * @param  string  $delegation_status
      */
     public function __construct(array $assigned, array $delegated, string $delegation_last_check, string $delegation_status)
     {

@@ -22,11 +22,11 @@ class ZoneRequestOpts extends RequestOpts
     /**
      * RequestOpts constructor.
      *
-     * @param string|null $name
-     * @param string|null $mode
-     * @param int|null $perPage
-     * @param int|null $page
-     * @param string|null $labelSelector
+     * @param  string|null  $name
+     * @param  string|null  $mode
+     * @param  int|null  $perPage
+     * @param  int|null  $page
+     * @param  string|null  $labelSelector
      */
     public function __construct(?string $name = null, ?string $mode = null, ?int $perPage = null, ?int $page = null, ?string $labelSelector = null)
     {

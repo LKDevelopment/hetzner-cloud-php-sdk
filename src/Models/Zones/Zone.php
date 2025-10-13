@@ -38,10 +38,8 @@ class Zone extends Model implements Resource
     public string $mode;
     /**
      * @var array<PrimaryNameserver>
-     *
      */
     public array $primary_nameservers;
-
 
     /**
      * @var array|\LKDev\HetznerCloud\Models\Protection
@@ -65,7 +63,6 @@ class Zone extends Model implements Resource
 
     /**
      * @var string
-     *
      */
     public string $registrar;
 
@@ -75,8 +72,8 @@ class Zone extends Model implements Resource
     public AuthoritativeNameservers $authoritative_nameservers;
 
     /**
-     * @param int $zoneId
-     * @param GuzzleClient|null $httpClient
+     * @param  int  $zoneId
+     * @param  GuzzleClient|null  $httpClient
      */
     public function __construct(int $zoneId, ?GuzzleClient $httpClient = null)
     {
@@ -134,9 +131,9 @@ class Zone extends Model implements Resource
     public function delete(): ?APIResponse
     {
         $response = $this->httpClient->delete($this->replaceZoneIdInUri('zones/{id}'));
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -148,7 +145,7 @@ class Zone extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/cloud#zones-update-a-zone
      *
-     * @param array $data
+     * @param  array  $data
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -158,9 +155,9 @@ class Zone extends Model implements Resource
         $response = $this->httpClient->put($this->replaceZoneIdInUri('zones/{id}'), [
             'json' => $data,
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'zone' => self::parse(json_decode((string)$response->getBody())->zone),
+                'zone' => self::parse(json_decode((string) $response->getBody())->zone),
             ], $response->getHeaders());
         }
 
@@ -172,21 +169,21 @@ class Zone extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#zone-actions-change-zone-protection
      *
-     * @param bool $delete
+     * @param  bool  $delete
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
     public function changeProtection(bool $delete = true): ?APIResponse
     {
-        $response = $this->httpClient->post('zones/' . $this->id . '/actions/change_protection', [
+        $response = $this->httpClient->post('zones/'.$this->id.'/actions/change_protection', [
             'json' => [
                 'delete' => $delete,
             ],
         ]);
-        if (!HetznerAPIClient::hasError($response)) {
+        if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -194,7 +191,7 @@ class Zone extends Model implements Resource
     }
 
     /**
-     * @param string $uri
+     * @param  string  $uri
      * @return string
      */
     protected function replaceZoneIdInUri(string $uri): string
@@ -215,5 +212,3 @@ class Zone extends Model implements Resource
         return (new self($input->id))->setAdditionalData($input);
     }
 }
-
-

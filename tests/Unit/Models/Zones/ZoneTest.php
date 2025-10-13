@@ -23,7 +23,6 @@ class ZoneTest extends TestCase
         $this->zone = $tmp->getById(4711);
     }
 
-
     public function testDelete()
     {
         $this->mockHandler->append(new Response(200, [], $this->getGenericActionResponse('delete_zone')));
