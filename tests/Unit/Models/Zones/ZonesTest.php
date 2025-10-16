@@ -25,7 +25,7 @@ class ZonesTest extends TestCase
 
     public function testCreatePrimarySimple()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zone_create.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone_create.json')));
         $resp = $this->zones->create('example.com', ZoneMode::PRIMARY);
 
         $Zone = $resp->getResponsePart('zone');
@@ -40,11 +40,11 @@ class ZonesTest extends TestCase
 
     public function testCreatePrimaryFull()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zone_create.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone_create.json')));
         $resp = $this->zones->create('example.com', ZoneMode::PRIMARY, 10, ['key' => 'value'], [], [
-            (RRSet::create('@', 'A', [
+            RRSet::create('@', 'A', [
                 new Record('192.0.2.1', 'my comment'),
-            ], 3600, [])),
+            ], 3600, []),
         ]);
 
         $Zone = $resp->getResponsePart('zone');
@@ -63,10 +63,10 @@ class ZonesTest extends TestCase
 
     public function testCreateSecondary()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zone_create.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone_create.json')));
         $resp = $this->zones->create('example.com', ZoneMode::SECONDARY, 10, ['key' => 'value'], [
             new PrimaryNameserver('192.168.178.1', 53),
-        ],);
+        ], );
 
         $Zone = $resp->getResponsePart('zone');
         $this->assertEquals($Zone->id, 4711);
@@ -85,7 +85,7 @@ class ZonesTest extends TestCase
 
     public function testGetByName()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zone.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone.json')));
         $Zone = $this->zones->getByName('example.com');
         $this->assertEquals(4711, $Zone->id);
         $this->assertEquals('example.com', $Zone->name);
@@ -95,7 +95,7 @@ class ZonesTest extends TestCase
 
     public function testGet()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zone.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone.json')));
         $Zone = $this->zones->get(4711);
         $this->assertEquals($Zone->id, 4711);
         $this->assertEquals($Zone->name, 'example.com');
@@ -105,7 +105,7 @@ class ZonesTest extends TestCase
 
     public function testAll()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zones.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zones.json')));
         $zones = $this->zones->all();
         $this->assertCount(1, $zones);
         $Zone = $zones[0];
@@ -117,7 +117,7 @@ class ZonesTest extends TestCase
 
     public function testList()
     {
-        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__ . '/fixtures/zones.json')));
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zones.json')));
         $zones = $this->zones->list()->zones;
         $this->assertCount(1, $zones);
         $Zone = $zones[0];

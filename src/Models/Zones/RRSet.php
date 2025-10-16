@@ -24,22 +24,22 @@ class RRSet extends Model implements Resource
     /**
      * Creates a new RRSet. This is useful if you want to create a new RRSet to pass to the createRRSet method of a Zone.
      *
-     * @param string $name
-     * @param string $type
-     * @param array $records
-     * @param int|null $ttl
-     * @param array|null $labels
+     * @param  string  $name
+     * @param  string  $type
+     * @param  array  $records
+     * @param  int|null  $ttl
+     * @param  array|null  $labels
      * @return RRSet|null
      */
     public static function create(string $name, string $type, array $records, ?int $ttl = null, ?array $labels = []): ?RRSet
     {
-        return (new RRset(""))->setAdditionalData((object)[
+        return (new RRset(''))->setAdditionalData((object) [
             'name' => $name,
             'type' => $type,
             'ttl' => $ttl,
             'records' => $records,
-            'labels' => (object)$labels,
-            'protection' => (object)[],
+            'labels' => (object) $labels,
+            'protection' => (object) [],
             'zone' => 0,
         ]);
     }
