@@ -20,8 +20,8 @@ class RRSet extends Model implements Resource
     public int $zone;
 
     /**
-     * @param string $id
-     * @param GuzzleClient|null $client
+     * @param  string  $id
+     * @param  GuzzleClient|null  $client
      */
     public function __construct(string $id, ?GuzzleClient $client = null)
     {
@@ -43,6 +43,7 @@ class RRSet extends Model implements Resource
         $this->labels = get_object_vars($data->labels);
         $this->protection = RRSetProtection::parse($data->protection);
         $this->zone = $data->zone;
+
         return $this;
     }
 
@@ -59,7 +60,7 @@ class RRSet extends Model implements Resource
             'ttl' => $this->ttl,
             'records' => $this->records,
         ];
-        if (!empty($this->labels)) {
+        if (! empty($this->labels)) {
             $r['labels'] = $this->labels;
         }
 
@@ -93,7 +94,7 @@ class RRSet extends Model implements Resource
 
     public function setRecords(array $records)
     {
-// TODO: Implement setRecords() method.
+        // TODO: Implement setRecords() method.
     }
 
     public function addRecords(array $records)

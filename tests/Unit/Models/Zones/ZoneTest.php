@@ -141,13 +141,12 @@ class ZoneTest extends TestCase
     public function testGetById()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone_rrset.json')));
-        $rrset = $this->zone->getRRSetById("www/A");
-        $this->assertEquals($rrset->id, "www/A");
+        $rrset = $this->zone->getRRSetById('www/A');
+        $this->assertEquals($rrset->id, 'www/A');
         $this->assertEquals($rrset->name, 'www');
 
         $this->assertLastRequestEquals('GET', '/zones/4711/rrsets/www/A');
     }
-
 
     protected function getGenericActionResponse(string $command)
     {

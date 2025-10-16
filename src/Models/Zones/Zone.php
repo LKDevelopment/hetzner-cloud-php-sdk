@@ -375,15 +375,16 @@ class Zone extends Model implements Resource
     }
 
     /**
-     * @param string $id
+     * @param  string  $id
      * @return RRSet|null
+     *
      * @throws APIException
      */
     public function getRRSetById(string $id): ?RRSet
     {
-        $response = $this->httpClient->get('zones/' . $this->id . "/rrsets/" . $id);;
-        if (!HetznerAPIClient::hasError($response)) {
-            return RRSet::parse(json_decode((string)$response->getBody())->rrset);
+        $response = $this->httpClient->get('zones/'.$this->id.'/rrsets/'.$id);
+        if (! HetznerAPIClient::hasError($response)) {
+            return RRSet::parse(json_decode((string) $response->getBody())->rrset);
         }
 
         return null;
