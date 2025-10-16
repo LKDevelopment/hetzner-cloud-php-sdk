@@ -33,7 +33,7 @@ class RRSet extends Model implements Resource
      */
     public static function create(string $name, string $type, array $records, ?int $ttl = null, ?array $labels = []): ?RRSet
     {
-        return (new RRset(''))->setAdditionalData((object) [
+        return (new RRSet(""))->setAdditionalData((object)[
             'name' => $name,
             'type' => $type,
             'ttl' => $ttl,
