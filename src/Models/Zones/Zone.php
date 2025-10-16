@@ -322,7 +322,7 @@ class Zone extends Model implements Resource
             $resp = json_decode((string) $response->getBody());
             $rrsets = [];
             foreach ($resp->rrsets as $rrset) {
-                $rrsets[] = RRSet::parse(get_object_vars($rrset));
+                $rrsets[] = RRSet::parse($rrset);
             }
 
             return APIResponse::create([
@@ -367,7 +367,7 @@ class Zone extends Model implements Resource
 
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
-                'rrset' => RRSet::parse(get_object_vars($payload->rrset)),
+                'rrset' => RRSet::parse($payload->rrset),
             ], $response->getHeaders());
         }
 

@@ -2,8 +2,10 @@
 
 namespace LKDev\HetznerCloud\Models\Zones;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
@@ -20,8 +22,8 @@ class RRSet extends Model implements Resource
     public int $zone;
 
     /**
-     * @param  string  $id
-     * @param  GuzzleClient|null  $client
+     * @param string $id
+     * @param GuzzleClient|null $client
      */
     public function __construct(string $id, ?GuzzleClient $client = null)
     {
@@ -43,7 +45,6 @@ class RRSet extends Model implements Resource
         $this->labels = get_object_vars($data->labels);
         $this->protection = RRSetProtection::parse($data->protection);
         $this->zone = $data->zone;
-
         return $this;
     }
 
@@ -60,50 +61,160 @@ class RRSet extends Model implements Resource
             'ttl' => $this->ttl,
             'records' => $this->records,
         ];
-        if (! empty($this->labels)) {
+        if (!empty($this->labels)) {
             $r['labels'] = $this->labels;
         }
 
         return $r;
     }
 
+    /**
+     * @return RRSet|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
     public function reload()
     {
-        return HetznerAPIClient::$instance->zones()->getById($this->zone)->getRRSet($this->id);
+        return (new Zone($this->zone))->getRRSetById($this->id);
     }
 
-    public function delete()
+    /**
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function delete(): ?APIResponse
     {
-        // TODO: Implement delete() method.
+        $response = $this->httpClient->delete('zones/' . $this->zone . '/rrsets/' . $this->id);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 
-    public function update(array $data)
+    /**
+     * @param array $data
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function update(array $data): ?APIResponse
     {
-        // TODO: Implement update() method.
+        $response = $this->httpClient->put('zones/' . $this->zone . '/rrsets/' . $this->id, [
+            'json' => $data,
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'rrset' => self::parse(json_decode((string)$response->getBody())->rrset),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 
-    public function changeProtection(RRSetProtection $protection)
+    /**
+     * @param bool $change
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeProtection(bool $change): ?APIResponse
     {
-        // TODO: Implement changeProtection() method.
+        $response = $this->httpClient->post('zones/' . $this->zone . '/rrsets/' . $this->id . '/actions/change_protection', [
+            'json' => [
+                'change' => $change,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+        return null;
     }
 
-    public function changeTTL(int $ttl)
+    /**
+     * @param int $ttl
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function changeTTL(int $ttl): ?APIResponse
     {
-        // TODO: Implement changeTTL() method.
+        $response = $this->httpClient->post('zones/' . $this->zone . '/rrsets/' . $this->id . '/actions/change_ttl', [
+            'json' => [
+                'ttl' => $ttl,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 
-    public function setRecords(array $records)
+    /**
+     * @param array<Record> $records
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function setRecords(array $records): ?APIResponse
     {
-        // TODO: Implement setRecords() method.
+        $response = $this->httpClient->post('zones/' . $this->zone . '/rrsets/' . $this->id . '/actions/set_records', [
+            'json' => [
+                'records' => $records,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 
-    public function addRecords(array $records)
+    /**
+     * @param array<Record> $records
+     * @param int|null $ttl
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function addRecords(array $records, ?int $ttl = null): ?APIResponse
     {
-        // TODO: Implement addRecords() method.
+        $response = $this->httpClient->post('zones/' . $this->zone . '/rrsets/' . $this->id . '/actions/add_records', [
+            'json' => [
+                'records' => $records,
+                'ttl' => $ttl,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 
+    /**
+     * @param array<Record> $records
+     * @return APIResponse|null
+     * @throws \LKDev\HetznerCloud\APIException
+     */
     public function removeRecords(array $records)
     {
-        // TODO: Implement removeRecords() method.
+        $response = $this->httpClient->post('zones/' . $this->zone . '/rrsets/' . $this->id . '/actions/remove_records', [
+            'json' => [
+                'records' => $records,
+            ],
+        ]);
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string)$response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 }
