@@ -22,7 +22,7 @@ class RRSetProtection extends Model
     /**
      * Protection constructor.
      *
-     * @param  bool  $delete
+     * @param  bool  $change
      */
     public function __construct(bool $delete)
     {

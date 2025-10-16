@@ -49,7 +49,7 @@ class Zone extends Model implements Resource
     public Protection|array $protection;
 
     /**
-     * @var object
+     * @var array
      */
     public array $labels;
 
@@ -112,7 +112,7 @@ class Zone extends Model implements Resource
     /**
      * Reload the data of the zone.
      *
-     * @return zone
+     * @return Zone
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -247,7 +247,7 @@ class Zone extends Model implements Resource
 
     /**
      * @param  $input
-     * @return \LKDev\HetznerCloud\Models\Zones\Zone|static |null
+     * @return \LKDev\HetznerCloud\Models\Zones\Zone|static|null
      */
     public static function parse($input)
     {
@@ -260,7 +260,7 @@ class Zone extends Model implements Resource
 
     /**
      * @param  array<PrimaryNameserver>  $primary_nameservers
-     * @return void#
+     * @return APIResponse|null
      *
      * @throws APIException
      */
@@ -340,7 +340,7 @@ class Zone extends Model implements Resource
      * @param  array<Record>  $records
      * @param  int|null  $ttl
      * @param  array|null  $labels
-     * @return void
+     * @return APIResponse|null
      *
      * @throws APIException
      */

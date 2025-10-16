@@ -5,7 +5,7 @@ namespace LKDev\HetznerCloud\Models\Zones;
 use LKDev\HetznerCloud\RequestOpts;
 
 /**
- * Class ServerRequestOpts.
+ * Class RRSetRequestOpts.
  */
 class RRSetRequestOpts extends RequestOpts
 {
