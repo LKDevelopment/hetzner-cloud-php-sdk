@@ -2,7 +2,12 @@
 
 namespace LKDev\HetznerCloud\Models\Zones;
 
-class RRSet
+use LKDev\HetznerCloud\Clients\GuzzleClient;
+use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Contracts\Resource;
+use LKDev\HetznerCloud\Models\Model;
+
+class RRSet extends Model implements Resource
 {
     public string $id;
     public string $name;
@@ -12,29 +17,38 @@ class RRSet
     public array $labels;
     public ?RRSetProtection $protection;
 
+    public int $zone;
+
     /**
-     * @param  string  $id
-     * @param  string  $name
-     * @param  string  $type
-     * @param  int  $ttl
-     * @param  array  $records
-     * @param  array|null  $labels
-     * @param  RRSetProtection|null  $protection
+     * @param string $id
+     * @param GuzzleClient|null $client
      */
-    public function __construct(string $id, string $name, string $type, int $ttl, array $records, ?array $labels, ?RRSetProtection $protection)
+    public function __construct(string $id, ?GuzzleClient $client = null)
     {
         $this->id = $id;
-        $this->name = $name;
-        $this->type = $type;
-        $this->ttl = $ttl;
-        $this->records = $records;
-        $this->labels = $labels;
-        $this->protection = $protection;
+
+        parent::__construct($client);
     }
 
-    public static function fromResponse(array $data): RRSet
+    /**
+     * @param  $data
+     * @return \LKDev\HetznerCloud\Models\Zones\RRSet
+     */
+    public function setAdditionalData($data)
     {
-        return new self($data['id'], $data['name'], $data['type'], $data['ttl'], $data['records'], get_object_vars($data['labels']), RRSetProtection::parse($data['protection']));
+        $this->name = $data->name;
+        $this->type = $data->type;
+        $this->ttl = $data->ttl;
+        $this->records = $data->records;
+        $this->labels = get_object_vars($data->labels);
+        $this->protection = RRSetProtection::parse($data->protection);
+        $this->zone = $data->zone;
+        return $this;
+    }
+
+    public static function parse($input): RRSet
+    {
+        return (new self($input->id))->setAdditionalData($input);
     }
 
     public function __toRequest(): array
@@ -45,10 +59,50 @@ class RRSet
             'ttl' => $this->ttl,
             'records' => $this->records,
         ];
-        if (! empty($this->labels)) {
+        if (!empty($this->labels)) {
             $r['labels'] = $this->labels;
         }
 
         return $r;
+    }
+
+    public function reload()
+    {
+        return HetznerAPIClient::$instance->zones()->getById($this->zone)->getRRSet($this->id);
+    }
+
+    public function delete()
+    {
+        // TODO: Implement delete() method.
+    }
+
+    public function update(array $data)
+    {
+        // TODO: Implement update() method.
+    }
+
+    public function changeProtection(RRSetProtection $protection)
+    {
+        // TODO: Implement changeProtection() method.
+    }
+
+    public function changeTTL(int $ttl)
+    {
+        // TODO: Implement changeTTL() method.
+    }
+
+    public function setRecords(array $records)
+    {
+// TODO: Implement setRecords() method.
+    }
+
+    public function addRecords(array $records)
+    {
+        // TODO: Implement addRecords() method.
+    }
+
+    public function removeRecords(array $records)
+    {
+        // TODO: Implement removeRecords() method.
     }
 }

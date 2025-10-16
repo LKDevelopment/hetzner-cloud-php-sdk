@@ -21,6 +21,7 @@ use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
+use LKDev\HetznerCloud\Models\Zones\RRSet;
 use LKDev\HetznerCloud\Models\Zones\Zones;
 use Psr\Http\Message\ResponseInterface;
 

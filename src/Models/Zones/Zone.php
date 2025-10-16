@@ -322,7 +322,7 @@ class Zone extends Model implements Resource
             $resp = json_decode((string) $response->getBody());
             $rrsets = [];
             foreach ($resp->rrsets as $rrset) {
-                $rrsets[] = RRSet::fromResponse(get_object_vars($rrset));
+                $rrsets[] = RRSet::parse(get_object_vars($rrset));
             }
 
             return APIResponse::create([
@@ -367,8 +367,23 @@ class Zone extends Model implements Resource
 
             return APIResponse::create([
                 'action' => Action::parse($payload->action),
-                'rrset' => RRSet::fromResponse(get_object_vars($payload->rrset)),
+                'rrset' => RRSet::parse(get_object_vars($payload->rrset)),
             ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $id
+     * @return RRSet|null
+     * @throws APIException
+     */
+    public function getRRSetById(string $id): ?RRSet
+    {
+        $response = $this->httpClient->get('zones/' . $this->id . "/rrsets/" . $id);;
+        if (!HetznerAPIClient::hasError($response)) {
+            return RRSet::parse(json_decode((string)$response->getBody())->rrset);
         }
 
         return null;

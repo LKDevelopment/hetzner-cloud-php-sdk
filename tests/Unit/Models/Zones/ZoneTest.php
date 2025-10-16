@@ -138,6 +138,17 @@ class ZoneTest extends TestCase
             'records' => [['value' => '198.51.100.1', 'comment' => 'my webserver at Hetzner Cloud']]]);
     }
 
+    public function testGetById()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone_rrset.json')));
+        $rrset = $this->zone->getRRSetById("www/A");
+        $this->assertEquals($rrset->id, "www/A");
+        $this->assertEquals($rrset->name, 'www');
+
+        $this->assertLastRequestEquals('GET', '/zones/4711/rrsets/www/A');
+    }
+
+
     protected function getGenericActionResponse(string $command)
     {
         return str_replace('$command', $command, file_get_contents(__DIR__.'/fixtures/zone_action_generic.json'));
