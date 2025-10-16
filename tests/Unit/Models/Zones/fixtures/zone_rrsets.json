@@ -1,0 +1,35 @@
+{
+  "rrsets": [
+    {
+      "id": "www/A",
+      "name": "www",
+      "type": "A",
+      "ttl": 3600,
+      "labels": {
+        "environment": "prod",
+        "example.com/my": "label",
+        "just-a-key": ""
+      },
+      "protection": {
+        "change": false
+      },
+      "records": [
+        {
+          "value": "198.51.100.1",
+          "comment": "My web server at Hetzner Cloud."
+        }
+      ],
+      "zone": 4711
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "next_page": null,
+      "last_page": 1,
+      "total_entries": 1
+    }
+  }
+}

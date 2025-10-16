@@ -41,7 +41,7 @@ class RRSetProtection extends Model
             return null;
         }
         if (! is_array($input)) {
-            return null;
+            $input = get_object_vars($input);
         }
 
         return new self($input['change'] ?? false);

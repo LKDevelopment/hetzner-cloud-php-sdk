@@ -10,7 +10,7 @@ class RRSet
     public int $ttl;
     public array $records;
     public array $labels;
-    public RRSetProtection $protection;
+    public ?RRSetProtection $protection;
 
     /**
      * @param  string  $id
@@ -34,7 +34,7 @@ class RRSet
 
     public static function fromResponse(array $data): RRSet
     {
-        return new self($data['id'], $data['name'], $data['type'], $data['ttl'], $data['records'], $data['labels'], RRSetProtection::parse($data['protection']));
+        return new self($data['id'], $data['name'], $data['type'], $data['ttl'], $data['records'], get_object_vars($data['labels']), RRSetProtection::parse($data['protection']));
     }
 
     public function __toRequest(): array
@@ -50,17 +50,5 @@ class RRSet
         }
 
         return $r;
-    }
-}
-
-class Record
-{
-    public string $value;
-    public string $comment;
-
-    public function __construct(string $value, string $comment)
-    {
-        $this->value = $value;
-        $this->comment = $comment;
     }
 }
