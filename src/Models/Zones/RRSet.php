@@ -64,7 +64,12 @@ class RRSet extends Model implements Resource
         $this->name = $data->name;
         $this->type = $data->type;
         $this->ttl = $data->ttl;
-        $this->records = $data->records;
+        $records = [];
+        foreach ($data->records as $record) {
+            $records[] = Record::parse($record);
+        }
+
+        $this->records = $records;
         $this->labels = get_object_vars($data->labels);
         $this->protection = RRSetProtection::parse($data->protection);
         $this->zone = $data->zone;

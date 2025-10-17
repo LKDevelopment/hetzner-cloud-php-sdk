@@ -12,4 +12,9 @@ class Record
         $this->value = $value;
         $this->comment = $comment;
     }
+
+    public static function parse($input): self
+    {
+        return new Record($input->value, $input->comment);
+    }
 }
