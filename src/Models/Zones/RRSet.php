@@ -14,7 +14,7 @@ class RRSet extends Model implements Resource
     public string $id;
     public string $name;
     public string $type;
-    public int $ttl;
+    public ?int $ttl;
     public array $records;
     public array $labels;
     public ?RRSetProtection $protection;
