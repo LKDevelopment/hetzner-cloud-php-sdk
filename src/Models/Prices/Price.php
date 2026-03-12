@@ -36,6 +36,6 @@ class Price
             return null;
         }
 
-        return new self($input->net, $input->gross);
+        return new self($input->net ?? '0', $input->gross ?? '0');
     }
 }
