@@ -10,9 +10,9 @@
 namespace LKDev\HetznerCloud\Models\Prices;
 
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerType;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
-use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerType;
 use LKDev\HetznerCloud\RequestOpts;
 
 /**
@@ -87,7 +87,7 @@ class Prices extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return $this
      */
     public function setAdditionalData($input)
@@ -114,7 +114,7 @@ class Prices extends Model
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return array
      */
     public static function parse($input)

@@ -10,10 +10,10 @@
 namespace LKDev\Tests\Unit\Pricing;
 
 use GuzzleHttp\Psr7\Response;
-use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Prices\Price;
-use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
+use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Prices\ServerTypePrice;
+use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
 use LKDev\Tests\TestCase;
 
 class PricingTest extends TestCase

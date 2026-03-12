@@ -2,8 +2,8 @@
 
 namespace LKDev\Tests\Unit\Models\Networks;
 
-use LKDev\HetznerCloud\Models\Networks\Subnet;
 use LKDev\HetznerCloud\Models\Networks\Route;
+use LKDev\HetznerCloud\Models\Networks\Subnet;
 use LKDev\Tests\TestCase;
 
 class SubnetAndRouteTest extends TestCase
