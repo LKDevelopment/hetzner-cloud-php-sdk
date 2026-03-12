@@ -16,8 +16,9 @@ class Price
 
     /**
      * Price constructor.
-     * @param string $net
-     * @param string $gross
+     *
+     * @param  string  $net
+     * @param  string  $gross
      */
     public function __construct(string $net, string $gross)
     {
@@ -26,7 +27,7 @@ class Price
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return self|null
      */
     public static function parse($input): ?self

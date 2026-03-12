@@ -21,9 +21,10 @@ class ServerTypePrice
 
     /**
      * ServerTypePrice constructor.
-     * @param string $location
-     * @param Price $priceHourly
-     * @param Price $priceMonthly
+     *
+     * @param  string  $location
+     * @param  Price  $priceHourly
+     * @param  Price  $priceMonthly
      */
     public function __construct(string $location, Price $priceHourly, Price $priceMonthly)
     {
@@ -33,7 +34,7 @@ class ServerTypePrice
     }
 
     /**
-     * @param $input
+     * @param  $input
      * @return self|null
      */
     public static function parse($input): ?self
