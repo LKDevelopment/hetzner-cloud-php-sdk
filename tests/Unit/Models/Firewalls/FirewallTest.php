@@ -41,7 +41,7 @@ class FirewallTest extends TestCase
     public function testDelete()
     {
         $this->mockHandler->append(new Response(204, []));
-        $this->assertTrue($this->firewall->delete());
+        $this->assertInstanceOf(\LKDev\HetznerCloud\APIResponse::class, $this->firewall->delete());
     }
 
     /**

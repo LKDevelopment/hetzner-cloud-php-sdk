@@ -64,6 +64,11 @@ class Volume extends Model implements Resource
     public $linux_device;
 
     /**
+     * @var string
+     */
+    public $created;
+
+    /**
      * @param  int  $volumeId
      * @param  GuzzleClient|null  $httpClient
      */
@@ -85,9 +90,10 @@ class Volume extends Model implements Resource
         $this->size = $data->size;
 
         $this->server = $data->server;
-        $this->location = Location::parse($data->location);
-        $this->protection = $data->protection ?: Protection::parse($data->protection);
+        $this->location = $data->location ? Location::parse($data->location) : null;
+        $this->protection = $data->protection ? Protection::parse($data->protection) : null;
         $this->labels = get_object_vars($data->labels);
+        $this->created = $data->created;
 
         return $this;
     }

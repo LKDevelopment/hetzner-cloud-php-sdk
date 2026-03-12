@@ -3,6 +3,8 @@
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
 use LKDev\HetznerCloud\Models\Model;
+use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Prices\ServerTypePrice;
 
 class ServerType extends Model
 {
@@ -42,6 +44,11 @@ class ServerType extends Model
     public $prices;
 
     /**
+     * @var array
+     */
+    public $price;
+
+    /**
      * @var string
      */
     public $storageType;
@@ -75,14 +82,15 @@ class ServerType extends Model
     public function setAdditionalData($input)
     {
         $this->name = $input->name;
-        $this->description = $input->description;
-        $this->cores = $input->cores;
-        $this->memory = $input->memory;
-        $this->disk = $input->disk;
-        $this->prices = $input->prices;
-        $this->storageType = $input->storage_type;
-        $this->cpuType = $input->cpu_type;
-        $this->architecture = $input->architecture;
+        $this->description = $input->description ?? null;
+        $this->cores = $input->cores ?? null;
+        $this->memory = $input->memory ?? null;
+        $this->disk = $input->disk ?? null;
+        $this->prices = Prices::parse($input->prices);
+        $this->price = property_exists($input, 'price') ? ServerTypePrice::parse($input->price) : null;
+        $this->storageType = $input->storage_type ?? null;
+        $this->cpuType = $input->cpu_type ?? null;
+        $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
 
         return $this;
     }
@@ -93,6 +101,10 @@ class ServerType extends Model
      */
     public static function parse($input)
     {
+        if ($input == null) {
+            return null;
+        }
+
         return (new self($input->id))->setAdditionalData($input);
     }
 }

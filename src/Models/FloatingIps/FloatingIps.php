@@ -123,7 +123,7 @@ class FloatingIps extends Model implements Resources
      * @param  \LKDev\HetznerCloud\Models\Servers\Server|null  $server
      * @param  string|null  $name
      * @param  array  $labels
-     * @return \LKDev\HetznerCloud\Models\FloatingIps\FloatingIp|null
+     * @return \LKDev\HetznerCloud\APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -134,7 +134,7 @@ class FloatingIps extends Model implements Resources
         ?Server $server = null,
         ?string $name = null,
         array $labels = []
-    ): ?FloatingIp {
+    ): ?APIResponse {
         $parameters = [
             'type' => $type,
         ];
@@ -157,7 +157,12 @@ class FloatingIps extends Model implements Resources
             'json' => $parameters,
         ]);
         if (! HetznerAPIClient::hasError($response)) {
-            return FloatingIp::parse(json_decode((string) $response->getBody())->{$this->_getKeys()['one']});
+            $payload = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'floating_ip' => FloatingIp::parse($payload->floating_ip),
+                'action' => property_exists($payload, 'action') ? \LKDev\HetznerCloud\Models\Actions\Action::parse($payload->action) : null,
+            ], $response->getHeaders());
         }
 
         return null;

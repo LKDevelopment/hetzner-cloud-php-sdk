@@ -107,7 +107,7 @@ class PlacementGroup extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'placement_group' => self::parse(json_decode((string) $response->getBody())->network),
+                'placement_group' => self::parse(json_decode((string) $response->getBody())->placement_group),
             ], $response->getHeaders());
         }
 

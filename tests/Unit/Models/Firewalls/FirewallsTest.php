@@ -68,8 +68,9 @@ class FirewallsTest extends TestCase
         $this->assertCount(3, $firewall->rules[0]->sourceIPs);
         $this->assertCount(3, $firewall->rules[0]->destinationIPs);
 
-        $this->assertCount(1, $firewall->appliedTo);
+        $this->assertCount(2, $firewall->appliedTo);
         $this->assertInstanceOf(FirewallResource::class, $firewall->appliedTo[0]);
+        $this->assertInstanceOf(FirewallResource::class, $firewall->appliedTo[1]);
 
         $this->assertEmpty($firewall->labels);
 
@@ -88,8 +89,9 @@ class FirewallsTest extends TestCase
 
         $this->assertCount(1, $firewall->rules);
         $this->assertInstanceOf(FirewallRule::class, $firewall->rules[0]);
-        $this->assertCount(1, $firewall->appliedTo);
+        $this->assertCount(2, $firewall->appliedTo);
         $this->assertInstanceOf(FirewallResource::class, $firewall->appliedTo[0]);
+        $this->assertInstanceOf(FirewallResource::class, $firewall->appliedTo[1]);
 
         $this->assertEmpty($firewall->labels);
 

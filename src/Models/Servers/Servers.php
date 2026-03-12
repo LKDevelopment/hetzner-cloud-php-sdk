@@ -144,7 +144,6 @@ class Servers extends Model
      * @param  string  $name
      * @param  \LKDev\HetznerCloud\Models\Servers\Types\ServerType  $serverType
      * @param  \LKDev\HetznerCloud\Models\Images\Image  $image
-     * @param  \LKDev\HetznerCloud\Models\Locations\Location  $location
      * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
      * @param  array  $ssh_keys
      * @param  bool  $startAfterCreate
@@ -155,9 +154,11 @@ class Servers extends Model
      * @param  array  $labels
      * @param  array  $firewalls
      * @param  array  $public_net
+     * @param  int|null  $placement_group
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
+     * @deprecated Use createInLocation instead
      */
     public function createInDatacenter(
         string $name,
@@ -301,12 +302,9 @@ class Servers extends Model
     public function setAdditionalData($input)
     {
         $this->servers = collect($input)
+            ->filter()
             ->map(function ($server) {
-                if ($server != null) {
-                    return Server::parse($server);
-                }
-
-                return null;
+                return Server::parse($server, $this->httpClient);
             })
             ->toArray();
 
@@ -317,9 +315,9 @@ class Servers extends Model
      * @param  $input
      * @return static
      */
-    public static function parse($input)
+    public static function parse($input, ?GuzzleClient $httpClient = null)
     {
-        return (new self())->setAdditionalData($input);
+        return (new self($httpClient))->setAdditionalData($input);
     }
 
     /**

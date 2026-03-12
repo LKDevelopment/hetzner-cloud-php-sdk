@@ -17,6 +17,7 @@ use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;
+use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Networks\Network;
 use LKDev\HetznerCloud\Models\Protection;
@@ -79,8 +80,15 @@ class Server extends Model implements Resource
 
     /**
      * @var \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     *
+     * @deprecated Use $location instead
      */
     public $datacenter;
+
+    /**
+     * @var \LKDev\HetznerCloud\Models\Locations\Location
+     */
+    public $location;
 
     /**
      * @var Image
@@ -179,6 +187,16 @@ class Server extends Model implements Resource
     public $primaryDiskSize;
 
     /**
+     * @var int|null
+     */
+    public $placement_group;
+
+    /**
+     * @var array
+     */
+    public $load_balancers;
+
+    /**
      * @param  int  $serverId
      * @param  GuzzleClient|null  $httpClient
      */
@@ -200,12 +218,13 @@ class Server extends Model implements Resource
         $this->publicNet = $data->public_net ?: null;
         $this->private_net = property_exists($data, 'private_net') ? $data->private_net : [];
         $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
-        $this->server_type = $data->server_type ?: ServerType::parse($data->server_type);
-        $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
-        $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
+        $this->server_type = $data->server_type ? ServerType::parse($data->server_type) : null;
+        $this->serverType = $data->server_type ? ServerType::parse($data->server_type) : null;
+        $this->datacenter = $data->datacenter ? Datacenter::parse($data->datacenter) : null;
+        $this->location = property_exists($data, 'location') && $data->location ? Location::parse($data->location) : null;
         $this->created = $data->created;
-        $this->image = $data->image ?: Image::parse($data->image);
-        $this->iso = $data->iso ?: ISO::parse($data->iso);
+        $this->image = $data->image ? Image::parse($data->image) : null;
+        $this->iso = $data->iso ? ISO::parse($data->iso) : null;
         $this->rescue_enabled = $data->rescue_enabled ?? null;
         $this->rescueEnabled = $data->rescue_enabled ?? null;
         $this->locked = $data->locked ?? null;
@@ -218,10 +237,12 @@ class Server extends Model implements Resource
         $this->included_traffic = $data->included_traffic ?: null;
         $this->includedTraffic = $data->included_traffic ?: null;
         $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
-        $this->protection = $data->protection ?: Protection::parse($data->protection);
-        $this->labels = $data->labels;
+        $this->protection = $data->protection ? Protection::parse($data->protection) : null;
+        $this->labels = get_object_vars($data->labels);
         $this->primary_disk_size = $data->primary_disk_size ?: null;
         $this->primaryDiskSize = $data->primary_disk_size ?: null;
+        $this->placement_group = property_exists($data, 'placement_group') ? $data->placement_group : null;
+        $this->load_balancers = property_exists($data, 'load_balancers') ? $data->load_balancers : [];
 
         return $this;
     }
@@ -858,14 +879,15 @@ class Server extends Model implements Resource
 
     /**
      * @param  $input
+     * @param  GuzzleClient|null  $httpClient
      * @return \LKDev\HetznerCloud\Models\Servers\Server|static |null
      */
-    public static function parse($input)
+    public static function parse($input, ?GuzzleClient $httpClient = null)
     {
         if ($input == null) {
             return null;
         }
 
-        return (new self($input->id))->setAdditionalData($input);
+        return (new self($input->id, $httpClient))->setAdditionalData($input);
     }
 }

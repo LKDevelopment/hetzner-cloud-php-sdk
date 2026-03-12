@@ -41,15 +41,21 @@ class Certificates extends Model implements Resources
      */
     public function create(
         string $name,
-        string $certificate,
-        string $privateKey,
-        array $labels = []
+        ?string $certificate = null,
+        ?string $privateKey = null,
+        array $labels = [],
+        string $type = 'uploaded'
     ): ?Certificate {
         $parameters = [
             'name' => $name,
-            'certificate' => $certificate,
-            'private_key' => $privateKey,
+            'type' => $type,
         ];
+        if ($certificate !== null) {
+            $parameters['certificate'] = $certificate;
+        }
+        if ($privateKey !== null) {
+            $parameters['private_key'] = $privateKey;
+        }
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }

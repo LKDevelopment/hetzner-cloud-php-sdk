@@ -38,6 +38,11 @@ class FirewallRule
     public $port;
 
     /**
+     * @var string
+     */
+    public $description;
+
+    /**
      * FirewallRule constructor.
      *
      * @param  string  $direction
@@ -45,14 +50,16 @@ class FirewallRule
      * @param  string[]  $destinationIPs
      * @param  string  $protocol
      * @param  string  $port
+     * @param  string  $description
      */
-    public function __construct(string $direction, string $protocol, array $sourceIPs = [], array $destinationIPs = [], ?string $port = '')
+    public function __construct(string $direction, string $protocol, array $sourceIPs = [], array $destinationIPs = [], ?string $port = '', ?string $description = '')
     {
         $this->direction = $direction;
         $this->sourceIPs = $sourceIPs;
         $this->destinationIPs = $destinationIPs;
         $this->protocol = $protocol;
         $this->port = $port;
+        $this->description = $description;
     }
 
     /**
@@ -70,6 +77,9 @@ class FirewallRule
         }
         if ($this->port != '') {
             $s['port'] = $this->port;
+        }
+        if ($this->description != '') {
+            $s['description'] = $this->description;
         }
 
         return $s;

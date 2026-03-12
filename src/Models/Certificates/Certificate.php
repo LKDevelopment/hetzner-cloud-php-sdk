@@ -57,6 +57,10 @@ class Certificate extends Model implements Resource
      * @var array
      */
     public $labels;
+    /**
+     * @var string
+     */
+    public $type;
 
     /**
      * Certificate constructor.
@@ -71,8 +75,9 @@ class Certificate extends Model implements Resource
      * @param  string|null  $fingerprint
      * @param  array|null  $used_by
      * @param  array|null  $labels
+     * @param  string|null  $type
      */
-    public function __construct(int $id, ?string $name = null, ?string $certificate = null, ?string $created = null, ?string $not_valid_before = null, ?string $not_valid_after = null, ?array $domain_names = null, ?string $fingerprint = null, $used_by = null, $labels = [])
+    public function __construct(int $id, ?string $name = null, ?string $certificate = null, ?string $created = null, ?string $not_valid_before = null, ?string $not_valid_after = null, ?array $domain_names = null, ?string $fingerprint = null, $used_by = null, $labels = [], ?string $type = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -84,6 +89,7 @@ class Certificate extends Model implements Resource
         $this->fingerprint = $fingerprint;
         $this->used_by = $used_by;
         $this->labels = $labels;
+        $this->type = $type;
 
         parent::__construct();
     }
@@ -136,7 +142,7 @@ class Certificate extends Model implements Resource
      */
     public static function parse($input)
     {
-        return new self($input->id, $input->name, $input->certificate, $input->created, $input->not_valid_before, $input->not_valid_after, $input->domain_names, $input->fingerprint, $input->used_by, $input->labels);
+        return new self($input->id, $input->name, $input->certificate, $input->created, $input->not_valid_before, $input->not_valid_after, $input->domain_names, $input->fingerprint, $input->used_by, $input->labels, $input->type ?? null);
     }
 
     /**

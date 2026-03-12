@@ -20,7 +20,7 @@ abstract class Model
      */
     public function __construct(?GuzzleClient $httpClient = null)
     {
-        $this->httpClient = $httpClient == null ? HetznerAPIClient::$instance->getHttpClient() : $httpClient;
+        $this->httpClient = $httpClient == null ? (HetznerAPIClient::$instance ? HetznerAPIClient::$instance->getHttpClient() : null) : $httpClient;
     }
 
     /**
