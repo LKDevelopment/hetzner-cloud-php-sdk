@@ -212,37 +212,37 @@ class Server extends Model implements Resource
      */
     public function setAdditionalData($data)
     {
-        $this->name = $data->name;
-        $this->status = $data->status ?: null;
-        $this->public_net = $data->public_net ?: null;
-        $this->publicNet = $data->public_net ?: null;
-        $this->private_net = property_exists($data, 'private_net') ? $data->private_net : [];
-        $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
-        $this->server_type = $data->server_type ? ServerType::parse($data->server_type) : null;
-        $this->serverType = $data->server_type ? ServerType::parse($data->server_type) : null;
-        $this->datacenter = $data->datacenter ? Datacenter::parse($data->datacenter) : null;
+        $this->name = $data->name ?? null;
+        $this->status = $data->status ?? null;
+        $this->public_net = $data->public_net ?? null;
+        $this->publicNet = $data->public_net ?? null;
+        $this->private_net = $data->private_net ?? [];
+        $this->privateNet = $data->private_net ?? [];
+        $this->server_type = property_exists($data, 'server_type') && $data->server_type ? ServerType::parse($data->server_type) : null;
+        $this->serverType = property_exists($data, 'server_type') && $data->server_type ? ServerType::parse($data->server_type) : null;
+        $this->datacenter = property_exists($data, 'datacenter') && $data->datacenter ? Datacenter::parse($data->datacenter) : null;
         $this->location = property_exists($data, 'location') && $data->location ? Location::parse($data->location) : null;
-        $this->created = $data->created;
-        $this->image = $data->image ? Image::parse($data->image) : null;
-        $this->iso = $data->iso ? ISO::parse($data->iso) : null;
+        $this->created = $data->created ?? null;
+        $this->image = property_exists($data, 'image') && $data->image ? Image::parse($data->image) : null;
+        $this->iso = property_exists($data, 'iso') && $data->iso ? ISO::parse($data->iso) : null;
         $this->rescue_enabled = $data->rescue_enabled ?? null;
         $this->rescueEnabled = $data->rescue_enabled ?? null;
         $this->locked = $data->locked ?? null;
-        $this->backup_window = $data->backup_window ?: null;
-        $this->backupWindow = $data->backup_window ?: null;
-        $this->outgoing_traffic = $data->outgoing_traffic ?: null;
-        $this->outgoingTraffic = $data->outgoing_traffic ?: null;
-        $this->ingoing_traffic = $data->ingoing_traffic ?: null;
-        $this->ingoingTraffic = $data->ingoing_traffic ?: null;
-        $this->included_traffic = $data->included_traffic ?: null;
-        $this->includedTraffic = $data->included_traffic ?: null;
-        $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
-        $this->protection = $data->protection ? Protection::parse($data->protection) : null;
-        $this->labels = get_object_vars($data->labels);
-        $this->primary_disk_size = $data->primary_disk_size ?: null;
-        $this->primaryDiskSize = $data->primary_disk_size ?: null;
-        $this->placement_group = property_exists($data, 'placement_group') ? $data->placement_group : null;
-        $this->load_balancers = property_exists($data, 'load_balancers') ? $data->load_balancers : [];
+        $this->backup_window = $data->backup_window ?? null;
+        $this->backupWindow = $data->backup_window ?? null;
+        $this->outgoing_traffic = $data->outgoing_traffic ?? null;
+        $this->outgoingTraffic = $data->outgoing_traffic ?? null;
+        $this->ingoing_traffic = $data->ingoing_traffic ?? null;
+        $this->ingoingTraffic = $data->ingoing_traffic ?? null;
+        $this->included_traffic = $data->included_traffic ?? null;
+        $this->includedTraffic = $data->included_traffic ?? null;
+        $this->volumes = $data->volumes ?? [];
+        $this->protection = property_exists($data, 'protection') && $data->protection ? Protection::parse($data->protection) : null;
+        $this->labels = property_exists($data, 'labels') && $data->labels ? get_object_vars($data->labels) : [];
+        $this->primary_disk_size = $data->primary_disk_size ?? null;
+        $this->primaryDiskSize = $data->primary_disk_size ?? null;
+        $this->placement_group = $data->placement_group ?? null;
+        $this->load_balancers = $data->load_balancers ?? [];
 
         return $this;
     }

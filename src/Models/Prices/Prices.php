@@ -92,13 +92,13 @@ class Prices extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->currency = $input->currency;
-        $this->vat_rate = $input->vat_rate;
-        $this->image = Price::parse($input->image->price_per_gb_month);
-        $this->floating_ip = Price::parse($input->floating_ip->price_monthly);
-        $this->traffic = Price::parse($input->traffic->price_per_tb);
-        $this->server_backup = $input->server_backup->percentage;
-        $this->volume = Price::parse($input->volume->price_per_gb_month);
+        $this->currency = $input->currency ?? null;
+        $this->vat_rate = $input->vat_rate ?? null;
+        $this->image = property_exists($input, 'image') ? Price::parse($input->image->price_per_gb_month) : null;
+        $this->floating_ip = property_exists($input, 'floating_ip') ? Price::parse($input->floating_ip->price_monthly) : null;
+        $this->traffic = property_exists($input, 'traffic') ? Price::parse($input->traffic->price_per_tb) : null;
+        $this->server_backup = property_exists($input, 'server_backup') ? ($input->server_backup->percentage ?? null) : null;
+        $this->volume = property_exists($input, 'volume') ? Price::parse($input->volume->price_per_gb_month) : null;
         if (property_exists($input, 'server_types')) {
             $this->server_types = collect($input->server_types)->map(function ($serverType) {
                 return ServerType::parse($serverType);

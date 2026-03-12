@@ -43,6 +43,6 @@ class ServerTypePrice
             return null;
         }
 
-        return new self($input->location, Price::parse($input->price_hourly), Price::parse($input->price_monthly));
+        return new self($input->location ?? '', Price::parse($input->price_hourly ?? null), Price::parse($input->price_monthly ?? null));
     }
 }
