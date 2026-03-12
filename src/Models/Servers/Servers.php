@@ -314,9 +314,10 @@ class Servers extends Model
 
     /**
      * @param  $input
+     * @param  \LKDev\HetznerCloud\Clients\GuzzleClient|null  $httpClient
      * @return static
      */
-    public static function parse($input, ?GuzzleClient $httpClient = null)
+    public static function parse($input, ?\LKDev\HetznerCloud\Clients\GuzzleClient $httpClient = null)
     {
         return (new self($httpClient))->setAdditionalData($input);
     }
