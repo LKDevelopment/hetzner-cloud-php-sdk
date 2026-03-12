@@ -146,14 +146,21 @@ class LoadBalancer extends Model implements Resource
         return HetznerAPIClient::$instance->loadBalancers()->get($this->id);
     }
 
-    public function delete()
+    /**
+     * @see https://docs.hetzner.cloud/#load-balancers-delete-a-load-balancer
+     *
+     * @return APIResponse|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function delete(): ?APIResponse
     {
         $response = $this->httpClient->delete('load_balancers/'.$this->id);
         if (! HetznerAPIClient::hasError($response)) {
-            return true;
+            return APIResponse::create([], $response->getHeaders());
         }
 
-        return false;
+        return null;
     }
 
     public function update(array $data)

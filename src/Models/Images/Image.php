@@ -145,6 +145,16 @@ class Image extends Model implements Resource
     public $architecture;
 
     /**
+     * @var string|null
+     */
+    public $deleted;
+
+    /**
+     * @var string|null
+     */
+    public $deprecated;
+
+    /**
      * Image constructor.
      *
      * @param  int  $id
@@ -163,6 +173,8 @@ class Image extends Model implements Resource
      * @param  Protection  $protection
      * @param  string  $architecture
      * @param  array  $labels
+     * @param  string|null  $deleted
+     * @param  string|null  $deprecated
      */
     public function __construct(
         int $id,
@@ -180,7 +192,9 @@ class Image extends Model implements Resource
         ?bool $rapidDeploy = null,
         ?Protection $protection = null,
         ?string $architecture = null,
-        array $labels = []
+        array $labels = [],
+        ?string $deleted = null,
+        ?string $deprecated = null
     ) {
         $this->id = $id;
         $this->type = $type;
@@ -205,6 +219,8 @@ class Image extends Model implements Resource
         $this->protection = $protection;
         $this->architecture = $architecture;
         $this->labels = $labels;
+        $this->deleted = $deleted;
+        $this->deprecated = $deprecated;
         parent::__construct();
     }
 
@@ -285,7 +301,7 @@ class Image extends Model implements Resource
             return null;
         }
 
-        return new self($input->id, $input->type, property_exists($input, 'status') ? $input->status : null, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), $input->architecture, get_object_vars($input->labels));
+        return new self($input->id, $input->type, $input->status, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), $input->architecture ?? null, get_object_vars($input->labels), $input->deleted ?? null, $input->deprecated ?? null);
     }
 
     public function reload()

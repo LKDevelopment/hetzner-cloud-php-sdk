@@ -58,6 +58,6 @@ class LoadBalancerServiceHttp extends Model
             return;
         }
 
-        return new self($input->certificates, $input->cookie_lifetime, $input->cookie_name, $input->redirect_http, $input->sticky_essions);
+        return new self($input->certificates, $input->cookie_lifetime, $input->cookie_name, $input->redirect_http, $input->sticky_sessions);
     }
 }

@@ -119,12 +119,14 @@ class Firewall extends Model implements Resource
         $rules = [];
 
         foreach ($input->rules as $r) {
-            $rules[] = new FirewallRule($r->direction, $r->protocol, $r->source_ips, $r->destination_ips, (string) $r->port);
+            $rules[] = new FirewallRule($r->direction, $r->protocol, (isset($r->source_ips)) ? $r->source_ips : [], (isset($r->destination_ips)) ? $r->destination_ips : [], (isset($r->port)) ? (string) $r->port : '', (isset($r->description)) ? $r->description : '');
         }
 
         foreach ($input->applied_to as $a) {
             if ($a->type === 'server') {
                 $appliedTo[] = new FirewallResource($a->type, new Server($a->server->id));
+            } elseif ($a->type === 'label_selector') {
+                $appliedTo[] = new FirewallResource($a->type, null, get_object_vars($a->label_selector));
             }
         }
 
@@ -168,18 +170,18 @@ class Firewall extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#firewalls-delete-a-firewall
      *
-     * @return bool
+     * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete(): bool
+    public function delete(): ?APIResponse
     {
         $response = $this->httpClient->delete('firewalls/'.$this->id);
         if (! HetznerAPIClient::hasError($response)) {
-            return true;
+            return APIResponse::create([], $response->getHeaders());
         }
 
-        return false;
+        return null;
     }
 
     /**

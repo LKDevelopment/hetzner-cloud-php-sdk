@@ -129,12 +129,14 @@ class Networks extends Model implements Resources
      * @param  array  $subnets
      * @param  array  $routes
      * @param  array  $labels
+     * @param  bool  $exposeRoutesToVswitch
      */
-    public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [])
+    public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [], bool $exposeRoutesToVswitch = false)
     {
         $payload = [
             'name' => $name,
             'ip_range' => $ipRange,
+            'expose_routes_to_vswitch' => $exposeRoutesToVswitch,
         ];
         if (! empty($subnets)) {
             $payload['subnets'] = collect($subnets)->map(function (Subnet $s) {

@@ -11,6 +11,9 @@ namespace LKDev\Tests\Unit\Pricing;
 
 use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Prices\Price;
+use LKDev\HetznerCloud\Models\Servers\Types\ServerType;
+use LKDev\HetznerCloud\Models\Prices\ServerTypePrice;
 use LKDev\Tests\TestCase;
 
 class PricingTest extends TestCase
@@ -32,8 +35,21 @@ class PricingTest extends TestCase
         $prices = $this->prices->all();
         $this->assertEquals('EUR', $prices->currency);
         $this->assertEquals('19.000000', $prices->vat_rate);
-        $this->assertEquals('1.0000000000', $prices->image->price_per_gb_month->net);
+        $this->assertInstanceOf(Price::class, $prices->image);
+        $this->assertEquals('1.0000000000', $prices->image->net);
+        $this->assertEquals('1.1900000000000000', $prices->image->gross);
+
+        $this->assertInstanceOf(Price::class, $prices->floating_ip);
+        $this->assertInstanceOf(Price::class, $prices->traffic);
+        $this->assertEquals('20.0000000000', $prices->server_backup);
+        $this->assertInstanceOf(Price::class, $prices->volume);
+
         $this->assertIsArray($prices->server_types);
+        $this->assertInstanceOf(ServerType::class, $prices->server_types[0]);
+        $this->assertIsArray($prices->server_types[0]->prices);
+        $this->assertInstanceOf(ServerTypePrice::class, $prices->server_types[0]->prices[0]);
+
+        $this->assertIsArray($prices->load_balancer_types);
         $this->assertLastRequestEquals('GET', '/pricing');
     }
 }

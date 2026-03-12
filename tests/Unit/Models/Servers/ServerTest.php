@@ -255,6 +255,9 @@ class ServerTest extends TestCase
         $this->assertEquals($server->id, 42);
         $this->assertEquals($server->name, 'my-server');
         $this->assertEquals($server->status, 'running');
+        $this->assertInstanceOf(\LKDev\HetznerCloud\Models\Locations\Location::class, $server->location);
+        $this->assertEquals($server->location->id, 1);
+        $this->assertEquals($server->location->name, 'fsn1');
     }
 
     public function testMetrics()

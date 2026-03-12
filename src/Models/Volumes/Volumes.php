@@ -135,12 +135,12 @@ class Volumes extends Model implements Resources
             'size' => $size,
             'automount' => $automount,
         ];
-        if ($location == null && $server != null) {
+        if ($server != null) {
             $parameters['server'] = $server->id;
-        } elseif ($location != null && $server == null) {
-            $parameters['location'] = $location->name ?: $location->id;
+        } elseif ($location != null) {
+            $parameters['location'] = $location->id;
         } else {
-            throw new \InvalidArgumentException('Please specify only a server or a location');
+            throw new \InvalidArgumentException('Please specify either a server or a location');
         }
         if ($format != null) {
             $parameters['format'] = $format;

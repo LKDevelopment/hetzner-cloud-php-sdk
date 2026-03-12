@@ -29,19 +29,33 @@ class ISO extends Model implements Resource
     public $type;
 
     /**
+     * @var string
+     */
+    public $architecture;
+
+    /**
+     * @var string|null
+     */
+    public $deprecated;
+
+    /**
      * ISO constructor.
      *
      * @param  int  $id
      * @param  string  $name
      * @param  string  $description
      * @param  string  $type
+     * @param  string  $architecture
+     * @param  string|null  $deprecated
      */
-    public function __construct(int $id, ?string $name = null, ?string $description = null, ?string $type = null)
+    public function __construct(int $id, ?string $name = null, ?string $description = null, ?string $type = null, ?string $architecture = null, ?string $deprecated = null)
     {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
         $this->type = $type;
+        $this->architecture = $architecture;
+        $this->deprecated = $deprecated;
         parent::__construct();
     }
 
@@ -55,7 +69,7 @@ class ISO extends Model implements Resource
             return null;
         }
 
-        return new self($input->id, $input->name, $input->description, $input->type);
+        return new self($input->id, $input->name, $input->description, $input->type, $input->architecture ?? null, $input->deprecated ?? null);
     }
 
     public function reload()

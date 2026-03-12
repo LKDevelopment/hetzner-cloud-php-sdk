@@ -68,6 +68,11 @@ class Network extends Model implements Resource
     public $created;
 
     /**
+     * @var bool
+     */
+    public $expose_routes_to_vswitch;
+
+    /**
      * Network constructor.
      *
      * @param  int  $id
@@ -234,6 +239,7 @@ class Network extends Model implements Resource
 
         $this->labels = get_object_vars($data->labels);
         $this->created = $data->created;
+        $this->expose_routes_to_vswitch = $data->expose_routes_to_vswitch ?? false;
 
         return $this;
     }
@@ -269,7 +275,7 @@ class Network extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'network' => Server::parse(json_decode((string) $response->getBody())->network),
+                'network' => self::parse(json_decode((string) $response->getBody())->network),
             ], $response->getHeaders());
         }
     }

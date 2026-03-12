@@ -106,12 +106,12 @@ class NetworksTest extends TestCase
     public function testBasicCreate()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/network.json')));
-        $resp = $this->networks->create('mynet', '10.0.0.0/16');
+        $resp = $this->networks->create('mynet', '10.0.0.0/16', [], [], [], true);
         $this->assertInstanceOf(APIResponse::class, $resp);
         $this->assertInstanceOf(Network::class, $resp->getResponsePart('network'));
 
         $this->assertLastRequestEquals('POST', '/networks');
-        $this->assertLastRequestBodyParametersEqual(['name' => 'mynet', 'ip_range' => '10.0.0.0/16']);
+        $this->assertLastRequestBodyParametersEqual(['name' => 'mynet', 'ip_range' => '10.0.0.0/16', 'expose_routes_to_vswitch' => true]);
     }
 
     public function testAdvancedCreate()
