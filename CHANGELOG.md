@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.0-alpha.1 (18.03.2026)
+## 3.0.0 (18.03.2026)
 
 ### Breaking Changes
 * Minimum PHP version is now 8.2.
