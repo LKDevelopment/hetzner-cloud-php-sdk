@@ -159,9 +159,9 @@ class PrimaryIps extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->primary_ips = collect($input)->map(function ($primaryIp, $key) {
+        $this->primary_ips = array_map(function ($primaryIp) {
             return PrimaryIp::parse($primaryIp);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

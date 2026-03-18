@@ -65,10 +65,9 @@ class PlacementGroup extends Model implements Resource
     {
         $this->name = $data->name;
         $this->type = $data->type;
-        $this->servers = collect($data->servers)
-            ->map(function ($id) {
-                return new Server($id);
-            })->toArray();
+        $this->servers = array_map(function ($id) {
+            return new Server($id);
+        }, $data->servers);
 
         $this->labels = get_object_vars($data->labels);
         $this->created = $data->created;

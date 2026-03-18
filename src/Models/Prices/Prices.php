@@ -100,14 +100,14 @@ class Prices extends Model
         $this->server_backup = property_exists($input, 'server_backup') ? ($input->server_backup->percentage ?? null) : null;
         $this->volume = property_exists($input, 'volume') ? Price::parse($input->volume->price_per_gb_month) : null;
         if (property_exists($input, 'server_types')) {
-            $this->server_types = collect($input->server_types)->map(function ($serverType) {
+            $this->server_types = array_map(function ($serverType) {
                 return ServerType::parse($serverType);
-            })->toArray();
+            }, $input->server_types);
         }
         if (property_exists($input, 'load_balancer_types')) {
-            $this->load_balancer_types = collect($input->load_balancer_types)->map(function ($loadBalancerType) {
+            $this->load_balancer_types = array_map(function ($loadBalancerType) {
                 return LoadBalancerType::parse($loadBalancerType);
-            })->toArray();
+            }, $input->load_balancer_types);
         }
 
         return $this;
@@ -123,8 +123,8 @@ class Prices extends Model
             return [];
         }
 
-        return collect($input)->map(function ($price) {
+        return array_map(function ($price) {
             return ServerTypePrice::parse($price);
-        })->toArray();
+        }, $input);
     }
 }

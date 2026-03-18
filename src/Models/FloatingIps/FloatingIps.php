@@ -174,9 +174,9 @@ class FloatingIps extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->floating_ips = collect($input)->map(function ($floatingIp, $key) {
+        $this->floating_ips = array_map(function ($floatingIp) {
             return FloatingIp::parse($floatingIp);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

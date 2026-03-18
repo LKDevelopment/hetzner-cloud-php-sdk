@@ -209,9 +209,9 @@ class Servers extends Model
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
-                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                'next_actions' => array_map(function ($action) {
                     return Action::parse($action);
-                })->toArray(),
+                }, $payload->next_actions),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
         }
@@ -286,9 +286,9 @@ class Servers extends Model
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
-                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                'next_actions' => array_map(function ($action) {
                     return Action::parse($action);
-                })->toArray(),
+                }, $payload->next_actions),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
         }
@@ -302,12 +302,9 @@ class Servers extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->servers = collect($input)
-            ->filter()
-            ->map(function ($server) {
-                return Server::parse($server, $this->httpClient);
-            })
-            ->toArray();
+        $this->servers = array_map(function ($server) {
+            return Server::parse($server, $this->httpClient);
+        }, array_filter($input));
 
         return $this;
     }

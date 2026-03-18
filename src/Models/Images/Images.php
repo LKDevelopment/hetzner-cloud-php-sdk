@@ -113,9 +113,9 @@ class Images extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->images = collect($input)->map(function ($image, $key) {
+        $this->images = array_map(function ($image) {
             return Image::parse($image);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

@@ -51,10 +51,9 @@ class RequestOpts
      */
     public function buildQuery()
     {
-        $values = collect(get_object_vars($this))
-            ->filter(function ($var) {
-                return $var != null;
-            })->toArray();
+        $values = array_filter(get_object_vars($this), function ($var) {
+            return $var != null;
+        });
 
         return count($values) == 0 ? '' : ('?'.http_build_query($values));
     }

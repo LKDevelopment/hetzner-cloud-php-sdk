@@ -1,5 +1,23 @@
 # Changelog
 
+## 3.0.0-alpha.1 (18.03.2026)
+
+### Breaking Changes
+* Minimum PHP version is now 8.2.
+* Removed dependency `illuminate/collections` - Replaced all `collect()` usages with native PHP array functions.
+* Method `delete()` now returns `?APIResponse` instead of `bool` across all models.
+* Changed various method signatures to use native PHP types and improved type hinting.
+
+### Features
+* Improved support for Managed Certificates.
+* Improved support for Firewall label selectors.
+* Improved support for Primary IPs.
+* Improved support for Placement Groups.
+* Improved support for Load Balancers.
+
+### Internal
+* General code cleanup and modernization.
+
 ## 2.5.0 (12.10.2021)
 
 * Upgrade to GitHub-native Dependabot by @dependabot-preview in https://github.com/LKDevelopment/hetzner-cloud-php-sdk/pull/73

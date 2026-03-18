@@ -102,9 +102,9 @@ class ServerTypes extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->server_types = collect($input)->map(function ($serverType, $key) {
+        $this->server_types = array_map(function ($serverType) {
             return ServerType::parse($serverType);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

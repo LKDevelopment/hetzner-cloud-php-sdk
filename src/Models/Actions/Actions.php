@@ -80,9 +80,9 @@ class Actions extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->actions = collect($input)->map(function ($action, $key) {
+        $this->actions = array_map(function ($action) {
             return Action::parse($action);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

@@ -231,10 +231,9 @@ class Network extends Model implements Resource
         $this->ipRange = $data->ip_range;
         $this->subnets = Subnet::parse($data->subnets, $this->httpClient);
         $this->routes = Route::parse($data->routes, $this->httpClient);
-        $this->servers = collect($data->servers)
-            ->map(function ($id) {
-                return new Server($id);
-            })->toArray();
+        $this->servers = array_map(function ($id) {
+            return new Server($id);
+        }, $data->servers);
         $this->protection = Protection::parse($data->protection);
 
         $this->labels = get_object_vars($data->labels);

@@ -109,9 +109,9 @@ class LoadBalancerTypes extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->load_balancer_types = collect($input)->map(function ($loadBalancerType, $key) {
+        $this->load_balancer_types = array_map(function ($loadBalancerType) {
             return LoadBalancerType::parse($loadBalancerType);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

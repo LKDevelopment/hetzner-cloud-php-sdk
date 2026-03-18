@@ -122,9 +122,9 @@ class Certificates extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->certificates = collect($input)->map(function ($certificate, $key) {
+        $this->certificates = array_map(function ($certificate) {
             return Certificate::parse($certificate);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

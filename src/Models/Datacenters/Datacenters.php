@@ -120,9 +120,9 @@ class Datacenters extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->datacenters = collect($input)->map(function ($datacenter, $key) {
+        $this->datacenters = array_map(function ($datacenter) {
             return Datacenter::parse($datacenter);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

@@ -188,15 +188,13 @@ class Zones extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->zones = collect($input)
-            ->map(function ($zone) {
-                if ($zone != null) {
-                    return Zone::parse($zone);
-                }
+        $this->zones = array_map(function ($zone) {
+            if ($zone != null) {
+                return Zone::parse($zone);
+            }
 
-                return null;
-            })
-            ->toArray();
+            return null;
+        }, $input);
 
         return $this;
     }

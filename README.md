@@ -33,7 +33,11 @@ You can just run `phpunit`. The whole library is based on unit tests and sample 
 
 ### Changelog
 
-Please see [CHANGELOG](https://github.com/LKDevelopment/hetzner-cloud-php-sdk/releases) for more information what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+
+### Upgrade Guide
+
+Please see [Upgrade to v3.0](UPGRADE-3.0.md) for more information how to upgrade from v2.x.
 
 
 ### Security
