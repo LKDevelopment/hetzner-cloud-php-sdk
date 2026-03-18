@@ -40,9 +40,9 @@ class Route extends Model
      */
     public static function parse($input, ?GuzzleClient $client = null)
     {
-        return collect($input)->map(function ($route) use ($client) {
+        return array_map(function ($route) use ($client) {
             return new self($route->destination, $route->gateway, $client);
-        })->toArray();
+        }, $input);
     }
 
     /**

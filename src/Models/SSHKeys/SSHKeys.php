@@ -113,9 +113,9 @@ class SSHKeys extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->ssh_keys = collect($input)->map(function ($sshKey, $key) {
+        $this->ssh_keys = array_map(function ($sshKey) {
             return SSHKey::parse($sshKey);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

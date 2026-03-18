@@ -54,9 +54,9 @@ class Subnet extends Model
      */
     public static function parse($input, ?GuzzleClient $client = null)
     {
-        return collect($input)->map(function ($subnet) use ($client) {
+        return array_map(function ($subnet) use ($client) {
             return new self($subnet->type, $subnet->ip_range, $subnet->network_zone, $subnet->gateway, $client);
-        })->toArray();
+        }, $input);
     }
 
     /**

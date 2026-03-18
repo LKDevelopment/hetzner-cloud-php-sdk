@@ -109,13 +109,11 @@ class PlacementGroups extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->placement_groups = collect($input)
-            ->map(function ($placementGroup) {
-                if ($placementGroup != null) {
-                    return PlacementGroup::parse($placementGroup);
-                }
-            })
-            ->toArray();
+        $this->placement_groups = array_map(function ($placementGroup) {
+            if ($placementGroup != null) {
+                return PlacementGroup::parse($placementGroup);
+            }
+        }, $input);
 
         return $this;
     }
