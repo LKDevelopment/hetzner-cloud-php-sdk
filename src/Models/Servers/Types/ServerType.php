@@ -64,6 +64,13 @@ class ServerType extends Model
     public $architecture;
 
     /**
+     * Deprecation info if the server type is deprecated, null otherwise.
+     *
+     * @var array{announced: string, unavailable_after: string}|null
+     */
+    public $deprecation;
+
+    /**
      * ServerType constructor.
      *
      * @param  int  $serverTypeId
@@ -91,6 +98,7 @@ class ServerType extends Model
         $this->storageType = $input->storage_type ?? null;
         $this->cpuType = $input->cpu_type ?? null;
         $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
+        $this->deprecation = property_exists($input, 'deprecation') ? (array) $input->deprecation : null;
 
         return $this;
     }
