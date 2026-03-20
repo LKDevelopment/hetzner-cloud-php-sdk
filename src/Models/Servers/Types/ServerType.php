@@ -107,11 +107,11 @@ class ServerType extends Model
         $this->cpuType = $input->cpu_type ?? null;
         $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
         $this->deprecation = (property_exists($input, 'deprecation') && $input->deprecation !== null) ? (array) $input->deprecation : null;
-        $this->locationAvailability = collect($input->locations ?? [])
-            ->mapWithKeys(fn ($loc): array => [
-                $loc->name => ($loc->deprecation !== null) ? (array) $loc->deprecation : null,
-            ])
-            ->all();
+        $locationAvailability = [];
+        foreach ($input->locations ?? [] as $loc) {
+            $locationAvailability[$loc->name] = ($loc->deprecation !== null) ? (array) $loc->deprecation : null;
+        }
+        $this->locationAvailability = $locationAvailability;
 
         return $this;
     }
