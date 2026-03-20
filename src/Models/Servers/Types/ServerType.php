@@ -71,6 +71,14 @@ class ServerType extends Model
     public $deprecation;
 
     /**
+     * Per-location availability info, keyed by location name.
+     * Each entry contains a deprecation object or null if still available.
+     *
+     * @var array<string, array{announced: string, unavailable_after: string}|null>
+     */
+    public $locationAvailability = [];
+
+    /**
      * ServerType constructor.
      *
      * @param  int  $serverTypeId
@@ -99,6 +107,11 @@ class ServerType extends Model
         $this->cpuType = $input->cpu_type ?? null;
         $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
         $this->deprecation = (property_exists($input, 'deprecation') && $input->deprecation !== null) ? (array) $input->deprecation : null;
+        $this->locationAvailability = collect($input->locations ?? [])
+            ->mapWithKeys(fn ($loc): array => [
+                $loc->name => ($loc->deprecation !== null) ? (array) $loc->deprecation : null,
+            ])
+            ->all();
 
         return $this;
     }
