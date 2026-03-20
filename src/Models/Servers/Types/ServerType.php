@@ -98,7 +98,7 @@ class ServerType extends Model
         $this->storageType = $input->storage_type ?? null;
         $this->cpuType = $input->cpu_type ?? null;
         $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
-        $this->deprecation = property_exists($input, 'deprecation') ? (array) $input->deprecation : null;
+        $this->deprecation = (property_exists($input, 'deprecation') && $input->deprecation !== null) ? (array) $input->deprecation : null;
 
         return $this;
     }
