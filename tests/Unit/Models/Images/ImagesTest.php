@@ -33,7 +33,7 @@ class ImagesTest extends TestCase
         $this->assertEquals($image->id, 4711);
         $this->assertEquals($image->name, 'ubuntu-20.04');
 
-        $this->assertEmpty($image->labels);
+        $this->assertEmpty((array) $image->labels);
 
         $this->assertLastRequestEquals('GET', '/images/4711');
     }
@@ -45,7 +45,7 @@ class ImagesTest extends TestCase
         $this->assertEquals($image->id, 4711);
         $this->assertEquals($image->name, 'ubuntu-20.04');
 
-        $this->assertEmpty($image->labels);
+        $this->assertEmpty((array) $image->labels);
         $this->assertLastRequestEquals('GET', '/images');
         $this->assertLastRequestQueryParametersContains('name', 'ubuntu-20.04');
     }
@@ -57,7 +57,7 @@ class ImagesTest extends TestCase
         $this->assertEquals($image->id, 4711);
         $this->assertEquals($image->name, 'ubuntu-20.04');
 
-        $this->assertEmpty($image->labels);
+        $this->assertEmpty((array) $image->labels);
         $this->assertLastRequestEquals('GET', '/images');
         $this->assertLastRequestQueryParametersContains('name', 'ubuntu-20.04');
         $this->assertLastRequestQueryParametersContains('architecture', 'arm');
