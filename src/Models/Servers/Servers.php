@@ -188,13 +188,15 @@ class Servers extends Model
             'volumes' => $volumes,
             'automount' => $automount,
             'networks' => $networks,
-            'public_net' => $public_net,
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
             $parameters['firewalls'] = $firewalls;
+        }
+        if (! empty($public_net)) {
+            $parameters['public_net'] = $public_net;
         }
         if ($placement_group != null) {
             $parameters['placement_group'] = $placement_group;
@@ -266,13 +268,15 @@ class Servers extends Model
             'volumes' => $volumes,
             'automount' => $automount,
             'networks' => $networks,
-            'public_net' => $public_net,
         ];
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
         }
         if (! empty($firewalls)) {
             $parameters['firewalls'] = $firewalls;
+        }
+        if (! empty($public_net)) {
+            $parameters['public_net'] = $public_net;
         }
         if ($placement_group != null) {
             $parameters['placement_group'] = $placement_group;
