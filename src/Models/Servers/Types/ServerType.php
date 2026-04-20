@@ -64,6 +64,21 @@ class ServerType extends Model
     public $architecture;
 
     /**
+     * Deprecation info if the server type is deprecated, null otherwise.
+     *
+     * @var array{announced: string, unavailable_after: string}|null
+     */
+    public $deprecation;
+
+    /**
+     * Per-location availability info, keyed by location name.
+     * Each entry contains a deprecation object or null if still available.
+     *
+     * @var array<string, array{announced: string, unavailable_after: string}|null>
+     */
+    public $locationAvailability = [];
+
+    /**
      * ServerType constructor.
      *
      * @param  int  $serverTypeId
@@ -91,6 +106,12 @@ class ServerType extends Model
         $this->storageType = $input->storage_type ?? null;
         $this->cpuType = $input->cpu_type ?? null;
         $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
+        $this->deprecation = (property_exists($input, 'deprecation') && $input->deprecation !== null) ? (array) $input->deprecation : null;
+        $locationAvailability = [];
+        foreach ($input->locations ?? [] as $loc) {
+            $locationAvailability[$loc->name] = ($loc->deprecation !== null) ? (array) $loc->deprecation : null;
+        }
+        $this->locationAvailability = $locationAvailability;
 
         return $this;
     }
