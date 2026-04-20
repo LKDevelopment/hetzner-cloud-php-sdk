@@ -293,14 +293,15 @@ class Zone extends Model implements Resource
         }
         $entities = [];
         $requestOpts->per_page = HetznerAPIClient::MAX_ENTITIES_PER_PAGE;
-        $max_pages = PHP_INT_MAX;
-        for ($i = 1; $i < $max_pages; $i++) {
-            $requestOpts->page = $i;
+        $page = 1;
+        while (true) {
+            $requestOpts->page = $page;
             $_f = $this->listRRSets($requestOpts);
             $entities = array_merge($entities, $_f->rrsets);
-            if ($_f->meta->pagination->page === $_f->meta->pagination->last_page || $_f->meta->pagination->last_page === null) {
-                $max_pages = 0;
+            if (!$_f->meta->pagination->next_page || $_f->meta->pagination->next_page <= $page) {
+                break;
             }
+            $page = $_f->meta->pagination->next_page;
         }
 
         return $entities;
