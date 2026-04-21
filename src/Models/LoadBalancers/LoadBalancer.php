@@ -442,6 +442,23 @@ class LoadBalancer extends Model implements Resource
     }
 
     /**
+     * Get Metrics for specified Load Balancer.
+     * @see https://docs.hetzner.cloud/#load-balancer-actions-delete-service
+     * @throws APIException|GuzzleException
+     */
+    public function metrics(string $type, string $start, string $end, ?int $step = null): ?APIResponse
+    {
+        $response = $this->httpClient->get($this->replaceServerIdInUri('load_balancers/{id}/metrics?') . http_build_query(compact('type', 'start', 'end', 'step')));
+        if (!HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'metrics' => json_decode((string)$response->getBody())->metrics,
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
      * Detaches a Load Balancer from a network.
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-detach-a-load-balancer-from-a-network
