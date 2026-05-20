@@ -28,12 +28,12 @@ class Action extends Model implements Resource
     public $progress;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $started;
 
     /**
-     * @var string
+     * @var string|null
      */
     public $finished;
 
@@ -66,7 +66,7 @@ class Action extends Model implements Resource
         string $command,
         int $progress,
         string $status,
-        string $started,
+        ?string $started = null,
         ?string $finished = null,
         $resources = null,
         $error = null
@@ -148,6 +148,6 @@ class Action extends Model implements Resource
             return;
         }
 
-        return new self($input->id, $input->command, $input->progress, $input->status, $input->started, $input->finished, $input->resources, $input->error ?? null);
+        return new self($input->id, $input->command, $input->progress, $input->status, $input->started ?? null, $input->finished ?? null, $input->resources, $input->error ?? null);
     }
 }

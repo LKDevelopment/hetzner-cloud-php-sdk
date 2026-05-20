@@ -9,14 +9,15 @@
 
 namespace LKDev\HetznerCloud\Models\Servers;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
 use LKDev\HetznerCloud\Models\Images\Image;
 use LKDev\HetznerCloud\Models\ISOs\ISO;
+use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Networks\Network;
 use LKDev\HetznerCloud\Models\Protection;
@@ -79,8 +80,15 @@ class Server extends Model implements Resource
 
     /**
      * @var \LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     *
+     * @deprecated Use $location instead
      */
     public $datacenter;
+
+    /**
+     * @var \LKDev\HetznerCloud\Models\Locations\Location
+     */
+    public $location;
 
     /**
      * @var Image
@@ -93,18 +101,18 @@ class Server extends Model implements Resource
     public $iso;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     public $rescue_enabled;
     /**
-     * @var bool
+     * @var ?bool
      *
      * @deprecated Use $rescue_enabled instead
      */
     public $rescueEnabled;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     public $locked;
 
@@ -179,10 +187,20 @@ class Server extends Model implements Resource
     public $primaryDiskSize;
 
     /**
-     * @param  int  $serverId
-     * @param  Client|null  $httpClient
+     * @var int|null
      */
-    public function __construct(int $serverId, ?Client $httpClient = null)
+    public $placement_group;
+
+    /**
+     * @var array
+     */
+    public $load_balancers;
+
+    /**
+     * @param  int  $serverId
+     * @param  GuzzleClient|null  $httpClient
+     */
+    public function __construct(int $serverId, ?GuzzleClient $httpClient = null)
     {
         $this->id = $serverId;
         parent::__construct($httpClient);
@@ -194,34 +212,37 @@ class Server extends Model implements Resource
      */
     public function setAdditionalData($data)
     {
-        $this->name = $data->name;
-        $this->status = $data->status ?: null;
-        $this->public_net = $data->public_net ?: null;
-        $this->publicNet = $data->public_net ?: null;
-        $this->private_net = property_exists($data, 'private_net') ? $data->private_net : [];
-        $this->privateNet = property_exists($data, 'private_net') ? $data->private_net : [];
-        $this->server_type = $data->server_type ?: ServerType::parse($data->server_type);
-        $this->serverType = $data->server_type ?: ServerType::parse($data->server_type);
-        $this->datacenter = $data->datacenter ?: Datacenter::parse($data->datacenter);
-        $this->created = $data->created;
-        $this->image = $data->image ?: Image::parse($data->image);
-        $this->iso = $data->iso ?: ISO::parse($data->iso);
-        $this->rescue_enabled = $data->rescue_enabled ?: null;
-        $this->rescueEnabled = $data->rescue_enabled ?: null;
-        $this->locked = $data->locked ?: null;
-        $this->backup_window = $data->backup_window ?: null;
-        $this->backupWindow = $data->backup_window ?: null;
-        $this->outgoing_traffic = $data->outgoing_traffic ?: null;
-        $this->outgoingTraffic = $data->outgoing_traffic ?: null;
-        $this->ingoing_traffic = $data->ingoing_traffic ?: null;
-        $this->ingoingTraffic = $data->ingoing_traffic ?: null;
-        $this->included_traffic = $data->included_traffic ?: null;
-        $this->includedTraffic = $data->included_traffic ?: null;
-        $this->volumes = property_exists($data, 'volumes') ? $data->volumes : [];
-        $this->protection = $data->protection ?: Protection::parse($data->protection);
-        $this->labels = $data->labels;
-        $this->primary_disk_size = $data->primary_disk_size ?: null;
-        $this->primaryDiskSize = $data->primary_disk_size ?: null;
+        $this->name = $data->name ?? null;
+        $this->status = $data->status ?? null;
+        $this->public_net = $data->public_net ?? null;
+        $this->publicNet = $data->public_net ?? null;
+        $this->private_net = $data->private_net ?? [];
+        $this->privateNet = $data->private_net ?? [];
+        $this->server_type = property_exists($data, 'server_type') && $data->server_type ? ServerType::parse($data->server_type) : null;
+        $this->serverType = property_exists($data, 'server_type') && $data->server_type ? ServerType::parse($data->server_type) : null;
+        $this->datacenter = property_exists($data, 'datacenter') && $data->datacenter ? Datacenter::parse($data->datacenter) : null;
+        $this->location = property_exists($data, 'location') && $data->location ? Location::parse($data->location) : null;
+        $this->created = $data->created ?? null;
+        $this->image = property_exists($data, 'image') && $data->image ? Image::parse($data->image) : null;
+        $this->iso = property_exists($data, 'iso') && $data->iso ? ISO::parse($data->iso) : null;
+        $this->rescue_enabled = $data->rescue_enabled ?? null;
+        $this->rescueEnabled = $data->rescue_enabled ?? null;
+        $this->locked = $data->locked ?? null;
+        $this->backup_window = $data->backup_window ?? null;
+        $this->backupWindow = $data->backup_window ?? null;
+        $this->outgoing_traffic = $data->outgoing_traffic ?? null;
+        $this->outgoingTraffic = $data->outgoing_traffic ?? null;
+        $this->ingoing_traffic = $data->ingoing_traffic ?? null;
+        $this->ingoingTraffic = $data->ingoing_traffic ?? null;
+        $this->included_traffic = $data->included_traffic ?? null;
+        $this->includedTraffic = $data->included_traffic ?? null;
+        $this->volumes = $data->volumes ?? [];
+        $this->protection = property_exists($data, 'protection') && $data->protection ? Protection::parse($data->protection) : null;
+        $this->labels = property_exists($data, 'labels') && $data->labels ? get_object_vars($data->labels) : [];
+        $this->primary_disk_size = $data->primary_disk_size ?? null;
+        $this->primaryDiskSize = $data->primary_disk_size ?? null;
+        $this->placement_group = $data->placement_group ?? null;
+        $this->load_balancers = $data->load_balancers ?? [];
 
         return $this;
     }
@@ -858,14 +879,15 @@ class Server extends Model implements Resource
 
     /**
      * @param  $input
+     * @param  GuzzleClient|null  $httpClient
      * @return \LKDev\HetznerCloud\Models\Servers\Server|static |null
      */
-    public static function parse($input)
+    public static function parse($input, ?GuzzleClient $httpClient = null)
     {
         if ($input == null) {
             return null;
         }
 
-        return (new self($input->id))->setAdditionalData($input);
+        return (new self($input->id, $httpClient))->setAdditionalData($input);
     }
 }

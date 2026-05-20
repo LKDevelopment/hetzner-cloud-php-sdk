@@ -112,13 +112,11 @@ class Networks extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->networks = collect($input)
-            ->map(function ($network) {
-                if ($network != null) {
-                    return Network::parse($network);
-                }
-            })
-            ->toArray();
+        $this->networks = array_map(function ($network) {
+            if ($network != null) {
+                return Network::parse($network);
+            }
+        }, $input);
 
         return $this;
     }
@@ -129,22 +127,24 @@ class Networks extends Model implements Resources
      * @param  array  $subnets
      * @param  array  $routes
      * @param  array  $labels
+     * @param  bool  $exposeRoutesToVswitch
      */
-    public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [])
+    public function create(string $name, string $ipRange, array $subnets = [], array $routes = [], array $labels = [], bool $exposeRoutesToVswitch = false)
     {
         $payload = [
             'name' => $name,
             'ip_range' => $ipRange,
+            'expose_routes_to_vswitch' => $exposeRoutesToVswitch,
         ];
         if (! empty($subnets)) {
-            $payload['subnets'] = collect($subnets)->map(function (Subnet $s) {
+            $payload['subnets'] = array_map(function (Subnet $s) {
                 return $s->__toRequestPayload();
-            })->toArray();
+            }, $subnets);
         }
         if (! empty($routes)) {
-            $payload['routes'] = collect($routes)->map(function (Route $r) {
+            $payload['routes'] = array_map(function (Route $r) {
                 return $r->__toRequestPayload();
-            })->toArray();
+            }, $routes);
         }
         if (! empty($labels)) {
             $payload['labels'] = $labels;

@@ -144,7 +144,6 @@ class Servers extends Model
      * @param  string  $name
      * @param  \LKDev\HetznerCloud\Models\Servers\Types\ServerType  $serverType
      * @param  \LKDev\HetznerCloud\Models\Images\Image  $image
-     * @param  \LKDev\HetznerCloud\Models\Locations\Location  $location
      * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
      * @param  array  $ssh_keys
      * @param  bool  $startAfterCreate
@@ -155,9 +154,12 @@ class Servers extends Model
      * @param  array  $labels
      * @param  array  $firewalls
      * @param  array  $public_net
+     * @param  int|null  $placement_group
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
+     *
+     * @deprecated Use createInLocation instead
      */
     public function createInDatacenter(
         string $name,
@@ -209,9 +211,9 @@ class Servers extends Model
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
-                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                'next_actions' => array_map(function ($action) {
                     return Action::parse($action);
-                })->toArray(),
+                }, $payload->next_actions),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
         }
@@ -288,9 +290,9 @@ class Servers extends Model
             return APIResponse::create(array_merge([
                 'action' => Action::parse($payload->action),
                 'server' => Server::parse($payload->server),
-                'next_actions' => collect($payload->next_actions)->map(function ($action) {
+                'next_actions' => array_map(function ($action) {
                     return Action::parse($action);
-                })->toArray(),
+                }, $payload->next_actions),
             ], (property_exists($payload, 'root_password')) ? ['root_password' => $payload->root_password] : []
             ), $response->getHeaders());
         }
@@ -304,26 +306,21 @@ class Servers extends Model
      */
     public function setAdditionalData($input)
     {
-        $this->servers = collect($input)
-            ->map(function ($server) {
-                if ($server != null) {
-                    return Server::parse($server);
-                }
-
-                return null;
-            })
-            ->toArray();
+        $this->servers = array_map(function ($server) {
+            return Server::parse($server, $this->httpClient);
+        }, array_filter($input));
 
         return $this;
     }
 
     /**
      * @param  $input
+     * @param  \LKDev\HetznerCloud\Clients\GuzzleClient|null  $httpClient
      * @return static
      */
-    public static function parse($input)
+    public static function parse($input, ?\LKDev\HetznerCloud\Clients\GuzzleClient $httpClient = null)
     {
-        return (new self())->setAdditionalData($input);
+        return (new self($httpClient))->setAdditionalData($input);
     }
 
     /**

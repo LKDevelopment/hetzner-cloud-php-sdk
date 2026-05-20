@@ -135,12 +135,12 @@ class Volumes extends Model implements Resources
             'size' => $size,
             'automount' => $automount,
         ];
-        if ($location == null && $server != null) {
+        if ($server != null) {
             $parameters['server'] = $server->id;
-        } elseif ($location != null && $server == null) {
-            $parameters['location'] = $location->name ?: $location->id;
+        } elseif ($location != null) {
+            $parameters['location'] = $location->id;
         } else {
-            throw new \InvalidArgumentException('Please specify only a server or a location');
+            throw new \InvalidArgumentException('Please specify either a server or a location');
         }
         if ($format != null) {
             $parameters['format'] = $format;
@@ -157,9 +157,9 @@ class Volumes extends Model implements Resources
             return APIResponse::create([
                 'action' => Action::parse($data->action),
                 'volume' => Volume::parse($data->volume),
-                'next_actions' => collect($data->next_actions)->map(function ($action) {
+                'next_actions' => array_map(function ($action) {
                     return Action::parse($action);
-                })->toArray(),
+                }, $data->next_actions),
             ], $response->getHeaders());
         }
 
@@ -172,13 +172,13 @@ class Volumes extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->volumes = collect($input)->map(function ($volume, $key) {
+        $this->volumes = array_map(function ($volume) {
             if ($volume != null) {
                 return Volume::parse($volume);
             }
 
             return null;
-        })->toArray();
+        }, $input);
 
         return $this;
     }

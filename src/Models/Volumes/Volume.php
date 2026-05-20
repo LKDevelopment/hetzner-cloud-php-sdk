@@ -9,8 +9,8 @@
 
 namespace LKDev\HetznerCloud\Models\Volumes;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
@@ -64,10 +64,15 @@ class Volume extends Model implements Resource
     public $linux_device;
 
     /**
-     * @param  int  $volumeId
-     * @param  Client|null  $httpClient
+     * @var string
      */
-    public function __construct(?int $volumeId = null, ?Client $httpClient = null)
+    public $created;
+
+    /**
+     * @param  int  $volumeId
+     * @param  GuzzleClient|null  $httpClient
+     */
+    public function __construct(?int $volumeId = null, ?GuzzleClient $httpClient = null)
     {
         $this->id = $volumeId;
         parent::__construct($httpClient);
@@ -85,9 +90,10 @@ class Volume extends Model implements Resource
         $this->size = $data->size;
 
         $this->server = $data->server;
-        $this->location = Location::parse($data->location);
-        $this->protection = $data->protection ?: Protection::parse($data->protection);
+        $this->location = $data->location ? Location::parse($data->location) : null;
+        $this->protection = $data->protection ? Protection::parse($data->protection) : null;
         $this->labels = get_object_vars($data->labels);
+        $this->created = $data->created;
 
         return $this;
     }

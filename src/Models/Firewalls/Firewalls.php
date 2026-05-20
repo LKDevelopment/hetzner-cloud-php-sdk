@@ -134,9 +134,9 @@ class Firewalls extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->firewalls = collect($input)->map(function ($firewall, $key) {
+        $this->firewalls = array_map(function ($firewall) {
             return Firewall::parse($firewall);
-        })->toArray();
+        }, $input);
 
         return $this;
     }
@@ -163,15 +163,15 @@ class Firewalls extends Model implements Resources
             'name' => $name,
         ];
         if (! empty($rules)) {
-            $parameters['rules'] = collect($rules)->map(function ($r) {
+            $parameters['rules'] = array_map(function ($r) {
                 return $r->toRequestSchema();
-            });
+            }, $rules);
         }
 
         if (! empty($applyTo)) {
-            $parameters['apply_to'] = collect($applyTo)->map(function ($r) {
+            $parameters['apply_to'] = array_map(function ($r) {
                 return $r->toRequestSchema();
-            });
+            }, $applyTo);
         }
         if (! empty($labels)) {
             $parameters['labels'] = $labels;
@@ -184,9 +184,9 @@ class Firewalls extends Model implements Resources
 
             return APIResponse::create([
                 'firewall' => Firewall::parse($payload->{$this->_getKeys()['one']}),
-                'actions' => collect($payload->actions)->map(function ($action) {
+                'actions' => array_map(function ($action) {
                     return Action::parse($action);
-                })->toArray(),
+                }, $payload->actions),
             ], $response->getHeaders());
         }
 

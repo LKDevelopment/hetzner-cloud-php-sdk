@@ -21,6 +21,7 @@ use LKDev\HetznerCloud\Models\Servers\Servers;
 use LKDev\HetznerCloud\Models\Servers\Types\ServerTypes;
 use LKDev\HetznerCloud\Models\SSHKeys\SSHKeys;
 use LKDev\HetznerCloud\Models\Volumes\Volumes;
+use LKDev\HetznerCloud\Models\Zones\Zones;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -31,7 +32,7 @@ class HetznerAPIClient
     /**
      * Version of the API Client.
      */
-    const VERSION = '2.8.0';
+    const VERSION = '3.0.0';
 
     const MAX_ENTITIES_PER_PAGE = 50;
 
@@ -60,7 +61,7 @@ class HetznerAPIClient
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
-    protected $httpClient;
+    protected GuzzleClient $httpClient;
 
     /**
      * @param  string  $apiToken
@@ -123,17 +124,17 @@ class HetznerAPIClient
     }
 
     /**
-     * @return Client
+     * @return GuzzleClient
      */
-    public function getHttpClient(): Client
+    public function getHttpClient(): GuzzleClient
     {
         return $this->httpClient;
     }
 
     /**
-     * @return Client
+     * @return GuzzleClient
      */
-    public function setHttpClient(Client $client): self
+    public function setHttpClient(GuzzleClient $client): self
     {
         $this->httpClient = $client;
 
@@ -325,6 +326,11 @@ class HetznerAPIClient
     public function loadBalancerTypes()
     {
         return new LoadBalancerTypes($this->httpClient);
+    }
+
+    public function zones()
+    {
+        return new Zones($this->httpClient);
     }
 
     /**

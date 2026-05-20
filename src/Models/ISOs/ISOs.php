@@ -116,9 +116,9 @@ class ISOs extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->isos = collect($input)->map(function ($iso, $key) {
+        $this->isos = array_map(function ($iso) {
             return ISO::parse($iso);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

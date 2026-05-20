@@ -135,7 +135,7 @@ class Image extends Model implements Resource
     public $protection;
 
     /**
-     * @var array
+     * @var \stdClass|null
      */
     public $labels;
 
@@ -145,24 +145,36 @@ class Image extends Model implements Resource
     public $architecture;
 
     /**
+     * @var string|null
+     */
+    public $deleted;
+
+    /**
+     * @var string|null
+     */
+    public $deprecated;
+
+    /**
      * Image constructor.
      *
      * @param  int  $id
-     * @param  string  $type
-     * @param  string  $status
-     * @param  string  $name
-     * @param  string  $description
-     * @param  float  $imageSize
-     * @param  int  $diskSize
-     * @param  string  $created
-     * @param  \LKDev\HetznerCloud\Models\Servers\Server  $createdFrom
-     * @param  int  $boundTo
-     * @param  string  $osFlavor
-     * @param  string  $osVersion
+     * @param  string|null  $type
+     * @param  string|null  $status
+     * @param  string|null  $name
+     * @param  string|null  $description
+     * @param  float|null  $imageSize
+     * @param  int|null  $diskSize
+     * @param  string|null  $created
+     * @param  null  $createdFrom
+     * @param  int|null  $boundTo
+     * @param  string|null  $osFlavor
+     * @param  string|null  $osVersion
      * @param  bool  $rapidDeploy
-     * @param  Protection  $protection
-     * @param  string  $architecture
-     * @param  array  $labels
+     * @param  Protection|null  $protection
+     * @param  string|null  $architecture
+     * @param  \stdClass  $labels
+     * @param  string|null  $deleted
+     * @param  string|null  $deprecated
      */
     public function __construct(
         int $id,
@@ -180,7 +192,9 @@ class Image extends Model implements Resource
         ?bool $rapidDeploy = null,
         ?Protection $protection = null,
         ?string $architecture = null,
-        array $labels = []
+        \stdClass $labels = new \stdClass(),
+        ?string $deleted = null,
+        ?string $deprecated = null
     ) {
         $this->id = $id;
         $this->type = $type;
@@ -205,6 +219,8 @@ class Image extends Model implements Resource
         $this->protection = $protection;
         $this->architecture = $architecture;
         $this->labels = $labels;
+        $this->deleted = $deleted;
+        $this->deprecated = $deprecated;
         parent::__construct();
     }
 
@@ -277,7 +293,7 @@ class Image extends Model implements Resource
 
     /**
      * @param  $input
-     * @return \LKDev\HetznerCloud\Models\Images\Image|static
+     * @return \LKDev\HetznerCloud\Models\Images\Image|static|null
      */
     public static function parse($input): ?Image
     {
@@ -285,7 +301,7 @@ class Image extends Model implements Resource
             return null;
         }
 
-        return new self($input->id, $input->type, property_exists($input, 'status') ? $input->status : null, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), $input->architecture, get_object_vars($input->labels));
+        return new self($input->id, $input->type, $input->status, $input->name, $input->description, $input->image_size, $input->disk_size, $input->created, $input->created_from, $input->bound_to, $input->os_flavor, $input->os_version, $input->rapid_deploy, Protection::parse($input->protection), $input->architecture ?? null, $input->labels, $input->deleted ?? null, $input->deprecated ?? null);
     }
 
     public function reload()

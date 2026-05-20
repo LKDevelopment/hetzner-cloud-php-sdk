@@ -116,9 +116,9 @@ class Locations extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->locations = collect($input)->map(function ($location, $key) {
+        $this->locations = array_map(function ($location) {
             return Location::parse($location);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

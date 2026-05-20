@@ -3,7 +3,9 @@
 namespace LKDev\Tests\Unit\Models\LoadBalancerTypes;
 
 use GuzzleHttp\Psr7\Response;
+use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerType;
 use LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerTypes;
+use LKDev\HetznerCloud\Models\Prices\ServerTypePrice;
 use LKDev\Tests\TestCase;
 
 class LoadBalancerTypesTest extends TestCase
@@ -62,5 +64,14 @@ class LoadBalancerTypesTest extends TestCase
         $this->assertEquals($loadBalancerTypes[0]->id, 4711);
         $this->assertEquals($loadBalancerTypes[0]->name, 'lb11');
         $this->assertLastRequestEquals('GET', '/load_balancer_types');
+    }
+
+    public function testParseWithPrice()
+    {
+        $input = json_decode(file_get_contents(__DIR__.'/fixtures/loadBalancerType.json'));
+        $input->load_balancer_type->price = $input->load_balancer_type->prices[0];
+        $loadBalancerType = LoadBalancerType::parse($input->load_balancer_type);
+        $this->assertInstanceOf(ServerTypePrice::class, $loadBalancerType->price);
+        $this->assertEquals('fsn1', $loadBalancerType->price->location);
     }
 }

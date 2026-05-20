@@ -53,7 +53,7 @@ class FloatingIpTest extends TestCase
     public function testDelete()
     {
         $this->mockHandler->append(new Response(204, []));
-        $this->assertTrue($this->floatingIp->delete());
+        $this->assertInstanceOf(\LKDev\HetznerCloud\APIResponse::class, $this->floatingIp->delete());
     }
 
     /**

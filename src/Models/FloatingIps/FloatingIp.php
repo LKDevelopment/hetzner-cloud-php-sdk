@@ -181,18 +181,18 @@ class FloatingIp extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/#resources-floating-ips-delete
      *
-     * @return bool
+     * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function delete(): bool
+    public function delete(): ?APIResponse
     {
         $response = $this->httpClient->delete('floating_ips/'.$this->id);
         if (! HetznerAPIClient::hasError($response)) {
-            return true;
+            return APIResponse::create([], $response->getHeaders());
         }
 
-        return false;
+        return null;
     }
 
     /**

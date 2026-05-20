@@ -109,9 +109,9 @@ class LoadBalancers extends Model implements Resources
      */
     public function setAdditionalData($input)
     {
-        $this->load_balancers = collect($input)->map(function ($loadBalancer, $key) {
+        $this->load_balancers = array_map(function ($loadBalancer) {
             return LoadBalancer::parse($loadBalancer);
-        })->toArray();
+        }, $input);
 
         return $this;
     }

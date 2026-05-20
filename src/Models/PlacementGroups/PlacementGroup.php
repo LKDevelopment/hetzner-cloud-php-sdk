@@ -2,8 +2,8 @@
 
 namespace LKDev\HetznerCloud\Models\PlacementGroups;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
@@ -49,9 +49,9 @@ class PlacementGroup extends Model implements Resource
      * PlacementGroup constructor.
      *
      * @param  int  $id
-     * @param  Client|null  $httpClient
+     * @param  GuzzleClient|null  $httpClient
      */
-    public function __construct(int $id, ?Client $httpClient = null)
+    public function __construct(int $id, ?GuzzleClient $httpClient = null)
     {
         $this->id = $id;
         parent::__construct($httpClient);
@@ -65,10 +65,9 @@ class PlacementGroup extends Model implements Resource
     {
         $this->name = $data->name;
         $this->type = $data->type;
-        $this->servers = collect($data->servers)
-            ->map(function ($id) {
-                return new Server($id);
-            })->toArray();
+        $this->servers = array_map(function ($id) {
+            return new Server($id);
+        }, $data->servers);
 
         $this->labels = get_object_vars($data->labels);
         $this->created = $data->created;
@@ -107,7 +106,7 @@ class PlacementGroup extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'placement_group' => self::parse(json_decode((string) $response->getBody())->network),
+                'placement_group' => self::parse(json_decode((string) $response->getBody())->placement_group),
             ], $response->getHeaders());
         }
 

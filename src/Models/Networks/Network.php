@@ -2,8 +2,8 @@
 
 namespace LKDev\HetznerCloud\Models\Networks;
 
-use GuzzleHttp\Client;
 use LKDev\HetznerCloud\APIResponse;
+use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
@@ -68,12 +68,17 @@ class Network extends Model implements Resource
     public $created;
 
     /**
+     * @var bool
+     */
+    public $expose_routes_to_vswitch;
+
+    /**
      * Network constructor.
      *
      * @param  int  $id
-     * @param  Client|null  $httpClient
+     * @param  GuzzleClient|null  $httpClient
      */
-    public function __construct(int $id, ?Client $httpClient = null)
+    public function __construct(int $id, ?GuzzleClient $httpClient = null)
     {
         $this->id = $id;
         parent::__construct($httpClient);
@@ -226,14 +231,14 @@ class Network extends Model implements Resource
         $this->ipRange = $data->ip_range;
         $this->subnets = Subnet::parse($data->subnets, $this->httpClient);
         $this->routes = Route::parse($data->routes, $this->httpClient);
-        $this->servers = collect($data->servers)
-            ->map(function ($id) {
-                return new Server($id);
-            })->toArray();
+        $this->servers = array_map(function ($id) {
+            return new Server($id);
+        }, $data->servers);
         $this->protection = Protection::parse($data->protection);
 
         $this->labels = get_object_vars($data->labels);
         $this->created = $data->created;
+        $this->expose_routes_to_vswitch = $data->expose_routes_to_vswitch ?? false;
 
         return $this;
     }
@@ -269,7 +274,7 @@ class Network extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'network' => Server::parse(json_decode((string) $response->getBody())->network),
+                'network' => self::parse(json_decode((string) $response->getBody())->network),
             ], $response->getHeaders());
         }
     }

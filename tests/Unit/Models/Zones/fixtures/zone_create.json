@@ -1,0 +1,47 @@
+{
+  "zone": {
+    "id": 4711,
+    "name": "example.com",
+    "mode": "primary",
+    "status": "ok",
+    "ttl": 3600,
+    "record_count": 4,
+    "protection": {
+      "delete": false
+    },
+    "labels": {
+      "key": "value"
+    },
+    "created": "2016-01-30T23:50:00+00:00",
+    "registrar": "hetzner",
+    "authoritative_nameservers": {
+      "assigned": [
+        "hydrogen.ns.hetzner.com.",
+        "oxygen.ns.hetzner.com.",
+        "helium.ns.hetzner.de."
+      ],
+      "delegated": [
+        "hydrogen.ns.hetzner.com.",
+        "oxygen.ns.hetzner.com.",
+        "helium.ns.hetzner.de."
+      ],
+      "delegation_last_check": "2016-01-30T23:50:00+00:00",
+      "delegation_status": "valid"
+    }
+  },
+  "action": {
+    "id": 1,
+    "command": "create_zone",
+    "status": "running",
+    "progress": 50,
+    "started": "2016-01-30T23:50:00+00:00",
+    "finished": null,
+    "resources": [
+      {
+        "id": 42,
+        "type": "zone"
+      }
+    ],
+    "error": null
+  }
+}

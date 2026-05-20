@@ -6,6 +6,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Prices\Prices;
+use LKDev\HetznerCloud\Models\Prices\ServerTypePrice;
 
 class LoadBalancerType extends Model implements Resource
 {
@@ -55,6 +56,11 @@ class LoadBalancerType extends Model implements Resource
     public $prices;
 
     /**
+     * @var array
+     */
+    public $price;
+
+    /**
      * @param  int  $id
      * @param  string  $name
      * @param  string|null  $deprecated
@@ -64,8 +70,9 @@ class LoadBalancerType extends Model implements Resource
      * @param  int  $max_services
      * @param  int  $max_targets
      * @param  array|\LKDev\HetznerCloud\Models\Prices\Prices  $prices
+     * @param  array  $price
      */
-    public function __construct(int $id, string $name, ?string $deprecated, string $description, int $max_assigned_certificates, int $max_connections, int $max_services, int $max_targets, $prices)
+    public function __construct(int $id, string $name, ?string $deprecated, string $description, int $max_assigned_certificates, int $max_connections, int $max_services, int $max_targets, $prices, $price = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -75,21 +82,29 @@ class LoadBalancerType extends Model implements Resource
         $this->max_connections = $max_connections;
         $this->max_services = $max_services;
         $this->max_targets = $max_targets;
-        $this->prices = $prices; //
+        $this->prices = $prices;
+        $this->price = $price;
         parent::__construct();
     }
 
-    /**
-     * @param  $input
-     * @return \LKDev\HetznerCloud\Models\LoadBalancerTypes\LoadBalancerType|static
-     */
     public static function parse($input)
     {
         if ($input == null) {
-            return;
+            return null;
         }
 
-        return new self($input->id, $input->name, $input->deprecated, $input->description, $input->max_assigned_certificates, $input->max_connections, $input->max_services, $input->max_targets, Prices::parse($input->prices));
+        return new self(
+            $input->id,
+            $input->name,
+            $input->deprecated ?? null,
+            $input->description ?? '',
+            $input->max_assigned_certificates ?? 0,
+            $input->max_connections ?? 0,
+            $input->max_services ?? 0,
+            $input->max_targets ?? 0,
+            Prices::parse($input->prices),
+            property_exists($input, 'price') ? ServerTypePrice::parse($input->price) : null
+        );
     }
 
     public function reload()

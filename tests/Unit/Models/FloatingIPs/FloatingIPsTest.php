@@ -76,7 +76,8 @@ class FloatingIPsTest extends TestCase
     public function testCreateWithLocation()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
-        $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'), null, 'my-fip', ['key' => 'value']);
+        $apiResponse = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'), null, 'my-fip', ['key' => 'value']);
+        $floatingIp = $apiResponse->floating_ip;
 
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->description, 'Web Frontend');
@@ -90,7 +91,8 @@ class FloatingIPsTest extends TestCase
     public function testCreateWithServer()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
-        $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', null, new Server(23));
+        $apiResponse = $this->floatingIps->create('ipv4', 'Web Frontend', null, new Server(23));
+        $floatingIp = $apiResponse->floating_ip;
 
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->description, 'Web Frontend');
@@ -104,7 +106,8 @@ class FloatingIPsTest extends TestCase
     public function testCreateWithName()
     {
         $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/floatingIP.json')));
-        $floatingIp = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'), null, 'WebServer');
+        $apiResponse = $this->floatingIps->create('ipv4', 'Web Frontend', new Location(123, 'nbg1'), null, 'WebServer');
+        $floatingIp = $apiResponse->floating_ip;
 
         $this->assertEquals($floatingIp->id, 4711);
         $this->assertEquals($floatingIp->description, 'Web Frontend');
@@ -122,7 +125,7 @@ class FloatingIPsTest extends TestCase
         $this->assertLastRequestEquals('GET', '/floating_ips/4711');
 
         $this->mockHandler->append(new Response(204, []));
-        $this->assertTrue($floatingIp->delete());
+        $this->assertInstanceOf(\LKDev\HetznerCloud\APIResponse::class, $floatingIp->delete());
         $this->assertLastRequestEquals('DELETE', '/floating_ips/4711');
     }
 }

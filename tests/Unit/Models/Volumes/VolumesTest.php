@@ -35,7 +35,7 @@ class VolumesTest extends TestCase
         $this->assertIsArray($resp->next_actions);
 
         $this->assertLastRequestEquals('POST', '/volumes');
-        $this->assertLastRequestBodyParametersEqual(['name' => 'database-storage', 'size' => 42, 'location' => 'nbg1']);
+        $this->assertLastRequestBodyParametersEqual(['name' => 'database-storage', 'size' => 42, 'location' => 1, 'automount' => false]);
     }
 
     public function testGetByName()

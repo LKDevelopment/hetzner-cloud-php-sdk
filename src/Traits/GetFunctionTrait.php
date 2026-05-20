@@ -9,13 +9,11 @@ trait GetFunctionTrait
 {
     public function get($nameOrId)
     {
-        try {
+        if (is_numeric($nameOrId)) {
             return $this->getById((int) $nameOrId);
-        } catch (\Exception $e) {
-            unset($e);
-
-            return $this->getByName($nameOrId);
         }
+
+        return $this->getByName($nameOrId);
     }
 
     protected function _all(RequestOpts $requestOpts)
