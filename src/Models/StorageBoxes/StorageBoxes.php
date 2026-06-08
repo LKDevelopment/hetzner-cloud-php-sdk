@@ -8,7 +8,6 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxAccessSettings;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 use SensitiveParameter;
@@ -120,13 +119,13 @@ class StorageBoxes extends Model implements Resources
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-boxes/create_storage_box
      *
-     * @param  string                        $name           Name of the Storage Box
-     * @param  string                        $location       ID or name of the location
-     * @param  string                        $storageBoxType ID or name of the Storage Box type
-     * @param  string                        $password       Initial password (must meet the password policy)
-     * @param  array                         $labels         User-defined labels
-     * @param  array                         $sshKeys        SSH public keys to authorize
-     * @param  StorageBoxAccessSettings|null $accessSettings Initial access settings
+     * @param  string  $name  Name of the Storage Box
+     * @param  string  $location  ID or name of the location
+     * @param  string  $storageBoxType  ID or name of the Storage Box type
+     * @param  string  $password  Initial password (must meet the password policy)
+     * @param  array  $labels  User-defined labels
+     * @param  array  $sshKeys  SSH public keys to authorize
+     * @param  StorageBoxAccessSettings|null  $accessSettings  Initial access settings
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException

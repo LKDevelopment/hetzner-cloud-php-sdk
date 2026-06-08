@@ -27,10 +27,10 @@ class StorageBoxTypePrice
     public ?Price $setup_fee;
 
     /**
-     * @param  string     $location
-     * @param  Price|null $priceHourly
-     * @param  Price|null $priceMonthly
-     * @param  Price|null $setupFee
+     * @param  string  $location
+     * @param  Price|null  $priceHourly
+     * @param  Price|null  $priceMonthly
+     * @param  Price|null  $setupFee
      */
     public function __construct(string $location, ?Price $priceHourly, ?Price $priceMonthly, ?Price $setupFee = null)
     {

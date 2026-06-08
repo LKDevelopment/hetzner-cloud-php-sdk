@@ -5,7 +5,6 @@ namespace LKDev\HetznerCloud\Models\StorageBoxTypes;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\StorageBoxTypes\StorageBoxTypePrice;
 
 class StorageBoxType extends Model
 {

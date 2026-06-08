@@ -6,9 +6,9 @@ use GuzzleHttp\Psr7\Response;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\StorageBoxes\StorageBox;
 use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxAccessSettings;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxSubaccountAccessSettings;
 use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxes;
 use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxSnapshotPlanRequest;
+use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxSubaccountAccessSettings;
 use LKDev\Tests\TestCase;
 
 class StorageBoxTest extends TestCase

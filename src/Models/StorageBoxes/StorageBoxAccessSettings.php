@@ -65,7 +65,7 @@ class StorageBoxAccessSettings
     }
 
     /**
-     * @param  object     $input
+     * @param  object  $input
      * @return self|null
      */
     public static function parse(object $input): ?self
