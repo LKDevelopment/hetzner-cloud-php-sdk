@@ -3,7 +3,6 @@
 namespace LKDev\HetznerCloud\Models\StorageBoxes;
 
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxSubaccountAccessSettings;
 
 class StorageBoxSubaccount extends Model
 {

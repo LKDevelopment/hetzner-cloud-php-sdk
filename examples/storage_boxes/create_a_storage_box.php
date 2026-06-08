@@ -20,5 +20,5 @@ $response = $hetznerClient->storageBoxes()->create(
 $response->getResponsePart('action')->waitUntilCompleted();
 $box = $response->getResponsePart('storage_box')->reload();
 
-echo "Name: {$box->name}" . PHP_EOL;
-echo "ID: {$box->id}" . PHP_EOL;
+echo "Name: {$box->name}".PHP_EOL;
+echo "ID: {$box->id}".PHP_EOL;

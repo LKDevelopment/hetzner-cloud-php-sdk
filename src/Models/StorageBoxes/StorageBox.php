@@ -9,10 +9,6 @@ use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxAccessSettings;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxSnapshotPlanRequest;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxSubaccountAccessSettings;
-use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxStats;
 use LKDev\HetznerCloud\Models\StorageBoxTypes\StorageBoxType;
 use SensitiveParameter;
 
@@ -89,7 +85,7 @@ class StorageBox extends Model implements Resource
     public ?string $created;
 
     /**
-     * @param  int|null         $id
+     * @param  int|null  $id
      * @param  GuzzleClient|null  $httpClient
      */
     public function __construct(?int $id = null, ?GuzzleClient $httpClient = null)
@@ -256,8 +252,7 @@ class StorageBox extends Model implements Resource
     public function resetPassword(
         #[SensitiveParameter]
         string $password
-    ): ?APIResponse
-    {
+    ): ?APIResponse {
         $response = $this->httpClient->post('storage_boxes/'.$this->id.'/actions/reset_password', [
             'json' => ['password' => $password],
         ]);
@@ -435,12 +430,12 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-subaccounts/create_storage_box_subaccount
      *
-     * @param  string                                 $homeDirectory  Home directory of the subaccount (e.g. "backups/server01")
-     * @param  string                                 $password       Password (must meet the password policy)
-     * @param  string|null                            $name           Display name
-     * @param  StorageBoxSubaccountAccessSettings|null $accessSettings Access settings for the subaccount
-     * @param  string|null                            $description    Optional description
-     * @param  array                                  $labels         User-defined labels
+     * @param  string  $homeDirectory  Home directory of the subaccount (e.g. "backups/server01")
+     * @param  string  $password  Password (must meet the password policy)
+     * @param  string|null  $name  Display name
+     * @param  StorageBoxSubaccountAccessSettings|null  $accessSettings  Access settings for the subaccount
+     * @param  string|null  $description  Optional description
+     * @param  array  $labels  User-defined labels
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -509,10 +504,10 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-subaccounts/update_storage_box_subaccount
      *
-     * @param  int          $subaccountId
-     * @param  string|null  $name         Display name
+     * @param  int  $subaccountId
+     * @param  string|null  $name  Display name
      * @param  string|null  $description  Optional description
-     * @param  array|null   $labels       User-defined labels
+     * @param  array|null  $labels  User-defined labels
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -571,7 +566,7 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-subaccount-actions/reset_storage_box_subaccount_password
      *
-     * @param  int     $subaccountId
+     * @param  int  $subaccountId
      * @param  string  $password  New password (must meet the password policy)
      * @return APIResponse|null
      *
@@ -581,8 +576,7 @@ class StorageBox extends Model implements Resource
         int $subaccountId,
         #[SensitiveParameter]
         string $password
-    ): ?APIResponse
-    {
+    ): ?APIResponse {
         $response = $this->httpClient->post(
             'storage_boxes/'.$this->id.'/subaccounts/'.$subaccountId.'/actions/reset_subaccount_password',
             ['json' => ['password' => $password]]
@@ -601,7 +595,7 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-subaccount-actions/change_storage_box_subaccount_home_directory
      *
-     * @param  int     $subaccountId
+     * @param  int  $subaccountId
      * @param  string  $homeDirectory  New home directory path
      * @return APIResponse|null
      *
@@ -627,8 +621,8 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-subaccount-actions/update_storage_box_subaccount_access_settings
      *
-     * @param  int                               $subaccountId
-     * @param  StorageBoxSubaccountAccessSettings $settings
+     * @param  int  $subaccountId
+     * @param  StorageBoxSubaccountAccessSettings  $settings
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -677,7 +671,7 @@ class StorageBox extends Model implements Resource
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-snapshots/create_storage_box_snapshot
      *
      * @param  string|null  $description  Optional description
-     * @param  array        $labels       User-defined labels
+     * @param  array  $labels  User-defined labels
      * @return APIResponse|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -733,7 +727,7 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-snapshots/update_storage_box_snapshot
      *
-     * @param  int    $snapshotId
+     * @param  int  $snapshotId
      * @param  array  $data  Keys: description (string), labels (object)
      * @return APIResponse|null
      *

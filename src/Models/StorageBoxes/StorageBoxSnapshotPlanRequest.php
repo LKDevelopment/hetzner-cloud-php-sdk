@@ -40,9 +40,9 @@ class StorageBoxSnapshotPlanRequest
     public ?int $day_of_month;
 
     /**
-     * @param  int       $max_snapshots
-     * @param  int       $minute
-     * @param  int       $hour
+     * @param  int  $max_snapshots
+     * @param  int  $minute
+     * @param  int  $hour
      * @param  int|null  $day_of_week
      * @param  int|null  $day_of_month
      */
