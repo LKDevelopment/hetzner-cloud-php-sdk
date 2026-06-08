@@ -6,6 +6,9 @@ use GuzzleHttp\Client;
 use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\Models\Actions\Actions;
 use LKDev\HetznerCloud\Models\Certificates\Certificates;
+use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxActions;
+use LKDev\HetznerCloud\Models\StorageBoxes\StorageBoxes;
+use LKDev\HetznerCloud\Models\StorageBoxTypes\StorageBoxTypes;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenters;
 use LKDev\HetznerCloud\Models\Firewalls\Firewalls;
 use LKDev\HetznerCloud\Models\FloatingIps\FloatingIps;
@@ -62,6 +65,11 @@ class HetznerAPIClient
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient
      */
     protected GuzzleClient $httpClient;
+
+    /**
+     * @var \LKDev\HetznerCloud\Clients\GuzzleClient|null
+     */
+    protected ?GuzzleClient $storageHttpClient = null;
 
     /**
      * @param  string  $apiToken
@@ -137,6 +145,28 @@ class HetznerAPIClient
     public function setHttpClient(GuzzleClient $client): self
     {
         $this->httpClient = $client;
+
+        return $this;
+    }
+
+    /**
+     * @return GuzzleClient
+     */
+    public function getStorageHttpClient(): GuzzleClient
+    {
+        if ($this->storageHttpClient === null) {
+            $this->storageHttpClient = new GuzzleClient($this, ['base_uri' => 'https://api.hetzner.com/v1/']);
+        }
+
+        return $this->storageHttpClient;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setStorageHttpClient(GuzzleClient $client): self
+    {
+        $this->storageHttpClient = $client;
 
         return $this;
     }
@@ -331,6 +361,30 @@ class HetznerAPIClient
     public function zones()
     {
         return new Zones($this->httpClient);
+    }
+
+    /**
+     * @return StorageBoxes
+     */
+    public function storageBoxes(): StorageBoxes
+    {
+        return new StorageBoxes($this->getStorageHttpClient());
+    }
+
+    /**
+     * @return StorageBoxTypes
+     */
+    public function storageBoxTypes(): StorageBoxTypes
+    {
+        return new StorageBoxTypes($this->getStorageHttpClient());
+    }
+
+    /**
+     * @return StorageBoxActions
+     */
+    public function storageBoxActions(): StorageBoxActions
+    {
+        return new StorageBoxActions($this->getStorageHttpClient());
     }
 
     /**

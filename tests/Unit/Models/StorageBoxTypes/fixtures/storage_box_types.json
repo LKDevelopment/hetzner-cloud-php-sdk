@@ -1,0 +1,32 @@
+{
+  "storage_box_types": [
+    {
+      "id": 1,
+      "name": "bx11",
+      "description": "BX11",
+      "snapshot_limit": 10,
+      "automatic_snapshot_limit": 10,
+      "subaccounts_limit": 200,
+      "size": 1073741824,
+      "prices": [
+        {
+          "location": "fsn1",
+          "price_hourly": {"gross": "0.0061", "net": "0.0051"},
+          "price_monthly": {"gross": "3.8080", "net": "3.2000"},
+          "setup_fee": {"gross": "0.0000", "net": "0.0000"}
+        }
+      ],
+      "deprecation": null
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "next_page": null,
+      "last_page": 1,
+      "total_entries": 1
+    }
+  }
+}

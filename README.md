@@ -3,7 +3,7 @@
 [![Total Downloads](https://poser.pugx.org/lkdevelopment/hetzner-cloud-php-sdk/downloads)](https://packagist.org/packages/lkdevelopment/hetzner-cloud-php-sdk)
 [![Actions Status](https://github.com/lkdevelopment/hetzner-cloud-php-sdk/workflows/CI/badge.svg)](https://github.com/lkdevelopment/hetzner-cloud-php-sdk/actions)
 # Hetzner Cloud PHP SDK
-A PHP SDK for the Hetzner Cloud API: https://docs.hetzner.cloud/
+A PHP SDK for both Hetzner Cloud API: https://docs.hetzner.cloud/ and Storage Box API: https://docs.hetzner.cloud/
 ## Installation
 
 You can install the package via composer:

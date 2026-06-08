@@ -1,0 +1,19 @@
+{
+  "snapshot": {
+    "id": 20,
+    "storage_box": 1
+  },
+  "action": {
+    "id": 13,
+    "command": "create_snapshot",
+    "status": "running",
+    "progress": 0,
+    "started": "2016-01-30T23:50:00Z",
+    "finished": null,
+    "resources": [
+      {"id": 1, "type": "storage_box"},
+      {"id": 20, "type": "storage_box_snapshot"}
+    ],
+    "error": null
+  }
+}
