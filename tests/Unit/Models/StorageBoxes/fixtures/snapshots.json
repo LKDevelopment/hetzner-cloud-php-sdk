@@ -1,0 +1,19 @@
+{
+  "snapshots": [
+    {
+      "id": 20,
+      "storage_box": 1,
+      "name": "2025-02-12T11-35-19",
+      "description": "before-migration",
+      "labels": {
+        "environment": "prod"
+      },
+      "stats": {
+        "size": 2097152,
+        "size_filesystem": 1048576
+      },
+      "is_automatic": false,
+      "created": "2025-02-12T11:35:19Z"
+    }
+  ]
+}

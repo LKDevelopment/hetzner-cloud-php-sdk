@@ -1,0 +1,68 @@
+{
+  "storage_box": {
+    "id": 2,
+    "name": "my-resource",
+    "storage_box_type": {
+      "id": 1,
+      "name": "bx11",
+      "description": "BX11",
+      "snapshot_limit": 10,
+      "automatic_snapshot_limit": 10,
+      "subaccounts_limit": 200,
+      "size": 1073741824,
+      "prices": [
+        {
+          "location": "fsn1",
+          "price_hourly": {"gross": "0.0061", "net": "0.0051"},
+          "price_monthly": {"gross": "3.8080", "net": "3.2000"},
+          "setup_fee": {"gross": "0.0000", "net": "0.0000"}
+        }
+      ],
+      "deprecation": null
+    },
+    "location": {
+      "id": 1,
+      "name": "fsn1",
+      "description": "Falkenstein DC Park 1",
+      "country": "DE",
+      "city": "Falkenstein",
+      "latitude": 50.47612,
+      "longitude": 12.370071,
+      "network_zone": "eu-central"
+    },
+    "access_settings": {
+      "reachable_externally": false,
+      "samba_enabled": false,
+      "ssh_enabled": false,
+      "webdav_enabled": false,
+      "zfs_enabled": false
+    },
+    "snapshot_plan": null,
+    "protection": {
+      "delete": false
+    },
+    "labels": {},
+    "status": "initializing",
+    "username": null,
+    "server": null,
+    "system": null,
+    "stats": {
+      "size": 0,
+      "size_data": 0,
+      "size_snapshots": 0
+    },
+    "created": "2016-01-30T23:50:00Z"
+  },
+  "action": {
+    "id": 13,
+    "command": "create",
+    "status": "running",
+    "progress": 0,
+    "started": "2016-01-30T23:50:00Z",
+    "finished": null,
+    "resources": [
+      {"id": 2, "type": "storage_box"}
+    ],
+    "error": null
+  }
+}

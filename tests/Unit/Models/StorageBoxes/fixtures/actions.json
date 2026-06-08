@@ -1,0 +1,26 @@
+{
+  "actions": [
+    {
+      "id": 101,
+      "command": "change_protection",
+      "status": "success",
+      "progress": 100,
+      "started": "2016-01-30T23:50:00Z",
+      "finished": "2016-01-30T23:55:00Z",
+      "resources": [
+        {"id": 1, "type": "storage_box"}
+      ],
+      "error": null
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "per_page": 25,
+      "previous_page": null,
+      "next_page": null,
+      "last_page": 1,
+      "total_entries": 1
+    }
+  }
+}
