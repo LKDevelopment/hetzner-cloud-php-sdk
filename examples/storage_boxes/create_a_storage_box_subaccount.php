@@ -25,4 +25,3 @@ $account = $response->getResponsePart('subaccount')->reload();
 echo "Name: {$account->name}".PHP_EOL;
 echo "ID: {$account->id}".PHP_EOL;
 echo "HomeDir: {$account->home_directory}".PHP_EOL;
-
