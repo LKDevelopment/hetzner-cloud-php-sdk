@@ -69,7 +69,7 @@ class HetznerAPIClient
     /**
      * @var \LKDev\HetznerCloud\Clients\GuzzleClient|null
      */
-    protected ?GuzzleClient $storageHttpClient = null;
+    protected ?GuzzleClient $apiHetznerComClient = null;
 
     /**
      * @param  string  $apiToken
@@ -152,21 +152,21 @@ class HetznerAPIClient
     /**
      * @return GuzzleClient
      */
-    public function getStorageHttpClient(): GuzzleClient
+    public function getApiHetznerComClient(): GuzzleClient
     {
-        if ($this->storageHttpClient === null) {
-            $this->storageHttpClient = new GuzzleClient($this, ['base_uri' => 'https://api.hetzner.com/v1/']);
+        if ($this->apiHetznerComClient === null) {
+            $this->apiHetznerComClient = new GuzzleClient($this, ['base_uri' => 'https://api.hetzner.com/v1/']);
         }
 
-        return $this->storageHttpClient;
+        return $this->apiHetznerComClient;
     }
 
     /**
      * @return $this
      */
-    public function setStorageHttpClient(GuzzleClient $client): self
+    public function setApiHetznerComClient(GuzzleClient $client): self
     {
-        $this->storageHttpClient = $client;
+        $this->apiHetznerComClient = $client;
 
         return $this;
     }
@@ -368,7 +368,7 @@ class HetznerAPIClient
      */
     public function storageBoxes(): StorageBoxes
     {
-        return new StorageBoxes($this->getStorageHttpClient());
+        return new StorageBoxes($this->getApiHetznerComClient());
     }
 
     /**
@@ -376,7 +376,7 @@ class HetznerAPIClient
      */
     public function storageBoxTypes(): StorageBoxTypes
     {
-        return new StorageBoxTypes($this->getStorageHttpClient());
+        return new StorageBoxTypes($this->getApiHetznerComClient());
     }
 
     /**
@@ -384,7 +384,7 @@ class HetznerAPIClient
      */
     public function storageBoxActions(): StorageBoxActions
     {
-        return new StorageBoxActions($this->getStorageHttpClient());
+        return new StorageBoxActions($this->getApiHetznerComClient());
     }
 
     /**
