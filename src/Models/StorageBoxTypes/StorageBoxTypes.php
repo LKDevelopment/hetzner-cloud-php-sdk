@@ -25,7 +25,7 @@ class StorageBoxTypes extends Model implements Resources
      */
     public function __construct(?GuzzleClient $httpClient = null)
     {
-        $storageClient = $httpClient ?? (HetznerAPIClient::$instance ? HetznerAPIClient::$instance->getStorageHttpClient() : null);
+        $storageClient = $httpClient ?? (HetznerAPIClient::$instance ? HetznerAPIClient::$instance->getApiHetznerComClient() : null);
         parent::__construct($storageClient);
     }
 

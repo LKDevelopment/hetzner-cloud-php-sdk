@@ -16,10 +16,10 @@ class StorageBoxesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->hetznerApi->setStorageHttpClient(
+        $this->hetznerApi->setApiHetznerComClient(
             new GuzzleClient($this->hetznerApi, ['handler' => $this->mockHandler])
         );
-        $this->storageBoxes = new StorageBoxes($this->hetznerApi->getStorageHttpClient());
+        $this->storageBoxes = new StorageBoxes($this->hetznerApi->getApiHetznerComClient());
     }
 
     public function testCreate()
