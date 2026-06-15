@@ -7,11 +7,12 @@ use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-class StorageBoxActions extends Model implements Resources
+class Actions extends Model implements Resources
 {
     use GetFunctionTrait;
 
@@ -82,15 +83,15 @@ class StorageBoxActions extends Model implements Resources
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-actions/get_storage_boxes_action
      *
      * @param  int  $actionId
-     * @return StorageBoxAction|null
+     * @return Action|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getById(int $actionId): ?StorageBoxAction
+    public function getById(int $actionId): ?Action
     {
         $response = $this->httpClient->get('storage_boxes/actions/'.$actionId);
         if (! HetznerAPIClient::hasError($response)) {
-            return StorageBoxAction::parse(json_decode((string) $response->getBody())->action);
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
 
         return null;
@@ -98,7 +99,7 @@ class StorageBoxActions extends Model implements Resources
 
     public function getByName(string $name)
     {
-        throw new \BadMethodCallException('getByName is not possible on StorageBoxActions');
+        throw new \BadMethodCallException('getByName is not possible on Actions');
     }
 
     /**
@@ -108,7 +109,7 @@ class StorageBoxActions extends Model implements Resources
     public function setAdditionalData($input)
     {
         $this->actions = array_map(function ($action) {
-            return StorageBoxAction::parse($action);
+            return Action::parse($action);
         }, $input);
 
         return $this;

@@ -7,6 +7,7 @@ use LKDev\HetznerCloud\Clients\GuzzleClient;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
@@ -162,7 +163,7 @@ class StorageBoxes extends Model implements Resources
 
             return APIResponse::create([
                 'storage_box' => StorageBox::parse($data->storage_box),
-                'action' => StorageBoxAction::parse($data->action),
+                'action' => Action::parse($data->action),
             ], $response->getHeaders());
         }
 

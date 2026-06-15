@@ -9,6 +9,7 @@ use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\StorageBoxTypes\StorageBoxType;
 use SensitiveParameter;
 
@@ -158,7 +159,7 @@ class StorageBox extends Model implements Resource
         $response = $this->httpClient->delete('storage_boxes/'.$this->id);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -206,7 +207,7 @@ class StorageBox extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -231,7 +232,7 @@ class StorageBox extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -258,7 +259,7 @@ class StorageBox extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -282,7 +283,7 @@ class StorageBox extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -306,7 +307,7 @@ class StorageBox extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -327,7 +328,7 @@ class StorageBox extends Model implements Resource
         $response = $this->httpClient->post('storage_boxes/'.$this->id.'/actions/disable_snapshot_plan');
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -351,7 +352,7 @@ class StorageBox extends Model implements Resource
         ]);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -365,7 +366,7 @@ class StorageBox extends Model implements Resource
      *
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-actions/list_storage_box_actions
      *
-     * @return StorageBoxAction[]
+     * @return Action[]
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
@@ -374,7 +375,7 @@ class StorageBox extends Model implements Resource
         $response = $this->httpClient->get('storage_boxes/'.$this->id.'/actions');
         if (! HetznerAPIClient::hasError($response)) {
             return array_map(function ($action) {
-                return StorageBoxAction::parse($action);
+                return Action::parse($action);
             }, json_decode((string) $response->getBody())->actions);
         }
 
@@ -387,15 +388,15 @@ class StorageBox extends Model implements Resource
      * @see https://docs.hetzner.cloud/reference/hetzner#tag/storage-box-actions/get_storage_box_action
      *
      * @param  int  $actionId
-     * @return StorageBoxAction|null
+     * @return Action|null
      *
      * @throws \LKDev\HetznerCloud\APIException
      */
-    public function getAction(int $actionId): ?StorageBoxAction
+    public function getAction(int $actionId): ?Action
     {
         $response = $this->httpClient->get('storage_boxes/'.$this->id.'/actions/'.$actionId);
         if (! HetznerAPIClient::hasError($response)) {
-            return StorageBoxAction::parse(json_decode((string) $response->getBody())->action);
+            return Action::parse(json_decode((string) $response->getBody())->action);
         }
 
         return null;
@@ -472,7 +473,7 @@ class StorageBox extends Model implements Resource
 
             return APIResponse::create([
                 'subaccount' => $data->subaccount,
-                'action' => StorageBoxAction::parse($data->action),
+                'action' => Action::parse($data->action),
             ], $response->getHeaders());
         }
 
@@ -554,7 +555,7 @@ class StorageBox extends Model implements Resource
         $response = $this->httpClient->delete('storage_boxes/'.$this->id.'/subaccounts/'.$subaccountId);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -583,7 +584,7 @@ class StorageBox extends Model implements Resource
         );
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -609,7 +610,7 @@ class StorageBox extends Model implements Resource
         );
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -635,7 +636,7 @@ class StorageBox extends Model implements Resource
         );
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
@@ -695,7 +696,7 @@ class StorageBox extends Model implements Resource
 
             return APIResponse::create([
                 'snapshot' => $data->snapshot,
-                'action' => StorageBoxAction::parse($data->action),
+                'action' => Action::parse($data->action),
             ], $response->getHeaders());
         }
 
@@ -760,7 +761,7 @@ class StorageBox extends Model implements Resource
         $response = $this->httpClient->delete('storage_boxes/'.$this->id.'/snapshots/'.$snapshotId);
         if (! HetznerAPIClient::hasError($response)) {
             return APIResponse::create([
-                'action' => StorageBoxAction::parse(json_decode((string) $response->getBody())->action),
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
             ], $response->getHeaders());
         }
 
