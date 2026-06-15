@@ -8,8 +8,8 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
-use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Actions\Action;
+use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\StorageBoxTypes\StorageBoxType;
 use SensitiveParameter;
 
