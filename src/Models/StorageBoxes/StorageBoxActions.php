@@ -12,7 +12,7 @@ use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
 use LKDev\HetznerCloud\Traits\GetFunctionTrait;
 
-class Actions extends Model implements Resources
+class StorageBoxActions extends Model implements Resources
 {
     use GetFunctionTrait;
 
@@ -99,7 +99,7 @@ class Actions extends Model implements Resources
 
     public function getByName(string $name)
     {
-        throw new \BadMethodCallException('getByName is not possible on Actions');
+        throw new \BadMethodCallException('getByName is not possible on StorageBoxActions');
     }
 
     /**
