@@ -2,6 +2,7 @@
 
 namespace LKDev\HetznerCloud\Models\Servers\Types;
 
+use LKDev\HetznerCloud\Models\DeprecationInfo;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Prices\Prices;
 use LKDev\HetznerCloud\Models\Prices\ServerTypePrice;
@@ -64,6 +65,16 @@ class ServerType extends Model
     public $architecture;
 
     /**
+     * @var bool
+     */
+    public $deprecated;
+
+    /**
+     * @var DeprecationInfo|null
+     */
+    public $deprecation;
+
+    /**
      * ServerType constructor.
      *
      * @param  int  $serverTypeId
@@ -91,6 +102,8 @@ class ServerType extends Model
         $this->storageType = $input->storage_type ?? null;
         $this->cpuType = $input->cpu_type ?? null;
         $this->architecture = property_exists($input, 'architecture') ? $input->architecture : null;
+        $this->deprecated = $input->deprecated ?? false;
+        $this->deprecation = property_exists($input, 'deprecation') ? DeprecationInfo::parse($input->deprecation) : null;
 
         return $this;
     }

@@ -9,6 +9,7 @@
       "memory": 1,
       "disk": 24,
       "deprecated": false,
+      "deprecation": null,
       "prices": [
         {
           "location": "fsn1",
