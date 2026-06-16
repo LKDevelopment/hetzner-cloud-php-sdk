@@ -1,0 +1,43 @@
+{
+  "server": {
+    "id": 42,
+    "name": "my-server",
+    "status": "running",
+    "created": "2016-01-30T23:50:00+00:00",
+    "public_net": {
+      "ipv4": { "ip": "1.2.3.4", "blocked": false, "dns_ptr": "server01.example.com" },
+      "ipv6": { "ip": "2001:db8::/64", "blocked": false, "dns_ptr": [] },
+      "floating_ips": []
+    },
+    "private_net": [],
+    "server_type": {
+      "id": 1, "name": "cx11", "description": "CX11", "cores": 1, "memory": 1, "disk": 25,
+      "deprecated": false, "prices": [], "storage_type": "local", "cpu_type": "shared"
+    },
+    "datacenter": {
+      "id": 1, "name": "fsn1-dc8", "description": "Falkenstein 1 DC 8",
+      "location": { "id": 1, "name": "fsn1", "description": "Falkenstein DC Park 1", "country": "DE", "city": "Falkenstein", "latitude": 50.47612, "longitude": 12.370071, "network_zone": "eu-central" },
+      "server_types": { "supported": [], "available": [], "available_for_migration": [] }
+    },
+    "image": { "id": 4711, "type": "snapshot", "status": "available", "name": null, "description": "my snapshot", "image_size": 2.3, "disk_size": 10, "created": "2016-01-30T23:50:00+00:00", "created_from": null, "bound_to": null, "os_flavor": "ubuntu", "os_version": "16.04", "rapid_deploy": false, "protection": { "delete": false }, "deprecated": null, "labels": {} },
+    "iso": null,
+    "rescue_enabled": false,
+    "locked": false,
+    "backup_window": null,
+    "outgoing_traffic": null,
+    "ingoing_traffic": null,
+    "included_traffic": null,
+    "protection": { "delete": false, "rebuild": false },
+    "labels": {},
+    "volumes": [],
+    "load_balancers": [],
+    "placement_group": null
+  },
+  "action": {
+    "id": 1, "command": "create_server", "status": "success", "progress": 100,
+    "started": "2016-01-30T23:55:00+00:00", "finished": "2016-01-30T23:56:00+00:00",
+    "resources": [{ "id": 42, "type": "server" }],
+    "error": { "code": "action_failed", "message": "Action failed" }
+  },
+  "next_actions": []
+}
