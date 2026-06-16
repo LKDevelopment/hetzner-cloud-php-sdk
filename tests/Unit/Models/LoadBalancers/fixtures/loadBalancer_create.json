@@ -1,0 +1,82 @@
+{
+  "load_balancer": {
+    "algorithm": {
+      "type": "round_robin"
+    },
+    "created": "2016-01-30T23:55:00+00:00",
+    "id": 4711,
+    "included_traffic": 10000,
+    "ingoing_traffic": null,
+    "labels": {},
+    "load_balancer_type": {
+      "deprecated": "2016-01-30T23:50:00+00:00",
+      "description": "LB11",
+      "id": 1,
+      "max_assigned_certificates": 10,
+      "max_connections": 20000,
+      "max_services": 5,
+      "max_targets": 25,
+      "name": "lb11",
+      "prices": [
+        {
+          "location": "fsn1",
+          "price_hourly": {
+            "gross": "1.1900000000000000",
+            "net": "1.0000000000"
+          },
+          "price_monthly": {
+            "gross": "1.1900000000000000",
+            "net": "1.0000000000"
+          }
+        }
+      ]
+    },
+    "location": {
+      "city": "Falkenstein",
+      "country": "DE",
+      "description": "Falkenstein DC Park 1",
+      "id": 1,
+      "latitude": 50.47612,
+      "longitude": 12.370071,
+      "name": "fsn1",
+      "network_zone": "eu-central"
+    },
+    "name": "my-load-balancer",
+    "outgoing_traffic": null,
+    "private_net": [],
+    "protection": {
+      "delete": false
+    },
+    "public_net": {
+      "enabled": true,
+      "ipv4": {
+        "dns_ptr": "lb1.example.com",
+        "ip": "1.2.3.4"
+      },
+      "ipv6": {
+        "dns_ptr": "lb1.example.com",
+        "ip": "2001:db8::1"
+      }
+    },
+    "services": [],
+    "targets": []
+  },
+  "action": {
+    "command": "create_load_balancer",
+    "error": {
+      "code": "action_failed",
+      "message": "Action failed"
+    },
+    "finished": "2016-01-30T23:56:00+00:00",
+    "id": 13,
+    "progress": 100,
+    "resources": [
+      {
+        "id": 4711,
+        "type": "load_balancer"
+      }
+    ],
+    "started": "2016-01-30T23:55:00+00:00",
+    "status": "success"
+  }
+}

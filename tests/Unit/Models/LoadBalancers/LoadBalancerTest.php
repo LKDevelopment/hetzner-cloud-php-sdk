@@ -340,4 +340,14 @@ class LoadBalancerTest extends TestCase
             'protocol' => 'https',
         ]);
     }
+
+    public function testMetrics()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_metrics.json')));
+        $apiResponse = $this->load_balancer->metrics('open_connections', '2017-01-01T00:00:00+00:00', '2017-01-01T23:00:00+00:00', 60);
+        $metrics = $apiResponse->getResponsePart('metrics');
+
+        $this->assertEquals([[1435781470.622, '42']], $metrics->time_series->open_connections->values);
+        $this->assertLastRequestEquals('GET', '/load_balancers/4711/metrics');
+    }
 }

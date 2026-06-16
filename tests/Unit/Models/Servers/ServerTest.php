@@ -321,6 +321,29 @@ class ServerTest extends TestCase
         $this->assertLastRequestBodyParametersEqual(['network' => 4711, 'alias_ips' => ['10.0.1.2']]);
     }
 
+    public function testAddToPlacementGroup()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/server_action_add_to_placement_group.json')));
+        $apiResponse = $this->server->addToPlacementGroup(1);
+        $this->assertEquals('add_to_placement_group', $apiResponse->action->command);
+        $this->assertEquals($this->server->id, $apiResponse->action->resources[0]->id);
+        $this->assertEquals('server', $apiResponse->action->resources[0]->type);
+
+        $this->assertLastRequestEquals('POST', '/servers/42/actions/add_to_placement_group');
+        $this->assertLastRequestBodyParametersEqual(['placement_group' => 1]);
+    }
+
+    public function testRemoveFromPlacementGroup()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/server_action_remove_from_placement_group.json')));
+        $apiResponse = $this->server->removeFromPlacementGroup();
+        $this->assertEquals('remove_from_placement_group', $apiResponse->action->command);
+        $this->assertEquals($this->server->id, $apiResponse->action->resources[0]->id);
+        $this->assertEquals('server', $apiResponse->action->resources[0]->type);
+
+        $this->assertLastRequestEquals('POST', '/servers/42/actions/remove_from_placement_group');
+    }
+
     protected function getGenericActionResponse(string $command)
     {
         return str_replace('$command', $command, file_get_contents(__DIR__.'/fixtures/server_action_generic.json'));

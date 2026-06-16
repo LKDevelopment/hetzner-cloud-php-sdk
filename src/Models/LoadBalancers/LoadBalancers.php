@@ -4,6 +4,7 @@ namespace LKDev\HetznerCloud\Models\LoadBalancers;
 
 use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
@@ -60,6 +61,69 @@ class LoadBalancers extends Model implements Resources
             return APIResponse::create([
                 'meta' => Meta::parse($resp->meta),
                 $this->_getKeys()['many'] => self::parse($resp->{$this->_getKeys()['many']})->{$this->_getKeys()['many']},
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Creates a Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancers-create-a-load-balancer
+     *
+     * @param  string  $name
+     * @param  string  $loadBalancerType  ID or name of the Load Balancer type
+     * @param  string|null  $location  ID or name of location (mutually exclusive with $networkZone)
+     * @param  string|null  $networkZone  Name of network zone (mutually exclusive with $location)
+     * @param  array|null  $algorithm
+     * @param  array  $labels
+     * @param  int|null  $network
+     * @param  bool  $publicInterface
+     * @param  array  $services
+     * @param  array  $targets
+     * @return APIResponse|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function create(string $name, string $loadBalancerType, ?string $location = null, ?string $networkZone = null, ?array $algorithm = null, array $labels = [], ?int $network = null, bool $publicInterface = true, array $services = [], array $targets = []): ?APIResponse
+    {
+        $payload = [
+            'name' => $name,
+            'load_balancer_type' => $loadBalancerType,
+        ];
+        if ($location !== null) {
+            $payload['location'] = $location;
+        }
+        if ($networkZone !== null) {
+            $payload['network_zone'] = $networkZone;
+        }
+        if ($algorithm !== null) {
+            $payload['algorithm'] = $algorithm;
+        }
+        if (! empty($labels)) {
+            $payload['labels'] = $labels;
+        }
+        if ($network !== null) {
+            $payload['network'] = $network;
+        }
+        if (! $publicInterface) {
+            $payload['public_interface'] = false;
+        }
+        if (! empty($services)) {
+            $payload['services'] = $services;
+        }
+        if (! empty($targets)) {
+            $payload['targets'] = $targets;
+        }
+
+        $response = $this->httpClient->post('load_balancers', ['json' => $payload]);
+        if (! HetznerAPIClient::hasError($response)) {
+            $body = json_decode((string) $response->getBody());
+
+            return APIResponse::create([
+                'load_balancer' => LoadBalancer::parse($body->load_balancer),
+                'action' => Action::parse($body->action),
             ], $response->getHeaders());
         }
 

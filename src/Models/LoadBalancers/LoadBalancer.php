@@ -554,6 +554,36 @@ class LoadBalancer extends Model implements Resource
     }
 
     /**
+     * Get Metrics for a Load Balancer.
+     *
+     * @see https://docs.hetzner.cloud/#load-balancers-get-metrics-for-a-load-balancer
+     *
+     * @param  string  $type  Comma-separated list of metric types (open_connections, connections_per_second, requests_per_second, bandwidth)
+     * @param  string  $start  Start of period (ISO 8601 date-time)
+     * @param  string  $end  End of period (ISO 8601 date-time)
+     * @param  int|null  $step  Resolution of results in seconds
+     * @return APIResponse|null
+     *
+     * @throws APIException
+     * @throws GuzzleException
+     */
+    public function metrics(string $type, string $start, string $end, ?int $step = null): ?APIResponse
+    {
+        $params = compact('type', 'start', 'end');
+        if ($step !== null) {
+            $params['step'] = $step;
+        }
+        $response = $this->httpClient->get($this->replaceServerIdInUri('load_balancers/{id}/metrics?').http_build_query($params));
+        if (! HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'metrics' => json_decode((string) $response->getBody())->metrics,
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
      * Updates a Load Balancer Service.
      *
      * @see https://docs.hetzner.cloud/#load-balancer-actions-update-service

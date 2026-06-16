@@ -117,6 +117,19 @@ class RRSetTest extends TestCase
         ]]);
     }
 
+    public function testUpdateRecords()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/zone_rrset_action_update_records.json')));
+        $apiResponse = $this->rrset->updateRecords([
+            ['value' => '198.51.100.1', 'comment' => 'My web server at Hetzner Cloud.'],
+        ]);
+        $this->assertEquals('update_records', $apiResponse->action->command);
+        $this->assertLastRequestEquals('POST', '/zones/4711/rrsets/www/A/actions/update_records');
+        $this->assertLastRequestBodyParametersEqual(['records' => [
+            ['value' => '198.51.100.1', 'comment' => 'My web server at Hetzner Cloud.'],
+        ]]);
+    }
+
     protected function getGenericActionResponse(string $command)
     {
         return str_replace('$command', $command, file_get_contents(__DIR__.'/fixtures/zone_action_generic.json'));

@@ -1,0 +1,20 @@
+{
+  "action": {
+    "command": "update_records",
+    "error": {
+      "code": "action_failed",
+      "message": "Action failed"
+    },
+    "finished": "2016-01-30T23:56:00+00:00",
+    "id": 16,
+    "progress": 100,
+    "resources": [
+      {
+        "id": "www/A",
+        "type": "rrset"
+      }
+    ],
+    "started": "2016-01-30T23:55:00+00:00",
+    "status": "success"
+  }
+}

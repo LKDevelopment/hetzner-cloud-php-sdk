@@ -63,4 +63,18 @@ class LoadBalancersTest extends TestCase
         $this->assertEquals($loadBalancers[0]->name, 'my-resource');
         $this->assertLastRequestEquals('GET', '/load_balancers');
     }
+
+    public function testCreate()
+    {
+        $this->mockHandler->append(new Response(201, [], file_get_contents(__DIR__.'/fixtures/loadBalancer_create.json')));
+        $response = $this->loadBalancers->create('my-load-balancer', 'lb11', 'fsn1');
+
+        $this->assertNotNull($response);
+        $this->assertEquals(4711, $response->load_balancer->id);
+        $this->assertEquals('my-load-balancer', $response->load_balancer->name);
+        $this->assertEquals('create_load_balancer', $response->action->command);
+
+        $this->assertLastRequestEquals('POST', '/load_balancers');
+        $this->assertLastRequestBodyParametersEqual(['name' => 'my-load-balancer', 'load_balancer_type' => 'lb11', 'location' => 'fsn1']);
+    }
 }
