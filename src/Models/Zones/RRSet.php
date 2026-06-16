@@ -255,4 +255,30 @@ class RRSet extends Model implements Resource
 
         return null;
     }
+
+    /**
+     * Update specific records in this RRSet.
+     *
+     * @see https://docs.hetzner.cloud/#zone-rrset-actions-update-records-in-a-rrset
+     *
+     * @param  array<array{value: string, comment: string}>  $records
+     * @return APIResponse|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function updateRecords(array $records): ?APIResponse
+    {
+        $response = $this->httpClient->post('zones/'.$this->zone.'/rrsets/'.$this->id.'/actions/update_records', [
+            'json' => [
+                'records' => $records,
+            ],
+        ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
 }

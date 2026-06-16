@@ -9,7 +9,9 @@
 
 namespace LKDev\HetznerCloud\Models\Certificates;
 
+use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
+use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Model;
 
@@ -143,6 +145,27 @@ class Certificate extends Model implements Resource
     public static function parse($input)
     {
         return new self($input->id, $input->name, $input->certificate, $input->created, $input->not_valid_before, $input->not_valid_after, $input->domain_names, $input->fingerprint, $input->used_by, $input->labels, $input->type ?? null);
+    }
+
+    /**
+     * Retry a failed Certificate issuance or renewal (only for managed certificates).
+     *
+     * @see https://docs.hetzner.cloud/#certificate-actions-retry-issuance-or-renewal
+     *
+     * @return APIResponse|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function retry(): ?APIResponse
+    {
+        $response = $this->httpClient->post('certificates/'.$this->id.'/actions/retry', []);
+        if (! HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
     }
 
     /**

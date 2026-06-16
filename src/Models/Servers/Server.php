@@ -869,6 +869,51 @@ class Server extends Model implements Resource
     }
 
     /**
+     * Adds a Server to a Placement Group.
+     *
+     * @see https://docs.hetzner.cloud/#server-actions-add-a-server-to-a-placement-group
+     *
+     * @param  int  $placementGroupId
+     * @return APIResponse|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function addToPlacementGroup(int $placementGroupId): ?APIResponse
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/add_to_placement_group'), [
+            'json' => ['placement_group' => $placementGroupId],
+        ]);
+        if (! HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
+     * Removes a Server from a Placement Group.
+     *
+     * @see https://docs.hetzner.cloud/#server-actions-remove-a-server-from-a-placement-group
+     *
+     * @return APIResponse|null
+     *
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function removeFromPlacementGroup(): ?APIResponse
+    {
+        $response = $this->httpClient->post($this->replaceServerIdInUri('servers/{id}/actions/remove_from_placement_group'), []);
+        if (! HetznerAPIClient::hasError($response)) {
+            return APIResponse::create([
+                'action' => Action::parse(json_decode((string) $response->getBody())->action),
+            ], $response->getHeaders());
+        }
+
+        return null;
+    }
+
+    /**
      * @param  string  $uri
      * @return string
      */

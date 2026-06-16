@@ -94,4 +94,19 @@ class CertificatesTest extends TestCase
         $this->assertTrue($certificate->delete());
         $this->assertLastRequestEquals('DELETE', '/certificates/897');
     }
+
+    public function testRetry()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/certificate.json')));
+        $certificate = $this->certificates->get(897);
+
+        $this->mockHandler->append(new Response(201, [], file_get_contents(__DIR__.'/fixtures/certificate_action_retry.json')));
+        $apiResponse = $certificate->retry();
+
+        $this->assertEquals('retry_issuance_or_renewal', $apiResponse->action->command);
+        $this->assertEquals(897, $apiResponse->action->resources[0]->id);
+        $this->assertEquals('certificate', $apiResponse->action->resources[0]->type);
+
+        $this->assertLastRequestEquals('POST', '/certificates/897/actions/retry');
+    }
 }
