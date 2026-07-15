@@ -6,6 +6,7 @@ use LKDev\HetznerCloud\APIResponse;
 use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Contracts\Resources;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
+use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Meta;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\RequestOpts;
@@ -113,8 +114,9 @@ class PrimaryIps extends Model implements Resources
      * @param  string  $name
      * @param  string  $assigneeType
      * @param  int|null  $assigneeId
-     * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter|null  $datacenter
+     * @param  \LKDev\HetznerCloud\Models\Datacenters\Datacenter|null  $datacenter  Deprecated: the Hetzner Cloud API removed the datacenter parameter. Use $location instead.
      * @param  array  $labels
+     * @param  \LKDev\HetznerCloud\Models\Locations\Location|null  $location
      * @return \LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIp|null
      *
      * @throws \LKDev\HetznerCloud\APIException
@@ -126,7 +128,8 @@ class PrimaryIps extends Model implements Resources
         bool $autoDelete = false,
         ?int $assigneeId = null,
         ?Datacenter $datacenter = null,
-        array $labels = []
+        array $labels = [],
+        ?Location $location = null
     ): ?PrimaryIp {
         $parameters = [
             'type' => $type,
@@ -137,8 +140,11 @@ class PrimaryIps extends Model implements Resources
         if ($assigneeId != null) {
             $parameters['assignee_id'] = $assigneeId;
         }
-        if ($datacenter != null) {
-            $parameters['datacenter'] = $datacenter->id ?: $datacenter->name;
+        if ($location != null) {
+            $parameters['location'] = $location->name ?: $location->id;
+        } elseif ($datacenter != null && $datacenter->location != null) {
+            // BC: derive the location from a passed datacenter, since the API no longer accepts "datacenter".
+            $parameters['location'] = $datacenter->location->name ?: $datacenter->location->id;
         }
         if (! empty($labels)) {
             $parameters['labels'] = $labels;

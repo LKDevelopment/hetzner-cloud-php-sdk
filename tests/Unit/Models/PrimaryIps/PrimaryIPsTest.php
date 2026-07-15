@@ -3,6 +3,7 @@
 namespace LKDev\Tests\Unit\Models\PrimaryIps;
 
 use GuzzleHttp\Psr7\Response;
+use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\PrimaryIps\PrimaryIps;
 use LKDev\Tests\TestCase;
 
@@ -25,6 +26,9 @@ class PrimaryIPsTest extends TestCase
         $primaryIP = $this->primaryIps->get(1);
         $this->assertEquals($primaryIP->id, 4711);
         $this->assertEquals($primaryIP->name, 'my-resource');
+        $this->assertNull($primaryIP->datacenter);
+        $this->assertInstanceOf(Location::class, $primaryIP->location);
+        $this->assertEquals('fsn1', $primaryIP->location->name);
         $this->assertLastRequestEquals('GET', '/primary_ips/1');
     }
 
@@ -75,6 +79,22 @@ class PrimaryIPsTest extends TestCase
         $this->assertEquals($primaryIp->name, 'my-resource');
         $this->assertLastRequestEquals('POST', '/primary_ips');
         $this->assertLastRequestBodyParametersEqual(['type' => 'ipv4', 'name' => 'Web Frontend', 'assignee_type' => 'server']);
+    }
+
+    /**
+     * @throws \LKDev\HetznerCloud\APIException
+     */
+    public function testCreateInLocation()
+    {
+        $this->mockHandler->append(new Response(200, [], file_get_contents(__DIR__.'/fixtures/primaryIP.json')));
+        $location = new Location(1, 'fsn1');
+        $primaryIp = $this->primaryIps->create(
+            'ipv4', 'Web Frontend', 'server', false, null, null, [], $location
+        );
+
+        $this->assertEquals($primaryIp->id, 4711);
+        $this->assertLastRequestEquals('POST', '/primary_ips');
+        $this->assertLastRequestBodyParametersEqual(['type' => 'ipv4', 'name' => 'Web Frontend', 'assignee_type' => 'server', 'auto_delete' => false, 'location' => 'fsn1']);
     }
 
     /**

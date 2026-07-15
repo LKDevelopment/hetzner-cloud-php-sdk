@@ -7,6 +7,7 @@ use LKDev\HetznerCloud\HetznerAPIClient;
 use LKDev\HetznerCloud\Models\Actions\Action;
 use LKDev\HetznerCloud\Models\Contracts\Resource;
 use LKDev\HetznerCloud\Models\Datacenters\Datacenter;
+use LKDev\HetznerCloud\Models\Locations\Location;
 use LKDev\HetznerCloud\Models\Model;
 use LKDev\HetznerCloud\Models\Protection;
 use LKDev\HetznerCloud\Models\Servers\Server;
@@ -60,8 +61,15 @@ class PrimaryIp extends Model implements Resource
 
     /**
      * @var array|\LKDev\HetznerCloud\Models\Datacenters\Datacenter
+     *
+     * @deprecated The Hetzner Cloud API removed the datacenter property from Primary IPs. Use $location instead.
      */
     public $datacenter;
+
+    /**
+     * @var \LKDev\HetznerCloud\Models\Locations\Location
+     */
+    public $location;
 
     /**
      * @var string
@@ -88,12 +96,13 @@ class PrimaryIp extends Model implements Resource
      * @param  bool  $blocked
      * @param  array|Protection  $protection
      * @param  array  $labels
-     * @param  array|\LKDev\HetznerCloud\Models\Datacenters\Datacenter  $datacenter
+     * @param  array|\LKDev\HetznerCloud\Models\Datacenters\Datacenter|null  $datacenter
      * @param  string  $assignee_type
      * @param  int|null  $assignee_id
      * @param  bool  $auto_delete
+     * @param  \LKDev\HetznerCloud\Models\Locations\Location|null  $location
      */
-    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, ?int $assignee_id = null, bool $auto_delete = false)
+    public function __construct(int $id, string $name, string $created, string $ip, string $type, array $dns_ptr, bool $blocked, $protection, array $labels, $datacenter, string $assignee_type, ?int $assignee_id = null, bool $auto_delete = false, ?Location $location = null)
     {
         $this->id = $id;
         $this->name = $name;
@@ -105,6 +114,7 @@ class PrimaryIp extends Model implements Resource
         $this->protection = $protection;
         $this->labels = $labels;
         $this->datacenter = $datacenter;
+        $this->location = $location;
         $this->assignee_type = $assignee_type;
         $this->assignee_id = $assignee_id;
         $this->auto_delete = $auto_delete;
@@ -163,7 +173,10 @@ class PrimaryIp extends Model implements Resource
             return null;
         }
 
-        return new self($input->id, $input->name, $input->created, $input->ip, $input->type, $input->dns_ptr, $input->blocked, Protection::parse($input->protection), get_object_vars($input->labels), Datacenter::parse($input->datacenter), $input->assignee_type, $input->assignee_id, $input->auto_delete);
+        $datacenter = property_exists($input, 'datacenter') && $input->datacenter ? Datacenter::parse($input->datacenter) : null;
+        $location = property_exists($input, 'location') && $input->location ? Location::parse($input->location) : null;
+
+        return new self($input->id, $input->name, $input->created, $input->ip, $input->type, $input->dns_ptr, $input->blocked, Protection::parse($input->protection), get_object_vars($input->labels), $datacenter, $input->assignee_type, $input->assignee_id, $input->auto_delete, $location);
     }
 
     /**
