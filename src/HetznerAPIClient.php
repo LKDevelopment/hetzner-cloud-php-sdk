@@ -35,7 +35,7 @@ class HetznerAPIClient
     /**
      * Version of the API Client.
      */
-    const VERSION = '3.1.1';
+    const VERSION = '3.1.2';
 
     const MAX_ENTITIES_PER_PAGE = 50;
 
@@ -180,7 +180,7 @@ class HetznerAPIClient
     {
         $body = (string) $response->getBody();
         if (strlen($body) > 0) {
-            $error = \GuzzleHttp\json_decode($body);
+            $error = json_decode($body);
             throw new APIException(APIResponse::create([
                 'error' => $error->error,
             ]), $error->error->message);
